@@ -7,7 +7,9 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed;
 
-    private bool isMoving;
+    private bool isMoving = false;
+
+    private bool isFacingRight = true;
 
     private Vector2 input; //direction from the input
 
@@ -19,36 +21,39 @@ public class PlayerController : MonoBehaviour
 
     private void Start(){
         rb = GetComponent<Rigidbody2D>();
-     }
-
-    private void Awake(){
         animator = GetComponent<Animator>();
-    }
+     }
 
     private void Update()
     {
-        if (!isMoving)
-        {
+
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
 
             if (input.x != 0) input.y = 0;
+            if (input.y != 0) input.x = 0;
 
             if (input != Vector2.zero)
             {
-                isMoving = true;
-
-                animator.SetFloat("moveX", input.x);
-                animator.SetFloat("moveY", input.y);
-
-                rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
-                isMoving = false;
+                Moving();
             }
-
-        }
-
-        animator.SetBool("isMoving",isMoving);
+            else
+            {
+                isMoving = false;
+                animator.SetBool("isMoving",isMoving);
+            }
     }
 
+    private void Moving(){
+        isMoving = true;
+        animator.SetBool("isMoving",isMoving);
+        animator.SetFloat("moveX", input.x);
+        animator.SetFloat("moveY", input.y);
 
+        if (input.x > 0) isFacingRight = true;
+        else if (input.x < 0 ) isFacingRight = false;
+        animator.SetBool("isFacingRight",isFacingRight);
+
+        rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
+    }
 }
