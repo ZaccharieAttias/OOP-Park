@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
         float characterVelocity = Mathf.Abs(rb.velocity.x);
         animator.SetFloat("Speed", characterVelocity);
+        animator.SetBool("isJumping", isJumping);
     }
 
     void MovePlayer(float _horizontalMovement)
