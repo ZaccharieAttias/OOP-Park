@@ -2,50 +2,67 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed;
-    public float jumpForce;
+    [SerializeField] public float moveSpeed;
+    [SerializeField] public float jumpForce;
 
     private bool isJumping;
-    private bool isGrounded;
 
-    public Transform groundCheckLeft;
-    public Transform groundCheckRight;
+    public Transform groundCheck;
+    public float groundCheckRadius;
+    [SerializeField] private LayerMask groundLayer;
 
-    public Rigidbody2D rb;
+    private Rigidbody2D rb;
     public Animator animator;
     public SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
 
     private Vector3 velocity = Vector3.zero;
+    float horizontalMovement;
 
-    void FixedUpdate()
+    private void Start()
     {
-        isGrounded = Physics2D.OverlapArea(groundCheckLeft.position, groundCheckRight.position);
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+    }
 
-        float horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+    void Update()
+    {
+        horizontalMovement = Input.GetAxis("Horizontal");        
+        Flip(rb.velocity.x);
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             isJumping = true;
         }
-
-        MovePlayer(horizontalMovement);
-
-        Flip(rb.velocity.x);
+        else
+        {
+            isJumping = false;
+        }
+        if (isJumping && isGrounded())
+        {
+            animator.SetTrigger("isJumping");
+        }
 
         float characterVelocity = Mathf.Abs(rb.velocity.x);
         animator.SetFloat("Speed", characterVelocity);
-        animator.SetBool("isJumping", isJumping);
+        animator.SetBool("isGrounded", isGrounded());
+        
+    }
+
+    void FixedUpdate()
+    {
+        MovePlayer(horizontalMovement);
     }
 
     void MovePlayer(float _horizontalMovement)
     {
-        Vector3 targetVelocity = new Vector2(_horizontalMovement, rb.velocity.y);
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
+        rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
 
-        if(isJumping == true)
+        if(isJumping)
         {
             rb.AddForce(new Vector2(0f, jumpForce));
-            isJumping = false;
         }
     }
 
@@ -58,5 +75,15 @@ public class PlayerMovement : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
+    }
+
+    private void OnCollisonEnter2D(Collision2D collision)
+    {
+    }
+
+    private bool isGrounded()
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        return false;
     }
 }
