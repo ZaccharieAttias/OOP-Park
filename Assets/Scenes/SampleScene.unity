@@ -1027,7 +1027,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1119,16 +1119,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86acb61664984b498789e7084981bd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
-  jumpForce: 620
+  moveSpeed: 22
+  jumpForce: 1888
   groundCheck: {fileID: 830904935}
   groundCheckRadius: 1.75
   collisionLayers:
     serializedVersion: 2
     m_Bits: 0
-  rb: {fileID: 1289166414}
-  animator: {fileID: 1289166419}
-  spriteRenderer: {fileID: 1289166415}
 --- !u!95 &1289166419
 Animator:
   serializedVersion: 5
