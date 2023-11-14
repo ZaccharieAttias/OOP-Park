@@ -130,13 +130,16 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow) && canJump)
         {
             isJumping = true;
-            animator.SetTrigger("Jump");
         }
 
         Flip(rb.velocity.x);
 
         float characterVelocity = Mathf.Abs(rb.velocity.x);
         animator.SetBool("isGrounded", isGrounded);
+        if (!isGrounded)
+        {
+            animator.SetTrigger("Jump");
+        }
         animator.SetFloat("Speed", characterVelocity);      
     }
 
