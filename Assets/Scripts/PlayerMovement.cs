@@ -94,9 +94,12 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed;
     public float jumpForce;
+    private int amountOfJumpsLeft;
+    public int amountOfJumps = 1;
 
     private bool isJumping;
     private bool isGrounded;
+    private bool canJump;
 
     public Transform groundCheck;
     public float groundCheckRadius;
@@ -114,15 +117,17 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        amountOfJumpsLeft = amountOfJumps;
     }
 
     void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
+        CheckGround();
 
         horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed;
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        CheckIfCanJump();
+        //if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && canJump)
         {
             isJumping = true;
             animator.SetTrigger("Jump");
@@ -131,12 +136,8 @@ public class PlayerMovement : MonoBehaviour
         Flip(rb.velocity.x);
 
         float characterVelocity = Mathf.Abs(rb.velocity.x);
-        if(isJumping)
-        {
-            animator.SetTrigger("Jump");
-        }
-        animator.SetFloat("Speed", characterVelocity);
-        animator.SetBool("isJumping", isJumping);        
+        animator.SetBool("isGrounded", isGrounded);
+        animator.SetFloat("Speed", characterVelocity);      
     }
 
     void FixedUpdate()
@@ -144,16 +145,39 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer(horizontalMovement);
     }
 
-        void MovePlayer(float _horizontalMovement)
+    void MovePlayer(float _horizontalMovement)
     {
         Vector3 targetVelocity = new Vector2(_horizontalMovement, rb.velocity.y);
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
 
-        if(isJumping == true)
+        if(isJumping)
         {
             rb.AddForce(new Vector2(0f, jumpForce));
+            amountOfJumpsLeft--;
             isJumping = false;
         }
+    }
+
+    private void CheckIfCanJump()
+    {
+        if(isGrounded && rb.velocity.y <= 0)
+        {
+            amountOfJumpsLeft = amountOfJumps;
+        }
+        if(amountOfJumpsLeft <= 0)
+        {
+            canJump = false;
+        }
+        else
+        {
+            canJump = true;
+        }
+    }
+
+    private void CheckGround()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
+
     }
 
     void Flip(float _velocity)
