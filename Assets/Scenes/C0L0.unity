@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 73763190}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 88.3, y: 41.9, z: 0}
+  m_LocalPosition: {x: 369, y: 190, z: 0}
   m_LocalScale: {x: 3, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -780,7 +780,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -841,7 +841,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49, y: 41.030003, z: -10}
+  m_LocalPosition: {x: 329.7, y: 189.13, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -862,6 +862,7 @@ MonoBehaviour:
   player: {fileID: 1289166409}
   timeOffset: 0.2
   posOffset: {x: 0, y: 0, z: -10}
+  instance: {fileID: 0}
 --- !u!1 &830904934
 GameObject:
   m_ObjectHideFlags: 0
@@ -920,7 +921,7 @@ Transform:
   m_GameObject: {fileID: 967872404}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 92.9, y: 46.730003, z: 0}
+  m_LocalPosition: {x: 373.6, y: 194.83002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1169,7 +1170,7 @@ Transform:
   m_GameObject: {fileID: 1289166409}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49.660004, y: 41.610004, z: 0}
+  m_LocalPosition: {x: 330.36002, y: 189.71, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1280,7 +1281,7 @@ Transform:
   m_GameObject: {fileID: 1302973819}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 92.9, y: 46.730003, z: 0}
+  m_LocalPosition: {x: 373.6, y: 194.83002, z: 0}
   m_LocalScale: {x: 3, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1751,8 +1752,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 286.52185, y: -151.45807}
-  m_SizeDelta: {x: 158.5468, y: 88.6928}
+  m_AnchoredPosition: {x: 289.34, y: -165.36}
+  m_SizeDelta: {x: 97.7237, y: 60.8879}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2040049951
 MonoBehaviour:

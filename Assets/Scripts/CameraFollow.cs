@@ -7,6 +7,20 @@ public class CameraFollow : MonoBehaviour
     public Vector3 posOffset;
 
     private Vector3 velocity;
+    public CameraFollow instance;
+
+    void Start()
+    {
+        if(instance != null)
+        {
+            Debug.Log("camerafollow instance already exists");
+            Destroy(this.gameObject);
+            return;
+        }
+        Debug.Log("camerafollow instance created");
+        instance = this;
+        GameObject.DontDestroyOnLoad(this.gameObject);
+    }
     
     void Update()
     {

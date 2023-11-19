@@ -33,9 +33,11 @@ public class PlayerMovement : MonoBehaviour
 
         if(instance != null)
         {
+            Debug.Log("playermovement instance already exists");
             Destroy(this.gameObject);
             return;
         }
+        Debug.Log("playermovement instance created");
         instance = this;
         GameObject.DontDestroyOnLoad(this.gameObject);
     }
@@ -46,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
 
         horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed;
         CheckIfCanJump();
-        //if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
         if (Input.GetKeyDown(KeyCode.UpArrow) && canJump)
         {
             isJumping = true;
