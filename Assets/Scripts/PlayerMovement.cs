@@ -22,24 +22,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     float horizontalMovement;
 
-    public static PlayerMovement instance;
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         amountOfJumpsLeft = amountOfJumps;
-
-        if(instance != null)
-        {
-            Debug.Log("playermovement instance already exists");
-            Destroy(this.gameObject);
-            return;
-        }
-        Debug.Log("playermovement instance created");
-        instance = this;
-        GameObject.DontDestroyOnLoad(this.gameObject);
     }
 
     void Update()
