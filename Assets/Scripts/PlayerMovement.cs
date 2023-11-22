@@ -64,7 +64,8 @@ public class PlayerMovement : MonoBehaviour
 
         if(isJumping)
         {
-            rb.AddForce(new Vector2(0f, jumpForce));
+            //rb.AddForce(new Vector2(0f, jumpForce));
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             amountOfJumpsLeft--;
             isJumping = false;
         }
