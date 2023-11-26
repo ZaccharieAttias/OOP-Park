@@ -19,11 +19,12 @@ public class GameController : MonoBehaviour
 
     void Die()
     {
-        Respawn();
+        StartCoroutine(Respawn(0.5f));
     }
 
-    void Respawn()
+    IEnumerator Respawn(float time)
     {
+        yield return new WaitForSeconds(time);
         transform.position = startPos;
     }
 }
