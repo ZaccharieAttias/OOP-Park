@@ -32,11 +32,12 @@ public class GameController : MonoBehaviour
 
     IEnumerator Respawn(float time)
     {
+        rb.velocity = new Vector2(0, 0);
         rb.simulated = false;
         transform.localScale = new Vector3(0, 0, 0);
         yield return new WaitForSeconds(time);
         transform.position = startPos;
-        transform.localScale = new Vector3(1, 1, 1);
+        transform.localScale = new Vector3(3, 3, 1);
         rb.simulated = true;
     }
 }
