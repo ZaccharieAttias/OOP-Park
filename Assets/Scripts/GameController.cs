@@ -1,13 +1,15 @@
 using UnityEngine;
+using System.Collections;
+
 
 public class GameController : MonoBehaviour
 {
     Vector2 startPos;
-    spriteRenderer spriteRenderer;
+    Rigidbody2D rb;
 
     void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Start()
@@ -30,9 +32,11 @@ public class GameController : MonoBehaviour
 
     IEnumerator Respawn(float time)
     {
-        spriteRenderer.enabled = false;
+        rb.simulated = false;
+        transform.localScale = new Vector3(0, 0, 0);
         yield return new WaitForSeconds(time);
         transform.position = startPos;
-        spriteRenderer.enabled = true;
+        transform.localScale = new Vector3(1, 1, 1);
+        rb.simulated = true;
     }
 }
