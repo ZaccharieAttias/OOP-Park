@@ -3,6 +3,12 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     Vector2 startPos;
+    spriteRenderer spriteRenderer;
+
+    void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void Start()
     {
@@ -19,12 +25,14 @@ public class GameController : MonoBehaviour
 
     void Die()
     {
-        StartCoroutine(Respawn(0.5f));
+        StartCoroutine(Respawn(0.25f));
     }
 
     IEnumerator Respawn(float time)
     {
+        spriteRenderer.enabled = false;
         yield return new WaitForSeconds(time);
         transform.position = startPos;
+        spriteRenderer.enabled = true;
     }
 }
