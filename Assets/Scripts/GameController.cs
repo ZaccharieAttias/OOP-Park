@@ -4,7 +4,7 @@ using System.Collections;
 
 public class GameController : MonoBehaviour
 {
-    Vector2 startPos;
+    Vector2 checkpointPosition;
     Rigidbody2D rb;
 
     void Awake()
@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        startPos = transform.position;
+        checkpointPosition = transform.position;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -23,6 +23,11 @@ public class GameController : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void UpdateCheckpoint(Vector2 newCheckpointPos)
+    {
+        checkpointPosition = newCheckpointPos;
     }
 
     void Die()
@@ -36,7 +41,7 @@ public class GameController : MonoBehaviour
         rb.simulated = false;
         transform.localScale = new Vector3(0, 0, 0);
         yield return new WaitForSeconds(time);
-        transform.position = startPos;
+        transform.position = checkpointPosition;
         transform.localScale = new Vector3(3, 3, 1);
         rb.simulated = true;
     }
