@@ -9,11 +9,13 @@ public class Checkpoint : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
     public Sprite passive, active;
+    Collider2D collider;
 
     void Awake()
     {
         gameController = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<GameController>();
-        spriteRenderer = GetComponent<SpriteRenderer>();    
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        collider = GetComponent<Collider2D>();  
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,6 +24,7 @@ public class Checkpoint : MonoBehaviour
         {
             gameController.UpdateCheckpoint(respawnPoint.position);
             spriteRenderer.sprite = active;
+            collider.enabled = false;
         }
     }
 }
