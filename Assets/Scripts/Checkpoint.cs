@@ -5,6 +5,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     GameController gameController; 
+    public Transform respawnPoint;
 
     void Awake()
     {
@@ -15,7 +16,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            gameController.UpdateCheckpoint(transform.position);
+            gameController.UpdateCheckpoint(respawnPoint.position);
         }
     }
 }
