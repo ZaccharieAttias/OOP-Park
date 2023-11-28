@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public int amountOfJumps = 1;
 
     private bool isJumping;
-    private bool isGrounded;
+    private bool isGrounded = false;
     private bool canJump;
 
     public Transform groundCheck;
