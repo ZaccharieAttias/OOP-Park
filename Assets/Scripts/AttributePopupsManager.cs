@@ -52,7 +52,7 @@ public class AttributesPopupManager : MonoBehaviour
     {
         if (hasAttribute)
         {
-            currentCharacter.attributes = currentCharacter.attributes.Where(a => a != attribute).ToArray();
+            currentCharacter.attributes = currentCharacter.attributes.Where(a => a.name != attribute.name).ToArray();
         }
 
         else

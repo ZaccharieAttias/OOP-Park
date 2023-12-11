@@ -53,7 +53,7 @@ public class MethodsPopupManager : MonoBehaviour
     {
         if (hasMethod)
         {
-            currentCharacter.methods = currentCharacter.methods.Where(m => m != method).ToArray();
+            currentCharacter.methods = currentCharacter.methods.Where(m => m.name != method.name).ToArray();
         }
 
         else
