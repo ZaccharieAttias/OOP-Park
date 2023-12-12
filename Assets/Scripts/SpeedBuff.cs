@@ -12,4 +12,9 @@ public class SpeedBuff : PowerUpEffect
     {
         player.GetComponent<PlayerMovement>().moveSpeed += speedIncrease;
     }
+
+    public override void DeactivatePower(GameObject player)
+    {
+        player.GetComponent<PlayerMovement>().moveSpeed -= speedIncrease;
+    }
 }
