@@ -18,6 +18,15 @@ public class CharacterManager : MonoBehaviour
     public GameObject buttonPrefab;
 
 
+
+    public void Start()
+    {
+        currentCharacter = characters[0];
+        DisplayCharacterDetails(currentCharacter.name);
+    }
+
+
+
     public void DisplayCharacterDetails(string characterName)
     {
         currentCharacter = FindCharacterByName(characterName);
