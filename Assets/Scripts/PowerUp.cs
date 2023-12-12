@@ -5,34 +5,32 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     public SpeedBuff speedBuff;
-    public Character previousCharacter=null;
+    public CharacterMethod[] previousMethods;
 
     public void ApplyPowerup(Character character)
     {
-        // if (!(previousCharacter?.name == null || previousCharacter?.name == "" || previousCharacter?.name == " "))
-        if(previousCharacter is not null)
+        for (int i = previousMethods.Length - 1; i >= 0; i--)
         {
-            Debug.Log("Previous character is not null");
-            foreach (CharacterMethod method in previousCharacter.methods)
+            if (previousMethods[i].name == "MoveSpeed")
             {
-                if (method.name == "MoveSpeed")
-                {
-                    Debug.Log("Previous character has MoveSpeed");
-                    speedBuff.DeactivatePower(gameObject);
-                }
+                speedBuff.DeactivatePower(gameObject);
             }
-        }
 
+            List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
+            tempList.RemoveAt(i);
+            previousMethods = tempList.ToArray();
+        }
 
         foreach (CharacterMethod method in character.methods)
         {
             if (method.name == "MoveSpeed")
             {
-                Debug.Log("Current character has MoveSpeed");
                 speedBuff.ActivatePower(gameObject);
             }
-        }
 
-        previousCharacter = character;
+            List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
+            tempList.Add(method);
+            previousMethods = tempList.ToArray();
+        }
     }
 }
