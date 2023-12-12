@@ -2975,6 +2975,9 @@ MonoBehaviour:
   - name: test123
     description: test
     accessModifier: 0
+  - name: MoveSpeed
+    description: add 5 in speed
+    accessModifier: 0
   methodsPanel: {fileID: 2088039936}
   buttonPrefab: {fileID: 7881829838065210820, guid: 1385776efe61c404ea8d212ea8712382, type: 3}
   characterManager: {fileID: 1289166418}
@@ -4465,9 +4468,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1289166409}
+      - m_Target: {fileID: 1289166418}
         m_TargetAssemblyTypeName: CharacterManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: DisplayCharacterDetails
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7683,6 +7686,7 @@ GameObject:
   - component: {fileID: 1289166410}
   - component: {fileID: 1289166417}
   - component: {fileID: 1289166418}
+  - component: {fileID: 1289166419}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -7908,6 +7912,11 @@ MonoBehaviour:
     attributes: []
     methods: []
     description: Horrible
+  currentCharacter:
+    name: 
+    attributes: []
+    methods: []
+    description: 
   characterNameText: {fileID: 1824668557}
   descriptionText: {fileID: 39612446}
   attributesPanel: {fileID: 1924118269}
@@ -7915,6 +7924,19 @@ MonoBehaviour:
   attributesPopup: {fileID: 891848495}
   methodsPopup: {fileID: 234928710}
   buttonPrefab: {fileID: 6711824849685729551, guid: 7dca9ad46fac4a34c836a0c871538995, type: 3}
+--- !u!114 &1289166419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289166409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be46ce2dd85d29545be4df0cf1bb02d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedBuff: {fileID: 11400000, guid: 9055434b638ecde46ac4b034b38fbdfc, type: 2}
 --- !u!1 &1292965505
 GameObject:
   m_ObjectHideFlags: 0
