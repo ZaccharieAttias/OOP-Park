@@ -5,7 +5,7 @@ using TMPro;
 public class CharacterManager : MonoBehaviour
 {
     public Character[] characters;
-    private Character currentCharacter;
+    public Character currentCharacter;
 
     public TMP_Text characterNameText;
     public TMP_Text descriptionText;
@@ -18,7 +18,6 @@ public class CharacterManager : MonoBehaviour
     public GameObject buttonPrefab;
 
 
-
     public void DisplayCharacterDetails(string characterName)
     {
         currentCharacter = FindCharacterByName(characterName);
@@ -29,9 +28,12 @@ public class CharacterManager : MonoBehaviour
 
             characterNameText.text = currentCharacter.name;
             descriptionText.text = currentCharacter.description;
+            ChangingGameObjectName();
 
             DisplayAttributes();
             DisplayMethods();
+            PowerUp powerUp = GetComponent<PowerUp>();
+            powerUp.hhhhhhhhh(currentCharacter);
         }
     }
 
@@ -106,5 +108,10 @@ public class CharacterManager : MonoBehaviour
             MethodsPopupManager popupManager = methodsPopup.GetComponent<MethodsPopupManager>();
             popupManager.ShowMethodsPopup(currentCharacter);
         }
+    }
+
+    public void ChangingGameObjectName()
+    {
+        gameObject.name = currentCharacter.name;
     }
 }
