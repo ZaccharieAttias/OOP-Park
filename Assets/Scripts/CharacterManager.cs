@@ -33,7 +33,7 @@ public class CharacterManager : MonoBehaviour
             DisplayAttributes();
             DisplayMethods();
             PowerUp powerUp = GetComponent<PowerUp>();
-            powerUp.hhhhhhhhh(currentCharacter);
+            powerUp.ApplyPowerup(currentCharacter);
         }
     }
 
