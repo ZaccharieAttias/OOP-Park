@@ -2969,11 +2969,11 @@ MonoBehaviour:
   - name: test1
     description: test
     accessModifier: 0
-  - name: test12
-    description: test
+  - name: DoubleJump
+    description: jump 2 times
     accessModifier: 0
-  - name: test123
-    description: test
+  - name: GravityForce
+    description: add 20 in jump force
     accessModifier: 0
   - name: MoveSpeed
     description: add 5 in speed
@@ -7937,6 +7937,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedBuff: {fileID: 11400000, guid: 9055434b638ecde46ac4b034b38fbdfc, type: 2}
+  gravityBuff: {fileID: 11400000, guid: a4f78dfaf69a5fc47971de44d3e294e7, type: 2}
+  multipleJumpsBuff: {fileID: 11400000, guid: 39336e0d3b159ac43a29614b84b9ee81, type: 2}
+  previousMethods: []
 --- !u!1 &1292965505
 GameObject:
   m_ObjectHideFlags: 0
