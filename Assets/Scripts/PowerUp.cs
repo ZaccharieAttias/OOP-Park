@@ -5,6 +5,8 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     public SpeedBuff speedBuff;
+    public GravityBuff gravityBuff;
+
     public CharacterMethod[] previousMethods;
 
     public void ApplyPowerup(Character character)
@@ -14,6 +16,10 @@ public class PowerUp : MonoBehaviour
             if (previousMethods[i].name == "MoveSpeed")
             {
                 speedBuff.DeactivatePower(gameObject);
+            }
+            if (previousMethods[i].name == "GravityForce")
+            {
+                gravityBuff.DeactivatePower(gameObject);
             }
 
             List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
@@ -26,6 +32,10 @@ public class PowerUp : MonoBehaviour
             if (method.name == "MoveSpeed")
             {
                 speedBuff.ActivatePower(gameObject);
+            }
+            if (method.name == "GravityForce")
+            {
+                gravityBuff.ActivatePower(gameObject);
             }
 
             List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
