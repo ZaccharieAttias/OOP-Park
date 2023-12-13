@@ -6,6 +6,7 @@ public class PowerUp : MonoBehaviour
 {
     public SpeedBuff speedBuff;
     public GravityBuff gravityBuff;
+    public MultipleJumpsBuff multipleJumpsBuff;
 
     public CharacterMethod[] previousMethods;
 
@@ -20,6 +21,10 @@ public class PowerUp : MonoBehaviour
             if (previousMethods[i].name == "GravityForce")
             {
                 gravityBuff.DeactivatePower(gameObject);
+            }
+            if (previousMethods[i].name == "DoubleJump")
+            {
+                multipleJumpsBuff.DeactivatePower(gameObject);
             }
 
             List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
@@ -36,6 +41,10 @@ public class PowerUp : MonoBehaviour
             if (method.name == "GravityForce")
             {
                 gravityBuff.ActivatePower(gameObject);
+            }
+            if (method.name == "DoubleJump")
+            {
+                multipleJumpsBuff.ActivatePower(gameObject);
             }
 
             List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
