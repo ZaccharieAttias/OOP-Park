@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 
 public class CharacterManager : MonoBehaviour
@@ -16,6 +18,12 @@ public class CharacterManager : MonoBehaviour
     public GameObject attributesPopup;
     public GameObject methodsPopup;
     public GameObject buttonPrefab;
+    public GameObject simpleButton;
+
+    // public GameObject PlayerPrefab;
+    public GameObject CharacterTree;
+
+    public string imagePath  = "Imports/Characters/3/Idle/Idle (1).png";
 
 
 
@@ -123,4 +131,52 @@ public class CharacterManager : MonoBehaviour
     {
         gameObject.name = currentCharacter.name;
     }
+
+    public void AddCharacter()
+    {
+        Character newCharacter = new Character();
+        newCharacter.name = "New Character";
+        newCharacter.description = "New Description";
+
+
+        newCharacter.attributes = new CharacterAttribute[0];
+        newCharacter.methods = new CharacterMethod[0];
+
+        Character[] newCharacters = new Character[characters.Length + 1];
+        for (int i = 0; i < characters.Length; i++)
+        {
+            newCharacters[i] = characters[i];
+        }
+
+        newCharacters[newCharacters.Length - 1] = newCharacter;
+        characters = newCharacters;
+
+    
+        GameObject newPlayerButton = Instantiate(simpleButton, transform);
+        newPlayerButton.transform.SetParent(CharacterTree.transform);
+
+        newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
+        newPlayerButton.transform.localPosition = new Vector3(-147, -100, 0);
+        newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
+        newPlayerButton.name = newCharacter.name;
+
+        newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => DisplayCharacterDetails(newCharacter.name));
+        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => GetComponent<ChangingSkin>().PinkSkin());
+
+
+        Debug.Log("Image Path: " + imagePath);
+        Debug.Log("Application Path: " + Application.dataPath);
+        string filePath = Path.Combine(Application.dataPath, imagePath);
+        
+        if (File.Exists(filePath))
+        {
+            byte[] fileData = File.ReadAllBytes(filePath);
+            Texture2D texture = new Texture2D(2, 2);
+            texture.LoadImage(fileData); // Load image data into the texture
+            newPlayerButton.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+        }
+        DisplayCharacterDetails(newCharacter.name);
+    }
+
 }
