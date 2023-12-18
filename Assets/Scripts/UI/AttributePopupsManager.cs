@@ -54,12 +54,10 @@ public class AttributesPopupManager : MonoBehaviour
         {
             currentCharacter.attributes = currentCharacter.attributes.Where(a => a.name != attribute.name).ToArray();
         }
-
         else
         {
             CharacterAttribute newAttribute = new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier);
             currentCharacter.attributes = currentCharacter.attributes.Append(newAttribute).ToArray();
-
         }
 
         characterManager.DisplayCharacterDetails(currentCharacter.name);
