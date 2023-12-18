@@ -20,6 +20,6 @@ public class ChangingSkin : MonoBehaviour
 
     public void PinkSkin()
     {
-        GetComponent<Animator>().runtimeAnimatorController = normal as RuntimeAnimatorController;
+        GetComponent<Animator>().runtimeAnimatorController = pink as RuntimeAnimatorController;
     }
 }
