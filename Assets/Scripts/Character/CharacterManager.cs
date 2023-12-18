@@ -162,7 +162,7 @@ public class CharacterManager : MonoBehaviour
 
         newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
         newPlayerButton.GetComponent<Button>().onClick.AddListener(() => DisplayCharacterDetails(newCharacter.name));
-        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => GetComponent<ChangingSkin>().PinkSkin());
+        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => GetComponent<ChangingSkin>().BlackAndWhiteSkin());
 
 
         Debug.Log("Image Path: " + imagePath);
