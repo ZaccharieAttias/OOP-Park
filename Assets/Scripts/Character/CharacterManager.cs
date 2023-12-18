@@ -166,7 +166,7 @@ public class CharacterManager : MonoBehaviour
 
         newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
         newPlayerButton.GetComponent<Button>().onClick.AddListener(() => DisplayCharacterDetails(newCharacter.name));
-        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => GetComponent<ChangingSkin>().BlackAndWhiteSkin());
+        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => GetComponent<ChangingSkin>().PinkSkin());
 
         string filePath = Path.Combine(Application.dataPath, imagePath);
         
@@ -181,7 +181,7 @@ public class CharacterManager : MonoBehaviour
 
 
 
-    
+
 
         Transform myTransform = transform;
         Transform parentTransform = myTransform.parent;
