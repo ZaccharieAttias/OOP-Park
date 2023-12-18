@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
+using System.Linq;
 
 
 public class CharacterManager : MonoBehaviour
@@ -24,7 +25,6 @@ public class CharacterManager : MonoBehaviour
     public GameObject CharacterTree;
 
     public string imagePath  = "Imports/Characters/3/Idle/Idle (1).png";
-
 
 
     public void Start()
@@ -136,11 +136,15 @@ public class CharacterManager : MonoBehaviour
     {
         Character newCharacter = new Character();
         newCharacter.name = "New Character";
+        newCharacter.ancestors = new Character[10];
+        newCharacter.ancestors[0] = characters[0];
+        
+        newCharacter.attributes = new CharacterAttribute[0];
+        newCharacter.methods = new CharacterMethod[0];
         newCharacter.description = "New Description";
 
 
-        newCharacter.attributes = new CharacterAttribute[0];
-        newCharacter.methods = new CharacterMethod[0];
+        
 
         Character[] newCharacters = new Character[characters.Length + 1];
         for (int i = 0; i < characters.Length; i++)
@@ -164,9 +168,6 @@ public class CharacterManager : MonoBehaviour
         newPlayerButton.GetComponent<Button>().onClick.AddListener(() => DisplayCharacterDetails(newCharacter.name));
         newPlayerButton.GetComponent<Button>().onClick.AddListener(() => GetComponent<ChangingSkin>().BlackAndWhiteSkin());
 
-
-        Debug.Log("Image Path: " + imagePath);
-        Debug.Log("Application Path: " + Application.dataPath);
         string filePath = Path.Combine(Application.dataPath, imagePath);
         
         if (File.Exists(filePath))
@@ -176,7 +177,73 @@ public class CharacterManager : MonoBehaviour
             texture.LoadImage(fileData); // Load image data into the texture
             newPlayerButton.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
         }
+    
+
+
+
+    
+
+        Transform myTransform = transform;
+        Transform parentTransform = myTransform.parent;
+
+        // Remplacez "SiblingName" par le nom du frère que vous cherchez
+        string siblingNameToFind = newCharacter.ancestors[0].name;
+
+        // Cherchez le frère parmi les enfants du parent
+        Transform siblingTransform = parentTransform.Find(siblingNameToFind);  
+        Debug.Log(siblingTransform.name);
+        
+        GameObject foundObject = siblingTransform.gameObject;
+
+
+
+
+
+
+        LineRenderer lineRenderer = foundObject.GetComponent<LineRenderer>();
+
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, foundObject.transform.position);
+        lineRenderer.SetPosition(1, newPlayerButton.transform.position);
+        lineRenderer.material.color = Color.red;
+
+
+
+
+        PreDetails(newCharacter);
+
+
+
         DisplayCharacterDetails(newCharacter.name);
+    }
+
+    public void PreDetails(Character newCharacter)
+    {
+        foreach (Character character in newCharacter.ancestors)
+        {
+            foreach (CharacterAttribute attribute in character.attributes)
+            {
+                CharacterAttribute newAttribute = new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier);
+                if (!(attribute.accessModifier == AccessModifier.Private))
+                {
+                    if (!newCharacter.attributes.Any(a => a.name == attribute.name))
+                    {
+                        newCharacter.attributes = newCharacter.attributes.Append(newAttribute).ToArray();
+                    }
+                }
+            }
+            foreach (CharacterMethod method in character.methods)
+            {
+                CharacterMethod newMethod = new CharacterMethod(method.name, method.description, method.accessModifier);
+                if (!(method.accessModifier == AccessModifier.Private))
+                {
+                    if (!newCharacter.methods.Any(m => m.name == method.name))
+                    {
+                        newCharacter.methods = newCharacter.methods.Append(newMethod).ToArray();
+                    }
+                }
+            }
+        }
     }
 
 }
