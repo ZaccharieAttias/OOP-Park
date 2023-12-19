@@ -183,8 +183,10 @@ public class CharacterManager : MonoBehaviour
 
 
 
-        Transform myTransform = transform;
+        Transform myTransform = newPlayerButton.transform;
+        Debug.Log(myTransform.name);
         Transform parentTransform = myTransform.parent;
+        Debug.Log(parentTransform.name);
 
         // Remplacez "SiblingName" par le nom du frère que vous cherchez
         string siblingNameToFind = newCharacter.ancestors[0].name;
@@ -221,25 +223,32 @@ public class CharacterManager : MonoBehaviour
     {
         foreach (Character character in newCharacter.ancestors)
         {
-            foreach (CharacterAttribute attribute in character.attributes)
+            if (character.attributes != null)
             {
-                CharacterAttribute newAttribute = new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier);
-                if (!(attribute.accessModifier == AccessModifier.Private))
+                foreach (CharacterAttribute attribute in character.attributes)
                 {
-                    if (!newCharacter.attributes.Any(a => a.name == attribute.name))
+                    CharacterAttribute newAttribute = new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier);
+                    if (!(attribute.accessModifier == AccessModifier.Private))
                     {
-                        newCharacter.attributes = newCharacter.attributes.Append(newAttribute).ToArray();
+                        if (!newCharacter.attributes.Any(a => a.name == attribute.name))
+                        {
+                           newCharacter.attributes = newCharacter.attributes.Append(newAttribute).ToArray();
+                        }
                     }
-                }
+                }  
             }
-            foreach (CharacterMethod method in character.methods)
+            
+            if(character.methods != null)  
             {
-                CharacterMethod newMethod = new CharacterMethod(method.name, method.description, method.accessModifier);
-                if (!(method.accessModifier == AccessModifier.Private))
+                foreach (CharacterMethod method in character.methods)
                 {
-                    if (!newCharacter.methods.Any(m => m.name == method.name))
+                    CharacterMethod newMethod = new CharacterMethod(method.name, method.description, method.accessModifier);
+                    if (!(method.accessModifier == AccessModifier.Private))
                     {
-                        newCharacter.methods = newCharacter.methods.Append(newMethod).ToArray();
+                        if (!newCharacter.methods.Any(m => m.name == method.name))
+                        {
+                            newCharacter.methods = newCharacter.methods.Append(newMethod).ToArray();
+                        }
                     }
                 }
             }
