@@ -19,12 +19,11 @@ public class CharacterManager : MonoBehaviour
     public GameObject attributesPopup;
     public GameObject methodsPopup;
     public GameObject buttonPrefab;
-    public GameObject simpleButton;
+    //public GameObject simpleButton;
 
-    // public GameObject PlayerPrefab;
     public GameObject CharacterTree;
 
-    public string imagePath  = "Imports/Characters/3/Idle/Idle (1).png";
+    //public string imagePath  = "Imports/Characters/3/Idle/Idle (1).png";
 
 
     public void Start()
@@ -155,7 +154,10 @@ public class CharacterManager : MonoBehaviour
         newCharacters[newCharacters.Length - 1] = newCharacter;
         characters = newCharacters;
 
-    
+        TreeNode parentofthenewCharacter = new TreeNode();
+        parentofthenewCharacter = CharacterTree.GetComponent<ButtonTreeManager>().root;
+
+        /*
         GameObject newPlayerButton = Instantiate(simpleButton, transform);
         newPlayerButton.transform.SetParent(CharacterTree.transform);
 
@@ -208,9 +210,9 @@ public class CharacterManager : MonoBehaviour
         lineRenderer.SetPosition(0, foundObject.transform.position);
         lineRenderer.SetPosition(1, newPlayerButton.transform.position);
         lineRenderer.material.color = Color.red;
+        */
 
-
-
+        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter, parentofthenewCharacter);
 
         PreDetails(newCharacter);
 
