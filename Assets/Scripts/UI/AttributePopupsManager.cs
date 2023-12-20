@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System.Collections.Generic;
 
 
 public class AttributesPopupManager : MonoBehaviour
 {
-    public CharacterAttribute[] allAttributes;
+    public List <CharacterAttribute> allAttributes = new List<CharacterAttribute>();
     private Character currentCharacter;
 
     public Transform attributesPanel;
@@ -52,12 +53,11 @@ public class AttributesPopupManager : MonoBehaviour
     {
         if (hasAttribute)
         {
-            currentCharacter.attributes = currentCharacter.attributes.Where(a => a.name != attribute.name).ToArray();
+            currentCharacter.attributes.Remove(currentCharacter.attributes.Find(item => item.name == attribute.name));
         }
         else
         {
-            CharacterAttribute newAttribute = new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier);
-            currentCharacter.attributes = currentCharacter.attributes.Append(newAttribute).ToArray();
+            currentCharacter.attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
         }
 
         characterManager.DisplayCharacterDetails(currentCharacter.name);
