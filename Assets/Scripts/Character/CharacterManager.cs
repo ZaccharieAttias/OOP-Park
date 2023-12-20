@@ -8,33 +8,30 @@ using System.Collections.Generic;
 
 public class CharacterManager : MonoBehaviour
 {
-    public List<Character> characters = new List<Character>();
+    public List<Character> _charactersCollection;
     public Character currentCharacter;
 
     public TMP_Text characterNameText;
     public TMP_Text descriptionText;
-    
+
     public Transform attributesPanel;
     public Transform methodsPanel;
-    
+
     public GameObject attributesPopup;
     public GameObject methodsPopup;
     public GameObject buttonPrefab;
-    //public GameObject simpleButton;
 
     public GameObject CharacterTree;
-
-    //public string imagePath  = "Imports/Characters/3/Idle/Idle (1).png";
-
+    public ButtonTreeManager buttonTreeManager;
 
     public void Start()
     {
-        Debug.Log(characters.Count);
-        currentCharacter = characters[0];
-        DisplayCharacterDetails(currentCharacter.name);
+        CharacterTree = GetComponent<SearchGameObject>().FindGameObject(transform.parent, "TreePanel").gameObject;
+
+        _charactersCollection = new List<Character>();
+        CreateCharacters(); // Temporary
+        
     }
-
-
 
     public void DisplayCharacterDetails(string characterName)
     {
@@ -61,7 +58,7 @@ public class CharacterManager : MonoBehaviour
         {
             GameObject attributeButton = Instantiate(buttonPrefab, attributesPanel);
             attributeButton.name = attribute.name;
-            
+
             TMP_Text buttonText = attributeButton.GetComponentInChildren<TMP_Text>();
             buttonText.text = attribute.name;
 
@@ -86,7 +83,7 @@ public class CharacterManager : MonoBehaviour
 
     private Character FindCharacterByName(string characterName)
     {
-        foreach (Character character in characters)
+        foreach (Character character in _charactersCollection)
         {
             if (character.name == characterName)
             {
@@ -137,14 +134,14 @@ public class CharacterManager : MonoBehaviour
     {
         Character newCharacter = new Character();
         newCharacter.name = "New Character";
-        newCharacter.ancestors.Add(characters[0]);
+        newCharacter.ancestors.Add(_charactersCollection[0]);
         newCharacter.description = "New Description";
 
-        characters.Add(newCharacter);
-        
+        _charactersCollection.Add(newCharacter);
 
-        TreeNode parentofthenewCharacter = new TreeNode();
-        parentofthenewCharacter = CharacterTree.GetComponent<ButtonTreeManager>().root;
+
+        // TreeNode parentofthenewCharacter = new TreeNode();
+        // parentofthenewCharacter = CharacterTree.GetComponent<ButtonTreeManager>().root;
 
         /*
         GameObject newPlayerButton = Instantiate(simpleButton, transform);
@@ -201,13 +198,13 @@ public class CharacterManager : MonoBehaviour
         lineRenderer.material.color = Color.red;
         */
 
-        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter, parentofthenewCharacter);
+        // CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter, parentofthenewCharacter);
 
-        PreDetails(newCharacter);
+        // PreDetails(newCharacter);
 
 
 
-        DisplayCharacterDetails(newCharacter.name);
+        // DisplayCharacterDetails(newCharacter.name);
     }
 
     public void PreDetails(Character newCharacter)
@@ -223,13 +220,13 @@ public class CharacterManager : MonoBehaviour
                     {
                         if (!newCharacter.attributes.Any(a => a.name == attribute.name))
                         {
-                           newCharacter.attributes.Add(newAttribute);
+                            newCharacter.attributes.Add(newAttribute);
                         }
                     }
-                }  
+                }
             }
-            
-            if(character.methods != null)  
+
+            if (character.methods != null)
             {
                 foreach (CharacterMethod method in character.methods)
                 {
@@ -244,6 +241,28 @@ public class CharacterManager : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    private void CreateCharacters()
+    {
+        string characterName = "";
+        string characterDescription = "";
+        List<CharacterAttribute> characterAttributes = new List<CharacterAttribute>();
+        List<CharacterMethod> characterMethods = new List<CharacterMethod>();
+        List<Character> characterAncestors = new List<Character>();
+
+        // Character1 
+        characterName = "Character 1";
+        characterDescription = "This is the first character";
+        Character character1 = new Character(characterName, characterDescription, characterAttributes, characterMethods, characterAncestors);
+        _charactersCollection.Add(character1);
+
+        TreeNode treeNodeRoot = new TreeNode(character1, null, null, 0);
+        buttonTreeManager = new ButtonTreeManager(treeNodeRoot, this);
+        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(treeNodeRoot);
+
+        DisplayCharacterDetails(character1.name);
     }
 
 }

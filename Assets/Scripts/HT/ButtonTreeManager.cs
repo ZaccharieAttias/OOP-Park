@@ -1,43 +1,44 @@
 using System.Collections.Generic;
+using System.Collections;
+
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
 using System.Linq;
 
+
 public class ButtonTreeManager : MonoBehaviour
 {
     public TreeNode root;
-    public GameObject simpleButton;
+    public GameObject buttonPrefab;
     public CharacterManager characterManager;
-    public string imagePath  = "Imports/Characters/3/Idle/Idle (1).png";
+    public string imagePath = "Imports/Characters/3/Idle/Idle (1).png";
 
     public float verticalSpacing = 50f;
 
-    void Start()
+
+    public ButtonTreeManager(TreeNode root, CharacterManager characterManager)
     {
-        CreationOfTheTreeLayout();
+        this.root = root;
+        this.characterManager = characterManager;
     }
 
-    public TreeNode CreateButton(Character newCharacter, TreeNode parent)
+    public void CreateButton(TreeNode characterNode)
     {
-        // // Créer un nouvel objet pour le bouton
-        // GameObject buttonObject = new GameObject(buttonText);
-        // TreeNode buttonNode = buttonObject.AddComponent<TreeNode>();
+        GameObject newPlayerButton = Instantiate(buttonPrefab, transform);
 
-        // // Ajouter un bouton Unity UI
-        // buttonNode.button = buttonObject.AddComponent<Button>();
-        // buttonNode.button.GetComponentInChildren<Text>().text = buttonText;
+        TreeNode newPlayerScript = newPlayerButton.AddComponent<TreeNode>();
+        newPlayerScript.character = characterNode.character;
+        newPlayerScript.parent = characterNode.parent;
+        newPlayerScript.children = characterNode.children;
+        newPlayerScript.depth = characterNode.depth;
 
-
-        GameObject newPlayerButton = Instantiate(simpleButton, transform);
-        TreeNode buttonNode = newPlayerButton.AddComponent<TreeNode>();
         newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
-        newPlayerButton.transform.localPosition = new Vector3(-147, -100, 0);
         newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
-        newPlayerButton.name = newCharacter.name;
+        newPlayerButton.name = characterNode.character.name;
         newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => characterManager.DisplayCharacterDetails(newCharacter.name));
+        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => characterManager.DisplayCharacterDetails(characterNode.character.name));
         string filePath = Path.Combine(Application.dataPath, imagePath);
         if (File.Exists(filePath))
         {
@@ -47,17 +48,24 @@ public class ButtonTreeManager : MonoBehaviour
             newPlayerButton.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
         }
 
-        // Configurer la hiérarchie parent-enfant
-        if (parent != null)
+        if (newPlayerScript.parent != null)
         {
-            buttonNode.parent = parent;
-            buttonNode.depth = parent.depth + 1;
-            parent.children.Add(buttonNode);
+            // This is TreeNode
+            // public Character character;
+            // public List<TreeNode> parent;
+            // public List<TreeNode> children;
+            // public int depth;
+            // I want you to update the parent's children list
+            
+            foreach (TreeNode parent in newPlayerScript.parent)
+            {
+                parent.children.Add(newPlayerScript);
+            }
+            
+            newPlayerScript.depth = newPlayerScript.parent[0].depth + 1;
         }
 
-        // Mettre à jour la disposition de l'arbre
-        UpdateTreeLayout(buttonNode);
-        return buttonNode;
+        UpdateTreeLayout(newPlayerScript);
     }
 
 
@@ -84,18 +92,4 @@ public class ButtonTreeManager : MonoBehaviour
     }
 
 
-    void CreationOfTheTreeLayout()
-    {
-        UpdateTreeLayout(root);
-
-
-
-        //for all the children of the gameobject read UpdateTreeLayout
-        for (int i = 0; i < root.children.Count; i++) 
-        {
-            Debug.Log(root.children[i].name);
-           UpdateTreeLayout(root.children[i]);
-        }
-
-    }
 }

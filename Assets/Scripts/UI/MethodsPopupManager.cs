@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class MethodsPopupManager : MonoBehaviour
 {
-    public List<CharacterMethod> allMethods = new List<CharacterMethod>();
+    public List<CharacterMethod> _methodsCollection = new List<CharacterMethod>();
     private Character currentCharacter;
 
     public Transform methodsPanel;
@@ -17,6 +17,11 @@ public class MethodsPopupManager : MonoBehaviour
     public CharacterManager characterManager;
 
 
+    public void Start()
+    {
+        CreateMethods(); // Temporary
+        gameObject.SetActive(false); // Temporary
+    }
 
     public void ShowMethodsPopup(Character currentChar)
     {
@@ -24,7 +29,7 @@ public class MethodsPopupManager : MonoBehaviour
 
         currentCharacter = currentChar;
 
-        foreach (CharacterMethod method in allMethods)
+        foreach (CharacterMethod method in _methodsCollection)
         {
             GameObject methodButton = Instantiate(buttonPrefab, methodsPanel);
             methodButton.name = method.name;
@@ -73,5 +78,32 @@ public class MethodsPopupManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+
+
+    private void CreateMethods()
+    {
+        string methodName = "";
+        string methodDescription = "";
+        AccessModifier methodAccessModifier = AccessModifier.Public;
+
+        // method1 
+        methodName = "method 1";
+        methodDescription = "This is the first method";
+        methodAccessModifier = AccessModifier.Public;
+        _methodsCollection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+
+        // method2
+        methodName = "method 2";
+        methodDescription = "This is the second method";
+        methodAccessModifier = AccessModifier.Protected;
+        _methodsCollection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+
+        // method3
+        methodName = "method 3";
+        methodDescription = "This is the third method";
+        methodAccessModifier = AccessModifier.Private;
+        _methodsCollection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
     }
 }
