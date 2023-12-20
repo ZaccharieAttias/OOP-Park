@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class AttributesPopupManager : MonoBehaviour
 {
-    public List <CharacterAttribute> allAttributes = new List<CharacterAttribute>();
+    public List<CharacterAttribute> _attributesCollection = new List<CharacterAttribute>();
     private Character currentCharacter;
 
     public Transform attributesPanel;
@@ -17,13 +17,20 @@ public class AttributesPopupManager : MonoBehaviour
     public CharacterManager characterManager;
 
 
+    public void Start()
+    {
+        CreateAttributes(); // Temporary
+        gameObject.SetActive(false); // Temporary
+    }
+
+
     public void ShowAttributesPopup(Character currentChar)
     {
         ClearAttributesPanel();
 
         currentCharacter = currentChar;
 
-        foreach (CharacterAttribute attribute in allAttributes)
+        foreach (CharacterAttribute attribute in _attributesCollection)
         {
             GameObject attributeButton = Instantiate(buttonPrefab, attributesPanel);
             attributeButton.name = attribute.name;
@@ -71,5 +78,31 @@ public class AttributesPopupManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+
+    private void CreateAttributes()
+    {
+        string attributeName = "";
+        string attributeDescription = "";
+        AccessModifier attributeAccessModifier = AccessModifier.Public;
+
+        // Attribute1 
+        attributeName = "Attribute 1";
+        attributeDescription = "This is the first attribute";
+        attributeAccessModifier = AccessModifier.Public;
+        _attributesCollection.Add(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
+
+        // Attribute2
+        attributeName = "Attribute 2";
+        attributeDescription = "This is the second attribute";
+        attributeAccessModifier = AccessModifier.Protected;
+        _attributesCollection.Add(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
+
+        // Attribute3
+        attributeName = "Attribute 3";
+        attributeDescription = "This is the third attribute";
+        attributeAccessModifier = AccessModifier.Private;
+        _attributesCollection.Add(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
     }
 }
