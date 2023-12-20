@@ -3,11 +3,12 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 
 public class CharacterManager : MonoBehaviour
 {
-    public Character[] characters;
+    public List<Character> characters = new List<Character>();
     public Character currentCharacter;
 
     public TMP_Text characterNameText;
@@ -28,6 +29,7 @@ public class CharacterManager : MonoBehaviour
 
     public void Start()
     {
+        Debug.Log(characters.Count);
         currentCharacter = characters[0];
         DisplayCharacterDetails(currentCharacter.name);
     }
@@ -135,24 +137,11 @@ public class CharacterManager : MonoBehaviour
     {
         Character newCharacter = new Character();
         newCharacter.name = "New Character";
-        newCharacter.ancestors = new Character[10];
-        newCharacter.ancestors[0] = characters[0];
-        
-        newCharacter.attributes = new CharacterAttribute[0];
-        newCharacter.methods = new CharacterMethod[0];
+        newCharacter.ancestors.Add(characters[0]);
         newCharacter.description = "New Description";
 
-
+        characters.Add(newCharacter);
         
-
-        Character[] newCharacters = new Character[characters.Length + 1];
-        for (int i = 0; i < characters.Length; i++)
-        {
-            newCharacters[i] = characters[i];
-        }
-
-        newCharacters[newCharacters.Length - 1] = newCharacter;
-        characters = newCharacters;
 
         TreeNode parentofthenewCharacter = new TreeNode();
         parentofthenewCharacter = CharacterTree.GetComponent<ButtonTreeManager>().root;
@@ -234,7 +223,7 @@ public class CharacterManager : MonoBehaviour
                     {
                         if (!newCharacter.attributes.Any(a => a.name == attribute.name))
                         {
-                           newCharacter.attributes = newCharacter.attributes.Append(newAttribute).ToArray();
+                           newCharacter.attributes.Add(newAttribute);
                         }
                     }
                 }  
@@ -249,7 +238,7 @@ public class CharacterManager : MonoBehaviour
                     {
                         if (!newCharacter.methods.Any(m => m.name == method.name))
                         {
-                            newCharacter.methods = newCharacter.methods.Append(newMethod).ToArray();
+                            newCharacter.methods.Add(newMethod);
                         }
                     }
                 }
