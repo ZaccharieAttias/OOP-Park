@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System.Collections.Generic;
 
 
 public class MethodsPopupManager : MonoBehaviour
 {
-    public CharacterMethod[] allMethods;
+    public List<CharacterMethod> allMethods = new List<CharacterMethod>();
     private Character currentCharacter;
 
     public Transform methodsPanel;
@@ -53,13 +54,12 @@ public class MethodsPopupManager : MonoBehaviour
     {
         if (hasMethod)
         {
-            currentCharacter.methods = currentCharacter.methods.Where(m => m.name != method.name).ToArray();
+            currentCharacter.methods.Remove(currentCharacter.methods.Find(item => item.name == method.name));
         }
 
         else
         {
-            CharacterMethod newMethod = new CharacterMethod(method.name, method.description, method.accessModifier);
-            currentCharacter.methods = currentCharacter.methods.Append(newMethod).ToArray();
+            currentCharacter.methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
         }
 
         characterManager.DisplayCharacterDetails(currentCharacter.name);
