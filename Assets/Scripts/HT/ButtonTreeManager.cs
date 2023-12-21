@@ -65,7 +65,7 @@ public class ButtonTreeManager : MonoBehaviour
             newPlayerScript.depth = newPlayerScript.parent[0].depth + 1;
         }
 
-        UpdateTreeLayout(newPlayerScript);
+        //UpdateTreeLayout(newPlayerScript);
     }
 
 
