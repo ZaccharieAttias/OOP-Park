@@ -130,19 +130,18 @@ public class CharacterManager : MonoBehaviour
         gameObject.name = currentCharacter.name;
     }
 
-    public void AddCharacter()
+    public void AddCharacter(List<Character> characterNewAncestors)
     {
         string characterName = "";
         string characterDescription = "";
         List<CharacterAttribute> characterAttributes = new List<CharacterAttribute>();
         List<CharacterMethod> characterMethods = new List<CharacterMethod>();
-        List<Character> characterAncestors = new List<Character>();
-        //add the ancestors
+        List<Character> characterAncestors = characterNewAncestors;
 
 
         Character newCharacter = new Character();
         newCharacter.name = "New Character";
-        newCharacter.ancestors.Add(_charactersCollection[0]);
+        newCharacter.ancestors = characterAncestors;
         newCharacter.description = "New Description";
 
         _charactersCollection.Add(newCharacter);
