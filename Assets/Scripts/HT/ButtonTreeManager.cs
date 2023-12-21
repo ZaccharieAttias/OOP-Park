@@ -27,6 +27,7 @@ public class ButtonTreeManager : MonoBehaviour
     public void CreateButton(TreeNode characterNode)
     {
         GameObject newPlayerButton = Instantiate(buttonPrefab, transform);
+        newPlayerButton.tag = "CharacterButton";
 
         TreeNode newPlayerScript = newPlayerButton.AddComponent<TreeNode>();
         newPlayerScript.character = characterNode.character;
