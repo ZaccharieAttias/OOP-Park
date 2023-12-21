@@ -1,71 +1,87 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.EventSystems;
 
-public class ButtonSequenceManager : MonoBehaviour
+public class ButtonListenerManager : MonoBehaviour
 {
-    public GameObject initialButton; // Reference to the initial button
+    private List<Button> characterButtons; // Reference to character buttons
 
-    private int clickCount = 0; // Keep track of the number of clicks
-    private List<GameObject> clickedObjects = new List<GameObject>(); // Keep track of the clicked objects
+    private Dictionary<Button, List<ButtonClickedListener>> originalListeners = new Dictionary<Button, List<ButtonClickedListener>>();
 
-    void Start()
+    private List<Character> selectedCharacters = new List<Character>();
+
+    public CharacterManager characterManager;
+
+
+    public void Start()
     {
-        // Add onClick listeners to the buttons
-        initialButton.GetComponent<Button>().onClick.AddListener(OnInitialButtonClick);
+        GetComponent<Button>().onClick.AddListener(SelectAncestors());
     }
 
-    void OnInitialButtonClick()
+    public void SelectAncestors()
     {
-        // Logic for the initial button click
-        clickCount++;
-        clickedObjects.Add(EventSystem.current.currentSelectedGameObject);
+        characterButtons = GameObject.FindGameObjectsWithTag("CharacterButton")
+                           .Select(obj => obj.GetComponent<Button>())
+                           .ToList();
+        
+        StoreOriginalListeners();
+        UpdateListeners();
 
-        Debug.Log("name of clicked object: " + EventSystem.current.currentSelectedGameObject.name);
+        if (selectedCharacters.Count == 1)
+        {
+            RevertListeners();
+            //selecedCharacters make interactable
+            foreach (Character character in selectedCharacters)
+            {
+                GameObject buttonObject = characterButtons.Find(button => button.GetComponent<TreeNode>().character == character).gameObject;
+                buttonObject.GetComponent<Button>().interactable = true;
+            }
+            characterManager.AddCharacter(selectedCharacters);
+        }
 
-        // You can optionally change button interactivity here if needed
+
     }
 
+    private void StoreOriginalListeners()
+    {
+        foreach (Button button in characterButtons)
+        {
+            List<ButtonClickedListener> listenerList = button.GetComponents<ButtonClickedListener>().ToList();
+            originalListeners.Add(button, listenerList);
+        }
+    }
 
-    // void OnFirstTargetButtonClick()
-    // {
-    //     // Logic for the first target button click
-    //     clickCount++;
-    //     firstClickedObject = EventSystem.current.currentSelectedGameObject;
+    private void UpdateListeners()
+    {
+        foreach (Button button in characterButtons)
+        {
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(ButtonSelection);
+        }
+    }
 
-    //     Debug.Log("First target button clicked.");
+    private void RevertListeners()
+    {
+        foreach (Button button in characterButtons)
+        {
+            button.onClick.RemoveAllListeners();
+            List<ButtonClickedListener> originalListenerList = originalListeners[button];
+            foreach (ButtonClickedListener listener in originalListenerList)
+            {
+                button.onClick.AddListener(listener.OnButtonClick);
+            }
+        }
+    }
 
-    //     // You can optionally change button interactivity here if needed
-    // }
-
-    // void OnSecondTargetButtonClick()
-    // {
-    //     // Logic for the second target button click
-    //     clickCount++;
-    //     secondClickedObject = EventSystem.current.currentSelectedGameObject;
-
-    //     Debug.Log("Second target button clicked.");
-
-    //     // Check if the sequence is complete
-    //     if (clickCount == 3)
-    //     {
-    //         // Call a function or method with the specified GameObjects
-    //         YourFunction(firstClickedObject, secondClickedObject);
-
-    //         // Reset the click count for the next sequence
-    //         clickCount = 0;
-    //     }
-    // }
-
-    // void YourFunction(GameObject firstObject, GameObject secondObject)
-    // {
-    //     // Implement your desired functionality here
-    //     Debug.Log("YourFunction called with objects: " + firstObject.name + " and " + secondObject.name);
-    // }
+    private void ButtonSelection()
+    {
+        GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
+        selectedCharacters.Add(buttonObject.GetComponent<TreeNode>().character);
+        buttonObject.GetComponent<Button>().interactable = false;
+    }
 }
-
-
 
 
 
