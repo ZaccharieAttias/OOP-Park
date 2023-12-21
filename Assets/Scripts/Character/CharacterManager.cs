@@ -34,7 +34,7 @@ public class CharacterManager : MonoBehaviour
     }
 
     public void DisplayCharacterDetails(string characterName)
-    {
+    {   
         currentCharacter = FindCharacterByName(characterName);
 
         if (currentCharacter != null)
@@ -132,6 +132,14 @@ public class CharacterManager : MonoBehaviour
 
     public void AddCharacter()
     {
+        string characterName = "";
+        string characterDescription = "";
+        List<CharacterAttribute> characterAttributes = new List<CharacterAttribute>();
+        List<CharacterMethod> characterMethods = new List<CharacterMethod>();
+        List<Character> characterAncestors = new List<Character>();
+        //add the ancestors
+
+
         Character newCharacter = new Character();
         newCharacter.name = "New Character";
         newCharacter.ancestors.Add(_charactersCollection[0]);
@@ -140,37 +148,26 @@ public class CharacterManager : MonoBehaviour
         _charactersCollection.Add(newCharacter);
 
 
-        // TreeNode parentofthenewCharacter = new TreeNode();
-        // parentofthenewCharacter = CharacterTree.GetComponent<ButtonTreeManager>().root;
+
+
+
+        
+        // Character1 
+        characterName = "Character 1";
+        characterDescription = "This is the first character";
+        Character character1 = new Character(characterName, characterDescription, characterAttributes, characterMethods, characterAncestors);
+        _charactersCollection.Add(character1);
+
+        TreeNode treeNodeRoot = new TreeNode(character1, null, null, 0);
+        buttonTreeManager = new ButtonTreeManager(treeNodeRoot, this);
+        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(treeNodeRoot);
+        DisplayCharacterDetails(character1.name);
+
+
+
+
 
         /*
-        GameObject newPlayerButton = Instantiate(simpleButton, transform);
-        newPlayerButton.transform.SetParent(CharacterTree.transform);
-
-        newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
-        newPlayerButton.transform.localPosition = new Vector3(-147, -100, 0);
-        newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
-        newPlayerButton.name = newCharacter.name;
-
-        newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => DisplayCharacterDetails(newCharacter.name));
-        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => GetComponent<ChangingSkin>().PinkSkin());
-
-        string filePath = Path.Combine(Application.dataPath, imagePath);
-        
-        if (File.Exists(filePath))
-        {
-            byte[] fileData = File.ReadAllBytes(filePath);
-            Texture2D texture = new Texture2D(2, 2);
-            texture.LoadImage(fileData); // Load image data into the texture
-            newPlayerButton.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
-        }
-    
-
-
-
-
-
         Transform myTransform = newPlayerButton.transform;
         Debug.Log(myTransform.name);
         Transform parentTransform = myTransform.parent;
@@ -244,7 +241,7 @@ public class CharacterManager : MonoBehaviour
     }
 
 
-    private void CreateCharacters()
+    public void CreateCharacters()
     {
         string characterName = "";
         string characterDescription = "";
@@ -261,7 +258,6 @@ public class CharacterManager : MonoBehaviour
         TreeNode treeNodeRoot = new TreeNode(character1, null, null, 0);
         buttonTreeManager = new ButtonTreeManager(treeNodeRoot, this);
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(treeNodeRoot);
-
         DisplayCharacterDetails(character1.name);
     }
 
