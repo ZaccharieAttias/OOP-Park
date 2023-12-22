@@ -1,77 +1,76 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.EventSystems;
+using System;
 
 public class ButtonListenerManager : MonoBehaviour
 {
-    private List<Button> characterButtons; // Reference to character buttons
-
-    private Dictionary<Button, List<ButtonClickedListener>> originalListeners = new Dictionary<Button, List<ButtonClickedListener>>();
-
+    private List<GameObject> _characterGameObjects;
+    private List<GameObject> _duplicateCharacterGameObjects = new List<GameObject>();
     private List<Character> selectedCharacters = new List<Character>();
-
-    public CharacterManager characterManager;
-
+    private GameObject editButton;
+    private CharacterManager characterManager;
 
     public void Start()
     {
-        GetComponent<Button>().onClick.AddListener(SelectAncestors());
+        editButton = GameObject.Find("Canvas/HT Menu/Menu/Characters/Tree/TreePanel/Edit");
+        editButton.GetComponent<Button>().onClick.AddListener(SelectAncestors);
+        characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
 
     public void SelectAncestors()
     {
-        characterButtons = GameObject.FindGameObjectsWithTag("CharacterButton")
-                           .Select(obj => obj.GetComponent<Button>())
-                           .ToList();
-        
-        StoreOriginalListeners();
-        UpdateListeners();
+        _characterGameObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
+
+        ChangeButtonInteractable();
+        BuildDuplicate();
 
         if (selectedCharacters.Count == 1)
         {
-            RevertListeners();
-            //selecedCharacters make interactable
+            ChangeButtonInteractable();
+
             foreach (Character character in selectedCharacters)
             {
-                GameObject buttonObject = characterButtons.Find(button => button.GetComponent<TreeNode>().character == character).gameObject;
+                GameObject buttonObject = _characterGameObjects.Find(button => button.GetComponent<TreeNode>().character == character).gameObject;
                 buttonObject.GetComponent<Button>().interactable = true;
             }
             characterManager.AddCharacter(selectedCharacters);
-        }
 
-
-    }
-
-    private void StoreOriginalListeners()
-    {
-        foreach (Button button in characterButtons)
-        {
-            List<ButtonClickedListener> listenerList = button.GetComponents<ButtonClickedListener>().ToList();
-            originalListeners.Add(button, listenerList);
+            DestroyDuplicate();
         }
     }
 
-    private void UpdateListeners()
+    private void ChangeButtonInteractable()
     {
-        foreach (Button button in characterButtons)
+        foreach (GameObject characterGameObject in _characterGameObjects)
         {
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(ButtonSelection);
+            Button button = characterGameObject.GetComponent<Button>();
+            button.interactable = !button.interactable;
         }
     }
 
-    private void RevertListeners()
+    private void BuildDuplicate()
     {
-        foreach (Button button in characterButtons)
+        _duplicateCharacterGameObjects.Clear(); // Clear the list before rebuilding
+
+        foreach (GameObject characterGameObject in _characterGameObjects)
         {
-            button.onClick.RemoveAllListeners();
-            List<ButtonClickedListener> originalListenerList = originalListeners[button];
-            foreach (ButtonClickedListener listener in originalListenerList)
-            {
-                button.onClick.AddListener(listener.OnButtonClick);
-            }
+            Debug.Log(characterGameObject.GetComponent<TreeNode>().character.name);
+            GameObject duplicateGameObject = Instantiate(characterGameObject);
+            duplicateGameObject.GetComponent<Button>().onClick.RemoveAllListeners();
+            duplicateGameObject.GetComponent<Button>().onClick.AddListener(ButtonSelection);
+            _duplicateCharacterGameObjects.Add(duplicateGameObject);
+        }
+    }
+
+    private void DestroyDuplicate()
+    {
+        foreach (GameObject duplicateGameObject in _duplicateCharacterGameObjects)
+        {
+            Destroy(duplicateGameObject);
         }
     }
 
@@ -82,14 +81,3 @@ public class ButtonListenerManager : MonoBehaviour
         buttonObject.GetComponent<Button>().interactable = false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
