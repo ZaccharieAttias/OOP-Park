@@ -26,15 +26,14 @@ public class CharacterManager : MonoBehaviour
 
     public void Start()
     {
-        CharacterTree = GetComponent<SearchGameObject>().FindGameObject(transform.parent, "TreePanel").gameObject;
-
+        CharacterTree = GameObject.Find("Canvas/HT Menu/Menu/Characters/Tree/TreePanel");
         _charactersCollection = new List<Character>();
         CreateCharacters(); // Temporary
-        
+
     }
 
     public void DisplayCharacterDetails(string characterName)
-    {   
+    {
         currentCharacter = FindCharacterByName(characterName);
 
         if (currentCharacter != null)
@@ -127,7 +126,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ChangingGameObjectName()
     {
-        gameObject.name = currentCharacter.name;
+        // gameObject.name = currentCharacter.name;
     }
 
     public void AddCharacter(List<Character> characterNewAncestors)
@@ -150,7 +149,7 @@ public class CharacterManager : MonoBehaviour
 
 
 
-        
+
         // Character1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
