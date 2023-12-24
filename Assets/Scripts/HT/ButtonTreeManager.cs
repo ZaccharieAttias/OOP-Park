@@ -16,6 +16,10 @@ public class ButtonTreeManager : MonoBehaviour
     public string imagePath = "Imports/Characters/3/Idle/Idle (1).png";
 
     public float verticalSpacing = 50f;
+    float horizontalSpacing = 100f;
+    float horizontalPosition;
+    float verticalPosition;
+    
 
 
     public ButtonTreeManager(TreeNode root, CharacterManager characterManager)
@@ -65,30 +69,48 @@ public class ButtonTreeManager : MonoBehaviour
             
             newPlayerScript.depth = newPlayerScript.parent[0].depth + 1;
         }
-
-        //UpdateTreeLayout(newPlayerScript);
+        if(newPlayerScript == root)
+        {
+            horizontalPosition = -147;
+            verticalPosition = 52;
+            newPlayerScript.transform.position = new Vector3(horizontalPosition, verticalPosition, 0f);
+        }
+        else
+        {
+            horizontalPosition = newPlayerScript.depth * horizontalSpacing;
+            verticalPosition = -newPlayerScript.depth * verticalSpacing;
+            UpdateTreeLayout(newPlayerScript, new Vector3(horizontalPosition, verticalPosition, 0f));
+        }
     }
 
 
-    void UpdateTreeLayout(TreeNode node)
+    void UpdateTreeLayout(TreeNode node, Vector3 position)
     {
-        // Calculer la position horizontale en fonction de la profondeur et du nombre de frères
-        float horizontalSpacing = 100f;
-        float horizontalPosition = (node == root) ? 0 : node.depth * horizontalSpacing;
-        float verticalPosition = -node.depth * verticalSpacing;
+        node.transform.position = position;
 
-        // Positionner le bouton
-        RectTransform rectTransform = node.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(horizontalPosition, verticalPosition);
-
-        // Positionner les enfants récursivement
         for (int i = 0; i < node.children.Count; i++)
         {
-            float childHorizontalPosition = (i - (node.children.Count - 1) / 2.0f) * horizontalSpacing;
-            rectTransform = node.children[i].GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector2(horizontalPosition + childHorizontalPosition, verticalPosition - verticalSpacing);
-            UpdateTreeLayout(node.children[i]);
+            // Ajouter un décalage pour éviter que les objets ne se chevauchent
+            Vector3 childPosition = position + new Vector3(2f * i, -2f, 0f);
+
+            UpdateTreeLayout(node.children[i], childPosition);
         }
+        // // Calculer la position horizontale en fonction de la profondeur et du nombre de frères
+        // horizontalPosition = (node == root) ? 0 : node.depth * horizontalSpacing;
+        // verticalPosition = -node.depth * verticalSpacing;
+
+        // // Positionner le bouton
+        // RectTransform rectTransform = node.GetComponent<RectTransform>();
+        // rectTransform.anchoredPosition = new Vector2(horizontalPosition, verticalPosition);
+
+        // // Positionner les enfants récursivement
+        // for (int i = 0; i < node.children.Count; i++)
+        // {
+        //     float childHorizontalPosition = (i - (node.children.Count - 1) / 2.0f) * horizontalSpacing;
+        //     rectTransform = node.children[i].GetComponent<RectTransform>();
+        //     rectTransform.anchoredPosition = new Vector2(horizontalPosition + childHorizontalPosition, verticalPosition - verticalSpacing);
+        //     UpdateTreeLayout(node.children[i]);
+        // }
 
     }
 
