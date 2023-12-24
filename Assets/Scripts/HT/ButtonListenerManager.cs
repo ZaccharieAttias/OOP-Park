@@ -16,7 +16,7 @@ public class ButtonListenerManager : MonoBehaviour
 
     public void Start()
     {
-        editButton = GameObject.Find("Canvas/HT Menu/Menu/Characters/Tree/TreePanel/Edit");
+        editButton = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/TreePanel/Edit");
         editButton.GetComponent<Button>().onClick.AddListener(SelectAncestors);
         characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
