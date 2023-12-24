@@ -259,4 +259,9 @@ public class CharacterManager : MonoBehaviour
         DisplayCharacterDetails(character1.name);
     }
 
+
+    public Character GetCurrentCharacter()
+    {
+        return currentCharacter;
+    }
 }
