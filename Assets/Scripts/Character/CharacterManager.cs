@@ -157,7 +157,6 @@ public class CharacterManager : MonoBehaviour
         _charactersCollection.Add(character1);
 
         TreeNode treeNodeRoot = new TreeNode(character1, null, null, 0);
-        buttonTreeManager = new ButtonTreeManager(treeNodeRoot, this);
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(treeNodeRoot);
         DisplayCharacterDetails(character1.name);
 
@@ -254,7 +253,10 @@ public class CharacterManager : MonoBehaviour
         _charactersCollection.Add(character1);
 
         TreeNode treeNodeRoot = new TreeNode(character1, null, null, 0);
-        buttonTreeManager = new ButtonTreeManager(treeNodeRoot, this);
+        //CharacterTree.AddComponent<ButtonTreeManager>(treeNodeRoot, this);
+        CharacterTree.AddComponent<ButtonTreeManager>();
+        CharacterTree.GetComponent<ButtonTreeManager>().startButtonTreeManager(treeNodeRoot, this);
+
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(treeNodeRoot);
         DisplayCharacterDetails(character1.name);
     }
