@@ -27,20 +27,6 @@ public class ButtonListenerManager : MonoBehaviour
 
         ChangeButtonInteractable();
         BuildDuplicate();
-
-        if (selectedCharacters.Count == 1)
-        {
-            ChangeButtonInteractable();
-
-            foreach (Character character in selectedCharacters)
-            {
-                GameObject buttonObject = _characterGameObjects.Find(button => button.GetComponent<TreeNode>().character == character).gameObject;
-                buttonObject.GetComponent<Button>().interactable = true;
-            }
-            characterManager.AddCharacter(selectedCharacters);
-
-            DestroyDuplicate();
-        }
     }
 
     private void ChangeButtonInteractable()
@@ -58,8 +44,12 @@ public class ButtonListenerManager : MonoBehaviour
 
         foreach (GameObject characterGameObject in _characterGameObjects)
         {
-            Debug.Log(characterGameObject.GetComponent<TreeNode>().character.name);
-            GameObject duplicateGameObject = Instantiate(characterGameObject);
+            GameObject duplicateGameObject = Instantiate(characterGameObject, characterGameObject.transform.parent);
+            duplicateGameObject.GetComponent<RectTransform>().sizeDelta = characterGameObject.GetComponent<RectTransform>().sizeDelta;
+            duplicateGameObject.transform.localScale = new Vector3(1, 1, 1);
+            duplicateGameObject.GetComponent<Button>().interactable = true;
+
+
             duplicateGameObject.GetComponent<Button>().onClick.RemoveAllListeners();
             duplicateGameObject.GetComponent<Button>().onClick.AddListener(ButtonSelection);
             _duplicateCharacterGameObjects.Add(duplicateGameObject);
@@ -77,7 +67,22 @@ public class ButtonListenerManager : MonoBehaviour
     private void ButtonSelection()
     {
         GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
-        selectedCharacters.Add(buttonObject.GetComponent<TreeNode>().character);
+        selectedCharacters.Add(buttonObject.GetComponent<Character>());
         buttonObject.GetComponent<Button>().interactable = false;
+
+        
+        if (selectedCharacters.Count == 1)
+        {
+            ChangeButtonInteractable();
+
+            // foreach (Character character in selectedCharacters)
+            // {
+            //     GameObject buttonObject = _characterGameObjects.Find(button => button.GetComponent<Character>().character == character).gameObject;
+            //     buttonObject.GetComponent<Button>().interactable = true;
+            // }
+            characterManager.AddCharacter(selectedCharacters);
+            DestroyDuplicate();
+            selectedCharacters.Clear();
+        }
     }
 }
