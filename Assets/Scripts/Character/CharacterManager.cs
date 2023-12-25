@@ -22,7 +22,6 @@ public class CharacterManager : MonoBehaviour
     public GameObject buttonPrefab;
 
     public GameObject CharacterTree;
-    public ButtonTreeManager buttonTreeManager;
 
     public void Start()
     {
@@ -131,34 +130,13 @@ public class CharacterManager : MonoBehaviour
 
     public void AddCharacter(List<Character> characterNewAncestors)
     {
-        string characterName = "";
+        int nbr = _charactersCollection.Count+1;
+        string characterName = "Character " + nbr.ToString();
         string characterDescription = "";
-        List<CharacterAttribute> characterAttributes = new List<CharacterAttribute>();
-        List<CharacterMethod> characterMethods = new List<CharacterMethod>();
-        List<Character> characterAncestors = characterNewAncestors;
-
-
-        Character newCharacter = new Character();
-        newCharacter.name = "New Character";
-        newCharacter.ancestors = characterAncestors;
-        newCharacter.description = "New Description";
-
+        Character newCharacter = new Character(characterName, characterDescription, characterNewAncestors);
         _charactersCollection.Add(newCharacter);
-
-
-
-
-
-
-        // Character1 
-        characterName = "Character 1";
-        characterDescription = "This is the first character";
-        Character character1 = new Character(characterName, characterDescription, characterAttributes, characterMethods, characterAncestors);
-        _charactersCollection.Add(character1);
-
-        TreeNode treeNodeRoot = new TreeNode(character1, null, null, 0);
-        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(treeNodeRoot);
-        DisplayCharacterDetails(character1.name);
+        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter);
+        DisplayCharacterDetails(newCharacter.name);
 
 
 
@@ -201,63 +179,22 @@ public class CharacterManager : MonoBehaviour
         // DisplayCharacterDetails(newCharacter.name);
     }
 
-    public void PreDetails(Character newCharacter)
-    {
-        foreach (Character character in newCharacter.ancestors)
-        {
-            if (character.attributes != null)
-            {
-                foreach (CharacterAttribute attribute in character.attributes)
-                {
-                    CharacterAttribute newAttribute = new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier);
-                    if (!(attribute.accessModifier == AccessModifier.Private))
-                    {
-                        if (!newCharacter.attributes.Any(a => a.name == attribute.name))
-                        {
-                            newCharacter.attributes.Add(newAttribute);
-                        }
-                    }
-                }
-            }
-
-            if (character.methods != null)
-            {
-                foreach (CharacterMethod method in character.methods)
-                {
-                    CharacterMethod newMethod = new CharacterMethod(method.name, method.description, method.accessModifier);
-                    if (!(method.accessModifier == AccessModifier.Private))
-                    {
-                        if (!newCharacter.methods.Any(m => m.name == method.name))
-                        {
-                            newCharacter.methods.Add(newMethod);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
     public void CreateCharacters()
     {
         string characterName = "";
         string characterDescription = "";
-        List<CharacterAttribute> characterAttributes = new List<CharacterAttribute>();
-        List<CharacterMethod> characterMethods = new List<CharacterMethod>();
         List<Character> characterAncestors = new List<Character>();
 
         // Character1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
-        Character character1 = new Character(characterName, characterDescription, characterAttributes, characterMethods, characterAncestors);
+        Character character1 = new Character(characterName, characterDescription, new List<Character>());
         _charactersCollection.Add(character1);
 
-        TreeNode treeNodeRoot = new TreeNode(character1, null, null, 0);
-        //CharacterTree.AddComponent<ButtonTreeManager>(treeNodeRoot, this);
         CharacterTree.AddComponent<ButtonTreeManager>();
-        CharacterTree.GetComponent<ButtonTreeManager>().startButtonTreeManager(treeNodeRoot, this);
+        CharacterTree.GetComponent<ButtonTreeManager>().startButtonTreeManager(character1, this);
 
-        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(treeNodeRoot);
+        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character1);
         DisplayCharacterDetails(character1.name);
     }
 
