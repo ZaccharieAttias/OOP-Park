@@ -10,22 +10,24 @@ using System.Linq;
 
 public class ButtonTreeManager : MonoBehaviour
 {
+    private readonly string _buttonPrefabPath = "Prefabs/Buttons/Character";
     public TreeNode root;
     public GameObject buttonPrefab;
     public CharacterManager characterManager;
     public string imagePath = "Imports/Characters/3/Idle/Idle (1).png";
 
     public float verticalSpacing = 50f;
-    float horizontalSpacing = 100f;
-    float horizontalPosition;
-    float verticalPosition;
+    public float horizontalSpacing = 100f;
+    public float horizontalPosition;
+    public float verticalPosition;
     
 
 
-    public ButtonTreeManager(TreeNode root, CharacterManager characterManager)
+    public void startButtonTreeManager(TreeNode root, CharacterManager characterManager)
     {
         this.root = root;
         this.characterManager = characterManager;
+        buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
     }
 
     public void CreateButton(TreeNode characterNode)
@@ -69,11 +71,13 @@ public class ButtonTreeManager : MonoBehaviour
             
             newPlayerScript.depth = newPlayerScript.parent[0].depth + 1;
         }
-        if(newPlayerScript == root)
+        if(newPlayerScript.character.name == root.character.name)
         {
+            Debug.Log("Root");
             horizontalPosition = -147;
             verticalPosition = 52;
-            newPlayerScript.transform.position = new Vector3(horizontalPosition, verticalPosition, 0f);
+            RectTransform rectTransform = newPlayerScript.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = new Vector3(horizontalPosition, verticalPosition, 0f);
         }
         else
         {
