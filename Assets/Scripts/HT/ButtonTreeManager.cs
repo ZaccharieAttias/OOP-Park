@@ -6,46 +6,54 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 using System.Linq;
+using System;
 
 
 public class ButtonTreeManager : MonoBehaviour
 {
     private readonly string _buttonPrefabPath = "Prefabs/Buttons/Character";
-    public TreeNode root;
+    public Character root;
     public GameObject buttonPrefab;
     public CharacterManager characterManager;
     public string imagePath = "Imports/Characters/3/Idle/Idle (1).png";
 
-    public float verticalSpacing = 50f;
-    public float horizontalSpacing = 100f;
-    public float horizontalPosition;
-    public float verticalPosition;
+    private float leftBorder = -300f;
+    private float rightBorder = 100f;
+    private float upBorder = 50f;
+    private float downBorder = -200f;
+    private float xArea;
+    private float yArea;
+    private float verticalSpacing;
+
+    public void Start()
+    {
+        xArea = rightBorder - leftBorder;
+        yArea = upBorder - downBorder;
+    }
     
 
-
-    public void startButtonTreeManager(TreeNode root, CharacterManager characterManager)
+    public void startButtonTreeManager(Character root, CharacterManager characterManager)
     {
         this.root = root;
         this.characterManager = characterManager;
         buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
     }
 
-    public void CreateButton(TreeNode characterNode)
+    public void CreateButton(Character characterNode)
     {
         GameObject newPlayerButton = Instantiate(buttonPrefab, transform);
         newPlayerButton.tag = "CharacterButton";
 
-        TreeNode newPlayerScript = newPlayerButton.AddComponent<TreeNode>();
-        newPlayerScript.character = characterNode.character;
-        newPlayerScript.parent = characterNode.parent;
-        newPlayerScript.children = characterNode.children;
-        newPlayerScript.depth = characterNode.depth;
-
+        Character newPlayerScript = newPlayerButton.AddComponent<Character>();
+        newPlayerScript = characterNode;
+        newPlayerScript.name = characterNode.name;
+        
         newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
         newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
-        newPlayerButton.name = characterNode.character.name;
+        newPlayerButton.name = characterNode.name;
         newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => characterManager.DisplayCharacterDetails(characterNode.character.name));
+        newPlayerButton.GetComponent<Button>().onClick.AddListener(() => characterManager.DisplayCharacterDetails(characterNode.name));
+        RectTransform rectTransform = newPlayerButton.GetComponent<RectTransform>();
         string filePath = Path.Combine(Application.dataPath, imagePath);
         if (File.Exists(filePath))
         {
@@ -55,67 +63,89 @@ public class ButtonTreeManager : MonoBehaviour
             newPlayerButton.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
         }
 
-        if (newPlayerScript.parent != null)
+
+
+
+
+
+
+        Dictionary<int, List<GameObject>> depthObjects = CalculatePosition();
+        foreach (KeyValuePair<int, List<GameObject>> depthObject in depthObjects)
         {
-            // This is TreeNode
-            // public Character character;
-            // public List<TreeNode> parent;
-            // public List<TreeNode> children;
-            // public int depth;
-            // I want you to update the parent's children list
-            
-            foreach (TreeNode parent in newPlayerScript.parent)
-            {
-                parent.children.Add(newPlayerScript);
-            }
-            
-            newPlayerScript.depth = newPlayerScript.parent[0].depth + 1;
-        }
-        if(newPlayerScript.character.name == root.character.name)
-        {
-            Debug.Log("Root");
-            horizontalPosition = -147;
-            verticalPosition = 52;
-            RectTransform rectTransform = newPlayerScript.GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector3(horizontalPosition, verticalPosition, 0f);
-        }
-        else
-        {
-            horizontalPosition = newPlayerScript.depth * horizontalSpacing;
-            verticalPosition = -newPlayerScript.depth * verticalSpacing;
-            UpdateTreeLayout(newPlayerScript, new Vector3(horizontalPosition, verticalPosition, 0f));
+            UpdateTreeLayout(depthObject.Key, depthObject.Value);
         }
     }
 
 
-    void UpdateTreeLayout(TreeNode node, Vector3 position)
+
+
+
+    public void UpdateTreeLayout(int depth, List<GameObject> objects)
     {
-        node.transform.position = position;
-
-        for (int i = 0; i < node.children.Count; i++)
+        if (depth == 0)
         {
-            // Ajouter un décalage pour éviter que les objets ne se chevauchent
-            Vector3 childPosition = position + new Vector3(2f * i, -2f, 0f);
-
-            UpdateTreeLayout(node.children[i], childPosition);
+            objects[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-147f, 50f, 0f);
+            return;
         }
-        // // Calculer la position horizontale en fonction de la profondeur et du nombre de frères
-        // horizontalPosition = (node == root) ? 0 : node.depth * horizontalSpacing;
-        // verticalPosition = -node.depth * verticalSpacing;
+        
+        int nbrOfObjects = objects.Count;
+        float horizontalSpacing = xArea / nbrOfObjects, horizontalPosition, verticalPosition;
 
-        // // Positionner le bouton
-        // RectTransform rectTransform = node.GetComponent<RectTransform>();
-        // rectTransform.anchoredPosition = new Vector2(horizontalPosition, verticalPosition);
+        for (int i = 0; i < nbrOfObjects; i++)
+        {
+            // Add an offset to prevent objects from overlapping
+            horizontalPosition = leftBorder + (i * horizontalSpacing);
+            Debug.Log("horizontalPosition: " + horizontalPosition);
+            verticalPosition = upBorder - (depth * verticalSpacing);
+            Debug.Log("verticalPosition: " + verticalPosition);
+            objects[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(horizontalPosition, verticalPosition, 0f);
+        }
+    }
 
-        // // Positionner les enfants récursivement
-        // for (int i = 0; i < node.children.Count; i++)
-        // {
-        //     float childHorizontalPosition = (i - (node.children.Count - 1) / 2.0f) * horizontalSpacing;
-        //     rectTransform = node.children[i].GetComponent<RectTransform>();
-        //     rectTransform.anchoredPosition = new Vector2(horizontalPosition + childHorizontalPosition, verticalPosition - verticalSpacing);
-        //     UpdateTreeLayout(node.children[i]);
-        // }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public Dictionary<int, List<GameObject>> CalculatePosition()
+    {
+        Dictionary<int, List<GameObject>> depthObjects = new Dictionary<int, List<GameObject>>();
+
+        List<GameObject> allObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
+
+
+        foreach (GameObject obj in allObjects)
+        {
+            int depth = obj.GetComponent<Character>().depth;
+
+            if (depthObjects.ContainsKey(depth))
+            {
+                depthObjects[depth].Add(obj);
+            }
+            else
+            {
+                List<GameObject> newList = new List<GameObject> { obj };
+                depthObjects.Add(depth, newList);
+            }
+        }
+
+        verticalSpacing = yArea / depthObjects.Count;
+        return depthObjects;
+
+        
     }
 
 
