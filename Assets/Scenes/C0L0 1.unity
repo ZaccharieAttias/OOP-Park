@@ -945,7 +945,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 93551641}
-  - component: {fileID: 93551642}
   m_Layer: 0
   m_Name: TreePanel
   m_TagString: Untagged
@@ -969,23 +968,6 @@ Transform:
   - {fileID: 2126124079}
   m_Father: {fileID: 1709283712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &93551642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 93551640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae8f17ef61648314693572e0774adcd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  root: {fileID: 0}
-  buttonPrefab: {fileID: 7479220228901830723, guid: 2b81c90a4fac91c46b2912499e7baac0, type: 3}
-  characterManager: {fileID: 1289166418}
-  imagePath: Imports/Characters/3/Idle/Idle (1).png
-  verticalSpacing: 50
 --- !u!1 &96381700
 GameObject:
   m_ObjectHideFlags: 0
