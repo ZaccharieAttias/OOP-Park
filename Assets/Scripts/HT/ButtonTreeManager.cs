@@ -45,8 +45,7 @@ public class ButtonTreeManager : MonoBehaviour
         newPlayerButton.tag = "CharacterButton";
 
         Character newPlayerScript = newPlayerButton.AddComponent<Character>();
-        newPlayerScript = characterNode;
-        newPlayerScript.name = characterNode.name;
+        newPlayerScript.InitializeCharacter(characterNode);
         
         newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
         newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
@@ -63,22 +62,12 @@ public class ButtonTreeManager : MonoBehaviour
             newPlayerButton.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
         }
 
-
-
-
-
-
-
         Dictionary<int, List<GameObject>> depthObjects = CalculatePosition();
         foreach (KeyValuePair<int, List<GameObject>> depthObject in depthObjects)
         {
             UpdateTreeLayout(depthObject.Key, depthObject.Value);
         }
     }
-
-
-
-
 
     public void UpdateTreeLayout(int depth, List<GameObject> objects)
     {
@@ -102,33 +91,14 @@ public class ButtonTreeManager : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public Dictionary<int, List<GameObject>> CalculatePosition()
     {
         Dictionary<int, List<GameObject>> depthObjects = new Dictionary<int, List<GameObject>>();
-
-        List<GameObject> allObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
-
+        List<GameObject> allObjects = characterManager.GetCurrentCollection();
 
         foreach (GameObject obj in allObjects)
         {
+            Debug.Log("name: " + obj.GetComponent<Character>().name + "depth: " + obj.GetComponent<Character>().depth);
             int depth = obj.GetComponent<Character>().depth;
 
             if (depthObjects.ContainsKey(depth))
@@ -144,9 +114,5 @@ public class ButtonTreeManager : MonoBehaviour
 
         verticalSpacing = yArea / depthObjects.Count;
         return depthObjects;
-
-        
     }
-
-
 }
