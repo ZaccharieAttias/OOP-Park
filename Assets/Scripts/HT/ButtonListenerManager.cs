@@ -49,7 +49,6 @@ public class ButtonListenerManager : MonoBehaviour
             duplicateGameObject.transform.localScale = new Vector3(1, 1, 1);
             duplicateGameObject.GetComponent<Button>().interactable = true;
 
-
             duplicateGameObject.GetComponent<Button>().onClick.RemoveAllListeners();
             duplicateGameObject.GetComponent<Button>().onClick.AddListener(ButtonSelection);
             _duplicateCharacterGameObjects.Add(duplicateGameObject);
