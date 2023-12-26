@@ -4,7 +4,7 @@ using TMPro;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-
+using System;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -35,7 +35,7 @@ public class CharacterManager : MonoBehaviour
     {
         currentCharacter = FindCharacterByName(characterName);
 
-        if (currentCharacter != null)
+        if (currentCharacter.name != null)
         {
             CleanPanel();
 
@@ -107,7 +107,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ShowAttributesPopup()
     {
-        if (currentCharacter != null)
+        if (currentCharacter.name != null)
         {
             AttributesPopupManager popupManager = attributesPopup.GetComponent<AttributesPopupManager>();
             popupManager.ShowAttributesPopup(currentCharacter);
@@ -116,7 +116,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ShowMethodsPopup()
     {
-        if (currentCharacter != null)
+        if (currentCharacter.name != null)
         {
             MethodsPopupManager popupManager = methodsPopup.GetComponent<MethodsPopupManager>();
             popupManager.ShowMethodsPopup(currentCharacter);
@@ -125,7 +125,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ChangingGameObjectName()
     {
-        // gameObject.name = currentCharacter.name;
+        //gameObject.name = currentCharacter.name;
     }
 
     public void AddCharacter(List<Character> characterNewAncestors)
@@ -134,49 +134,11 @@ public class CharacterManager : MonoBehaviour
         string characterName = "Character " + nbr.ToString();
         string characterDescription = "";
         Character newCharacter = new Character(characterName, characterDescription, characterNewAncestors);
-        _charactersCollection.Add(newCharacter);
+        //_charactersCollection.Add(newCharacter);
+        // Debug.Log("newCharacter: " + _charactersCollection[_charactersCollection.Count-1].ancestors[0].childrens[0].name);
+        // Debug.Log("newCharacter: " + _charactersCollection[0].childrens[0].name);
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter);
         DisplayCharacterDetails(newCharacter.name);
-
-
-
-
-
-        /*
-        Transform myTransform = newPlayerButton.transform;
-        Debug.Log(myTransform.name);
-        Transform parentTransform = myTransform.parent;
-        Debug.Log(parentTransform.name);
-
-        // Remplacez "SiblingName" par le nom du frère que vous cherchez
-        string siblingNameToFind = newCharacter.ancestors[0].name;
-
-        // Cherchez le frère parmi les enfants du parent
-        Transform siblingTransform = parentTransform.Find(siblingNameToFind);  
-        Debug.Log(siblingTransform.name);
-        
-        GameObject foundObject = siblingTransform.gameObject;
-
-
-
-
-
-
-        LineRenderer lineRenderer = foundObject.GetComponent<LineRenderer>();
-
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, foundObject.transform.position);
-        lineRenderer.SetPosition(1, newPlayerButton.transform.position);
-        lineRenderer.material.color = Color.red;
-        */
-
-        // CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter, parentofthenewCharacter);
-
-        // PreDetails(newCharacter);
-
-
-
-        // DisplayCharacterDetails(newCharacter.name);
     }
 
     public void CreateCharacters()
@@ -189,7 +151,7 @@ public class CharacterManager : MonoBehaviour
         characterName = "Character 1";
         characterDescription = "This is the first character";
         Character character1 = new Character(characterName, characterDescription, new List<Character>());
-        _charactersCollection.Add(character1);
+        //_charactersCollection.Add(character1);
 
         CharacterTree.AddComponent<ButtonTreeManager>();
         CharacterTree.GetComponent<ButtonTreeManager>().startButtonTreeManager(character1, this);
@@ -217,8 +179,13 @@ public class CharacterManager : MonoBehaviour
             siblingTransform = parentTransform.Find(siblingNameToFind);  
             GameObject foundObject = siblingTransform.gameObject;
             characterGameObjectCollection.Add(foundObject);
-
         }
+
         return characterGameObjectCollection;
+    }
+
+    public void UpdateCollection(Character character)
+    {
+        _charactersCollection.Add(character);
     }
 }
