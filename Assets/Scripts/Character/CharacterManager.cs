@@ -203,4 +203,22 @@ public class CharacterManager : MonoBehaviour
     {
         return currentCharacter;
     }
+
+    public List<GameObject> GetCurrentCollection()
+    {
+        List<GameObject> characterGameObjectCollection = new List<GameObject>();
+        Transform parentTransform = CharacterTree.transform;
+        string siblingNameToFind;
+        Transform siblingTransform;  
+
+        foreach (Character character in _charactersCollection)
+        {
+            siblingNameToFind = character.name;
+            siblingTransform = parentTransform.Find(siblingNameToFind);  
+            GameObject foundObject = siblingTransform.gameObject;
+            characterGameObjectCollection.Add(foundObject);
+
+        }
+        return characterGameObjectCollection;
+    }
 }
