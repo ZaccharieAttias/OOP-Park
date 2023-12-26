@@ -38,6 +38,18 @@ public class Character : MonoBehaviour
         PreDetails();
     }
 
+    public void InitializeCharacter(Character character)
+    {
+        this.name = character.name;
+        this.description = character.description;
+        this.attributes = character.attributes;
+        this.methods = character.methods;
+        this.childrens = character.childrens;
+        this.ancestors = character.ancestors;
+        this.depth = character.depth;
+    }
+
+
     private void PreDetails()
     {
         foreach (Character character in this.ancestors)
