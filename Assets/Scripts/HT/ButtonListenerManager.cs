@@ -23,6 +23,7 @@ public class ButtonListenerManager : MonoBehaviour
 
     public void SelectAncestors()
     {
+        editButton.GetComponent<Button>().interactable = false;
         _characterGameObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
 
         ChangeButtonInteractable();
@@ -82,6 +83,7 @@ public class ButtonListenerManager : MonoBehaviour
             characterManager.AddCharacter(selectedCharacters);
             DestroyDuplicate();
             selectedCharacters.Clear();
+            editButton.GetComponent<Button>().interactable = true;
         }
     }
 }
