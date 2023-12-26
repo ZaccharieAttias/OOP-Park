@@ -46,6 +46,13 @@ public class ButtonTreeManager : MonoBehaviour
 
         Character newPlayerScript = newPlayerButton.AddComponent<Character>();
         newPlayerScript.InitializeCharacter(characterNode);
+        characterManager.UpdateCollection(newPlayerScript);
+        // if (characterManager._charactersCollection.Count == 2)
+        // {
+        //     Debug.Log("newCharacter: " + characterManager._charactersCollection[characterManager._charactersCollection.Count-1].ancestors[0].childrens[0].name);
+        //     Debug.Log("newCharacter: " + characterManager._charactersCollection[0].childrens[0].name);
+        // }
+
         
         newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
         newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
@@ -67,6 +74,8 @@ public class ButtonTreeManager : MonoBehaviour
         {
             UpdateTreeLayout(depthObject.Key, depthObject.Value);
         }
+
+        DrawLines();
     }
 
     public void UpdateTreeLayout(int depth, List<GameObject> objects)
@@ -84,9 +93,9 @@ public class ButtonTreeManager : MonoBehaviour
         {
             // Add an offset to prevent objects from overlapping
             horizontalPosition = leftBorder + (i * horizontalSpacing);
-            Debug.Log("horizontalPosition: " + horizontalPosition);
+            //Debug.Log("horizontalPosition: " + horizontalPosition);
             verticalPosition = upBorder - (depth * verticalSpacing);
-            Debug.Log("verticalPosition: " + verticalPosition);
+            //Debug.Log("verticalPosition: " + verticalPosition);
             objects[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(horizontalPosition, verticalPosition, 0f);
         }
     }
@@ -98,7 +107,7 @@ public class ButtonTreeManager : MonoBehaviour
 
         foreach (GameObject obj in allObjects)
         {
-            Debug.Log("name: " + obj.GetComponent<Character>().name + "depth: " + obj.GetComponent<Character>().depth);
+            //Debug.Log("name: " + obj.GetComponent<Character>().name + "depth: " + obj.GetComponent<Character>().depth);
             int depth = obj.GetComponent<Character>().depth;
 
             if (depthObjects.ContainsKey(depth))
@@ -114,5 +123,53 @@ public class ButtonTreeManager : MonoBehaviour
 
         verticalSpacing = yArea / depthObjects.Count;
         return depthObjects;
+    }
+
+    public void DrawLines()
+    {
+        List<GameObject> allObjects = characterManager.GetCurrentCollection();
+
+        foreach (GameObject obj in allObjects)
+        {
+            Character character = obj.GetComponent<Character>();
+            Transform myTransform = obj.transform;
+            foreach(Character child in character.childrens)
+            {
+                Debug.Log("child: " + child.name);
+                string childNameToFind = child.name;
+                Transform childTransform = myTransform.Find(childNameToFind);
+                GameObject childObject = childTransform.gameObject;
+                Debug.Log("childObject: " + childObject.name);
+
+                LineRenderer lineRenderer = childObject.AddComponent<LineRenderer>();
+                lineRenderer.positionCount = 2;
+                lineRenderer.SetPosition(0, obj.transform.position);
+                lineRenderer.SetPosition(1, childObject.transform.position);
+                lineRenderer.material.color = Color.red;
+            }
+        }
+
+
+        /*
+        Transform myTransform = newPlayerButton.transform;
+        Debug.Log(myTransform.name);
+        Transform parentTransform = myTransform.parent;
+        Debug.Log(parentTransform.name);
+
+        string siblingNameToFind = newCharacter.ancestors[0].name;
+
+        Transform siblingTransform = parentTransform.Find(siblingNameToFind);  
+        Debug.Log(siblingTransform.name);
+        
+        GameObject foundObject = siblingTransform.gameObject;
+
+
+
+        LineRenderer lineRenderer = foundObject.GetComponent<LineRenderer>();
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, foundObject.transform.position);
+        lineRenderer.SetPosition(1, newPlayerButton.transform.position);
+        lineRenderer.material.color = Color.red;
+        */
     }
 }
