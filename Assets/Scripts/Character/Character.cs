@@ -34,8 +34,14 @@ public class Character : MonoBehaviour
         this.attributes = new List<CharacterAttribute>();
         this.methods = new List<CharacterMethod>();
         this.childrens = new List<Character>();
+
+
+
+
+        Debug.Log("need help here motherfisher");
         this.ancestors = ancestors;
         PreDetails();
+        SetChildrens();
     }
 
     public void InitializeCharacter(Character character)
@@ -83,8 +89,16 @@ public class Character : MonoBehaviour
                     }
                 }
             }
-            character.childrens.Add(this);
             this.depth = Math.Max(this.depth, character.depth + 1);
-            }
+        }
+    }
+
+    private void SetChildrens()
+    {
+        foreach (Character character in this.ancestors)
+        {
+            Debug.Log("zaaaaaaaaaa");
+            character.childrens.Add(this);
+        }
     }
 }
