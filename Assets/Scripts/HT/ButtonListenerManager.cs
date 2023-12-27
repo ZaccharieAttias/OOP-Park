@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.IO;
+using System.Collections;
+
 
 public class ButtonListenerManager : MonoBehaviour
 {
@@ -16,7 +19,7 @@ public class ButtonListenerManager : MonoBehaviour
 
     public void Start()
     {
-        editButton = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/TreePanel/Edit");
+        editButton = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Edit");
         editButton.GetComponent<Button>().onClick.AddListener(SelectAncestors);
         characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
@@ -67,7 +70,7 @@ public class ButtonListenerManager : MonoBehaviour
     private void ButtonSelection()
     {
         GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
-        selectedCharacters.Add(buttonObject.GetComponent<Character>());
+        selectedCharacters.Add(buttonObject.GetComponent<CharacterDetails>().character);
         buttonObject.GetComponent<Button>().interactable = false;
 
         
