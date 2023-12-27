@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class SceneLoader : MonoBehaviour
 {
     public void Presentation()
@@ -38,7 +37,6 @@ public class SceneLoader : MonoBehaviour
     {
         Application.Quit();
     }
-
 
     public void Tutorial()
     {
