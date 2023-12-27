@@ -1,13 +1,13 @@
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
-using System.Collections.Generic;
-
 
 public class MethodsPopupManager : MonoBehaviour
 {
     private readonly string _buttonPrefabPath = "Prefabs/Buttons/Button";
+    private readonly string _closeButtonPath = "Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/Close";
     private readonly string _contentPanelPath = "Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/ScrollView/ViewPort/Content";
 
     private GameObject _buttonPrefab;
@@ -17,7 +17,6 @@ public class MethodsPopupManager : MonoBehaviour
     private List<CharacterMethod> _collection;
     private Character _currentCharacter;
 
-
     private void Start()
     {
         _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
@@ -25,9 +24,41 @@ public class MethodsPopupManager : MonoBehaviour
         _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         _collection = InitializeCollection();
 
+        Button closeButton = GameObject.Find(_closeButtonPath).GetComponent<Button>();
+        closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.name));
+
         gameObject.SetActive(false);
     }
 
+    private List<CharacterMethod> InitializeCollection()
+    {
+        List<CharacterMethod> collection = new List<CharacterMethod>();
+
+        string methodName = "";
+        string methodDescription = "";
+        AccessModifier methodAccessModifier = AccessModifier.Public;
+
+        // method1
+        methodName = "method 1";
+        methodDescription = "This is the first method";
+        methodAccessModifier = AccessModifier.Public;
+        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+
+        // method2
+        methodName = "method 2";
+        methodDescription = "This is the second method";
+        methodAccessModifier = AccessModifier.Protected;
+        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+
+        // method3
+        methodName = "method 3";
+        methodDescription = "This is the third method";
+        methodAccessModifier = AccessModifier.Private;
+        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+
+        return collection;
+    }
+    
     public void ShowMethodsPopup(Character currentCharacter)
     {
         ClearContentPanel();
@@ -64,41 +95,12 @@ public class MethodsPopupManager : MonoBehaviour
         if (hasMethod) _currentCharacter.methods.Remove(_currentCharacter.methods.Find(item => item.name == method.name));
         else _currentCharacter.methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
 
-        _characterManager.DisplayCharacterDetails(_currentCharacter.name); // Bad performances, Ideal to do that when closing the panel
         ShowMethodsPopup(_currentCharacter);
     }
 
     private void ClearContentPanel()
     {
-        foreach (Transform child in _contentPanel) Destroy(child.gameObject);
-    }
-
-    private List<CharacterMethod> InitializeCollection()
-    {
-        List<CharacterMethod> collection = new List<CharacterMethod>();
-
-        string methodName = "";
-        string methodDescription = "";
-        AccessModifier methodAccessModifier = AccessModifier.Public;
-
-        // method1 
-        methodName = "method 1";
-        methodDescription = "This is the first method";
-        methodAccessModifier = AccessModifier.Public;
-        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
-
-        // method2
-        methodName = "method 2";
-        methodDescription = "This is the second method";
-        methodAccessModifier = AccessModifier.Protected;
-        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
-
-        // method3
-        methodName = "method 3";
-        methodDescription = "This is the third method";
-        methodAccessModifier = AccessModifier.Private;
-        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
-
-        return collection;
+        foreach (Transform child in _contentPanel)
+            Destroy(child.gameObject);
     }
 }
