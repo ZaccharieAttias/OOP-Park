@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Collections;
-
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
 using System.Linq;
 using System;
+using UnityEngine.EventSystems;
 
 
 public class ButtonTreeManager : MonoBehaviour
@@ -44,9 +44,16 @@ public class ButtonTreeManager : MonoBehaviour
         GameObject newPlayerButton = Instantiate(buttonPrefab, transform);
         newPlayerButton.tag = "CharacterButton";
 
-        Character newPlayerScript = newPlayerButton.AddComponent<Character>();
-        newPlayerScript.InitializeCharacter(characterNode);
-        characterManager.UpdateCollection(newPlayerScript);
+        
+        //Character newPlayerScript = newPlayerButton.AddComponent<Character>();
+        //newPlayerScript.InitializeCharacter(characterNode);
+
+        newPlayerButton.AddComponent<CharacterDetails>().InitializeCharacter(characterNode);
+        newPlayerButton.GetComponent<CharacterDetails>().character.description = "Gottcha Bitch";
+
+
+
+
         // if (characterManager._charactersCollection.Count == 2)
         // {
         //     Debug.Log("newCharacter: " + characterManager._charactersCollection[characterManager._charactersCollection.Count-1].ancestors[0].childrens[0].name);
@@ -108,7 +115,7 @@ public class ButtonTreeManager : MonoBehaviour
         foreach (GameObject obj in allObjects)
         {
             //Debug.Log("name: " + obj.GetComponent<Character>().name + "depth: " + obj.GetComponent<Character>().depth);
-            int depth = obj.GetComponent<Character>().depth;
+            int depth = obj.GetComponent<CharacterDetails>().character.depth;
 
             if (depthObjects.ContainsKey(depth))
             {
@@ -129,25 +136,25 @@ public class ButtonTreeManager : MonoBehaviour
     {
         List<GameObject> allObjects = characterManager.GetCurrentCollection();
 
-        foreach (GameObject obj in allObjects)
-        {
-            Character character = obj.GetComponent<Character>();
-            Transform myTransform = obj.transform;
-            foreach(Character child in character.childrens)
-            {
-                Debug.Log("child: " + child.name);
-                string childNameToFind = child.name;
-                Transform childTransform = myTransform.Find(childNameToFind);
-                GameObject childObject = childTransform.gameObject;
-                Debug.Log("childObject: " + childObject.name);
+        //foreach (GameObject obj in allObjects)
+        //{
+        //    Character character = obj.GetComponent<Character>();
+        //    Transform myTransform = obj.transform;
+        //    foreach(Character child in character.childrens)
+        //    {
+        //        Debug.Log("child: " + child.name);
+        //        string childNameToFind = child.name;
+        //        Transform childTransform = myTransform.Find(childNameToFind);
+        //        GameObject childObject = childTransform.gameObject;
+        //        Debug.Log("childObject: " + childObject.name);
 
-                LineRenderer lineRenderer = childObject.AddComponent<LineRenderer>();
-                lineRenderer.positionCount = 2;
-                lineRenderer.SetPosition(0, obj.transform.position);
-                lineRenderer.SetPosition(1, childObject.transform.position);
-                lineRenderer.material.color = Color.red;
-            }
-        }
+        //        LineRenderer lineRenderer = childObject.AddComponent<LineRenderer>();
+        //        lineRenderer.positionCount = 2;
+        //        lineRenderer.SetPosition(0, obj.transform.position);
+        //        lineRenderer.SetPosition(1, childObject.transform.position);
+        //        lineRenderer.material.color = Color.red;
+        //    }
+        //}
 
 
         /*
