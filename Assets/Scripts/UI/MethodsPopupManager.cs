@@ -41,20 +41,20 @@ public class MethodsPopupManager : MonoBehaviour
         AccessModifier methodAccessModifier = AccessModifier.Public;
 
         // method1
-        methodName = "method 1";
-        methodDescription = "This is the first method";
+        methodName = "MoveSpeed";
+        methodDescription = "This is the MoveSpeed method";
         methodAccessModifier = AccessModifier.Public;
         collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
 
         // method2
-        methodName = "method 2";
-        methodDescription = "This is the second method";
+        methodName = "GravityForce";
+        methodDescription = "This is the GravityForce method";
         methodAccessModifier = AccessModifier.Protected;
         collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
 
         // method3
-        methodName = "method 3";
-        methodDescription = "This is the third method";
+        methodName = "DoubleJump";
+        methodDescription = "This is the DoubleJump method";
         methodAccessModifier = AccessModifier.Private;
         collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
 
