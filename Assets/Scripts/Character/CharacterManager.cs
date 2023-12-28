@@ -1,13 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.UI;
+using System.IO;
 using System;
+using UnityEngine.EventSystems;
 
 public class CharacterManager : MonoBehaviour
 {
+    [SerializeField]
     public List<Character> _charactersCollection;
     public Character currentCharacter;
 
@@ -25,7 +28,7 @@ public class CharacterManager : MonoBehaviour
 
     public void Start()
     {
-        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/TreePanel");
+        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons");
         _charactersCollection = new List<Character>();
         CreateCharacters(); // Temporary
 
@@ -35,7 +38,7 @@ public class CharacterManager : MonoBehaviour
     {
         currentCharacter = FindCharacterByName(characterName);
 
-        if (currentCharacter.name != null)
+        if (currentCharacter != null)
         {
             CleanPanel();
 
@@ -45,6 +48,7 @@ public class CharacterManager : MonoBehaviour
 
             DisplayAttributes();
             DisplayMethods();
+            
             PowerUp powerUp = GetComponent<PowerUp>();
             powerUp.ApplyPowerup(currentCharacter);
         }
@@ -61,7 +65,7 @@ public class CharacterManager : MonoBehaviour
             buttonText.text = attribute.name;
 
             AccessModifierButton accessModifierButton = attributeButton.GetComponent<AccessModifierButton>();
-            accessModifierButton.associatedAttribute = attribute;
+            accessModifierButton.setAttribute(attribute);
         }
     }
 
@@ -75,7 +79,7 @@ public class CharacterManager : MonoBehaviour
             buttonText.text = method.name;
 
             AccessModifierButton accessModifierButton = methodButton.GetComponent<AccessModifierButton>();
-            accessModifierButton.associatedMethod = method;
+            accessModifierButton.setMehod(method);
         }
     }
 
@@ -107,7 +111,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ShowAttributesPopup()
     {
-        if (currentCharacter.name != null)
+        if (currentCharacter != null)
         {
             AttributesPopupManager popupManager = attributesPopup.GetComponent<AttributesPopupManager>();
             popupManager.ShowAttributesPopup(currentCharacter);
@@ -116,7 +120,7 @@ public class CharacterManager : MonoBehaviour
 
     public void ShowMethodsPopup()
     {
-        if (currentCharacter.name != null)
+        if (currentCharacter != null)
         {
             MethodsPopupManager popupManager = methodsPopup.GetComponent<MethodsPopupManager>();
             popupManager.ShowMethodsPopup(currentCharacter);
@@ -130,13 +134,21 @@ public class CharacterManager : MonoBehaviour
 
     public void AddCharacter(List<Character> characterNewAncestors)
     {
-        int nbr = _charactersCollection.Count+1;
+        int nbr = _charactersCollection.Count + 1;  
         string characterName = "Character " + nbr.ToString();
         string characterDescription = "";
         Character newCharacter = new Character(characterName, characterDescription, characterNewAncestors);
-        //_charactersCollection.Add(newCharacter);
-        // Debug.Log("newCharacter: " + _charactersCollection[_charactersCollection.Count-1].ancestors[0].childrens[0].name);
-        // Debug.Log("newCharacter: " + _charactersCollection[0].childrens[0].name);
+        _charactersCollection.Add(newCharacter);
+
+        for (int i = 0; i < _charactersCollection.Count; i++)
+        {
+           if (_charactersCollection[i].name == characterNewAncestors[0].name)
+           {
+               _charactersCollection[i].childrens.Add(_charactersCollection.Last());
+               _charactersCollection.Last().parents.Add(_charactersCollection[i]);
+           }
+        }
+
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter);
         DisplayCharacterDetails(newCharacter.name);
     }
@@ -150,8 +162,8 @@ public class CharacterManager : MonoBehaviour
         // Character1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
-        Character character1 = new Character(characterName, characterDescription, new List<Character>());
-        //_charactersCollection.Add(character1);
+        Character character1 = new Character(characterName, characterDescription, characterAncestors);
+        _charactersCollection.Add(character1);
 
         CharacterTree.AddComponent<ButtonTreeManager>();
         CharacterTree.GetComponent<ButtonTreeManager>().startButtonTreeManager(character1, this);
@@ -159,7 +171,6 @@ public class CharacterManager : MonoBehaviour
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character1);
         DisplayCharacterDetails(character1.name);
     }
-
 
     public Character GetCurrentCharacter()
     {
