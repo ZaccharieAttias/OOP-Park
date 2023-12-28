@@ -71,7 +71,7 @@ public class AddCharacterManager : MonoBehaviour
         GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
         buttonObject.GetComponent<Button>().interactable = false;
 
-        _selectedGameObjects.Add(buttonObject.GetComponent<CharacterDetails>().character);
+        _selectedGameObjects.Add(buttonObject.GetComponent<CharacterDetails>().GetCurrentCharacter());
 
         if (_selectedGameObjects.Count == 1)
         {
