@@ -48,7 +48,7 @@ public class CharacterManager : MonoBehaviour
 
             DisplayAttributes();
             DisplayMethods();
-            
+
             PowerUp powerUp = GetComponent<PowerUp>();
             powerUp.ApplyPowerup(currentCharacter);
         }
@@ -79,7 +79,7 @@ public class CharacterManager : MonoBehaviour
             buttonText.text = method.name;
 
             AccessModifierButton accessModifierButton = methodButton.GetComponent<AccessModifierButton>();
-            accessModifierButton.setMehod(method);
+            accessModifierButton.setMethod(method);
         }
     }
 
