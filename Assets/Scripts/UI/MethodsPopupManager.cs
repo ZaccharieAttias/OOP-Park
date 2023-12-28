@@ -10,22 +10,23 @@ public class MethodsPopupManager : MonoBehaviour
     private readonly string _closeButtonPath = "Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/Close";
     private readonly string _contentPanelPath = "Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/ScrollView/ViewPort/Content";
 
+    private CharacterManager _characterManager;
     private GameObject _buttonPrefab;
     private Transform _contentPanel;
-    private CharacterManager _characterManager;
 
     private List<CharacterMethod> _collection;
     private Character _currentCharacter;
 
     private void Start()
     {
+        _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
         _contentPanel = GameObject.Find(_contentPanelPath).transform;
-        _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        _collection = InitializeCollection();
-
+        
         Button closeButton = GameObject.Find(_closeButtonPath).GetComponent<Button>();
         closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.name));
+
+        _collection = InitializeCollection();
 
         gameObject.SetActive(false);
     }
