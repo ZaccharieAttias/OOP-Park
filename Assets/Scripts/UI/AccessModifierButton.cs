@@ -29,14 +29,14 @@ public class AccessModifierButton : MonoBehaviour
     private void OnButtonClick()
     {
         if (_attribute != null) _attribute.accessModifier = (AccessModifier)(((int)_attribute.accessModifier + 1) % 3);
-        else if (_method != null) _method.accessModifier = (AccessModifier)(((int)_method.accessModifier + 1) % 3);
+        if (_method != null) _method.accessModifier = (AccessModifier)(((int)_method.accessModifier + 1) % 3);
 
         UpdateButtonVisual();
     }
 
     private void UpdateButtonVisual()
     {
-        AccessModifier modifier = (_attribute.name != null) ? _attribute.accessModifier : _method.accessModifier;
+        AccessModifier modifier = (_attribute != null) ? _attribute.accessModifier : _method.accessModifier;
         
         switch (modifier)
         {
@@ -55,5 +55,5 @@ public class AccessModifierButton : MonoBehaviour
     }
 
     public void setAttribute(CharacterAttribute attribute) { _attribute = attribute; }
-    public void setMehod(CharacterMethod method) { _method = method; }
+    public void setMethod(CharacterMethod method) { _method = method; }
 }
