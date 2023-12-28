@@ -12,6 +12,8 @@ public class ButtonTreeManager : MonoBehaviour
     
     private Character _root;
     private CharacterManager _characterManager;
+
+    public LineRenderer _lineRenderer;
     
     private float _leftBorder;
     private float _rightBorder;
@@ -38,7 +40,6 @@ public class ButtonTreeManager : MonoBehaviour
     public void startButtonTreeManager(Character root, CharacterManager characterManager)
     {
         Start();
-
         _root = root;
         _characterManager = characterManager;
     }
@@ -50,7 +51,7 @@ public class ButtonTreeManager : MonoBehaviour
         newPlayerButton.tag = "CharacterButton";
 
         newPlayerButton.AddComponent<CharacterDetails>().InitializeCharacter(characterNode);
-        newPlayerButton.GetComponent<CharacterDetails>().character.description = "Gottcha Bitch";
+        _lineRenderer = newPlayerButton.AddComponent<LineRenderer>();
 
         newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
         newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
@@ -72,7 +73,7 @@ public class ButtonTreeManager : MonoBehaviour
         foreach (KeyValuePair<int, List<GameObject>> depthObject in depthObjects)
             UpdateTreeLayout(depthObject.Key, depthObject.Value);
 
-        DrawLines();
+        //DrawLines();
     }
 
     private void UpdateTreeLayout(int depth, List<GameObject> objects)
@@ -103,7 +104,7 @@ public class ButtonTreeManager : MonoBehaviour
 
         foreach (GameObject obj in allObjects)
         {
-            int depth = obj.GetComponent<CharacterDetails>().character.depth;
+            int depth = obj.GetComponent<CharacterDetails>().GetCurrentCharacter().depth;
 
             if (depthObjects.ContainsKey(depth)) depthObjects[depth].Add(obj);
             else
@@ -121,25 +122,28 @@ public class ButtonTreeManager : MonoBehaviour
     {
         List<GameObject> allObjects = _characterManager.GetCurrentCollection();
 
-        //foreach (GameObject obj in allObjects)
-        //{
-        //    Character character = obj.GetComponent<Character>();
-        //    Transform myTransform = obj.transform;
-        //    foreach(Character child in character.childrens)
-        //    {
-        //        Debug.Log("child: " + child.name);
-        //        string childNameToFind = child.name;
-        //        Transform childTransform = myTransform.Find(childNameToFind);
-        //        GameObject childObject = childTransform.gameObject;
-        //        Debug.Log("childObject: " + childObject.name);
+        foreach (GameObject obj in allObjects)
+        {
+            Character character = obj.GetComponent<CharacterDetails>().GetCurrentCharacter();
+            Transform parentTransform = obj.transform.parent;
+            foreach(Character child in character.childrens)
+            {
+                Debug.Log("child: " + child.name);
+                string childNameToFind = child.name;
+                Transform childTransform = parentTransform.Find(childNameToFind);
+                Debug.Log("childTransform: " + childTransform.name);
+                GameObject childObject = childTransform.gameObject;
+                Debug.Log("childObject: " + childObject.name);
 
-        //        LineRenderer lineRenderer = childObject.AddComponent<LineRenderer>();
-        //        lineRenderer.positionCount = 2;
-        //        lineRenderer.SetPosition(0, obj.transform.position);
-        //        lineRenderer.SetPosition(1, childObject.transform.position);
-        //        lineRenderer.material.color = Color.red;
-        //    }
-        //}
+                _lineRenderer.positionCount = 2;
+                _lineRenderer.SetPosition(0, obj.transform.position);
+                _lineRenderer.SetPosition(1, childObject.transform.position);
+                _lineRenderer.material.color = Color.red;
+                _lineRenderer.startWidth = 200f;
+                _lineRenderer.endWidth = 0.1f;
+                _lineRenderer.enabled = true;
+            }
+        }
 
 
         /*
