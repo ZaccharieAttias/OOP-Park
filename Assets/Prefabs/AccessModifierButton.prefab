@@ -121,19 +121,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7359708471119355329}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7600880028319483597}
-        m_TargetAssemblyTypeName: AccessModifierButton, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7600880028319483597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,9 +142,9 @@ MonoBehaviour:
     name: 
     description: 
     accessModifier: 0
-  publicColor: {r: 0, g: 0.5019608, b: 0, a: 0.78431374}
-  protectedColor: {r: 1, g: 0.64705884, b: 0, a: 0.78431374}
-  privateColor: {r: 1, g: 0, b: 0, a: 0.78431374}
+  _publicColor: {r: 0, g: 0, b: 0, a: 0}
+  _protectedColor: {r: 0, g: 0, b: 0, a: 0}
+  _privateColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &6848351754924871905
 GameObject:
   m_ObjectHideFlags: 0
