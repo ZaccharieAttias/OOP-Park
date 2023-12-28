@@ -12,6 +12,7 @@ public class AccessModifierButton : MonoBehaviour
     private Color _protectedColor;
     private Color _publicColor;
 
+
     private void Start()
     {
         _buttonImage = GetComponent<Image>();
