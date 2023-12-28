@@ -17,6 +17,7 @@ public class AttributesPopupManager : MonoBehaviour
     private List<CharacterAttribute> _collection;
     private Character _currentCharacter;
 
+
     private void Start()
     {
         _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
