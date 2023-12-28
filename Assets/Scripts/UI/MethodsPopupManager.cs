@@ -17,6 +17,7 @@ public class MethodsPopupManager : MonoBehaviour
     private List<CharacterMethod> _collection;
     private Character _currentCharacter;
 
+
     private void Start()
     {
         _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
