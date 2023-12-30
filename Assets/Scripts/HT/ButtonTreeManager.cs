@@ -8,6 +8,8 @@ public class ButtonTreeManager : MonoBehaviour
     private readonly string _imagePath = "Imports/Characters/3/Idle/Idle (1).png";
     private readonly string _buttonPrefabPath = "Prefabs/Buttons/Character";
 
+    [SerializeField] private GameObject _lines;
+
     private GameObject _buttonPrefab;
     
     private Character _root;
@@ -28,6 +30,7 @@ public class ButtonTreeManager : MonoBehaviour
     private void Start()
     {
         _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
+        _lines = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Lines");
 
         _leftBorder = -300f;
         _rightBorder = 100f;
@@ -52,14 +55,6 @@ public class ButtonTreeManager : MonoBehaviour
         newPlayerButton.tag = "CharacterButton";
 
         newPlayerButton.AddComponent<CharacterDetails>().InitializeCharacter(characterNode);
-        _lineRenderer = newPlayerButton.AddComponent<LineRenderer>();
-        if (characterNode == _root)
-        {
-            newPlayerButton.AddComponent<RootLinesManager>();
-            newPlayerButton.GetComponent<RootLinesManager>().Start();
-            _rootButton = newPlayerButton;
-        }
-
         newPlayerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 40);
         newPlayerButton.transform.localScale = new Vector3(1, 1, 1);
         newPlayerButton.name = characterNode.name;
@@ -80,7 +75,7 @@ public class ButtonTreeManager : MonoBehaviour
         foreach (KeyValuePair<int, List<GameObject>> depthObject in depthObjects)
             UpdateTreeLayout(depthObject.Key, depthObject.Value);
 
-        _rootButton.GetComponent<RootLinesManager>().SetUp(newPlayerButton);
+        DrawLines();
     }
 
     private void UpdateTreeLayout(int depth, List<GameObject> objects)
@@ -125,54 +120,32 @@ public class ButtonTreeManager : MonoBehaviour
         return depthObjects;
     }
 
-    // private void DrawLines()
-    // {
-    //     List<GameObject> allObjects = _characterManager.GetCurrentCollection();
+    private void DrawLines()
+    {
+        List<GameObject> allObjects = _characterManager.GetCurrentCollection();
 
-    //     foreach (GameObject obj in allObjects)
-    //     {
-    //         Character character = obj.GetComponent<CharacterDetails>().GetCurrentCharacter();
-    //         Transform parentTransform = obj.transform.parent;
-    //         foreach(Character child in character.childrens)
-    //         {
-    //             Debug.Log("child: " + child.name);
-    //             string childNameToFind = child.name;
-    //             Transform childTransform = parentTransform.Find(childNameToFind);
-    //             Debug.Log("childTransform: " + childTransform.name);
-    //             GameObject childObject = childTransform.gameObject;
-    //             Debug.Log("childObject: " + childObject.name);
+        foreach (Transform child in _lines.transform)
+        {
+            Destroy(child.gameObject);
+        }
 
-    //             _lineRenderer.positionCount = 2;
-    //             _lineRenderer.SetPosition(0, obj.transform.position);
-    //             _lineRenderer.SetPosition(1, childObject.transform.position);
-    //             _lineRenderer.material.color = Color.red;
-    //             _lineRenderer.startWidth = 0.1f;
-    //             _lineRenderer.endWidth = 0.1f;
-    //             _lineRenderer.enabled = true;
-    //         }
-    //     }
+        foreach (GameObject obj in allObjects)
+        {
+            Character character = obj.GetComponent<CharacterDetails>().GetCurrentCharacter();
+            Transform parentTransform = obj.transform.parent;
+            foreach(Character child in character.childrens)
+            {
+                string childNameToFind = child.name;
+                Transform childTransform = parentTransform.Find(childNameToFind);
+                GameObject childObject = childTransform.gameObject;
 
-
-    //     /*
-    //     Transform myTransform = newPlayerButton.transform;
-    //     Debug.Log(myTransform.name);
-    //     Transform parentTransform = myTransform.parent;
-    //     Debug.Log(parentTransform.name);
-
-    //     string siblingNameToFind = newCharacter.ancestors[0].name;
-
-    //     Transform siblingTransform = parentTransform.Find(siblingNameToFind);
-    //     Debug.Log(siblingTransform.name);
-        
-    //     GameObject foundObject = siblingTransform.gameObject;
-
-
-
-    //     LineRenderer lineRenderer = foundObject.GetComponent<LineRenderer>();
-    //     lineRenderer.positionCount = 2;
-    //     lineRenderer.SetPosition(0, foundObject.transform.position);
-    //     lineRenderer.SetPosition(1, newPlayerButton.transform.position);
-    //     lineRenderer.material.color = Color.red;
-    //     */
-    // }
+                // creer un object enfant a _lines
+                GameObject line = Instantiate(new GameObject(obj.name + "to" + child.name), _lines.transform);
+                line.AddComponent<Image>();
+                line.GetComponent<Image>().color = Color.red;
+                line.AddComponent<LinesCreator>();
+                line.GetComponent<LinesCreator>().SetPoints(obj.transform, childObject.transform);
+            }
+        }
+    }
 }
