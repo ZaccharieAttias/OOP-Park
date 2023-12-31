@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LinesCreator : MonoBehaviour
 {
@@ -10,11 +7,15 @@ public class LinesCreator : MonoBehaviour
 
     private RectTransform lineRect;
 
-    public void Settings()
+    void Start()
+    {
+        lineRect = GetComponent<RectTransform>();
+    }
+
+    void Update()
     {
         if (startPoint && endPoint)
         {
-            lineRect = GetComponent<RectTransform>();
             Vector3 pointALocal = startPoint.GetComponent<RectTransform>().anchoredPosition;
             Vector3 pointBLocal = endPoint.GetComponent<RectTransform>().anchoredPosition;
             UpdateLine(pointALocal, pointBLocal);
@@ -25,17 +26,16 @@ public class LinesCreator : MonoBehaviour
         }
     }
 
-    void UpdateLine(Vector2 anchoredPointA, Vector2 anchoredPointB)
-    {
-        Vector2 midpoint = (anchoredPointA + anchoredPointB) / 2;
-        float distance = Vector2.Distance(anchoredPointA, anchoredPointB);
-        float angle = Mathf.Atan2(anchoredPointB.y - anchoredPointA.y, anchoredPointB.x - anchoredPointA.x) * Mathf.Rad2Deg;
+void UpdateLine(Vector2 anchoredPointA, Vector2 anchoredPointB)
+{
+    Vector2 midpoint = (anchoredPointA + anchoredPointB) / 2;
+    float distance = Vector2.Distance(anchoredPointA, anchoredPointB);
+    float angle = Mathf.Atan2(anchoredPointB.y - anchoredPointA.y, anchoredPointB.x - anchoredPointA.x) * Mathf.Rad2Deg;
 
-        lineRect.anchoredPosition = midpoint;
-        lineRect.sizeDelta = new Vector2(distance, 5);
-        lineRect.rotation = Quaternion.Euler(0, 0, angle);
-        GetComponent<Image>().color = Color.red;
-    }
+    lineRect.anchoredPosition = midpoint;
+    lineRect.sizeDelta = new Vector2(distance, 5);
+    lineRect.rotation = Quaternion.Euler(0, 0, angle);
+}
 
     public void SetPoints(Transform start, Transform end)
     {
