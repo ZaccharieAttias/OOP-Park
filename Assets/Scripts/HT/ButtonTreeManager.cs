@@ -25,6 +25,8 @@ public class ButtonTreeManager : MonoBehaviour
     private float _horizontalArea;
     private float _verticalArea;
     private float _verticalSpacing;
+    // add object gridlayoutgroup
+    private GridLayoutGroup _gridLayoutGroup;
 
 
     private void Start()
@@ -39,6 +41,8 @@ public class ButtonTreeManager : MonoBehaviour
         _verticalSpacing = 0;
         _horizontalArea = _rightBorder - _leftBorder;
         _verticalArea = _upBorder - _downBorder;
+
+        _gridLayoutGroup = gameObject.GetComponent<GridLayoutGroup>();
     }
 
     public void startButtonTreeManager(Character root, CharacterManager characterManager)
