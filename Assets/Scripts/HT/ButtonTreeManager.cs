@@ -65,6 +65,7 @@ public class ButtonTreeManager : MonoBehaviour
         newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
         newPlayerButton.GetComponent<Button>().onClick.AddListener(() => _characterManager.DisplayCharacterDetails(characterNode.name));
         RectTransform rectTransform = newPlayerButton.GetComponent<RectTransform>();
+        newPlayerButton.AddComponent<LayoutElement>();
         
         string filePath = Path.Combine(Application.dataPath, _imagePath);
         if (File.Exists(filePath))
