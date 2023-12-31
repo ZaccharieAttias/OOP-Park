@@ -139,12 +139,15 @@ public class ButtonTreeManager : MonoBehaviour
                 Transform childTransform = parentTransform.Find(childNameToFind);
                 GameObject childObject = childTransform.gameObject;
 
-                // creer un object enfant a _lines
-                GameObject line = Instantiate(new GameObject(obj.name + "to" + child.name), _lines.transform);
+                GameObject temp = new GameObject(obj.name + "to" + child.name);
+                temp.transform.SetParent(_lines.transform);
+                GameObject line = temp;
+                
                 line.AddComponent<Image>();
-                line.GetComponent<Image>().color = Color.red;
+                line.transform.localScale = new Vector3(1, 1, 1);
                 line.AddComponent<LinesCreator>();
                 line.GetComponent<LinesCreator>().SetPoints(obj.transform, childObject.transform);
+                line.GetComponent<LinesCreator>().Settings();
             }
         }
     }
