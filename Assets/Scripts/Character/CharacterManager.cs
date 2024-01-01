@@ -169,7 +169,15 @@ public class CharacterManager : MonoBehaviour
         CharacterTree.GetComponent<ButtonTreeManager>().startButtonTreeManager(character1, this);
 
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character1);
-        DisplayCharacterDetails(character1.name);
+
+        // Character2 
+        characterName = "Character 2";
+        characterDescription = "This is the second character";
+        Character character2 = new Character(characterName, characterDescription, characterAncestors);
+        _charactersCollection.Add(character2);
+
+        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character2);
+        DisplayCharacterDetails(character2.name);
     }
 
     public Character GetCurrentCharacter()
