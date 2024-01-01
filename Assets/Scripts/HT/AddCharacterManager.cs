@@ -42,7 +42,7 @@ public class AddCharacterManager : MonoBehaviour
     {
         foreach (GameObject characterGameObject in _gameObjects)
         {
-            characterGameObject.GetComponent<LayoutElement>().ignoreLayout = false;
+            //characterGameObject.GetComponent<LayoutElement>().ignoreLayout = false;
             Button button = characterGameObject.GetComponent<Button>();
             button.interactable = !button.interactable;
         }
@@ -55,7 +55,7 @@ public class AddCharacterManager : MonoBehaviour
         foreach (GameObject characterGameObject in _gameObjects)
         {
             GameObject duplicateGameObject = Instantiate(characterGameObject, characterGameObject.transform.parent);
-            characterGameObject.GetComponent<LayoutElement>().ignoreLayout = true;
+            //characterGameObject.GetComponent<LayoutElement>().ignoreLayout = true;
             duplicateGameObject.GetComponent<RectTransform>().sizeDelta = characterGameObject.GetComponent<RectTransform>().sizeDelta;
             duplicateGameObject.transform.localScale = new Vector3(1, 1, 1);
             duplicateGameObject.GetComponent<Button>().interactable = true;
