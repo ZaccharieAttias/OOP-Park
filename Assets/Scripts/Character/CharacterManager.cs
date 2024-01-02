@@ -28,7 +28,7 @@ public class CharacterManager : MonoBehaviour
 
     public void Start()
     {
-        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons");
+        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/All");
         _charactersCollection = new List<Character>();
         CreateCharacters(); // Temporary
 
@@ -173,10 +173,15 @@ public class CharacterManager : MonoBehaviour
         // Character2 
         characterName = "Character 2";
         characterDescription = "This is the second character";
+        characterAncestors.Add(character1);
         Character character2 = new Character(characterName, characterDescription, characterAncestors);
         _charactersCollection.Add(character2);
+        _charactersCollection[0].childrens.Add(character2);
+        _charactersCollection[1].parents.Add(character1);
 
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character2);
+        characterAncestors.Clear();
+        
         DisplayCharacterDetails(character2.name);
     }
 
