@@ -28,7 +28,7 @@ public class CharacterManager : MonoBehaviour
 
     public void Start()
     {
-        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/All");
+        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons");
         _charactersCollection = new List<Character>();
         CreateCharacters(); // Temporary
 
