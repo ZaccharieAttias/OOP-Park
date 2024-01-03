@@ -26,11 +26,6 @@ public class ButtonTreeManager : MonoBehaviour
     private float _verticalArea;
     private float _verticalSpacing;
 
-
-    // add object gridlayoutgroup
-    private GridLayoutGroup _gridLayoutGroup;
-
-
     private void Start()
     {
         _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
@@ -43,8 +38,6 @@ public class ButtonTreeManager : MonoBehaviour
         _verticalSpacing = 0;
         _horizontalArea = _rightBorder - _leftBorder;
         _verticalArea = _upBorder - _downBorder;
-
-        _gridLayoutGroup = gameObject.GetComponent<GridLayoutGroup>();
     }
 
     public void startButtonTreeManager(Character root, CharacterManager characterManager)
@@ -67,7 +60,6 @@ public class ButtonTreeManager : MonoBehaviour
         newPlayerButton.GetComponent<Button>().onClick.RemoveAllListeners();
         newPlayerButton.GetComponent<Button>().onClick.AddListener(() => _characterManager.DisplayCharacterDetails(characterNode.name));
         RectTransform rectTransform = newPlayerButton.GetComponent<RectTransform>();
-        newPlayerButton.AddComponent<LayoutElement>();
         
         string filePath = Path.Combine(Application.dataPath, _imagePath);
         if (File.Exists(filePath))
