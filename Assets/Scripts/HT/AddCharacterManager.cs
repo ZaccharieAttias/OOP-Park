@@ -114,7 +114,6 @@ public class AddCharacterManager : MonoBehaviour
     {
         foreach (GameObject characterGameObject in _gameObjects)
         {
-            characterGameObject.GetComponent<LayoutElement>().ignoreLayout = false;
             Button button = characterGameObject.GetComponent<Button>();
             button.interactable = !button.interactable;
         }
@@ -130,7 +129,6 @@ public class AddCharacterManager : MonoBehaviour
                 characterGameObject,
                 characterGameObject.transform.parent
             );
-            characterGameObject.GetComponent<LayoutElement>().ignoreLayout = true;
             duplicateGameObject.GetComponent<RectTransform>().sizeDelta = characterGameObject
                 .GetComponent<RectTransform>()
                 .sizeDelta;
