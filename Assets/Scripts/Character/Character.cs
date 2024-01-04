@@ -15,8 +15,10 @@ public class Character
 
     public int depth;
 
+    public bool isOriginal;
 
-    public Character(string name, string description, List<Character> parents)
+
+    public Character(string name, string description, List<Character> parents, bool isOriginal)
     {
         this.name = name;
         this.description = description;
@@ -27,6 +29,8 @@ public class Character
         this.methods = new List<CharacterMethod>();
 
         this.depth = 0;
+
+        this.isOriginal = isOriginal;
 
         PreDetails(parents);
     }
@@ -60,5 +64,15 @@ public class Character
         this.methods = character.methods;
 
         this.depth = character.depth;
+    }
+
+    public void Dispose()
+    {
+        // Removing himself from its parnents
+
+        foreach (Character parent in parents)
+        {
+            parent.childrens.Remove(this);
+        }
     }
 }
