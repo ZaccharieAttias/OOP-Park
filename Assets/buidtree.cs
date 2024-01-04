@@ -9,8 +9,9 @@ public class buidtree : MonoBehaviour
     public CharacterZac _rootCharacter;
 
     private static int nodeSize = 40;
-    private static int siblingDistance = 0;
-    private static int treeDistance = 0;
+    private static int siblingDistance = 35;
+    private static int treeDistance = 5;
+
 
     public void CalculateNodePositions()
     {
@@ -25,13 +26,14 @@ public class buidtree : MonoBehaviour
 
         // assign final X values to nodes
         CalculateFinalPositions(_rootCharacter, 0);
+
+        // update the transform positions of the nodes
+        UpdateNodePositions(_rootCharacter);
     }
 
     private void InitializeNodes(CharacterZac character, int depth)
     {
-        Debug.Log("InitializeNodes");
-
-        character.x = -75;
+        character.x = 0;
         character.y = depth * -75;
         character.SetDepth(depth);
         character.SetMod(0);
@@ -42,7 +44,6 @@ public class buidtree : MonoBehaviour
 
     private void CalculateInitialX(CharacterZac character)
     {
-        Debug.Log("CalculateInitialX");
         foreach (CharacterZac child in character.childrens)
             CalculateInitialX(child);
  
@@ -95,20 +96,19 @@ public class buidtree : MonoBehaviour
 
     private void CheckForConflicts(CharacterZac character)
     {
-        Debug.Log("CheckForConflicts");
         float minDistance = treeDistance + nodeSize;
         float shiftValue = 0;
 
         Dictionary<int, float> nodeContour = new Dictionary<int, float>();
-        GetLeftContour(character, 0, nodeContour);
+        GetLeftContour(character, 0, ref nodeContour);
 
         CharacterZac sibling = character.GetLeftMostSibling();
         while (sibling != null && sibling != character)
         {
             Dictionary<int, float> siblingContour = new Dictionary<int, float>();
-            GetRightContour(sibling, 0, siblingContour);
+            GetRightContour(sibling, 0, ref siblingContour);
 
-            for (int level = character.y + 1; level <= Math.Min(siblingContour.Keys.Max(), nodeContour.Keys.Max()); level++)
+            for (int level = character.y -75; level >= Math.Max(siblingContour.Keys.Min(), nodeContour.Keys.Min()); level -= 75)
             {
                 float distance = nodeContour[level] - siblingContour[level];
                 if (distance + shiftValue < minDistance)
@@ -116,7 +116,7 @@ public class buidtree : MonoBehaviour
             }
 
             if (shiftValue > 0)
-                CenterNodesBetween(character, sibling);
+                CenterNodesBetween(sibling, character, shiftValue);
 
             sibling = sibling.GetNextSibling();
         }
@@ -129,9 +129,8 @@ public class buidtree : MonoBehaviour
         }
     }
 
-    private void CenterNodesBetween(CharacterZac leftNode, CharacterZac rightNode)
+    private void CenterNodesBetween(CharacterZac leftNode, CharacterZac rightNode, float shiftValue)
     {
-        Debug.Log("CenterNodesBetween");
         int leftIndex = leftNode.parents[0].childrens.IndexOf(leftNode);
         int rightIndex = leftNode.parents[0].childrens.IndexOf(rightNode);
 
@@ -139,15 +138,16 @@ public class buidtree : MonoBehaviour
 
         if (numNodesBetween > 0)
         {
-            //  INVERSSEZ
-            var distanceBetweenNodes = (leftNode.x - rightNode.x) / (numNodesBetween + 1);
-
+            Debug.Log("CenterNodesBetween > 0");
+            var distanceBetweenNodesbefore = Mathf.Abs(rightNode.x - leftNode.x) / (numNodesBetween + 1);
+            var distanceBetweenNodesafter = Mathf.Abs(rightNode.x + shiftValue - leftNode.x) / (numNodesBetween + 1);
             int count = 1;
             for (int i = leftIndex + 1; i < rightIndex; i++)
             {
                 CharacterZac middleNode = leftNode.parents[0].childrens[i];
-                int desiredX = rightNode.x + (distanceBetweenNodes * count);
-                int offset = desiredX - middleNode.x;
+                int desiredXafter = leftNode.x + ((int)distanceBetweenNodesafter * count);
+                int desiredX = leftNode.x + (distanceBetweenNodesbefore * count);
+                int offset = desiredXafter - desiredX;
                 middleNode.x += offset;
                 middleNode.Mod += offset;
                 count++;
@@ -162,9 +162,8 @@ public class buidtree : MonoBehaviour
 
 
 
-    private void GetLeftContour(CharacterZac character, int modSum, Dictionary<int, float> nodeContour)
+    private void GetLeftContour(CharacterZac character, int modSum, ref Dictionary<int, float> nodeContour)
     {
-        Debug.Log("GetLeftContour");
         if (!nodeContour.ContainsKey(character.y))
             nodeContour.Add(character.y, character.x + modSum);
         else
@@ -173,12 +172,11 @@ public class buidtree : MonoBehaviour
         modSum += character.GetMod();
 
         foreach (CharacterZac child in character.childrens)
-            GetLeftContour(child, modSum, nodeContour);
+            GetLeftContour(child, modSum, ref nodeContour);
     }
 
-    private void GetRightContour(CharacterZac character, int modSum, Dictionary<int, float> nodeContour)
+    private void GetRightContour(CharacterZac character, int modSum, ref Dictionary<int, float> nodeContour)
     {
-        Debug.Log("GetRightContour");
         if (!nodeContour.ContainsKey(character.y))
             nodeContour.Add(character.y, character.x + modSum);
         else
@@ -187,15 +185,13 @@ public class buidtree : MonoBehaviour
         modSum += character.GetMod();
 
         foreach (CharacterZac child in character.childrens)
-            GetRightContour(child, modSum, nodeContour);
+            GetRightContour(child, modSum, ref nodeContour);
     }
 
     private void CheckAllChildrenOnScreen(CharacterZac character)
     {
-        Debug.Log("CheckAllChildrenOnScreen");
-
         Dictionary<int, float> nodeContour = new Dictionary<int, float>();
-        GetLeftContour(character, 0, nodeContour);
+        GetLeftContour(character, 0, ref nodeContour);
 
         float shiftAmount = 0;
         foreach (int y in nodeContour.Keys)
@@ -213,7 +209,6 @@ public class buidtree : MonoBehaviour
 
     private void CalculateFinalPositions(CharacterZac character, int modSum)
     {
-        Debug.Log("CalculateFinalPositions");
         character.x += modSum;
         modSum += character.Mod;
 
@@ -224,6 +219,15 @@ public class buidtree : MonoBehaviour
             character.y = character.GetDepth() * -75;
         else
             character.y = character.childrens[0].y + 75;
+    }
+
+    private void UpdateNodePositions(CharacterZac character)
+    {
+        character.SetTransformPositionX(character.x);
+        character.SetTransformPositionY(character.y);
+
+        foreach (CharacterZac child in character.childrens)
+            UpdateNodePositions(child);
     }
 }
 

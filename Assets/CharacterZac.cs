@@ -26,12 +26,6 @@ public class CharacterZac : MonoBehaviour
         _rectTransform = GetComponent<RectTransform>();
     }
 
-    public void Update()
-    {
-        // set transform position y to depth
-        _rectTransform.anchoredPosition = new Vector2(x, y);
-    }
-
     public bool IsLeaf()
     {
         return childrens.Count == 0;
@@ -119,15 +113,15 @@ public class CharacterZac : MonoBehaviour
     //     return _rectTransform.anchoredPosition.y;
     // }
 
-    // public void SetTransformPositionX(float x)
-    // {
-    //     _rectTransform.anchoredPosition = new Vector2(x, _rectTransform.anchoredPosition.y);
-    // }
+    public void SetTransformPositionX(float x)
+    {
+        _rectTransform.anchoredPosition = new Vector2(x, _rectTransform.anchoredPosition.y);
+    }
 
-    // public void SetTransformPositionY(float y)
-    // {
-    //     _rectTransform.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x, y);
-    // }
+    public void SetTransformPositionY(float y)
+    {
+        _rectTransform.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x, y);
+    }
 
     public void SetDepth(int depth)
     {
