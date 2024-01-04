@@ -23,7 +23,7 @@ public class MethodsPopupManager : MonoBehaviour
         _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
         _contentPanel = GameObject.Find(_contentPanelPath).transform;
-        
+
         Button closeButton = GameObject.Find(_closeButtonPath).GetComponent<Button>();
         closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.name));
 
@@ -60,7 +60,7 @@ public class MethodsPopupManager : MonoBehaviour
 
         return collection;
     }
-    
+
     public void ShowMethodsPopup(Character currentCharacter)
     {
         ClearContentPanel();
@@ -83,7 +83,14 @@ public class MethodsPopupManager : MonoBehaviour
 
     private void MarkMethodInPopup(GameObject methodButton, CharacterMethod method)
     {
+        bool hasAttribute = HasAttributeRecursively(_currentCharacter, method.name.ToLower());
         bool hasMethod = _currentCharacter.methods.Any(item => item.name == method.name);
+
+        if (hasAttribute == false)
+        {
+            methodButton.GetComponent<Button>().interactable = false;
+            return;
+        }
 
         Image image = methodButton.GetComponent<Image>();
         image.color = hasMethod ? Color.green : Color.white;
@@ -104,5 +111,16 @@ public class MethodsPopupManager : MonoBehaviour
     {
         foreach (Transform child in _contentPanel)
             Destroy(child.gameObject);
+    }
+
+    private bool HasAttributeRecursively(Character character, string methodName)
+    {
+        if (character.attributes.Any(attribute => attribute.name.ToLower() == methodName)) return true;
+
+        foreach (Character parent in character.parents)
+            if (HasAttributeRecursively(parent, methodName))
+                return true;
+
+        return false;
     }
 }
