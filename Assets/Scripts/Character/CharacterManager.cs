@@ -25,9 +25,12 @@ public class CharacterManager : MonoBehaviour
     public GameObject buttonPrefab;
 
     public GameObject CharacterTree;
+    public GameObject _deleteCharacterButton;
 
     public void Start()
     {
+        createDeletionButton();
+
         CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons");
         _charactersCollection = new List<Character>();
         CreateCharacters(); // Temporary
@@ -49,9 +52,53 @@ public class CharacterManager : MonoBehaviour
             DisplayAttributes();
             DisplayMethods();
 
+            DisplayDeletionOption();
+
             PowerUp powerUp = GetComponent<PowerUp>();
             powerUp.ApplyPowerup(currentCharacter);
         }
+    }
+
+    private void createDeletionButton()
+    {
+        GameObject button = Resources.Load<GameObject>("Prefabs/Buttons/Button");
+        Transform location = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details").transform;
+
+        GameObject deleteCharacterButton = Instantiate(button, location);
+        deleteCharacterButton.name = "Delete";
+
+        TMP_Text buttonText = deleteCharacterButton.GetComponentInChildren<TMP_Text>();
+        buttonText.text = "Delete";
+
+        deleteCharacterButton.transform.localPosition = new Vector3(235, -195, 0);
+
+        Button button1 = deleteCharacterButton.GetComponent<Button>();
+        button1.onClick.AddListener(() => DeleteCharacter());
+
+        _deleteCharacterButton = deleteCharacterButton;
+    }
+
+    private void DisplayDeletionOption()
+    {
+        if (currentCharacter.isOriginal == true || currentCharacter.childrens.Count > 0)  _deleteCharacterButton.SetActive(false);
+        else _deleteCharacterButton.SetActive(true);      
+    }
+
+    private void DeleteCharacter()
+    {
+        foreach (Character character in _charactersCollection)
+        {
+            if (character.name == currentCharacter.name)
+            {
+                currentCharacter.Dispose();
+                _charactersCollection.Remove(character);
+                break;
+            }
+        }
+
+        Destroy(GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/" + currentCharacter.name));
+        
+        DisplayCharacterDetails(_charactersCollection.First().name);
     }
 
     private void DisplayAttributes()
@@ -137,7 +184,7 @@ public class CharacterManager : MonoBehaviour
         int nbr = _charactersCollection.Count + 1;  
         string characterName = "Character " + nbr.ToString();
         string characterDescription = "";
-        Character newCharacter = new Character(characterName, characterDescription, characterNewAncestors);
+        Character newCharacter = new Character(characterName, characterDescription, characterNewAncestors, false);
         _charactersCollection.Add(newCharacter);
 
         for (int i = 0; i < _charactersCollection.Count; i++)
@@ -162,7 +209,7 @@ public class CharacterManager : MonoBehaviour
         // Character1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
-        Character character1 = new Character(characterName, characterDescription, characterAncestors);
+        Character character1 = new Character(characterName, characterDescription, characterAncestors, true);
         _charactersCollection.Add(character1);
 
         CharacterTree.AddComponent<ButtonTreeManager>();
@@ -174,7 +221,7 @@ public class CharacterManager : MonoBehaviour
         characterName = "Character 2";
         characterDescription = "This is the second character";
         characterAncestors.Add(character1);
-        Character character2 = new Character(characterName, characterDescription, characterAncestors);
+        Character character2 = new Character(characterName, characterDescription, characterAncestors, true);
         _charactersCollection.Add(character2);
         _charactersCollection[0].childrens.Add(character2);
         _charactersCollection[1].parents.Add(character1);
