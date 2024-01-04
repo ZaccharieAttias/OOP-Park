@@ -27,19 +27,15 @@ public class UpcastingPopupManager : MonoBehaviour
     private GameObject _methodTextLeft;
     private GameObject _quantityTextLeft;
 
-    private int _characterIndex;
-    private int _methodIndex;
-    private int _quantityIndex;
 
-    public Dictionary<Character, List<CharacterMethod>> _characterUpcastable =
-        new Dictionary<Character, List<CharacterMethod>>();
-
-    private Character _currentCharacter;
+    private List<(Character, List<CharacterMethod>)> characterData;
+    private int currentCharacterIndex;
+    private int currentMethodIndex;
+    private int currentUpcastingQuantity;
 
     private void Start()
     {
         _popup = GameObject.Find(_popupPath);
-        Debug.Log(_popup);
 
         _characterTextRight = GameObject.Find(_characterTextPath + "/Right");
         _characterText = GameObject.Find(_characterTextPath + "/Text");
@@ -67,26 +63,27 @@ public class UpcastingPopupManager : MonoBehaviour
             .GetComponent<Button>()
             .onClick.AddListener(() => ChangeQuantityTextLeft());
 
-        _characterIndex = 0;
-        _methodIndex = 0;
-        _quantityIndex = 0;
+
+        characterData = new List<(Character, List<CharacterMethod>)>();
+        currentCharacterIndex = 0;
+        currentMethodIndex = 0;
+        currentUpcastingQuantity = 0;
 
         _popup.SetActive(false);
     }
 
     public void Update()
     {
-        _currentCharacter = GetComponent<CharacterManager>().currentCharacter;
         if (Input.GetKeyDown(KeyCode.U))
         {
-            ShowUpcastingPopup(_currentCharacter);
+            ShowUpcastingPopup(GetComponent<CharacterManager>().currentCharacter);
         }
     }
 
     public void ShowUpcastingPopup(Character currentCharacter)
     {
         ClearUpcastingPopup();
-        SetCharacterUpcastable(_currentCharacter);
+        SetCharacterUpcastable(currentCharacter);
 
         SetCharacterText();
         SetMethodText();
@@ -101,120 +98,112 @@ public class UpcastingPopupManager : MonoBehaviour
         {
             SetCharacterUpcastable(parent);
 
+            List<CharacterMethod> privateMethods = new List<CharacterMethod>();
             foreach (CharacterMethod method in parent.methods)
             {
                 if (method.accessModifier == AccessModifier.Private)
                 {
-                    if (!_characterUpcastable.ContainsKey(parent))
-                    {
-                        _characterUpcastable.Add(parent, new List<CharacterMethod>());
-                    }
-                    _characterUpcastable[parent].Add(method);
+                    privateMethods.Add(method);
                 }
             }
+
+            if (privateMethods.Count > 0) characterData.Add((parent, privateMethods));
         }
     }
 
     private void ClearUpcastingPopup()
     {
-        _characterUpcastable.Clear();
+        characterData.Clear();
+        currentCharacterIndex = 0;
+        currentMethodIndex = 0;
+        currentUpcastingQuantity = 0;
     }
 
     private void ChangeCharacterTextRight()
     {
-        if (_characterUpcastable.Count > 0)
-        {
-            int index = (_characterIndex + 1) % _characterUpcastable.Count;
-            _currentCharacter = _characterUpcastable.Keys.ElementAt(index);
+        currentCharacterIndex = (currentCharacterIndex + 1) % characterData.Count;
+        currentMethodIndex = 0;
+        currentUpcastingQuantity = 0;
 
-            _characterIndex = index;
-            _methodIndex = 0;
-            _quantityIndex = 0;
-
-            SetCharacterText();
-            SetMethodText();
-            SetQuantityText();
-        }
+        SetCharacterText();
+        SetMethodText();
+        SetQuantityText();
     }
 
     private void ChangeCharacterTextLeft()
     {
-        if (_characterUpcastable.Count > 0)
-        {
-            int index = (_characterIndex - 1) % _characterUpcastable.Count;
-            _currentCharacter = _characterUpcastable.Keys.ElementAt(index);
+        currentCharacterIndex = (currentCharacterIndex - 1 + characterData.Count) % characterData.Count;
+        currentMethodIndex = 0;
+        currentUpcastingQuantity = 0;
 
-            _characterIndex = index;
-            _methodIndex = 0;
-            _quantityIndex = 0;
-
-            SetCharacterText();
-            SetMethodText();
-            SetQuantityText();
-        }
+        SetCharacterText();
+        SetMethodText();
+        SetQuantityText();
     }
 
     private void SetCharacterText()
     {
-        Debug.Log(_currentCharacter.name);
-        _characterText.GetComponent<TextMeshProUGUI>().text = _currentCharacter.name;
+        string characterName = "Unknown";
+
+        if (currentCharacterIndex >= 0 && currentCharacterIndex < characterData.Count)
+        {
+            var currentCharacter = characterData[currentCharacterIndex].Item1;
+            characterName = currentCharacter.name;
+        }
+
+        _characterText.GetComponent<TextMeshProUGUI>().text = characterName;
     }
 
     private void ChangeMethodTextRight()
     {
-        if (_characterUpcastable.Count > 0)
-        {
-            int index = (_methodIndex + 1) % _characterUpcastable[_currentCharacter].Count;
-            _methodIndex = index;
+        currentMethodIndex = (currentMethodIndex + 1) % characterData[currentCharacterIndex].Item2.Count;
+        currentUpcastingQuantity = 0;
 
-            SetMethodText();
-            SetQuantityText();
-        }
+        SetMethodText();
+        SetQuantityText();
     }
 
     private void ChangeMethodTextLeft()
     {
-        if (_characterUpcastable.Count > 0)
-        {
-            int index = (_methodIndex - 1) % _characterUpcastable[_currentCharacter].Count;
-            _methodIndex = index;
+        currentMethodIndex = (currentMethodIndex - 1 + characterData[currentCharacterIndex].Item2.Count) % characterData[currentCharacterIndex].Item2.Count;
+        currentUpcastingQuantity = 0;
 
-            SetMethodText();
-            SetQuantityText();
-        }
+        SetMethodText();
+        SetQuantityText();
     }
 
     private void SetMethodText()
     {
-        _methodText.GetComponent<TextMeshProUGUI>().text = _characterUpcastable[_currentCharacter][
-            _methodIndex
-        ].name;
+        string methodName = "Unknown";
+
+        if (currentCharacterIndex >= 0 && currentCharacterIndex < characterData.Count)
+        {
+            var currentCharacter = characterData[currentCharacterIndex].Item1;
+
+            if (currentMethodIndex >= 0 && currentMethodIndex < characterData[currentCharacterIndex].Item2.Count)
+            {
+                var currentMethod = characterData[currentCharacterIndex].Item2[currentMethodIndex];
+                methodName = currentMethod.name;
+            }
+        }
+
+        _methodText.GetComponent<TextMeshProUGUI>().text = methodName;
     }
 
     private void ChangeQuantityTextRight()
     {
-        if (_characterUpcastable.Count > 0)
-        {
-            int index = _quantityIndex + 1;
-            _quantityIndex = index;
-
-            SetQuantityText();
-        }
+        currentUpcastingQuantity = currentUpcastingQuantity + 1;
+        SetQuantityText();
     }
 
     private void ChangeQuantityTextLeft()
     {
-        if (_characterUpcastable.Count > 0)
-        {
-            int index = _quantityIndex - 1;
-            _quantityIndex = index > 0 ? index : 0;
-
-            SetQuantityText();
-        }
+        currentUpcastingQuantity = currentUpcastingQuantity - 1 > 0 ? currentUpcastingQuantity - 1 : 0;
+        SetQuantityText();
     }
 
     private void SetQuantityText()
     {
-        _quantityText.GetComponent<TextMeshProUGUI>().text = _quantityIndex.ToString();
+        _quantityText.GetComponent<TextMeshProUGUI>().text = currentUpcastingQuantity.ToString();
     }
 }
