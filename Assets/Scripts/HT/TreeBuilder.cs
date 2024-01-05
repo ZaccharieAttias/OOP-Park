@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using System.IO;
+using UnityEngine.UI;
 
 public class TreeBuilder : MonoBehaviour
 {
+    [SerializeField] private GameObject _lines;
+
+    GameObject _tempObject1;
+    GameObject _tempObject2;
+
+
+
     private Character _rootCharacter;
 
     private static int nodeSize = 40;
@@ -15,11 +24,29 @@ public class TreeBuilder : MonoBehaviour
     public void SetRoot(Character rootCharacter)
     {
         _rootCharacter = rootCharacter;
+        _lines = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/Lines");
+        _tempObject1 = new GameObject("temp1");
+        _tempObject1.transform.SetParent(_lines.transform);
+        _tempObject1.AddComponent<RectTransform>();
+        _tempObject2 = new GameObject("temp2");
+        _tempObject2.transform.SetParent(_lines.transform);
+        _tempObject2.AddComponent<RectTransform>();
     }
 
     public void BuildTree()
     {
+        ResetLines();
         CalculateNodePositions();
+        DrawLines(_rootCharacter);
+    }
+
+    private void ResetLines()
+    {
+        foreach (Transform child in _lines.transform)
+        {
+            if (child.gameObject.name != "temp1" && child.gameObject.name != "temp2")
+                Destroy(child.gameObject);
+        }
     }
 
     private void CalculateNodePositions()
@@ -234,6 +261,84 @@ public class TreeBuilder : MonoBehaviour
 
         foreach (Character child in character.childrens)
             UpdateNodePositions(child);
+    }
+
+    private void DrawLines(Character character)
+    {
+        if (character.parents.Count != 0)
+        {
+            Vector2 nodeTopMiddle = new Vector2(character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x, character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + 20 - 4);
+            Vector2 nodeAboveMiddle = new Vector2(nodeTopMiddle.x, (character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.parents[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
+            
+            GameObject temp1 = new GameObject();
+            temp1.transform.SetParent(_lines.transform);
+            GameObject line1 = temp1;
+            line1.AddComponent<Image>();
+            line1.transform.localScale = new Vector3(1, 1, 1);
+            line1.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
+            line1.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
+            line1.AddComponent<LinesCreator>();
+            
+            _tempObject1.GetComponent<RectTransform>().anchoredPosition = nodeTopMiddle;
+            _tempObject2.GetComponent<RectTransform>().anchoredPosition = nodeAboveMiddle;
+
+
+            line1.GetComponent<LinesCreator>().SetPoints(_tempObject1.transform, _tempObject2.transform);
+            line1.GetComponent<LinesCreator>().Settings();
+        }
+
+        if (character.childrens.Count > 0)
+        {
+            Vector2 nodeBottomMiddle = new Vector2(character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x, character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y - 20 + 2);
+            Vector2 nodeBelowMiddle = new Vector2(nodeBottomMiddle.x, (character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.childrens[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
+
+            GameObject temp2 = new GameObject();
+            temp2.transform.SetParent(_lines.transform);
+            GameObject line2 = temp2;
+            line2.AddComponent<Image>();
+            line2.transform.localScale = new Vector3(1, 1, 1);
+            line2.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
+            line2.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
+            line2.AddComponent<LinesCreator>();
+            
+            _tempObject1.GetComponent<RectTransform>().anchoredPosition = nodeBottomMiddle;
+            _tempObject2.GetComponent<RectTransform>().anchoredPosition = nodeBelowMiddle;
+
+
+            line2.GetComponent<LinesCreator>().SetPoints(_tempObject1.transform, _tempObject2.transform);
+            line2.GetComponent<LinesCreator>().Settings();
+            
+            if (character.childrens.Count > 1)
+            {
+                Vector2 nodeLeftMiddle = new Vector2(character.childrens[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x - 2.435f, (character.childrens[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
+                Vector2 nodeRightMiddle = new Vector2(character.childrens[character.childrens.Count - 1].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x + 2.435f, (character.childrens[character.childrens.Count - 1].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
+
+                GameObject temp3 = new GameObject();
+                temp3.transform.SetParent(_lines.transform);
+                GameObject line3 = temp3;
+                line3.AddComponent<Image>();
+                line3.transform.localScale = new Vector3(1, 1, 1);
+                line3.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
+                line3.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
+                line3.AddComponent<LinesCreator>();
+                
+                _tempObject1.GetComponent<RectTransform>().anchoredPosition = nodeLeftMiddle;
+                _tempObject2.GetComponent<RectTransform>().anchoredPosition = nodeRightMiddle;
+            
+                line3.GetComponent<LinesCreator>().SetPoints(_tempObject1.transform, _tempObject2.transform);
+                line3.GetComponent<LinesCreator>().Settings();
+            }
+        }
+
+        foreach (Character child in character.childrens)
+        {
+            DrawLines(child);
+        }
+    }
+
+    public GameObject GetRootCharacterButton()
+    {
+        return _rootCharacter.GetCharacterButton();
     }
 }
 
