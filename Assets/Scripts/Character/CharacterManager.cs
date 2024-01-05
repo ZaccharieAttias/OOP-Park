@@ -30,8 +30,9 @@ public class CharacterManager : MonoBehaviour
     public void Start()
     {
         createDeletionButton();
+        
 
-        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons");
+        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/All");
         _charactersCollection = new List<Character>();
         CreateCharacters(); // Temporary
 
@@ -213,8 +214,7 @@ public class CharacterManager : MonoBehaviour
         _charactersCollection.Add(character1);
 
         CharacterTree.AddComponent<ButtonTreeManager>();
-        CharacterTree.GetComponent<ButtonTreeManager>().startButtonTreeManager(character1, this);
-
+        CharacterTree.GetComponent<ButtonTreeManager>().InitializeButtonTreeManager(character1, this);
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character1);
 
         // Character2 
