@@ -32,7 +32,7 @@ public class CharacterManager : MonoBehaviour
         createDeletionButton();
         
 
-        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/All");
+        CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/All");
         _charactersCollection = new List<Character>();
         CreateCharacters(); // Temporary
 
@@ -228,8 +228,21 @@ public class CharacterManager : MonoBehaviour
 
         CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character2);
         characterAncestors.Clear();
+
+
+        // Character3 
+        characterName = "Character 3";
+        characterDescription = "This is the third character";
+        characterAncestors.Add(character1);
+        Character character3 = new Character(characterName, characterDescription, characterAncestors, true);
+        _charactersCollection.Add(character3);
+        _charactersCollection[0].childrens.Add(character3);
+        _charactersCollection[2].parents.Add(character1);
+
+        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character3);
+        characterAncestors.Clear();
         
-        DisplayCharacterDetails(character2.name);
+        DisplayCharacterDetails(character1.name);
     }
 
     public Character GetCurrentCharacter()
