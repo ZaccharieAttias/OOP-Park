@@ -8,8 +8,6 @@ public class ButtonTreeManager : MonoBehaviour
     private readonly string _imagePath = "Imports/Characters/3/Idle/Idle (1).png";
     private readonly string _buttonPrefabPath = "Prefabs/Buttons/Character";
 
-    [SerializeField] private GameObject _lines;
-
     private GameObject _buttonPrefab;
     
     private CharacterManager _characterManager;
@@ -27,7 +25,6 @@ public class ButtonTreeManager : MonoBehaviour
     public void InitializeButtonTreeManager(Character root, CharacterManager characterManager)
     {
         _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
-        _lines = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Lines");
 
         _leftBorder = -300f;
         _rightBorder = 100f;
@@ -64,86 +61,12 @@ public class ButtonTreeManager : MonoBehaviour
             texture.LoadImage(fileData);
             newPlayerButton.GetComponent<Image>().sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
         }
-
-        // Dictionary<int, List<GameObject>> depthObjects = CalculatePosition();
-        // foreach (KeyValuePair<int, List<GameObject>> depthObject in depthObjects)
-        //     UpdateTreeLayout(depthObject.Key, depthObject.Value);
-
         _treeBuilder.BuildTree();
-        //DrawLines();
+        gameObject.transform.parent.GetComponent<TreeFocus>().SetTargetItem(GetRootButton().GetComponent<RectTransform>());
     }
 
-    /*private void UpdateTreeLayout(int depth, List<GameObject> objects)
+    public GameObject GetRootButton()
     {
-        if (depth == 0)
-        {
-            objects[0].GetComponent<RectTransform>().anchoredPosition = new Vector3(-147f, 50f, 0f);
-            return;
-        }
-
-        int objectsCounter = objects.Count;
-        float horizontalSpacing = _horizontalArea / objectsCounter;
-        float horizontalPosition = 0;
-        float verticalPosition = 0;
-
-        for (int i = 0; i < objectsCounter; i++)
-        {
-            horizontalPosition = _leftBorder + (i * horizontalSpacing);
-            verticalPosition = _upBorder - (depth * _verticalSpacing);
-            objects[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(horizontalPosition, verticalPosition, 0f);
-        }
+        return _treeBuilder.GetRootCharacterButton();
     }
-
-    private Dictionary<int, List<GameObject>> CalculatePosition()
-    {
-        Dictionary<int, List<GameObject>> depthObjects = new Dictionary<int, List<GameObject>>();
-        List<GameObject> allObjects = _characterManager.GetCurrentCollection();
-
-        foreach (GameObject obj in allObjects)
-        {
-            int depth = obj.GetComponent<CharacterDetails>().GetCurrentCharacter().depth;
-
-            if (depthObjects.ContainsKey(depth)) depthObjects[depth].Add(obj);
-            else
-            {
-                List<GameObject> newList = new List<GameObject> { obj };
-                depthObjects.Add(depth, newList);
-            }
-        }
-
-        _verticalSpacing = _verticalArea / depthObjects.Count;
-        return depthObjects;
-    }*/
-
-    // private void DrawLines()
-    // {
-    //     List<GameObject> allObjects = _characterManager.GetCurrentCollection();
-
-    //     foreach (Transform child in _lines.transform)
-    //     {
-    //         Destroy(child.gameObject);
-    //     }
-
-    //     foreach (GameObject obj in allObjects)
-    //     {
-    //         Character character = obj.GetComponent<CharacterDetails>().GetCurrentCharacter();
-    //         Transform parentTransform = obj.transform.parent;
-    //         foreach(Character child in character.childrens)
-    //         {
-    //             string childNameToFind = child.name;
-    //             Transform childTransform = parentTransform.Find(childNameToFind);
-    //             GameObject childObject = childTransform.gameObject;
-
-    //             GameObject temp = new GameObject(obj.name + "to" + child.name);
-    //             temp.transform.SetParent(_lines.transform);
-    //             GameObject line = temp;
-                
-    //             line.AddComponent<Image>();
-    //             line.transform.localScale = new Vector3(1, 1, 1);
-    //             line.AddComponent<LinesCreator>();
-    //             line.GetComponent<LinesCreator>().SetPoints(obj.transform, childObject.transform);
-    //             line.GetComponent<LinesCreator>().Settings();
-    //         }
-    //     }
-    // }
 }
