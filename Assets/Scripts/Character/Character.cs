@@ -202,17 +202,4 @@ public class Character
     {
         CharacterButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(CharacterButton.GetComponent<RectTransform>().anchoredPosition.x, y);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-    
 }
