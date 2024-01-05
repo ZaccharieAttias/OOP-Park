@@ -9372,6 +9372,7 @@ GameObject:
   - component: {fileID: 1289166418}
   - component: {fileID: 1289166419}
   - component: {fileID: 1289166420}
+  - component: {fileID: 1289166421}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -9598,6 +9599,7 @@ MonoBehaviour:
     attributes: []
     methods: []
     depth: 0
+    isOriginal: 0
   characterNameText: {fileID: 1824668557}
   descriptionText: {fileID: 39612446}
   attributesPanel: {fileID: 1924118269}
@@ -9606,6 +9608,7 @@ MonoBehaviour:
   methodsPopup: {fileID: 234928710}
   buttonPrefab: {fileID: 6711824849685729551, guid: c5349b688a8cd904da8456da80c2444e, type: 3}
   CharacterTree: {fileID: 93551640}
+  _deleteCharacterButton: {fileID: 0}
 --- !u!114 &1289166419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9632,6 +9635,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0c388d49ffec0446a43733f4cf630f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1289166421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289166409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f659f6834b2f7874b8fedffaec61b75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1313903829
@@ -13121,7 +13136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2126124079
 RectTransform:
   m_ObjectHideFlags: 0
