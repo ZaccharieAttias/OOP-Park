@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class CharacterDetails : MonoBehaviour
 {
-    [SerializeField] private Character character;
+    [SerializeField] public Character Character;
 
     public void InitializeCharacter(Character character)
     {
-        this.character = character;
+        Character = character;
     }
 
     public Character GetCurrentCharacter()
     {
-        return this.character;
+        return this.Character;
     }
 }
