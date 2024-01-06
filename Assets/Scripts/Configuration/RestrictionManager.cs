@@ -33,8 +33,6 @@ public class RestrictionManager : MonoBehaviour
     {
         if (AllowSingleInheritance == false && AllowMultipleInheritance == false) return;
 
-        GameObject prefab = Resources.Load<GameObject>("Prefabs/Buttons/Inheritance");
-
-        Instantiate(prefab);
+        new GameObject("CharacterFactory").AddComponent<CharacterFactory>();
     }
 }
