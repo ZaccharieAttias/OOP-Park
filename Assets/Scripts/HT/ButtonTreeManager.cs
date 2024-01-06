@@ -12,7 +12,7 @@ public class ButtonTreeManager : MonoBehaviour
     
     private CharacterManager _characterManager;
 
-    private TreeBuilder _treeBuilder;
+    public TreeBuilder _treeBuilder;
     
     private float _leftBorder;
     private float _rightBorder;
