@@ -23,7 +23,7 @@ public class Character
 
     public bool isOriginal;
 
-    private GameObject CharacterButton;
+    public GameObject CharacterButton { get; set; }
 
 
     public Character(string name, string description, List<Character> parents, bool isOriginal)
@@ -54,6 +54,8 @@ public class Character
                 if (method.accessModifier != AccessModifier.Private)
                     if (!(this.methods.Any(item => item.name == method.name)))
                         this.methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
+
+            this.parents.Add(character);
         }
     }
 
