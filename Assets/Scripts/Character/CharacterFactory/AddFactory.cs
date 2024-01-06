@@ -4,19 +4,14 @@ using UnityEngine.UI;
 
 public class AddFactory : MonoBehaviour
 {   
-    private const string spritePath = "Sprites/Icons/Plus";
-    private const string characterFactoryPath = "Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory";
-    
-
     public void Start() { InitializeGameObject(); }
 
     private void InitializeGameObject()
     {
-        GameObject characterFactory = GameObject.Find(characterFactoryPath);
+        GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
 
         name = "AddFactory";
 
-        transform.SetParent(characterFactory.transform);
         transform.localPosition = new Vector3(-118, -237, 0);
         transform.localScale = new Vector3(1, 1, 1);
 
@@ -24,7 +19,7 @@ public class AddFactory : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(20, 20);
 
         Image image = GetComponent<Image>();
-        image.sprite = Resources.Load<Sprite>(spritePath);
+        image.sprite = Resources.Load<Sprite>("Sprites/Icons/Plus");
         image.color = Color.white;
 
         Button button = GetComponent<Button>();
