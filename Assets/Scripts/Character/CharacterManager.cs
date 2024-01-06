@@ -180,25 +180,14 @@ public class CharacterManager : MonoBehaviour
         //gameObject.name = currentCharacter.name;
     }
 
-    public void AddCharacter(List<Character> characterNewAncestors)
+    public void AddCharacter(Character builtCharacter)
     {
-        int nbr = _charactersCollection.Count + 1;  
-        string characterName = "Character " + nbr.ToString();
-        string characterDescription = "";
-        Character newCharacter = new Character(characterName, characterDescription, characterNewAncestors, false);
-        _charactersCollection.Add(newCharacter);
+        _charactersCollection.Add(builtCharacter);
 
-        for (int i = 0; i < _charactersCollection.Count; i++)
-        {
-           if (_charactersCollection[i].name == characterNewAncestors[0].name)
-           {
-               _charactersCollection[i].childrens.Add(_charactersCollection.Last());
-               _charactersCollection.Last().parents.Add(_charactersCollection[i]);
-           }
-        }
+        CharacterTree.GetComponent<ButtonTreeManager>()._treeBuilder.BuildTree();
+        // gameObject.transform.parent.GetComponent<TreeFocus>().SetTargetItem(GetRootButton().GetComponent<RectTransform>());
 
-        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(newCharacter);
-        DisplayCharacterDetails(newCharacter.name);
+        DisplayCharacterDetails(builtCharacter.name);
     }
 
     public void CreateCharacters()
