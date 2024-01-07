@@ -1,45 +1,44 @@
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class LinesCreator : MonoBehaviour
 {
-    public Transform startPoint;
-    public Transform endPoint;
+    public Transform StartPoint;
+    public Transform EndPoint;
 
-    private RectTransform lineRect;
+    public RectTransform lineRect;
 
     public void Settings()
     {
-        if (startPoint && endPoint)
+        if (StartPoint && EndPoint)
         {
             lineRect = GetComponent<RectTransform>();
-            Vector3 pointALocal = startPoint.GetComponent<RectTransform>().anchoredPosition;
-            Vector3 pointBLocal = endPoint.GetComponent<RectTransform>().anchoredPosition;
+            Vector3 pointALocal = StartPoint.GetComponent<RectTransform>().anchoredPosition;
+            Vector3 pointBLocal = EndPoint.GetComponent<RectTransform>().anchoredPosition;
             UpdateLine(pointALocal, pointBLocal);
         }
+
         else
-        {
             lineRect.sizeDelta = new Vector2(0, 0);
-        }
     }
 
-    void UpdateLine(Vector2 anchoredPointA, Vector2 anchoredPointB)
+    private void UpdateLine(Vector2 startPoint, Vector2 endPoint)
     {
-        Vector2 midpoint = (anchoredPointA + anchoredPointB) / 2;
-        float distance = Vector2.Distance(anchoredPointA, anchoredPointB);
-        float angle = Mathf.Atan2(anchoredPointB.y - anchoredPointA.y, anchoredPointB.x - anchoredPointA.x) * Mathf.Rad2Deg;
+        float distance = Vector2.Distance(startPoint, endPoint);
+        float angle = Mathf.Atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x) * Mathf.Rad2Deg;
+        Vector2 middlePoint = (startPoint + endPoint) / 2;
 
-        lineRect.anchoredPosition = midpoint;
+        lineRect.anchoredPosition = middlePoint;
         lineRect.sizeDelta = new Vector2(distance, 5);
         lineRect.rotation = Quaternion.Euler(0, 0, angle);
+        
         GetComponent<Image>().color = Color.red;
     }
 
-    public void SetPoints(Transform start, Transform end)
+    public void SetPoints(Transform startPoint, Transform endPoint)
     {
-        startPoint = start;
-        endPoint = end;
+        StartPoint = startPoint;
+        EndPoint = endPoint;
     }
 }
