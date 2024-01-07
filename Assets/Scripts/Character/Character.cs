@@ -2,197 +2,148 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 
-[System.Serializable]
+[Serializable]
 public class Character
 {
-    public string name;
-    public string description;
+    public bool IsOriginal { get; set; }
 
-    public List<Character> parents;
-    public List<Character> childrens;
-    public List<CharacterAttribute> attributes;
-    public List<CharacterMethod> methods;
+    public string Name { get; set; }
+    public string Description { get; set; }
 
-    private int _depth;
-    private int _mod = 0;
-    private int _x = 0;
-    private int _y = 0;
+    public List<Character> Parents;
+    public List<Character> Childrens;
+    public List<CharacterAttribute> Attributes;
+    public List<CharacterMethod> Methods;
 
-    public bool isOriginal;
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int Mod { get; set; }
+    public int Depth { get; set; }
 
     public GameObject CharacterButton { get; set; }
 
 
     public Character(string name, string description, List<Character> parents, bool isOriginal)
     {
-        this.name = name;
-        this.description = description;
+        IsOriginal = isOriginal;
 
-        this.parents = new List<Character>();
-        this.childrens = new List<Character>();
-        this.attributes = new List<CharacterAttribute>();
-        this.methods = new List<CharacterMethod>();
+        Name = name;
+        Description = description;
 
-        this.isOriginal = isOriginal;
+        Parents = new List<Character>(parents);
+        Childrens = new List<Character>();
+        Attributes = new List<CharacterAttribute>();
+        Methods = new List<CharacterMethod>();
 
-        PreDetails(parents);
+        X = 0;
+        Y = 0;
+        Mod = 0;
+        Depth = 0;
+
+        CharacterButton = null;
+
+        PreDetails();
     }
 
-    private void PreDetails(List<Character> parents)
+    private void PreDetails()
     {
-        foreach (Character character in parents)
+        foreach (Character character in Parents)
         {
-            foreach (CharacterAttribute attribute in character.attributes)
+            foreach (CharacterAttribute attribute in character.Attributes)
                 if (attribute.accessModifier != AccessModifier.Private)
-                    if (!(this.attributes.Any(item => item.name == attribute.name)))
-                        this.attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
+                    if (Attributes.Any(item => item.name == attribute.name) == false)
+                        Attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
 
-            foreach (CharacterMethod method in character.methods)
+            foreach (CharacterMethod method in character.Methods)
                 if (method.accessModifier != AccessModifier.Private)
-                    if (!(this.methods.Any(item => item.name == method.name)))
-                        this.methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
-
-            this.parents.Add(character);
+                    if (Methods.Any(item => item.name == method.name) == false)
+                        Methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
         }
     }
 
     public void InitializeCharacter(Character character)
     {
-        this.name = character.name;
-        this.description = character.description;
+        IsOriginal = character.IsOriginal;
 
-        this.parents = character.parents;
-        this.childrens = character.childrens;
-        this.attributes = character.attributes;
-        this.methods = character.methods;
+        Name = character.Name;
+        Description = character.Description;
+
+        Parents = character.Parents;
+        Childrens = character.Childrens;
+        Attributes = character.Attributes;
+        Methods = character.Methods;
+
+        X = character.X;
+        Y = character.Y;
+        Mod = character.Mod;
+        Depth = character.Depth;
+
+        CharacterButton = character.CharacterButton;
     }
 
     public void Dispose()
     {
         // Removing himself from its parnents
 
-        foreach (Character parent in parents)
+        foreach (Character parent in Parents)
         {
-            parent.childrens.Remove(this);
+            parent.Childrens.Remove(this);
         }
     }
 
 
-    public bool IsLeaf()
-    {
-        return childrens.Count == 0;
-    }
+    public bool IsLeaf() { return Childrens.Count == 0; }
 
     public bool IsLeftMost()
     {
-        if (parents.Count == 0)
-            return true;
+        if (Parents.Count == 0) return true;
 
-        return parents[0].childrens[0] == this;
+        return Parents[0].Childrens[0] == this;
     }
 
     public bool IsRightMost()
     {
-        if (parents.Count == 0)
-            return true;
+        if (Parents.Count == 0) return true;
 
-        return parents[0].childrens[parents[0].childrens.Count - 1] == this;
+        return Parents[0].Childrens[^1] == this;
     }
 
     public Character GetPreviousSibling()
     {
-        if (parents.Count == 0 || this.IsLeftMost())
-            return null;
+        if (Parents.Count == 0 || IsLeftMost()) return null;
 
-        return parents[0].childrens[parents[0].childrens.IndexOf(this) - 1];
+        return Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) - 1];
     }
 
     public Character GetNextSibling()
     {
-        if (parents.Count == 0 || this.IsRightMost())
-            return null;
+        if (Parents.Count == 0 || IsRightMost()) return null;
 
-        return parents[0].childrens[parents[0].childrens.IndexOf(this) + 1];
+        return Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) + 1];
     }
 
     public Character GetLeftMostSibling()
     {
-        if (parents.Count == 0)
-            return null;
+        if (Parents.Count == 0) return null;
+        if (IsLeftMost()) return this;
 
-        if (this.IsLeftMost())
-            return this;
-
-        return parents[0].childrens[0];
+        return Parents[0].Childrens[0];
     }
 
     public Character GetLeftMostChild()
     {
-        if (childrens.Count == 0)
-            return null;
+        if (Childrens.Count == 0) return null;
 
-        return childrens[0];
+        return Childrens[0];
     }
 
     public Character GetRightMostChild()
     {
-        if (childrens.Count == 0)
-            return null;
+        if (Childrens.Count == 0) return null;
 
-        return childrens[childrens.Count - 1];
-    }
-
-    public int GetDepth()
-    {
-        return this._depth;
-    }
-
-    public void SetDepth(int _depth)
-    {
-        this._depth = _depth;
-    }
-
-    public int GetX()
-    {
-        return this._x;
-    }
-
-    public void SetX(int x)
-    {
-        this._x = x;
-    }
-
-    public int GetY()
-    {
-        return this._y;
-    }
-
-    public void SetY(int y)
-    {
-        this._y = y;
-    }
-
-    public int GetMod()
-    {
-        return this._mod;
-    }
-
-    public void SetMod(int mod)
-    {
-        this._mod = mod;
-    }
-
-    public GameObject GetCharacterButton()
-    {
-        return this.CharacterButton;
-    }
-
-    public void SetCharacterButton(GameObject CharacterButton)
-    {
-        this.CharacterButton = CharacterButton;
+        return Childrens[^1];
     }
 
     public void SetTransformPositionX(float x)
