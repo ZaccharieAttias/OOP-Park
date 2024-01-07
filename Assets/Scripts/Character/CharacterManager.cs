@@ -27,10 +27,14 @@ public class CharacterManager : MonoBehaviour
     public GameObject CharacterTree;
     public GameObject _deleteCharacterButton;
 
+    public TreeBuilder TreeBuilder { get; set;}
+
+
     public void Start()
     {
         createDeletionButton();
         
+        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree").GetComponent<TreeBuilder>();
 
         CharacterTree = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/All");
         _charactersCollection = new List<Character>();
@@ -46,8 +50,8 @@ public class CharacterManager : MonoBehaviour
         {
             CleanPanel();
 
-            characterNameText.text = currentCharacter.name;
-            descriptionText.text = currentCharacter.description;
+            characterNameText.text = currentCharacter.Name;
+            descriptionText.text = currentCharacter.Description;
             ChangingGameObjectName();
 
             DisplayAttributes();
@@ -81,7 +85,7 @@ public class CharacterManager : MonoBehaviour
 
     private void DisplayDeletionOption()
     {
-        if (currentCharacter.isOriginal == true || currentCharacter.childrens.Count > 0)  _deleteCharacterButton.SetActive(false);
+        if (currentCharacter.IsOriginal == true || currentCharacter.Childrens.Count > 0)  _deleteCharacterButton.SetActive(false);
         else _deleteCharacterButton.SetActive(true);      
     }
 
@@ -89,7 +93,7 @@ public class CharacterManager : MonoBehaviour
     {
         foreach (Character character in _charactersCollection)
         {
-            if (character.name == currentCharacter.name)
+            if (character.Name == currentCharacter.Name)
             {
                 currentCharacter.Dispose();
                 _charactersCollection.Remove(character);
@@ -97,14 +101,14 @@ public class CharacterManager : MonoBehaviour
             }
         }
 
-        Destroy(GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/" + currentCharacter.name));
+        Destroy(GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/" + currentCharacter.Name));
         
-        DisplayCharacterDetails(_charactersCollection.First().name);
+        DisplayCharacterDetails(_charactersCollection.First().Name);
     }
 
     private void DisplayAttributes()
     {
-        foreach (CharacterAttribute attribute in currentCharacter.attributes)
+        foreach (CharacterAttribute attribute in currentCharacter.Attributes)
         {
             GameObject attributeButton = Instantiate(buttonPrefab, attributesPanel);
             attributeButton.name = attribute.name;
@@ -119,7 +123,7 @@ public class CharacterManager : MonoBehaviour
 
     private void DisplayMethods()
     {
-        foreach (CharacterMethod method in currentCharacter.methods)
+        foreach (CharacterMethod method in currentCharacter.Methods)
         {
             GameObject methodButton = Instantiate(buttonPrefab, methodsPanel);
 
@@ -135,7 +139,7 @@ public class CharacterManager : MonoBehaviour
     {
         foreach (Character character in _charactersCollection)
         {
-            if (character.name == characterName)
+            if (character.Name == characterName)
             {
                 return character;
             }
@@ -183,56 +187,67 @@ public class CharacterManager : MonoBehaviour
     public void AddCharacter(Character builtCharacter)
     {
         _charactersCollection.Add(builtCharacter);
+        TreeBuilder.BuildTree();
+        
 
-        CharacterTree.GetComponent<ButtonTreeManager>()._treeBuilder.BuildTree();
         // gameObject.transform.parent.GetComponent<TreeFocus>().SetTargetItem(GetRootButton().GetComponent<RectTransform>());
 
-        DisplayCharacterDetails(builtCharacter.name);
+
+        DisplayCharacterDetails(builtCharacter.Name);
     }
 
     public void CreateCharacters()
     {
-        string characterName = "";
-        string characterDescription = "";
+        string characterName;
+        string characterDescription;
         List<Character> characterAncestors = new List<Character>();
 
         // Character1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
         Character character1 = new Character(characterName, characterDescription, characterAncestors, true);
-        _charactersCollection.Add(character1);
-
-        CharacterTree.AddComponent<ButtonTreeManager>();
-        CharacterTree.GetComponent<ButtonTreeManager>().InitializeButtonTreeManager(character1, this);
-        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character1);
+        TempForCreateCharacterButton(character1);
+        TreeBuilder.Root = character1; // Temporary
+        AddCharacter(character1);
 
         // Character2 
         characterName = "Character 2";
         characterDescription = "This is the second character";
         characterAncestors.Add(character1);
         Character character2 = new Character(characterName, characterDescription, characterAncestors, true);
-        _charactersCollection.Add(character2);
-        _charactersCollection[0].childrens.Add(character2);
-        _charactersCollection[1].parents.Add(character1);
-
-        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character2);
+        character2.Parents.ForEach(parent => parent.Childrens.Add(character2));
+        TempForCreateCharacterButton(character2);
+        AddCharacter(character2);
         characterAncestors.Clear();
-
 
         // Character3 
         characterName = "Character 3";
         characterDescription = "This is the third character";
         characterAncestors.Add(character1);
         Character character3 = new Character(characterName, characterDescription, characterAncestors, true);
-        _charactersCollection.Add(character3);
-        _charactersCollection[0].childrens.Add(character3);
-        _charactersCollection[2].parents.Add(character1);
-
-        CharacterTree.GetComponent<ButtonTreeManager>().CreateButton(character3);
+        character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
+        TempForCreateCharacterButton(character3);
+        AddCharacter(character3);
         characterAncestors.Clear();
         
-        DisplayCharacterDetails(character1.name);
+        DisplayCharacterDetails(character1.Name);
     }
+
+    private void TempForCreateCharacterButton(Character characterNode)
+    {
+        Transform parnetTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/All").transform;
+
+        GameObject characterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
+        GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
+        newPlayerButton.name = characterNode.Name;
+        characterNode.CharacterButton = newPlayerButton;
+        newPlayerButton.GetComponent<CharacterDetails>().InitializeCharacter(characterNode);
+        Button button = newPlayerButton.GetComponent<Button>();
+        button.onClick.AddListener(() => DisplayCharacterDetails(characterNode.Name)); // Change it to set current Character and from there its somehow change the details
+    }
+
+
+
 
     public Character GetCurrentCharacter()
     {
@@ -248,7 +263,7 @@ public class CharacterManager : MonoBehaviour
 
         foreach (Character character in _charactersCollection)
         {
-            siblingNameToFind = character.name;
+            siblingNameToFind = character.Name;
             siblingTransform = parentTransform.Find(siblingNameToFind);  
             GameObject foundObject = siblingTransform.gameObject;
             characterGameObjectCollection.Add(foundObject);
