@@ -94,12 +94,12 @@ public class UpcastingPopupManager : MonoBehaviour
 
     public void SetCharacterUpcastable(Character currentCharacter)
     {
-        foreach (Character parent in currentCharacter.parents)
+        foreach (Character parent in currentCharacter.Parents)
         {
             SetCharacterUpcastable(parent);
 
             List<CharacterMethod> privateMethods = new List<CharacterMethod>();
-            foreach (CharacterMethod method in parent.methods)
+            foreach (CharacterMethod method in parent.Methods)
             {
                 if (method.accessModifier == AccessModifier.Private)
                 {
@@ -148,7 +148,7 @@ public class UpcastingPopupManager : MonoBehaviour
         if (currentCharacterIndex >= 0 && currentCharacterIndex < characterData.Count)
         {
             var currentCharacter = characterData[currentCharacterIndex].Item1;
-            characterName = currentCharacter.name;
+            characterName = currentCharacter.Name;
         }
 
         _characterText.GetComponent<TextMeshProUGUI>().text = characterName;
