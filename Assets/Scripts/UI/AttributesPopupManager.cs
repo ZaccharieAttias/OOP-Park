@@ -25,7 +25,7 @@ public class AttributesPopupManager : MonoBehaviour
         _contentPanel = GameObject.Find(_contentPanelPath).transform;
 
         Button closeButton = GameObject.Find(_closeButtonPath).GetComponent<Button>();
-        closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.name));
+        closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.Name));
 
         _collection = InitializeCollection();
         
@@ -83,7 +83,7 @@ public class AttributesPopupManager : MonoBehaviour
 
     private void MarkAttributeInPopup(GameObject attributeButton, CharacterAttribute attribute)
     {
-        bool hasAttribute = _currentCharacter.attributes.Any(item => item.name == attribute.name);
+        bool hasAttribute = _currentCharacter.Attributes.Any(item => item.name == attribute.name);
 
         Image image = attributeButton.GetComponent<Image>();
         image.color = hasAttribute ? Color.green : Color.white;
@@ -94,8 +94,8 @@ public class AttributesPopupManager : MonoBehaviour
 
     private void OnClick(CharacterAttribute attribute, bool hasAttribute)
     {
-        if (hasAttribute) _currentCharacter.attributes.Remove(_currentCharacter.attributes.Find(item => item.name == attribute.name));
-        else _currentCharacter.attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
+        if (hasAttribute) _currentCharacter.Attributes.Remove(_currentCharacter.Attributes.Find(item => item.name == attribute.name));
+        else _currentCharacter.Attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
 
         ShowAttributesPopup(_currentCharacter);
     }
