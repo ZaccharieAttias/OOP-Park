@@ -25,7 +25,7 @@ public class MethodsPopupManager : MonoBehaviour
         _contentPanel = GameObject.Find(_contentPanelPath).transform;
 
         Button closeButton = GameObject.Find(_closeButtonPath).GetComponent<Button>();
-        closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.name));
+        closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.Name));
 
         _collection = InitializeCollection();
 
@@ -84,7 +84,7 @@ public class MethodsPopupManager : MonoBehaviour
     private void MarkMethodInPopup(GameObject methodButton, CharacterMethod method)
     {
         bool hasAttribute = HasAttributeRecursively(_currentCharacter, method.name.ToLower());
-        bool hasMethod = _currentCharacter.methods.Any(item => item.name == method.name);
+        bool hasMethod = _currentCharacter.Methods.Any(item => item.name == method.name);
 
         if (hasAttribute == false)
         {
@@ -101,8 +101,8 @@ public class MethodsPopupManager : MonoBehaviour
 
     private void OnClick(CharacterMethod method, bool hasMethod)
     {
-        if (hasMethod) _currentCharacter.methods.Remove(_currentCharacter.methods.Find(item => item.name == method.name));
-        else _currentCharacter.methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
+        if (hasMethod) _currentCharacter.Methods.Remove(_currentCharacter.Methods.Find(item => item.name == method.name));
+        else _currentCharacter.Methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
 
         ShowMethodsPopup(_currentCharacter);
     }
@@ -115,9 +115,9 @@ public class MethodsPopupManager : MonoBehaviour
 
     private bool HasAttributeRecursively(Character character, string methodName)
     {
-        if (character.attributes.Any(attribute => attribute.name.ToLower() == methodName)) return true;
+        if (character.Attributes.Any(attribute => attribute.name.ToLower() == methodName)) return true;
 
-        foreach (Character parent in character.parents)
+        foreach (Character parent in character.Parents)
             if (HasAttributeRecursively(parent, methodName))
                 return true;
 
