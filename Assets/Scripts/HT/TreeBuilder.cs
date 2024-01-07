@@ -1,132 +1,112 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using System;
-using System.IO;
 using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 
 public class TreeBuilder : MonoBehaviour
 {
-    [SerializeField] private GameObject _lines;
+    public Character Root { get; set; }
 
-    GameObject _tempObject1;
-    GameObject _tempObject2;
-
-
-
-    private Character _rootCharacter;
+    public GameObject LinesGameObject { get; set; }
+    public GameObject _tempObject1 { get; set; }
+    public GameObject _tempObject2 { get; set; }
 
     private static int nodeSize = 40;
     private static int siblingDistance = 35;
     private static int treeDistance = 5;
 
-    public void SetRoot(Character rootCharacter)
+
+    public void Start() { InitializeProperties(); }
+
+    private void InitializeProperties()
     {
-        _rootCharacter = rootCharacter;
-        _lines = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/Lines");
-        _tempObject1 = new GameObject("temp1");
-        _tempObject1.transform.SetParent(_lines.transform);
-        _tempObject1.AddComponent<RectTransform>();
-        _tempObject2 = new GameObject("temp2");
-        _tempObject2.transform.SetParent(_lines.transform);
-        _tempObject2.AddComponent<RectTransform>();
+        Root = null;
+
+        LinesGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/Lines");
+        
+        _tempObject1 = new GameObject("temp1", typeof(RectTransform));
+        _tempObject1.transform.SetParent(LinesGameObject.transform);
+
+        _tempObject2 = new GameObject("temp2", typeof(RectTransform));
+        _tempObject2.transform.SetParent(LinesGameObject.transform);
     }
 
     public void BuildTree()
     {
         ResetLines();
         CalculateNodePositions();
-        DrawLines(_rootCharacter);
+        DrawLines(Root);
     }
 
     private void ResetLines()
     {
-        foreach (Transform child in _lines.transform)
-        {
+        foreach (Transform child in LinesGameObject.transform)
             if (child.gameObject.name != "temp1" && child.gameObject.name != "temp2")
                 Destroy(child.gameObject);
-        }
     }
 
     private void CalculateNodePositions()
     {
-        // initialize node x, y, and mod values
-        InitializeNodes(_rootCharacter, 0);
-
-        // assign initial X and Mod values for nodes
-        CalculateInitialX(_rootCharacter);
-
-        // ensure no node is being drawn off screen
-        CheckAllChildrenOnScreen(_rootCharacter);
-
-        // assign final X values to nodes
-        CalculateFinalPositions(_rootCharacter, 0);
-
-        // update the transform positions of the nodes
-        UpdateNodePositions(_rootCharacter);
+        InitializeNodes(Root, 0);
+        CalculateInitialX(Root);
+        CheckAllChildrenOnScreen(Root);
+        CalculateFinalPositions(Root, 0);
+        UpdateNodePositions(Root);
     }
 
     private void InitializeNodes(Character character, int depth)
     {
-        character.SetX(0);
-        character.SetY(depth * -75);
-        character.SetDepth(depth);
-        character.SetMod(0);
+        character.X = 0;
+        character.Y = depth * -75;
+        character.Mod = 0;
+        character.Depth = depth;
 
-        foreach (Character child in character.childrens)
+        foreach (Character child in character.Childrens)
             InitializeNodes(child, depth + 1);
     }
 
     private void CalculateInitialX(Character character)
     {
-        foreach (Character child in character.childrens)
+        foreach (Character child in character.Childrens)
             CalculateInitialX(child);
  
-        // if there is a previous sibling in this set, set X to prevous sibling + designated distance
-        if (character.IsLeaf()){
-            if (!character.IsLeftMost())
-                character.SetX(character.GetPreviousSibling().GetX() + nodeSize + siblingDistance);
+        if (character.IsLeaf())
+        {
+            if (character.IsLeftMost() == false) character.X = character.GetPreviousSibling().X + nodeSize + siblingDistance;
+            else character.X = 0;
+        }
+
+        else if (character.Childrens.Count == 1)
+        {
+            if (character.IsLeftMost())
+                character.X = character.Childrens[0].X;
+
             else
-                // if this is the first character in a set, set X to 0
-                character.SetX(0);
+            {
+                character.X = character.GetPreviousSibling().X + nodeSize + siblingDistance;
+                character.Mod = character.X - character.Childrens[0].X;
+            }
         }
-        // if there is only one child
-        else if (character.childrens.Count == 1){
-                if (character.IsLeftMost())
-                    character.SetX(character.childrens[0].GetX());
-                else
-                {
-                    character.SetX(character.GetPreviousSibling().GetX() + nodeSize + siblingDistance);
-                    character.SetMod(character.GetX() - character.childrens[0].GetX());
-                }
-        }
-        // if there are more than one child
+
         else
         {
-            // Find the first child's X and the last child's X
             Character leftChild = character.GetLeftMostChild();
             Character rightChild = character.GetRightMostChild();
 
-            // Find the midway point between the first and last child's X
-            var desiredX =  (leftChild.GetX() + rightChild.GetX()) / 2;
+            int desiredX =  (leftChild.X + rightChild.X) / 2;
 
-            // Check if this node has any siblings to the left of it
-            if (character.IsLeftMost())
-            {
-                // Set the X value equal to the desired X value to center the parent over the children
-                character.SetX(desiredX);
-            }
+            if (character.IsLeftMost()) character.X = desiredX;
+    
             else
             {
-                // Assign the Mod value of the node to node.X - desiredX to shift children under the parent
-                character.SetX(character.GetPreviousSibling().GetX() + nodeSize + siblingDistance);
-                character.SetMod(character.GetX() - desiredX);
+                character.X = character.GetPreviousSibling().X + nodeSize + siblingDistance;
+                character.Mod = character.X - desiredX;
             }
         }
 
-        // Since subtrees can overlap, check for conflicts and shift tree right if needed
-        if (character.childrens.Count > 0 && !character.IsLeftMost())
+        if (character.Childrens.Count > 0 && character.IsLeftMost() == false)
             CheckForConflicts(character);
     }
 
@@ -144,7 +124,7 @@ public class TreeBuilder : MonoBehaviour
             Dictionary<int, float> siblingContour = new Dictionary<int, float>();
             GetRightContour(sibling, 0, ref siblingContour);
 
-            for (int level = character.GetY() -75; level >= Math.Max(siblingContour.Keys.Min(), nodeContour.Keys.Min()); level -= 75)
+            for (int level = character.Y - 75; level >= Math.Max(siblingContour.Keys.Min(), nodeContour.Keys.Min()); level -= 75)
             {
                 float distance = nodeContour[level] - siblingContour[level];
                 if (distance + shiftValue < minDistance)
@@ -159,33 +139,33 @@ public class TreeBuilder : MonoBehaviour
 
         if (shiftValue > 0)
         {
-            character.SetX(character.GetX() + (int)shiftValue);
-            character.SetMod(character.GetMod() + (int)shiftValue);
+            character.X += (int)shiftValue;
+            character.Mod += (int)shiftValue;
             shiftValue = 0;
         }
     }
 
     private void CenterNodesBetween(Character leftNode, Character rightNode, float shiftValue)
     {
-        int leftIndex = leftNode.parents[0].childrens.IndexOf(leftNode);
-        int rightIndex = leftNode.parents[0].childrens.IndexOf(rightNode);
+        int leftIndex = leftNode.Parents[0].Childrens.IndexOf(leftNode);
+        int rightIndex = leftNode.Parents[0].Childrens.IndexOf(rightNode);
 
-        int numNodesBetween = (rightIndex - leftIndex) - 1;
+        int numNodesBetween = rightIndex - leftIndex - 1;
 
         if (numNodesBetween > 0)
         {
-            Debug.Log("CenterNodesBetween > 0");
-            var distanceBetweenNodesbefore = Mathf.Abs(rightNode.GetX() - leftNode.GetX()) / (numNodesBetween + 1);
-            var distanceBetweenNodesafter = Mathf.Abs(rightNode.GetX() + shiftValue - leftNode.GetX()) / (numNodesBetween + 1);
+            var distanceBetweenNodesbefore = Mathf.Abs(rightNode.X - leftNode.X) / (numNodesBetween + 1);
+            var distanceBetweenNodesafter = Mathf.Abs(rightNode.X + shiftValue - leftNode.X) / (numNodesBetween + 1);
             int count = 1;
+            
             for (int i = leftIndex + 1; i < rightIndex; i++)
             {
-                Character middleNode = leftNode.parents[0].childrens[i];
-                int desiredXafter = leftNode.GetX() + ((int)distanceBetweenNodesafter * count);
-                int desiredX = leftNode.GetX() + (distanceBetweenNodesbefore * count);
+                Character middleNode = leftNode.Parents[0].Childrens[i];
+                int desiredXafter = leftNode.X + ((int)distanceBetweenNodesafter * count);
+                int desiredX = leftNode.X + (distanceBetweenNodesbefore * count);
                 int offset = desiredXafter - desiredX;
-                middleNode.SetX(middleNode.GetX() + offset);
-                middleNode.SetMod(middleNode.GetMod() + offset);
+                middleNode.X += offset;
+                middleNode.Mod += offset;
                 count++;
             }
 
@@ -196,27 +176,23 @@ public class TreeBuilder : MonoBehaviour
 
     private void GetLeftContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
     {
-        if (!nodeContour.ContainsKey(character.GetY()))
-            nodeContour.Add(character.GetY(), character.GetX() + modSum);
-        else
-            nodeContour[character.GetY()] = Math.Min(nodeContour[character.GetY()], character.GetX() + modSum);
+        if (nodeContour.ContainsKey(character.Y) == false) nodeContour.Add(character.Y, character.X + modSum);
+        else nodeContour[character.Y] = Math.Min(nodeContour[character.Y], character.X + modSum);
 
-        modSum += character.GetMod();
+        modSum += character.Mod;
 
-        foreach (Character child in character.childrens)
+        foreach (Character child in character.Childrens)
             GetLeftContour(child, modSum, ref nodeContour);
     }
 
     private void GetRightContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
     {
-        if (!nodeContour.ContainsKey(character.GetY()))
-            nodeContour.Add(character.GetY(), character.GetX() + modSum);
-        else
-            nodeContour[character.GetY()] = Math.Max(nodeContour[character.GetY()], character.GetX() + modSum);
+        if (nodeContour.ContainsKey(character.Y) == false) nodeContour.Add(character.Y, character.X + modSum);
+        else nodeContour[character.Y] = Math.Max(nodeContour[character.Y], character.X + modSum);
 
-        modSum += character.GetMod();
+        modSum += character.Mod;
 
-        foreach (Character child in character.childrens)
+        foreach (Character child in character.Childrens)
             GetRightContour(child, modSum, ref nodeContour);
     }
 
@@ -229,49 +205,46 @@ public class TreeBuilder : MonoBehaviour
         foreach (int y in nodeContour.Keys)
         {
             if (nodeContour[y] + shiftAmount < 0)
-                shiftAmount = (nodeContour[y] * -1);
+                shiftAmount = nodeContour[y] * -1;
         }
 
         if (shiftAmount > 0)
         {
-            character.SetX(character.GetX() + (int)shiftAmount);
-            character.SetMod(character.GetMod() + (int)shiftAmount);
-
+            character.X += (int)shiftAmount;
+            character.Mod += character.Mod + (int)shiftAmount;
         }
     }
 
     private void CalculateFinalPositions(Character character, int modSum)
     {
-        character.SetX(character.GetX() + modSum);
-        modSum += character.GetMod();
+        character.X += modSum;
+        modSum += character.Mod;
 
-        foreach (Character child in character.childrens)
+        foreach (Character child in character.Childrens)
             CalculateFinalPositions(child, modSum);
 
-        if (character.IsLeaf())
-            character.SetY(character.GetDepth() * -75);
-        else
-            character.SetY(character.childrens[0].GetY() + 75);
+        if (character.IsLeaf()) character.Y = character.Depth * -75;
+        else character.Y = character.Childrens[0].Y + 75;
     }
 
     private void UpdateNodePositions(Character character)
     {
-        character.SetTransformPositionX(character.GetX());
-        character.SetTransformPositionY(character.GetY());
+        character.SetTransformPositionX(character.X);
+        character.SetTransformPositionY(character.Y);
 
-        foreach (Character child in character.childrens)
+        foreach (Character child in character.Childrens)
             UpdateNodePositions(child);
     }
 
     private void DrawLines(Character character)
     {
-        if (character.parents.Count != 0)
+        if (character.Parents.Count != 0)
         {
-            Vector2 nodeTopMiddle = new Vector2(character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x, character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + 20 - 4);
-            Vector2 nodeAboveMiddle = new Vector2(nodeTopMiddle.x, (character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.parents[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
+            Vector2 nodeTopMiddle = new Vector2(character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.x, character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + 20 - 4);
+            Vector2 nodeAboveMiddle = new Vector2(nodeTopMiddle.x, (character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.Parents[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
             
             GameObject temp1 = new GameObject();
-            temp1.transform.SetParent(_lines.transform);
+            temp1.transform.SetParent(LinesGameObject.transform);
             GameObject line1 = temp1;
             line1.AddComponent<Image>();
             line1.transform.localScale = new Vector3(1, 1, 1);
@@ -287,13 +260,13 @@ public class TreeBuilder : MonoBehaviour
             line1.GetComponent<LinesCreator>().Settings();
         }
 
-        if (character.childrens.Count > 0)
+        if (character.Childrens.Count > 0)
         {
-            Vector2 nodeBottomMiddle = new Vector2(character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x, character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y - 20 + 2);
-            Vector2 nodeBelowMiddle = new Vector2(nodeBottomMiddle.x, (character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.childrens[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
+            Vector2 nodeBottomMiddle = new Vector2(character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.x, character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y - 20 + 2);
+            Vector2 nodeBelowMiddle = new Vector2(nodeBottomMiddle.x, (character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.Childrens[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
 
             GameObject temp2 = new GameObject();
-            temp2.transform.SetParent(_lines.transform);
+            temp2.transform.SetParent(LinesGameObject.transform);
             GameObject line2 = temp2;
             line2.AddComponent<Image>();
             line2.transform.localScale = new Vector3(1, 1, 1);
@@ -308,13 +281,13 @@ public class TreeBuilder : MonoBehaviour
             line2.GetComponent<LinesCreator>().SetPoints(_tempObject1.transform, _tempObject2.transform);
             line2.GetComponent<LinesCreator>().Settings();
             
-            if (character.childrens.Count > 1)
+            if (character.Childrens.Count > 1)
             {
-                Vector2 nodeLeftMiddle = new Vector2(character.childrens[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x - 2.435f, (character.childrens[0].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
-                Vector2 nodeRightMiddle = new Vector2(character.childrens[character.childrens.Count - 1].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.x + 2.435f, (character.childrens[character.childrens.Count - 1].GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y + character.GetCharacterButton().GetComponent<RectTransform>().anchoredPosition.y) / 2);
+                Vector2 nodeLeftMiddle = new Vector2(character.Childrens[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.x - 2.435f, (character.Childrens[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
+                Vector2 nodeRightMiddle = new Vector2(character.Childrens[character.Childrens.Count - 1].CharacterButton.GetComponent<RectTransform>().anchoredPosition.x + 2.435f, (character.Childrens[character.Childrens.Count - 1].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
 
                 GameObject temp3 = new GameObject();
-                temp3.transform.SetParent(_lines.transform);
+                temp3.transform.SetParent(LinesGameObject.transform);
                 GameObject line3 = temp3;
                 line3.AddComponent<Image>();
                 line3.transform.localScale = new Vector3(1, 1, 1);
@@ -330,15 +303,10 @@ public class TreeBuilder : MonoBehaviour
             }
         }
 
-        foreach (Character child in character.childrens)
+        foreach (Character child in character.Childrens)
         {
             DrawLines(child);
         }
-    }
-
-    public GameObject GetRootCharacterButton()
-    {
-        return _rootCharacter.GetCharacterButton();
     }
 }
 
