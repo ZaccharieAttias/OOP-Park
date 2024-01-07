@@ -23,7 +23,7 @@ public class PowerUp : MonoBehaviour
             previousMethods = tempList.ToArray();
         }
 
-        foreach (CharacterMethod method in character.methods)
+        foreach (CharacterMethod method in character.Methods)
         {
             if (method.name == "MoveSpeed") speedBuff.ActivatePower(gameObject);
             if (method.name == "GravityForce") gravityBuff.ActivatePower(gameObject);
