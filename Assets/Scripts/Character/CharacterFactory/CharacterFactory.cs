@@ -41,13 +41,13 @@ public class CharacterFactory : MonoBehaviour
     {
         GameObject pureButtonPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Pure");
 
-        AddButton = Instantiate(pureButtonPrefab, transform.parent);
+        AddButton = Instantiate(pureButtonPrefab, transform);
         AddButton.AddComponent<AddFactory>();
 
-        CancelButton = Instantiate(pureButtonPrefab, transform.parent);
+        CancelButton = Instantiate(pureButtonPrefab, transform);
         CancelButton.AddComponent<CancelFactory>();
 
-        ConfirmButton = Instantiate(pureButtonPrefab, transform.parent);
+        ConfirmButton = Instantiate(pureButtonPrefab, transform);
         ConfirmButton.AddComponent<ConfirmFactory>();
 
         GameObject executeFactoryObject = new GameObject("ExecuteFactory", typeof(ExecuteFactory));
@@ -113,9 +113,9 @@ public class CharacterFactory : MonoBehaviour
 
     private void UpdatePanelUI()
     {
-        bool isSelectedEmpty = SelectedCharacterObjects.Count > 0;
-        CancelButton.GetComponent<Button>().interactable = isSelectedEmpty;
-        ConfirmButton.GetComponent<Button>().interactable = isSelectedEmpty;
+        bool isSelectedParentsEmpty = SelectedCharacterObjects.Count > 0;
+        CancelButton.GetComponent<Button>().interactable = isSelectedParentsEmpty;
+        ConfirmButton.GetComponent<Button>().interactable = isSelectedParentsEmpty;
 
         foreach (GameObject characterObject in DuplicateCharacterObjects)
         {
@@ -130,16 +130,16 @@ public class CharacterFactory : MonoBehaviour
 
         foreach (Character character in SelectedCharacterObjects)
         {
-            foreach (Character parent in character.parents)
+            foreach (Character parent in character.Parents)
             {
-                GameObject parentObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character.name == parent.name);
+                GameObject parentObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character.Name == parent.Name);
                 parentObject.GetComponent<Button>().interactable = false;
                 parentObject.GetComponent<Image>().color = Color.black;
             }
 
-            foreach (Character child in character.childrens)
+            foreach (Character child in character.Childrens)
             {
-                GameObject childObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character.name == child.name);
+                GameObject childObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character.Name == child.Name);
                 childObject.GetComponent<Button>().interactable = false;
                 childObject.GetComponent<Image>().color = Color.black;
             }
@@ -153,19 +153,17 @@ public class CharacterFactory : MonoBehaviour
         foreach (GameObject characterObject in CharacterObjects)
         {
             GameObject duplicateCharacterObject = Instantiate(characterObject, characterObject.transform.parent);
-            
+
+            CharacterDetails originalDetails = characterObject.GetComponent<CharacterDetails>();
+            CharacterDetails duplicateDetails = duplicateCharacterObject.GetComponent<CharacterDetails>();
+            duplicateDetails.InitializeCharacter(originalDetails.Character);
+
             Button duplicateCharacterObjectButton = duplicateCharacterObject.GetComponent<Button>();
             duplicateCharacterObjectButton.onClick.RemoveAllListeners();
             duplicateCharacterObjectButton.onClick.AddListener(() => CharacterObjectClicked());
 
             DuplicateCharacterObjects.Add(duplicateCharacterObject);
         }
-    }
-
-    private void DestroyObjectsList(List<GameObject> gameObjects)
-    {
-        foreach (GameObject gameObject in gameObjects)
-            Destroy(gameObject);
     }
 
     private void ToggleButtonInteractability(List<GameObject> gameObjects)
@@ -175,5 +173,11 @@ public class CharacterFactory : MonoBehaviour
             Button button = gameObject.GetComponent<Button>();
             button.interactable = !button.interactable;
         }
+    }
+    
+    private void DestroyObjectsList(List<GameObject> gameObjects)
+    {
+        foreach (GameObject gameObject in gameObjects)
+            Destroy(gameObject);
     }
 }
