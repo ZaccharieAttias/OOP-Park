@@ -2,15 +2,13 @@ using UnityEngine;
 using TMPro;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine.UI;
-using System.IO;
 using System;
-using UnityEngine.EventSystems;
 
+
+[Serializable]
 public class CharacterManager : MonoBehaviour
 {
-    [SerializeField]
     public List<Character> _charactersCollection;
     public Character currentCharacter;
 
@@ -27,7 +25,7 @@ public class CharacterManager : MonoBehaviour
     public GameObject CharacterTree;
     public GameObject _deleteCharacterButton;
 
-    public TreeBuilder TreeBuilder { get; set;}
+    public TreeBuilder TreeBuilder;
 
 
     public void Start()
@@ -91,15 +89,6 @@ public class CharacterManager : MonoBehaviour
 
     private void DeleteCharacter()
     {
-        foreach (Character character in _charactersCollection)
-        {
-            if (character.Name == currentCharacter.Name)
-            {
-                currentCharacter.Dispose();
-                _charactersCollection.Remove(character);
-                break;
-            }
-        }
 
         Destroy(GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/" + currentCharacter.Name));
         
@@ -188,10 +177,6 @@ public class CharacterManager : MonoBehaviour
     {
         _charactersCollection.Add(builtCharacter);
         TreeBuilder.BuildTree();
-        
-
-        // gameObject.transform.parent.GetComponent<TreeFocus>().SetTargetItem(GetRootButton().GetComponent<RectTransform>());
-
 
         DisplayCharacterDetails(builtCharacter.Name);
     }
@@ -200,12 +185,12 @@ public class CharacterManager : MonoBehaviour
     {
         string characterName;
         string characterDescription;
-        List<Character> characterAncestors = new List<Character>();
+        List<Character> characterAncestors = new();
 
         // Character1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
-        Character character1 = new Character(characterName, characterDescription, characterAncestors, true);
+        Character character1 = new(characterName, characterDescription, characterAncestors, true);
         TempForCreateCharacterButton(character1);
         TreeBuilder.Root = character1; // Temporary
         AddCharacter(character1);
@@ -214,7 +199,7 @@ public class CharacterManager : MonoBehaviour
         characterName = "Character 2";
         characterDescription = "This is the second character";
         characterAncestors.Add(character1);
-        Character character2 = new Character(characterName, characterDescription, characterAncestors, true);
+        Character character2 = new(characterName, characterDescription, characterAncestors, true);
         character2.Parents.ForEach(parent => parent.Childrens.Add(character2));
         TempForCreateCharacterButton(character2);
         AddCharacter(character2);
@@ -224,7 +209,7 @@ public class CharacterManager : MonoBehaviour
         characterName = "Character 3";
         characterDescription = "This is the third character";
         characterAncestors.Add(character1);
-        Character character3 = new Character(characterName, characterDescription, characterAncestors, true);
+        Character character3 = new(characterName, characterDescription, characterAncestors, true);
         character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
         TempForCreateCharacterButton(character3);
         AddCharacter(character3);
@@ -240,7 +225,7 @@ public class CharacterManager : MonoBehaviour
         GameObject characterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
         newPlayerButton.name = characterNode.Name;
-        characterNode.CharacterButton = newPlayerButton;
+        characterNode.CharacterButton.Button = newPlayerButton;
         newPlayerButton.GetComponent<CharacterDetails>().InitializeCharacter(characterNode);
         Button button = newPlayerButton.GetComponent<Button>();
         button.onClick.AddListener(() => DisplayCharacterDetails(characterNode.Name)); // Change it to set current Character and from there its somehow change the details
