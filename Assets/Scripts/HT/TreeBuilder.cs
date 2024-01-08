@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class TreeBuilder : MonoBehaviour
 {
     public Character Root;
+    
+    public GameObject AllGameObject;
 
     public GameObject LinesGameObject;
     public GameObject _tempObject1;
@@ -17,6 +19,7 @@ public class TreeBuilder : MonoBehaviour
     public static int SiblingDistance = 35;
     public static int TreeDistance = 5;
 
+    public ScrollRect ScrollView;
 
     public void Start() { InitializeProperties(); }
 
@@ -24,8 +27,10 @@ public class TreeBuilder : MonoBehaviour
     {
         Root = null;
 
-        LinesGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/Lines");
-        
+        AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All");
+        LinesGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View (1)/Viewport/Lines");
+        ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<ScrollRect>();
+
         _tempObject1 = new GameObject("temp1", typeof(RectTransform));
         _tempObject1.transform.SetParent(LinesGameObject.transform);
 
@@ -38,6 +43,8 @@ public class TreeBuilder : MonoBehaviour
         ResetLines();
         CalculateNodePositions();
         DrawLines(Root);
+        //ScrollView.FocusOnItem(Root.CharacterButton.Button.GetComponent<RectTransform>());
+        //StartCoroutine(ScrollView.FocusOnItemCoroutine(Root.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
     }
 
     private void ResetLines()
@@ -57,6 +64,7 @@ public class TreeBuilder : MonoBehaviour
         CheckAllChildrenOnScreen(Root);
         CalculateFinalPositions(Root, 0);
         UpdateNodePositions(Root);
+        UpdateContentsSizes();
     }
     private void InitializeNodes(Character character, int depth)
     {
@@ -186,8 +194,8 @@ public class TreeBuilder : MonoBehaviour
     }
     private void UpdateNodePositions(Character character)
     {
-        character.SetTransformPositionX(character.CharacterButton.X);
-        character.SetTransformPositionY(character.CharacterButton.Y);
+        character.SetTransformPositionX(character.CharacterButton.X - NodeSize / 2);
+        character.SetTransformPositionY(character.CharacterButton.Y - NodeSize / 2);
 
         foreach (Character child in character.Childrens)
             UpdateNodePositions(child);
@@ -275,5 +283,80 @@ public class TreeBuilder : MonoBehaviour
         LinesCreator linesCreator = line.GetComponent<LinesCreator>();
         linesCreator.SetPoints(_tempObject1.transform, _tempObject2.transform);
         linesCreator.Settings();
+    }
+
+    private void UpdateContentsSizes()
+    {
+        RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
+        RectTransform linesRectTransform = LinesGameObject.GetComponent<RectTransform>();
+
+        //the height of the content is starting from the root node to the node that have the most depth
+        //find the node that have the most depth in the tree
+        int maxDepth = 0;
+        Queue<Character> queue = new();
+        queue.Enqueue(Root);
+        while (queue.Count > 0)
+        {
+            Character currentCharacter = queue.Dequeue();
+            if (currentCharacter.CharacterButton.Depth > maxDepth)
+                maxDepth = currentCharacter.CharacterButton.Depth;
+
+            foreach (Character child in currentCharacter.Childrens)
+                queue.Enqueue(child);
+        }
+
+        //calculate the height of the content
+        int contentHeight = maxDepth * 75 + NodeSize;
+
+        ///the width of the content is starting from the left most node to the right most node
+        //find the left most node
+        int leftMostX = 0;
+        Character leftMostNode = Root;
+        queue.Enqueue(Root);
+        while (queue.Count > 0)
+        {
+            Character currentCharacter = queue.Dequeue();
+            if (currentCharacter.CharacterButton.X < leftMostX)
+            {
+                leftMostX = currentCharacter.CharacterButton.X;
+                leftMostNode = currentCharacter;
+            }
+
+            foreach (Character child in currentCharacter.Childrens)
+                queue.Enqueue(child);
+        }
+
+        Debug.Log(leftMostNode.Name + " " + leftMostNode.CharacterButton.X);
+
+        //find the right most node
+        int rightMostX = 0;
+        Character rightMostNode = Root;
+        queue.Enqueue(Root);
+        while (queue.Count > 0)
+        {
+            Character currentCharacter = queue.Dequeue();
+            if (currentCharacter.CharacterButton.X > rightMostX)
+            {
+                rightMostX = currentCharacter.CharacterButton.X;
+                rightMostNode = currentCharacter;
+            }
+
+            foreach (Character child in currentCharacter.Childrens)
+                queue.Enqueue(child);
+        }
+
+        Debug.Log(rightMostNode.Name + " " + rightMostNode.CharacterButton.X);
+
+        //calculate the width of the content
+        int contentWidth = Math.Abs(rightMostNode.CharacterButton.X) + Math.Abs(leftMostNode.CharacterButton.X) + NodeSize;
+
+        //set the size of the content
+        allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
+        linesRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
+
+        //set the position of the content
+        //allRectTransform.anchoredPosition = new Vector2(contentWidth / 2, contentHeight / 2);
+        //linesRectTransform.anchoredPosition = new Vector2(contentWidth / 2, contentHeight / 2);
+        
     }
 }
