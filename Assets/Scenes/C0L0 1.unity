@@ -1533,6 +1533,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LinesGameObject: {fileID: 0}
+  _tempObject1: {fileID: 0}
+  _tempObject2: {fileID: 0}
 --- !u!1 &154699116
 GameObject:
   m_ObjectHideFlags: 0
@@ -5080,7 +5083,6 @@ GameObject:
   m_Component:
   - component: {fileID: 489265638}
   - component: {fileID: 489265639}
-  - component: {fileID: 489265640}
   m_Layer: 5
   m_Name: HTMenu
   m_TagString: Untagged
@@ -5124,18 +5126,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   htMenu: {fileID: 828296109}
---- !u!114 &489265640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489265637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29883f324b0f49c49b205b5b8e6bece4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &503940664
 GameObject:
   m_ObjectHideFlags: 0
@@ -9727,12 +9717,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1155f68a756b84b95ec7c0da59c074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _charactersCollection: []
-  currentCharacter:
-    Parents: []
-    Childrens: []
-    Attributes: []
-    Methods: []
   characterNameText: {fileID: 1824668557}
   descriptionText: {fileID: 39612446}
   attributesPanel: {fileID: 1924118269}
@@ -9742,6 +9726,7 @@ MonoBehaviour:
   buttonPrefab: {fileID: 6711824849685729551, guid: c5349b688a8cd904da8456da80c2444e, type: 3}
   CharacterTree: {fileID: 93551640}
   _deleteCharacterButton: {fileID: 0}
+  TreeBuilder: {fileID: 0}
 --- !u!114 &1289166419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9782,6 +9767,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f659f6834b2f7874b8fedffaec61b75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AllowSingleInheritance: 0
+  AllowMultipleInheritance: 0
+  AllowAccessModifiers: 0
+  AllowOverride: 0
+  AllowUpcasting: 0
 --- !u!1 &1313903829
 GameObject:
   m_ObjectHideFlags: 0
