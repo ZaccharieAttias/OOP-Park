@@ -9,24 +9,27 @@ public class LinesCreator : MonoBehaviour
 
     public RectTransform lineRect;
 
+
     public void Settings()
     {
         if (StartPoint && EndPoint)
         {
             lineRect = GetComponent<RectTransform>();
+            
             Vector3 pointALocal = StartPoint.GetComponent<RectTransform>().anchoredPosition;
             Vector3 pointBLocal = EndPoint.GetComponent<RectTransform>().anchoredPosition;
+            
             UpdateLine(pointALocal, pointBLocal);
         }
 
         else
             lineRect.sizeDelta = new Vector2(0, 0);
     }
-
     private void UpdateLine(Vector2 startPoint, Vector2 endPoint)
     {
         float distance = Vector2.Distance(startPoint, endPoint);
         float angle = Mathf.Atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x) * Mathf.Rad2Deg;
+        
         Vector2 middlePoint = (startPoint + endPoint) / 2;
 
         lineRect.anchoredPosition = middlePoint;
@@ -35,7 +38,6 @@ public class LinesCreator : MonoBehaviour
         
         GetComponent<Image>().color = Color.red;
     }
-
     public void SetPoints(Transform startPoint, Transform endPoint)
     {
         StartPoint = startPoint;
