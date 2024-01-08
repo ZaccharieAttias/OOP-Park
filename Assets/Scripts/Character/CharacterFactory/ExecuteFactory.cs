@@ -4,15 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+[SerializeField]
 public class ExecuteFactory : MonoBehaviour
 {   
-    public CharacterFactory CharacterFactory { get; set; }
-    public CharacterManager CharacterManager { get; set; }
+    public CharacterFactory CharacterFactory;
+    public CharacterManager CharacterManager;
 
-    public GameObject CharacterPrefab { get; set; }
-    public Transform CharacterParent { get; set; }
-    public List<Sprite> CharacterSprites { get; set; }
-    public int SpriteIndex { get; set; }
+    public GameObject CharacterPrefab;
+    public Transform CharacterParent;
+    public List<Sprite> CharacterSprites;
+    public int SpriteIndex;
 
 
     public void Start() 
@@ -26,7 +27,6 @@ public class ExecuteFactory : MonoBehaviour
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
         transform.SetParent(characterFactory.transform);
     }
-
     private void InitializeProperties()
     {
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
@@ -48,7 +48,6 @@ public class ExecuteFactory : MonoBehaviour
 
         CharacterManager.AddCharacter(builtCharacter);
     }
-
     private Character BuildCharacter()
     {
         int characterIndex = CharacterFactory.CharacterObjects.Count + 1;
@@ -56,18 +55,17 @@ public class ExecuteFactory : MonoBehaviour
         string characterDescription = $"I`m {characterName}";
         List<Character> parents = CharacterFactory.SelectedCharacterObjects;
 
-        Character builtCharacter = new Character(characterName, characterDescription, parents, false);
+        Character builtCharacter = new(characterName, characterDescription, parents, false);
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
         
         return builtCharacter;
     }
-
     private void BuildCharacterObject(Character character)
     {
         GameObject characterObject = Instantiate(CharacterPrefab, CharacterParent);
 
         characterObject.name = character.Name;
-        character.CharacterButton = characterObject;
+        character.CharacterButton.Button = characterObject;
         characterObject.GetComponent<CharacterDetails>().InitializeCharacter(character);
 
         Button button = characterObject.GetComponent<Button>();
