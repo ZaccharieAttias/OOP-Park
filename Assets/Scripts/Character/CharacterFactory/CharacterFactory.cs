@@ -7,17 +7,17 @@ using UnityEngine.UI;
 
 public class CharacterFactory : MonoBehaviour
 {
-    public ExecuteFactory ExecuteFactory { get; set; }
+    public ExecuteFactory ExecuteFactory;
 
-    public GameObject AddButton { get; set; }
-    public GameObject CancelButton { get; set; }
-    public GameObject ConfirmButton { get; set; }
+    public GameObject AddButton;
+    public GameObject CancelButton;
+    public GameObject ConfirmButton;
 
-    public List<GameObject> CharacterObjects { get; set; }
-    public List<GameObject> DuplicateCharacterObjects { get; set; }
-    public List<Character> SelectedCharacterObjects { get; set; }
+    public List<GameObject> CharacterObjects;
+    public List<GameObject> DuplicateCharacterObjects;
+    public List<Character> SelectedCharacterObjects;
 
-    public int ParentsLimit { get; set; }
+    public int ParentsLimit;
 
 
     public void Start() 
@@ -36,7 +36,6 @@ public class CharacterFactory : MonoBehaviour
         transform.localPosition = new Vector3(0, 0, 0);
         transform.localScale = new Vector3(1, 1, 1);
     }
-
     private void InitializeProperties()
     {
         GameObject pureButtonPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Pure");
@@ -50,7 +49,7 @@ public class CharacterFactory : MonoBehaviour
         ConfirmButton = Instantiate(pureButtonPrefab, transform);
         ConfirmButton.AddComponent<ConfirmFactory>();
 
-        GameObject executeFactoryObject = new GameObject("ExecuteFactory", typeof(ExecuteFactory));
+        GameObject executeFactoryObject = new("ExecuteFactory", typeof(ExecuteFactory));
         ExecuteFactory = executeFactoryObject.GetComponent<ExecuteFactory>();
 
         CharacterObjects = new List<GameObject>();
@@ -70,7 +69,6 @@ public class CharacterFactory : MonoBehaviour
         BuildDuplicateCharacterObjects();
         ToggleButtonInteractability(CharacterObjects);
     }
-
     public void CancelFactory()
     {
         CancelButton.GetComponent<Button>().interactable = false;
@@ -80,7 +78,6 @@ public class CharacterFactory : MonoBehaviour
 
         UpdatePanelUI();
     }
-
     public void ConfirmFactory()
     {
         CancelButton.SetActive(false);
@@ -110,7 +107,6 @@ public class CharacterFactory : MonoBehaviour
 
         UpdatePanelUI();
     }
-
     private void UpdatePanelUI()
     {
         bool isSelectedParentsEmpty = SelectedCharacterObjects.Count > 0;
@@ -132,14 +128,14 @@ public class CharacterFactory : MonoBehaviour
         {
             foreach (Character parent in character.Parents)
             {
-                GameObject parentObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character.Name == parent.Name);
+                GameObject parentObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character == parent);
                 parentObject.GetComponent<Button>().interactable = false;
                 parentObject.GetComponent<Image>().color = Color.black;
             }
 
             foreach (Character child in character.Childrens)
             {
-                GameObject childObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character.Name == child.Name);
+                GameObject childObject = DuplicateCharacterObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character == child);
                 childObject.GetComponent<Button>().interactable = false;
                 childObject.GetComponent<Image>().color = Color.black;
             }
@@ -165,7 +161,6 @@ public class CharacterFactory : MonoBehaviour
             DuplicateCharacterObjects.Add(duplicateCharacterObject);
         }
     }
-
     private void ToggleButtonInteractability(List<GameObject> gameObjects)
     {
         foreach (GameObject gameObject in gameObjects)
@@ -174,7 +169,6 @@ public class CharacterFactory : MonoBehaviour
             button.interactable = !button.interactable;
         }
     }
-    
     private void DestroyObjectsList(List<GameObject> gameObjects)
     {
         foreach (GameObject gameObject in gameObjects)
