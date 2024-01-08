@@ -220,7 +220,7 @@ public class CharacterManager : MonoBehaviour
 
     private void TempForCreateCharacterButton(Character characterNode)
     {
-        Transform parnetTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree/All").transform;
+        Transform parnetTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All").transform;
 
         GameObject characterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
