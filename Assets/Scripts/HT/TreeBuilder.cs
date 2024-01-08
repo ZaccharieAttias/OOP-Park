@@ -1,21 +1,21 @@
-using UnityEngine;
-using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
 
 
 public class TreeBuilder : MonoBehaviour
 {
-    public Character Root { get; set; }
+    public Character Root;
 
-    public GameObject LinesGameObject { get; set; }
-    public GameObject _tempObject1 { get; set; }
-    public GameObject _tempObject2 { get; set; }
+    public GameObject LinesGameObject;
+    public GameObject _tempObject1;
+    public GameObject _tempObject2;
 
-    private static int nodeSize = 40;
-    private static int siblingDistance = 35;
-    private static int treeDistance = 5;
+    public static int NodeSize = 40;
+    public static int SiblingDistance = 35;
+    public static int TreeDistance = 5;
 
 
     public void Start() { InitializeProperties(); }
@@ -43,8 +43,11 @@ public class TreeBuilder : MonoBehaviour
     private void ResetLines()
     {
         foreach (Transform child in LinesGameObject.transform)
-            if (child.gameObject.name != "temp1" && child.gameObject.name != "temp2")
+        {
+            string childName = child.gameObject.name;
+            if (childName != "temp1" && childName != "temp2")
                 Destroy(child.gameObject);
+        }
     }
 
     private void CalculateNodePositions()
@@ -55,80 +58,88 @@ public class TreeBuilder : MonoBehaviour
         CalculateFinalPositions(Root, 0);
         UpdateNodePositions(Root);
     }
-
     private void InitializeNodes(Character character, int depth)
     {
-        character.X = 0;
-        character.Y = depth * -75;
-        character.Mod = 0;
-        character.Depth = depth;
+        character.CharacterButton.X = 0;
+        character.CharacterButton.Y = depth * -75;
+        character.CharacterButton.Mod = 0;
+        character.CharacterButton.Depth = depth;
 
         foreach (Character child in character.Childrens)
             InitializeNodes(child, depth + 1);
     }
-
     private void CalculateInitialX(Character character)
     {
         foreach (Character child in character.Childrens)
             CalculateInitialX(child);
  
         if (character.IsLeaf())
-        {
-            if (character.IsLeftMost() == false) character.X = character.GetPreviousSibling().X + nodeSize + siblingDistance;
-            else character.X = 0;
-        }
+            character.CharacterButton.X = character.IsLeftMost() ? 0 : character.GetPreviousSibling().CharacterButton.X + NodeSize + SiblingDistance;
 
         else if (character.Childrens.Count == 1)
         {
-            if (character.IsLeftMost())
-                character.X = character.Childrens[0].X;
-
-            else
-            {
-                character.X = character.GetPreviousSibling().X + nodeSize + siblingDistance;
-                character.Mod = character.X - character.Childrens[0].X;
-            }
+            CharacterButton leftChild = character.GetLeftMostChild().CharacterButton;
+            
+            character.CharacterButton.X = character.IsLeftMost() ? leftChild.X : character.GetPreviousSibling().CharacterButton.X + NodeSize + SiblingDistance;
+            character.CharacterButton.Mod = character.CharacterButton.X - leftChild.X;
         }
 
         else
         {
-            Character leftChild = character.GetLeftMostChild();
-            Character rightChild = character.GetRightMostChild();
-
-            int desiredX =  (leftChild.X + rightChild.X) / 2;
-
-            if (character.IsLeftMost()) character.X = desiredX;
-    
-            else
-            {
-                character.X = character.GetPreviousSibling().X + nodeSize + siblingDistance;
-                character.Mod = character.X - desiredX;
-            }
+            CharacterButton leftChild = character.GetLeftMostChild().CharacterButton;
+            CharacterButton rightChild = character.GetRightMostChild().CharacterButton;
+            
+            int desiredX = (leftChild.X + rightChild.X) / 2;
+            
+            character.CharacterButton.X = character.IsLeftMost() ? desiredX : character.GetPreviousSibling().CharacterButton.X + NodeSize + SiblingDistance;
+            character.CharacterButton.Mod = character.CharacterButton.X - desiredX;
         }
 
         if (character.Childrens.Count > 0 && character.IsLeftMost() == false)
             CheckForConflicts(character);
     }
+    private void CheckAllChildrenOnScreen(Character character)
+    {
+        Dictionary<int, float> nodeContour = new();
+        GetLeftContour(character, 0, ref nodeContour);
+
+        float shiftAmount = nodeContour.Values.Min();
+        if (shiftAmount < 0)
+        {
+            character.CharacterButton.X += (int)Math.Abs(shiftAmount);
+            character.CharacterButton.Mod += (int)Math.Abs(shiftAmount);
+        }
+    }
+    private void CalculateFinalPositions(Character character, int modSum)
+    {
+        character.CharacterButton.X += modSum;
+        modSum += character.CharacterButton.Mod;
+
+        foreach (Character child in character.Childrens)
+            CalculateFinalPositions(child, modSum);
+
+        character.CharacterButton.Y = character.IsLeaf() ? character.CharacterButton.Depth * -75 : character.Childrens[0].CharacterButton.Y + 75;
+    }
 
     private void CheckForConflicts(Character character)
     {
-        float minDistance = treeDistance + nodeSize;
+        float minDistance = TreeDistance + NodeSize;
         float shiftValue = 0;
 
-        Dictionary<int, float> nodeContour = new Dictionary<int, float>();
+        Dictionary<int, float> nodeContour = new();
         GetLeftContour(character, 0, ref nodeContour);
 
         Character sibling = character.GetLeftMostSibling();
         while (sibling != null && sibling != character)
         {
-            Dictionary<int, float> siblingContour = new Dictionary<int, float>();
+            Dictionary<int, float> siblingContour = new();
             GetRightContour(sibling, 0, ref siblingContour);
 
-            for (int level = character.Y - 75; level >= Math.Max(siblingContour.Keys.Min(), nodeContour.Keys.Min()); level -= 75)
+            int minLevel = Math.Max(nodeContour.Keys.Min(), siblingContour.Keys.Min());
+            for (int level = character.CharacterButton.Y - 75; level >= minLevel; level -= 75)
             {
                 float distance = nodeContour[level] - siblingContour[level];
-                if (distance + shiftValue < minDistance)
-                    shiftValue = Mathf.Max(minDistance - distance, shiftValue);
+                shiftValue = Mathf.Max(minDistance - distance, shiftValue);
             }
 
             if (shiftValue > 0)
@@ -139,12 +150,10 @@ public class TreeBuilder : MonoBehaviour
 
         if (shiftValue > 0)
         {
-            character.X += (int)shiftValue;
-            character.Mod += (int)shiftValue;
-            shiftValue = 0;
+            character.CharacterButton.X += (int)shiftValue;
+            character.CharacterButton.Mod += (int)shiftValue;        
         }
     }
-
     private void CenterNodesBetween(Character leftNode, Character rightNode, float shiftValue)
     {
         int leftIndex = leftNode.Parents[0].Childrens.IndexOf(leftNode);
@@ -154,159 +163,117 @@ public class TreeBuilder : MonoBehaviour
 
         if (numNodesBetween > 0)
         {
-            var distanceBetweenNodesbefore = Mathf.Abs(rightNode.X - leftNode.X) / (numNodesBetween + 1);
-            var distanceBetweenNodesafter = Mathf.Abs(rightNode.X + shiftValue - leftNode.X) / (numNodesBetween + 1);
-            int count = 1;
+            var distanceBetweenNodesbefore = Mathf.Abs(rightNode.CharacterButton.X - leftNode.CharacterButton.X) / (numNodesBetween + 1);
+            var distanceBetweenNodesafter = Mathf.Abs(rightNode.CharacterButton.X + shiftValue - leftNode.CharacterButton.X) / (numNodesBetween + 1);
             
+            int count = 1;
             for (int i = leftIndex + 1; i < rightIndex; i++)
             {
                 Character middleNode = leftNode.Parents[0].Childrens[i];
-                int desiredXafter = leftNode.X + ((int)distanceBetweenNodesafter * count);
-                int desiredX = leftNode.X + (distanceBetweenNodesbefore * count);
+
+                int desiredXafter = leftNode.CharacterButton.X + ((int)distanceBetweenNodesafter * count);
+                int desiredX = leftNode.CharacterButton.X + (distanceBetweenNodesbefore * count);
                 int offset = desiredXafter - desiredX;
-                middleNode.X += offset;
-                middleNode.Mod += offset;
+                
+                middleNode.CharacterButton.X += offset;
+                middleNode.CharacterButton.Mod += offset;
+                
                 count++;
             }
 
             CheckForConflicts(leftNode);
         }
     }
-
-
-    private void GetLeftContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
-    {
-        if (nodeContour.ContainsKey(character.Y) == false) nodeContour.Add(character.Y, character.X + modSum);
-        else nodeContour[character.Y] = Math.Min(nodeContour[character.Y], character.X + modSum);
-
-        modSum += character.Mod;
-
-        foreach (Character child in character.Childrens)
-            GetLeftContour(child, modSum, ref nodeContour);
-    }
-
-    private void GetRightContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
-    {
-        if (nodeContour.ContainsKey(character.Y) == false) nodeContour.Add(character.Y, character.X + modSum);
-        else nodeContour[character.Y] = Math.Max(nodeContour[character.Y], character.X + modSum);
-
-        modSum += character.Mod;
-
-        foreach (Character child in character.Childrens)
-            GetRightContour(child, modSum, ref nodeContour);
-    }
-
-    private void CheckAllChildrenOnScreen(Character character)
-    {
-        Dictionary<int, float> nodeContour = new Dictionary<int, float>();
-        GetLeftContour(character, 0, ref nodeContour);
-
-        float shiftAmount = 0;
-        foreach (int y in nodeContour.Keys)
-        {
-            if (nodeContour[y] + shiftAmount < 0)
-                shiftAmount = nodeContour[y] * -1;
-        }
-
-        if (shiftAmount > 0)
-        {
-            character.X += (int)shiftAmount;
-            character.Mod += character.Mod + (int)shiftAmount;
-        }
-    }
-
-    private void CalculateFinalPositions(Character character, int modSum)
-    {
-        character.X += modSum;
-        modSum += character.Mod;
-
-        foreach (Character child in character.Childrens)
-            CalculateFinalPositions(child, modSum);
-
-        if (character.IsLeaf()) character.Y = character.Depth * -75;
-        else character.Y = character.Childrens[0].Y + 75;
-    }
-
     private void UpdateNodePositions(Character character)
     {
-        character.SetTransformPositionX(character.X);
-        character.SetTransformPositionY(character.Y);
+        character.SetTransformPositionX(character.CharacterButton.X);
+        character.SetTransformPositionY(character.CharacterButton.Y);
 
         foreach (Character child in character.Childrens)
             UpdateNodePositions(child);
     }
 
+    private void GetLeftContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
+    {
+        int characterY = character.CharacterButton.Y;
+        float characterX = character.CharacterButton.X + modSum;
+
+        if (nodeContour.ContainsKey(characterY) == false) nodeContour.Add(characterY, characterX);
+        else nodeContour[characterY] = Math.Min(nodeContour[characterY], characterX);
+
+        modSum += character.CharacterButton.Mod;
+
+        foreach (Character child in character.Childrens)
+            GetLeftContour(child, modSum, ref nodeContour);
+    }
+    private void GetRightContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
+    {
+        int characterY = character.CharacterButton.Y;
+        float characterX = character.CharacterButton.X + modSum;
+
+        if (nodeContour.ContainsKey(characterY) == false) nodeContour.Add(characterY, characterX);
+        else  nodeContour[characterY] = Math.Max(nodeContour[characterY], characterX);
+
+        modSum += character.CharacterButton.Mod;
+
+        foreach (Character child in character.Childrens)
+            GetRightContour(child, modSum, ref nodeContour);
+    }
+    
     private void DrawLines(Character character)
     {
+        RectTransform rectTransform = character.CharacterButton.Button.GetComponent<RectTransform>();
+
         if (character.Parents.Count != 0)
         {
-            Vector2 nodeTopMiddle = new Vector2(character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.x, character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + 20 - 4);
-            Vector2 nodeAboveMiddle = new Vector2(nodeTopMiddle.x, (character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.Parents[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
-            
-            GameObject temp1 = new GameObject();
-            temp1.transform.SetParent(LinesGameObject.transform);
-            GameObject line1 = temp1;
-            line1.AddComponent<Image>();
-            line1.transform.localScale = new Vector3(1, 1, 1);
-            line1.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
-            line1.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
-            line1.AddComponent<LinesCreator>();
-            
-            _tempObject1.GetComponent<RectTransform>().anchoredPosition = nodeTopMiddle;
-            _tempObject2.GetComponent<RectTransform>().anchoredPosition = nodeAboveMiddle;
+            RectTransform parentRectTransform = character.Parents[0].CharacterButton.Button.GetComponent<RectTransform>();
 
-
-            line1.GetComponent<LinesCreator>().SetPoints(_tempObject1.transform, _tempObject2.transform);
-            line1.GetComponent<LinesCreator>().Settings();
+            Vector2 nodeTopMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 16);
+            Vector2 nodeAboveMiddle = new(nodeTopMiddle.x, (rectTransform.anchoredPosition.y + parentRectTransform.anchoredPosition.y) / 2);
+            
+            CreateLine(nodeAboveMiddle, nodeTopMiddle);
         }
 
         if (character.Childrens.Count > 0)
         {
-            Vector2 nodeBottomMiddle = new Vector2(character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.x, character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y - 20 + 2);
-            Vector2 nodeBelowMiddle = new Vector2(nodeBottomMiddle.x, (character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.Childrens[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
+            RectTransform leftChildrenRectTransform = character.Childrens[0].CharacterButton.Button.GetComponent<RectTransform>();
 
-            GameObject temp2 = new GameObject();
-            temp2.transform.SetParent(LinesGameObject.transform);
-            GameObject line2 = temp2;
-            line2.AddComponent<Image>();
-            line2.transform.localScale = new Vector3(1, 1, 1);
-            line2.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
-            line2.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
-            line2.AddComponent<LinesCreator>();
-            
-            _tempObject1.GetComponent<RectTransform>().anchoredPosition = nodeBottomMiddle;
-            _tempObject2.GetComponent<RectTransform>().anchoredPosition = nodeBelowMiddle;
+            Vector2 nodeBottomMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - 18);
+            Vector2 nodeBelowMiddle = new(nodeBottomMiddle.x, (rectTransform.anchoredPosition.y + leftChildrenRectTransform.anchoredPosition.y) / 2);
 
-
-            line2.GetComponent<LinesCreator>().SetPoints(_tempObject1.transform, _tempObject2.transform);
-            line2.GetComponent<LinesCreator>().Settings();
+            CreateLine(nodeBottomMiddle, nodeBelowMiddle);
             
             if (character.Childrens.Count > 1)
             {
-                Vector2 nodeLeftMiddle = new Vector2(character.Childrens[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.x - 2.435f, (character.Childrens[0].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
-                Vector2 nodeRightMiddle = new Vector2(character.Childrens[character.Childrens.Count - 1].CharacterButton.GetComponent<RectTransform>().anchoredPosition.x + 2.435f, (character.Childrens[character.Childrens.Count - 1].CharacterButton.GetComponent<RectTransform>().anchoredPosition.y + character.CharacterButton.GetComponent<RectTransform>().anchoredPosition.y) / 2);
-
-                GameObject temp3 = new GameObject();
-                temp3.transform.SetParent(LinesGameObject.transform);
-                GameObject line3 = temp3;
-                line3.AddComponent<Image>();
-                line3.transform.localScale = new Vector3(1, 1, 1);
-                line3.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
-                line3.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
-                line3.AddComponent<LinesCreator>();
+                RectTransform rightChildrenRectTransform = character.Childrens[^1].CharacterButton.Button.GetComponent<RectTransform>();
                 
-                _tempObject1.GetComponent<RectTransform>().anchoredPosition = nodeLeftMiddle;
-                _tempObject2.GetComponent<RectTransform>().anchoredPosition = nodeRightMiddle;
-            
-                line3.GetComponent<LinesCreator>().SetPoints(_tempObject1.transform, _tempObject2.transform);
-                line3.GetComponent<LinesCreator>().Settings();
+                Vector2 nodeLeftMiddle = new(leftChildrenRectTransform.anchoredPosition.x - 2.435f, (leftChildrenRectTransform.anchoredPosition.y + rectTransform.anchoredPosition.y) / 2);
+                Vector2 nodeRightMiddle = new(rightChildrenRectTransform.anchoredPosition.x + 2.435f, (rightChildrenRectTransform.anchoredPosition.y + rectTransform.anchoredPosition.y) / 2);
+
+                CreateLine(nodeLeftMiddle, nodeRightMiddle);
             }
         }
 
         foreach (Character child in character.Childrens)
-        {
             DrawLines(child);
-        }
+    }
+    private void CreateLine(Vector2 x, Vector2 y)
+    {
+        GameObject line = new("Line", typeof(Image), typeof(LinesCreator));
+        
+        Transform transform = line.GetComponent<Transform>();
+        transform.SetParent(LinesGameObject.transform);
+        transform.localScale = new Vector3(1, 1, 1);
+
+        RectTransform rectTransform = line.GetComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0.5f, 1f);
+        rectTransform.anchorMax = new Vector2(0.5f, 1f);
+        
+        _tempObject1.GetComponent<RectTransform>().anchoredPosition = x;
+        _tempObject2.GetComponent<RectTransform>().anchoredPosition = y;
+
+        LinesCreator linesCreator = line.GetComponent<LinesCreator>();
+        linesCreator.SetPoints(_tempObject1.transform, _tempObject2.transform);
+        linesCreator.Settings();
     }
 }
-
