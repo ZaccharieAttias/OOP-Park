@@ -3,27 +3,20 @@ using UnityEngine;
 
 public class RestrictionManager : MonoBehaviour
 {
-    public static RestrictionManager Instance { get; set; }
+    public static RestrictionManager Instance;
+    
+    public bool AllowSingleInheritance;
+    public bool AllowMultipleInheritance;
 
-    public bool AllowSingleInheritance { get; set; }
-    public bool AllowMultipleInheritance { get; set; }
+    public bool AllowAccessModifiers;
+    public bool AllowOverride;
+    public bool AllowUpcasting;
 
-    public bool AllowAccessModifiers { get; set; } // Still didnt do
-    public bool AllowOverride { get; set; } // Still didnt do
-    public bool AllowUpcasting { get; set; } // Still didnt do
 
-    public void Awake()
+    public void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+        Instance = this;
+        
         AllowSingleInheritance = true;
         AllowMultipleInheritance = false;
         
@@ -40,6 +33,5 @@ public class RestrictionManager : MonoBehaviour
         if (AllowSingleInheritance == false && AllowMultipleInheritance == false) return;
 
         new GameObject("CharacterFactory").AddComponent<CharacterFactory>();
-
     }
 }
