@@ -1044,7 +1044,6 @@ Transform:
   - {fileID: 57566644}
   - {fileID: 1053954493}
   - {fileID: 473131309}
-  - {fileID: 149242951}
   - {fileID: 803369183}
   m_Father: {fileID: 1709283712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1401,58 +1400,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &149242950
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 149242951}
-  - component: {fileID: 149242954}
-  m_Layer: 0
-  m_Name: Tree
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &149242951
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 149242950}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 93551641}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: -75}
-  m_SizeDelta: {x: 400, y: 250}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &149242954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 149242950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AllGameObject: {fileID: 0}
-  _tempObject1: {fileID: 0}
-  _tempObject2: {fileID: 0}
-  ScrollView: {fileID: 803369184}
 --- !u!1 &154699116
 GameObject:
   m_ObjectHideFlags: 0
@@ -7708,6 +7655,7 @@ GameObject:
   - component: {fileID: 803369183}
   - component: {fileID: 803369186}
   - component: {fileID: 803369184}
+  - component: {fileID: 803369187}
   m_Layer: 0
   m_Name: Scroll View
   m_TagString: Untagged
@@ -7775,6 +7723,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 803369182}
   m_CullTransparentMesh: 1
+--- !u!114 &803369187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803369182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllGameObject: {fileID: 0}
+  _tempObject1: {fileID: 0}
+  _tempObject2: {fileID: 0}
+  ScrollView: {fileID: 803369184}
 --- !u!1 &806999426
 GameObject:
   m_ObjectHideFlags: 0
