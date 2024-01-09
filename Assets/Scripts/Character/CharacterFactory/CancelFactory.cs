@@ -14,7 +14,7 @@ public class CancelFactory : MonoBehaviour
         transform.localPosition = new Vector3(-168, -237, 0);
         
         Image image = GetComponent<Image>();
-        image.sprite = Resources.Load<Sprite>("Sprites/Icons/Delete");
+        image.sprite = Resources.Load<Sprite>("Sprites/Icons/Restart");
         image.color = Color.white;
         
         Button button = GetComponent<Button>();
