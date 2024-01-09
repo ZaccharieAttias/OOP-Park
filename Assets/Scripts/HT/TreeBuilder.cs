@@ -11,7 +11,6 @@ public class TreeBuilder : MonoBehaviour
     
     public GameObject AllGameObject;
 
-    public GameObject LinesGameObject;
     public GameObject _tempObject1;
     public GameObject _tempObject2;
 
@@ -28,14 +27,13 @@ public class TreeBuilder : MonoBehaviour
         Root = null;
 
         AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All");
-        LinesGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View (1)/Viewport/Lines");
         ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<ScrollRect>();
-
+        
         _tempObject1 = new GameObject("temp1", typeof(RectTransform));
-        _tempObject1.transform.SetParent(LinesGameObject.transform);
+        _tempObject1.transform.SetParent(AllGameObject.transform);
 
         _tempObject2 = new GameObject("temp2", typeof(RectTransform));
-        _tempObject2.transform.SetParent(LinesGameObject.transform);
+        _tempObject2.transform.SetParent(AllGameObject.transform);
     }
 
     public void BuildTree()
@@ -43,16 +41,18 @@ public class TreeBuilder : MonoBehaviour
         ResetLines();
         CalculateNodePositions();
         DrawLines(Root);
+        CentrelizeTree(-Root.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x);
+        UpdateContentsSizes();
         //ScrollView.FocusOnItem(Root.CharacterButton.Button.GetComponent<RectTransform>());
         //StartCoroutine(ScrollView.FocusOnItemCoroutine(Root.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
     }
 
     private void ResetLines()
     {
-        foreach (Transform child in LinesGameObject.transform)
+        foreach (Transform child in AllGameObject.transform)
         {
             string childName = child.gameObject.name;
-            if (childName != "temp1" && childName != "temp2")
+            if (childName != "temp1" && childName != "temp2" && !childName.Contains("Character"))
                 Destroy(child.gameObject);
         }
     }
@@ -64,7 +64,6 @@ public class TreeBuilder : MonoBehaviour
         CheckAllChildrenOnScreen(Root);
         CalculateFinalPositions(Root, 0);
         UpdateNodePositions(Root);
-        UpdateContentsSizes();
     }
     private void InitializeNodes(Character character, int depth)
     {
@@ -270,7 +269,7 @@ public class TreeBuilder : MonoBehaviour
         GameObject line = new("Line", typeof(Image), typeof(LinesCreator));
         
         Transform transform = line.GetComponent<Transform>();
-        transform.SetParent(LinesGameObject.transform);
+        transform.SetParent(AllGameObject.transform);
         transform.localScale = new Vector3(1, 1, 1);
 
         RectTransform rectTransform = line.GetComponent<RectTransform>();
@@ -285,78 +284,58 @@ public class TreeBuilder : MonoBehaviour
         linesCreator.Settings();
     }
 
+    private void CentrelizeTree(float shiftValue)
+    {
+        foreach (Transform child in AllGameObject.transform)
+        {
+            RectTransform rectTransform = child.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + shiftValue, rectTransform.anchoredPosition.y);
+        }
+    }
+
     private void UpdateContentsSizes()
     {
-        RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
-        RectTransform linesRectTransform = LinesGameObject.GetComponent<RectTransform>();
-
-        //the height of the content is starting from the root node to the node that have the most depth
-        //find the node that have the most depth in the tree
-        int maxDepth = 0;
+        //if all the nodes are on the screen, then set the size of the content to 383x250 and the position to 1.525879e-05x-125
+        
+        Character TopNode = Root, BottomNode = Root, LeftNode = Root, RightNode = Root;
         Queue<Character> queue = new();
         queue.Enqueue(Root);
         while (queue.Count > 0)
         {
             Character currentCharacter = queue.Dequeue();
-            if (currentCharacter.CharacterButton.Depth > maxDepth)
-                maxDepth = currentCharacter.CharacterButton.Depth;
+
+            if (currentCharacter.CharacterButton.Y > TopNode.CharacterButton.Y)
+                TopNode = currentCharacter;
+            if (currentCharacter.CharacterButton.Y < BottomNode.CharacterButton.Y)
+                BottomNode = currentCharacter;
+            if (currentCharacter.CharacterButton.X < LeftNode.CharacterButton.X)
+                LeftNode = currentCharacter;
+            if (currentCharacter.CharacterButton.X > RightNode.CharacterButton.X)
+                RightNode = currentCharacter;
 
             foreach (Character child in currentCharacter.Childrens)
                 queue.Enqueue(child);
         }
 
-        //calculate the height of the content
-        int contentHeight = maxDepth * 75 + NodeSize;
+        RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
 
-        ///the width of the content is starting from the left most node to the right most node
-        //find the left most node
-        int leftMostX = 0;
-        Character leftMostNode = Root;
-        queue.Enqueue(Root);
-        while (queue.Count > 0)
-        {
-            Character currentCharacter = queue.Dequeue();
-            if (currentCharacter.CharacterButton.X < leftMostX)
-            {
-                leftMostX = currentCharacter.CharacterButton.X;
-                leftMostNode = currentCharacter;
-            }
+        float contentWidth = Math.Abs(RightNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + NodeSize;
+        float contentHeight = Math.Abs(TopNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + Math.Abs(BottomNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + NodeSize;
 
-            foreach (Character child in currentCharacter.Childrens)
-                queue.Enqueue(child);
-        }
+        if (contentWidth < 380)
+            contentWidth = 380;
+        if (contentHeight < 250)
+            contentHeight = 250;
 
-        Debug.Log(leftMostNode.Name + " " + leftMostNode.CharacterButton.X);
-
-        //find the right most node
-        int rightMostX = 0;
-        Character rightMostNode = Root;
-        queue.Enqueue(Root);
-        while (queue.Count > 0)
-        {
-            Character currentCharacter = queue.Dequeue();
-            if (currentCharacter.CharacterButton.X > rightMostX)
-            {
-                rightMostX = currentCharacter.CharacterButton.X;
-                rightMostNode = currentCharacter;
-            }
-
-            foreach (Character child in currentCharacter.Childrens)
-                queue.Enqueue(child);
-        }
-
-        Debug.Log(rightMostNode.Name + " " + rightMostNode.CharacterButton.X);
-
-        //calculate the width of the content
-        int contentWidth = Math.Abs(rightMostNode.CharacterButton.X) + Math.Abs(leftMostNode.CharacterButton.X) + NodeSize;
-
-        //set the size of the content
-        allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
-        linesRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
-
-        //set the position of the content
-        //allRectTransform.anchoredPosition = new Vector2(contentWidth / 2, contentHeight / 2);
-        //linesRectTransform.anchoredPosition = new Vector2(contentWidth / 2, contentHeight / 2);
+        // //search for scrollbars in the scrollview
+        // float originalVerticalSizeScrollbars = ScrollView.verticalScrollbar.size;
+        // float originalHorizontalSizeScrollbars = ScrollView.horizontalScrollbar.size;
         
+        allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
+
+        allRectTransform.anchoredPosition = new Vector2(contentWidth / 2, contentHeight / 2);
+    
+        // ScrollView.verticalScrollbar.size = originalVerticalSizeScrollbars;
+        // ScrollView.horizontalScrollbar.size = originalHorizontalSizeScrollbars;
     }
 }
