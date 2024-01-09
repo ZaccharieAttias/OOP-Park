@@ -4,72 +4,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class AttributesPopupManager : MonoBehaviour
 {
-    private readonly string _buttonPrefabPath = "Prefabs/Buttons/Button";
-    private readonly string _closeButtonPath = "Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/Close";
-    private readonly string _contentPanelPath ="Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/ScrollView/ViewPort/Content";
+    public List<CharacterAttribute> AttributesCollection;
+    public CharacterManager CharacterManager;
+    
+    public Button PopupToggleOn;
+    public Button PopupToggleOff;
 
-    private CharacterManager _characterManager;
-    private GameObject _buttonPrefab;
-    private Transform _contentPanel;
-
-    private List<CharacterAttribute> _collection;
-    private Character _currentCharacter;
+    public GameObject AttributeButton;
+    public Transform ContentPanel;
 
 
     private void Start()
     {
-        _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
-        _contentPanel = GameObject.Find(_contentPanelPath).transform;
-
-        Button closeButton = GameObject.Find(_closeButtonPath).GetComponent<Button>();
-        closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.Name));
-
-        _collection = InitializeCollection();
-        
-        gameObject.SetActive(false);
+        InitializeGameObject();
+        InitializeProperties();
     }
 
-    private List<CharacterAttribute> InitializeCollection()
+    private void InitializeGameObject() { gameObject.SetActive(false); }
+    private void InitializeProperties()
     {
-        List<CharacterAttribute> collection = new List<CharacterAttribute>();
+        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        AttributesCollection = new List<CharacterAttribute>();
 
-        string attributeName = "";
-        string attributeDescription = "";
-        AccessModifier attributeAccessModifier = AccessModifier.Public;
+        PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
+        PopupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        // Attribute1
-        attributeName = "Attribute 1";
-        attributeDescription = "This is the first attribute";
-        attributeAccessModifier = AccessModifier.Public;
-        collection.Add(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
+        PopupToggleOff = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/Close").GetComponent<Button>();
+        PopupToggleOff.onClick.AddListener(() => ToggleOff());
 
-        // Attribute2
-        attributeName = "Attribute 2";
-        attributeDescription = "This is the second attribute";
-        attributeAccessModifier = AccessModifier.Protected;
-        collection.Add(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
-
-        // Attribute3
-        attributeName = "Attribute 3";
-        attributeDescription = "This is the third attribute";
-        attributeAccessModifier = AccessModifier.Private;
-        collection.Add(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
-
-        return collection;
+        AttributeButton = Resources.Load<GameObject>("Prefabs/Buttons/Button");
+        ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
     }
-    
-    public void ShowAttributesPopup(Character currentCharacter)
+
+    public void AddAttribute(CharacterAttribute attribute) { AttributesCollection.Add(attribute); }
+
+    public void ShowAttributesPopup()
     {
         ClearContentPanel();
 
-        _currentCharacter = currentCharacter;
-
-        foreach (CharacterAttribute attribute in _collection)
+        foreach (CharacterAttribute attribute in AttributesCollection)
         {
-            GameObject attributeButton = Instantiate(_buttonPrefab, _contentPanel);
+            GameObject attributeButton = Instantiate(AttributeButton, ContentPanel);
             attributeButton.name = attribute.name;
 
             TMP_Text buttonText = attributeButton.GetComponentInChildren<TMP_Text>();
@@ -80,10 +58,9 @@ public class AttributesPopupManager : MonoBehaviour
 
         gameObject.SetActive(true);
     }
-
     private void MarkAttributeInPopup(GameObject attributeButton, CharacterAttribute attribute)
     {
-        bool hasAttribute = _currentCharacter.Attributes.Any(item => item.name == attribute.name);
+        bool hasAttribute = CharacterManager.CurrentCharacter.Attributes.Any(item => item.name == attribute.name);
 
         Image image = attributeButton.GetComponent<Image>();
         image.color = hasAttribute ? Color.green : Color.white;
@@ -91,18 +68,23 @@ public class AttributesPopupManager : MonoBehaviour
         Button button = attributeButton.GetComponent<Button>();
         button.onClick.AddListener(() => OnClick(attribute, hasAttribute));
     }
-
     private void OnClick(CharacterAttribute attribute, bool hasAttribute)
     {
-        if (hasAttribute) _currentCharacter.Attributes.Remove(_currentCharacter.Attributes.Find(item => item.name == attribute.name));
-        else _currentCharacter.Attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
+        if (hasAttribute) CharacterManager.CurrentCharacter.Attributes.Remove(CharacterManager.CurrentCharacter.Attributes.Find(item => item.name == attribute.name));
+        else CharacterManager.CurrentCharacter.Attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
 
-        ShowAttributesPopup(_currentCharacter);
+        ShowAttributesPopup();
     }
+    private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
-    private void ClearContentPanel()
-    {
-        foreach (Transform child in _contentPanel) 
-            Destroy(child.gameObject);
+    public void ToggleOn() 
+    { 
+        ShowAttributesPopup(); 
+        gameObject.SetActive(true);    
+    }
+    public void ToggleOff() 
+    { 
+        CharacterManager.DisplayCharacterDetails(CharacterManager.CurrentCharacter.Name);
+        gameObject.SetActive(false); 
     }
 }
