@@ -36,7 +36,7 @@ public class CharacterManager : MonoBehaviour
         AttributesContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
 
-        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree").GetComponent<TreeBuilder>();
+        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<TreeBuilder>();
     }
     private void CreateDeletionButton()
     {
@@ -58,6 +58,8 @@ public class CharacterManager : MonoBehaviour
     {
         CharactersCollection.Add(builtCharacter);
         TreeBuilder.BuildTree();
+        TreeBuilder.ScrollView.FocusOnItem(builtCharacter.CharacterButton.Button.GetComponent<RectTransform>());
+        StartCoroutine(TreeBuilder.ScrollView.FocusOnItemCoroutine(builtCharacter.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
 
         DisplayCharacterDetails(builtCharacter.Name);
     }
@@ -65,9 +67,14 @@ public class CharacterManager : MonoBehaviour
     {
         CurrentCharacter.Parents.ForEach(parent => parent.Childrens.Remove(CurrentCharacter));
         CharactersCollection.Remove(CurrentCharacter);
+        Character parent = null;
+        if (CurrentCharacter.Parents != null) parent = CurrentCharacter.Parents.First();
+        else parent = CharactersCollection.First();
         Destroy(CurrentCharacter.CharacterButton.Button);
         
         TreeBuilder.BuildTree();
+        TreeBuilder.ScrollView.FocusOnItem(parent.CharacterButton.Button.GetComponent<RectTransform>());
+        StartCoroutine(TreeBuilder.ScrollView.FocusOnItemCoroutine(parent.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
         DisplayCharacterDetails(CharactersCollection.First().Name);
     }
 
