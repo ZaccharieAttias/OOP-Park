@@ -43,8 +43,8 @@ public class TreeBuilder : MonoBehaviour
         DrawLines(Root);
         CentrelizeTree(-Root.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x);
         UpdateContentsSizes();
-        //ScrollView.FocusOnItem(Root.CharacterButton.Button.GetComponent<RectTransform>());
-        //StartCoroutine(ScrollView.FocusOnItemCoroutine(Root.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
+        // ScrollView.FocusOnItem(Root.CharacterButton.Button.GetComponent<RectTransform>());
+        // StartCoroutine(ScrollView.FocusOnItemCoroutine(Root.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
     }
 
     private void ResetLines()
@@ -327,15 +327,8 @@ public class TreeBuilder : MonoBehaviour
         if (contentHeight < 250)
             contentHeight = 250;
 
-        // //search for scrollbars in the scrollview
-        // float originalVerticalSizeScrollbars = ScrollView.verticalScrollbar.size;
-        // float originalHorizontalSizeScrollbars = ScrollView.horizontalScrollbar.size;
-        
         allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
 
         allRectTransform.anchoredPosition = new Vector2(contentWidth / 2, contentHeight / 2);
-    
-        // ScrollView.verticalScrollbar.size = originalVerticalSizeScrollbars;
-        // ScrollView.horizontalScrollbar.size = originalHorizontalSizeScrollbars;
     }
 }
