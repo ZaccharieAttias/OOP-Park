@@ -75,7 +75,7 @@ public class CharacterManager : MonoBehaviour
         TreeBuilder.BuildTree();
         TreeBuilder.ScrollView.FocusOnItem(parent.CharacterButton.Button.GetComponent<RectTransform>());
         StartCoroutine(TreeBuilder.ScrollView.FocusOnItemCoroutine(parent.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
-        DisplayCharacterDetails(CharactersCollection.First().Name);
+        DisplayCharacterDetails(parent.Name);
     }
 
     public void DisplayCharacterDetails(string characterName)
