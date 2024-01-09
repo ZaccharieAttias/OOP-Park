@@ -17,8 +17,9 @@ public class RestrictionManager : MonoBehaviour
     {
         Instance = this;
         
-        AllowSingleInheritance = true;
-        AllowMultipleInheritance = false;
+        AllowSingleInheritance = false;
+        AllowMultipleInheritance = true;
+        AllowAccessModifiers = false;
         
         ApplyRestrictions();
     }
