@@ -4,72 +4,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class MethodsPopupManager : MonoBehaviour
 {
-    private readonly string _buttonPrefabPath = "Prefabs/Buttons/Button";
-    private readonly string _closeButtonPath = "Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/Close";
-    private readonly string _contentPanelPath = "Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/ScrollView/ViewPort/Content";
-
-    private CharacterManager _characterManager;
-    private GameObject _buttonPrefab;
-    private Transform _contentPanel;
-
-    private List<CharacterMethod> _collection;
-    private Character _currentCharacter;
+    public List<CharacterMethod> MethodsCollection;
+    public CharacterManager CharacterManager;
+    
+    public Button PopupToggleOn;
+    public Button PopupToggleOff;
+    
+    public GameObject MethodButton;
+    public Transform ContentPanel;
 
 
     private void Start()
     {
-        _characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        _buttonPrefab = Resources.Load<GameObject>(_buttonPrefabPath);
-        _contentPanel = GameObject.Find(_contentPanelPath).transform;
-
-        Button closeButton = GameObject.Find(_closeButtonPath).GetComponent<Button>();
-        closeButton.onClick.AddListener(() => _characterManager.DisplayCharacterDetails(_currentCharacter.Name));
-
-        _collection = InitializeCollection();
-
-        gameObject.SetActive(false);
+        InitializeGameObject();
+        InitializeProperties();
     }
 
-    private List<CharacterMethod> InitializeCollection()
+    private void InitializeGameObject() { gameObject.SetActive(false); }
+    private void InitializeProperties()
     {
-        List<CharacterMethod> collection = new List<CharacterMethod>();
+        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        MethodsCollection = new List<CharacterMethod>();
 
-        string methodName = "";
-        string methodDescription = "";
-        AccessModifier methodAccessModifier = AccessModifier.Public;
+        PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>();
+        PopupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        // method1
-        methodName = "MoveSpeed";
-        methodDescription = "This is the MoveSpeed method";
-        methodAccessModifier = AccessModifier.Public;
-        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+        PopupToggleOff = GameObject.Find("Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/Close").GetComponent<Button>();
+        PopupToggleOff.onClick.AddListener(() => ToggleOff());
 
-        // method2
-        methodName = "GravityForce";
-        methodDescription = "This is the GravityForce method";
-        methodAccessModifier = AccessModifier.Protected;
-        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
-
-        // method3
-        methodName = "DoubleJump";
-        methodDescription = "This is the DoubleJump method";
-        methodAccessModifier = AccessModifier.Private;
-        collection.Add(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
-
-        return collection;
+        MethodButton = Resources.Load<GameObject>("Prefabs/Buttons/Button");
+        ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
     }
 
-    public void ShowMethodsPopup(Character currentCharacter)
+    public void AddMethod(CharacterMethod method) { MethodsCollection.Add(method); }
+
+    public void ShowMethodsPopup()
     {
         ClearContentPanel();
 
-        _currentCharacter = currentCharacter;
-
-        foreach (CharacterMethod method in _collection)
+        foreach (CharacterMethod method in MethodsCollection)
         {
-            GameObject methodButton = Instantiate(_buttonPrefab, _contentPanel);
+            GameObject methodButton = Instantiate(MethodButton, ContentPanel);
             methodButton.name = method.name;
 
             TMP_Text buttonText = methodButton.GetComponentInChildren<TMP_Text>();
@@ -77,50 +55,47 @@ public class MethodsPopupManager : MonoBehaviour
 
             MarkMethodInPopup(methodButton, method);
         }
-
-        gameObject.SetActive(true);
     }
-
     private void MarkMethodInPopup(GameObject methodButton, CharacterMethod method)
     {
-        bool hasAttribute = HasAttributeRecursively(_currentCharacter, method.name.ToLower());
-        bool hasMethod = _currentCharacter.Methods.Any(item => item.name == method.name);
-
-        if (hasAttribute == false)
-        {
-            methodButton.GetComponent<Button>().interactable = false;
-            return;
-        }
+        bool hasAttribute = HasAttribute(CharacterManager.CurrentCharacter, method.name.ToLower());
+        bool hasMethod = CharacterManager.CurrentCharacter.Methods.Any(item => item.name == method.name);
 
         Image image = methodButton.GetComponent<Image>();
         image.color = hasMethod ? Color.green : Color.white;
 
         Button button = methodButton.GetComponent<Button>();
         button.onClick.AddListener(() => OnClick(method, hasMethod));
+        button.interactable = hasAttribute;
     }
-
     private void OnClick(CharacterMethod method, bool hasMethod)
     {
-        if (hasMethod) _currentCharacter.Methods.Remove(_currentCharacter.Methods.Find(item => item.name == method.name));
-        else _currentCharacter.Methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
+        if (hasMethod) CharacterManager.CurrentCharacter.Methods.Remove(CharacterManager.CurrentCharacter.Methods.Find(item => item.name == method.name));
+        else CharacterManager.CurrentCharacter.Methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
 
-        ShowMethodsPopup(_currentCharacter);
+        ShowMethodsPopup();
     }
+    private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
-    private void ClearContentPanel()
-    {
-        foreach (Transform child in _contentPanel)
-            Destroy(child.gameObject);
-    }
-
-    private bool HasAttributeRecursively(Character character, string methodName)
+    private bool HasAttribute(Character character, string methodName)
     {
         if (character.Attributes.Any(attribute => attribute.name.ToLower() == methodName)) return true;
 
         foreach (Character parent in character.Parents)
-            if (HasAttributeRecursively(parent, methodName))
+            if (HasAttribute(parent, methodName))
                 return true;
 
         return false;
+    }
+
+    private void ToggleOn() 
+    { 
+        ShowMethodsPopup(); 
+        gameObject.SetActive(true);
+    }
+    private void ToggleOff() 
+    { 
+        CharacterManager.DisplayCharacterDetails(CharacterManager.CurrentCharacter.Name);
+        gameObject.SetActive(false); 
     }
 }
