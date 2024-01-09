@@ -22,7 +22,7 @@ public class LevelCreation : MonoBehaviour
         AttributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
         MethodsPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Methods").GetComponent<MethodsPopupManager>();
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Tree").GetComponent<TreeBuilder>();
+        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<TreeBuilder>();
     }
 
     private void InitializeCollections()
