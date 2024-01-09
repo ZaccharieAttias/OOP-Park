@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class UpcastingPopupManager : MonoBehaviour
 {
@@ -76,7 +76,7 @@ public class UpcastingPopupManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.U))
         {
-            ShowUpcastingPopup(GetComponent<CharacterManager>().currentCharacter);
+            ShowUpcastingPopup(GetComponent<CharacterManager>().CurrentCharacter);
         }
     }
 
