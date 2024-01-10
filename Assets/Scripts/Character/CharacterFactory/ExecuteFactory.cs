@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-[SerializeField]
 public class ExecuteFactory : MonoBehaviour
 {   
     public CharacterFactory CharacterFactory;
@@ -36,7 +35,7 @@ public class ExecuteFactory : MonoBehaviour
         CharacterManager = characterManager.GetComponent<CharacterManager>();
 
         CharacterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
-        CharacterParent = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All").transform;
+        CharacterParent = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
         CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
         SpriteIndex = 0;
     }
