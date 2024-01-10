@@ -62,18 +62,8 @@ public class Character
     public Character GetRightMostSibling() { return IsRoot() ? null : Parents[0].Childrens[^1]; }
     public Character GetRightMostChild() { return IsLeaf() ? null : Childrens[^1]; }
 
-    public Character GetPreviousSibling()
-    {
-        if (IsLeftMost()) return null;
-
-        return Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) - 1];
-    }
-    public Character GetNextSibling()
-    {
-        if (IsRightMost()) return null;
-
-        return Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) + 1];
-    }
+    public Character GetPreviousSibling() { return IsLeftMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) - 1]; }
+    public Character GetNextSibling() { return IsRightMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) + 1]; }
 
     public void SetTransformPositionX(float x)
     {
