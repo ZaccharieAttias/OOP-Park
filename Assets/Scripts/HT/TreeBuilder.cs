@@ -7,33 +7,22 @@ using UnityEngine.UI;
 
 public class TreeBuilder : MonoBehaviour
 {
-    public Character Root;
-    
-    public GameObject AllGameObject;
-
-    public GameObject _tempObject1;
-    public GameObject _tempObject2;
-
     public static int NodeSize = 40;
     public static int SiblingDistance = 35;
     public static int TreeDistance = 5;
 
+    public Character Root;
     public ScrollRect ScrollView;
+    public GameObject AllGameObject;
+
 
     public void Start() { InitializeProperties(); }
 
     private void InitializeProperties()
     {
         Root = null;
-
-        AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All");
         ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<ScrollRect>();
-        
-        _tempObject1 = new GameObject("temp1", typeof(RectTransform));
-        _tempObject1.transform.SetParent(AllGameObject.transform);
-
-        _tempObject2 = new GameObject("temp2", typeof(RectTransform));
-        _tempObject2.transform.SetParent(AllGameObject.transform);
+        AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All");
     }
 
     public void BuildTree()
@@ -41,7 +30,7 @@ public class TreeBuilder : MonoBehaviour
         ResetLines();
         CalculateNodePositions();
         DrawLines(Root);
-        CentrelizeTree(-Root.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x);
+        CentrelizeTree(Root);
         UpdateContentsSizes();
         // ScrollView.FocusOnItem(Root.CharacterButton.Button.GetComponent<RectTransform>());
         // StartCoroutine(ScrollView.FocusOnItemCoroutine(Root.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
@@ -50,11 +39,8 @@ public class TreeBuilder : MonoBehaviour
     private void ResetLines()
     {
         foreach (Transform child in AllGameObject.transform)
-        {
-            string childName = child.gameObject.name;
-            if (childName != "temp1" && childName != "temp2" && !childName.Contains("Character"))
+            if (child.gameObject.name.Contains("Line"))
                 Destroy(child.gameObject);
-        }
     }
 
     private void CalculateNodePositions()
@@ -72,12 +58,11 @@ public class TreeBuilder : MonoBehaviour
         character.CharacterButton.Mod = 0;
         character.CharacterButton.Depth = depth;
 
-        foreach (Character child in character.Childrens)
-            InitializeNodes(child, depth + 1);
+        foreach (Character child in character.Childrens) InitializeNodes(child, depth + 1);
     }
     private void CalculateInitialX(Character character)
     {
-        foreach (Character child in character.Childrens)
+        foreach (Character child in character.Childrens) 
             CalculateInitialX(child);
  
         if (character.IsLeaf())
@@ -122,10 +107,16 @@ public class TreeBuilder : MonoBehaviour
         character.CharacterButton.X += modSum;
         modSum += character.CharacterButton.Mod;
 
-        foreach (Character child in character.Childrens)
-            CalculateFinalPositions(child, modSum);
+        foreach (Character child in character.Childrens) CalculateFinalPositions(child, modSum);
 
         character.CharacterButton.Y = character.IsLeaf() ? character.CharacterButton.Depth * -75 : character.Childrens[0].CharacterButton.Y + 75;
+    }
+    private void UpdateNodePositions(Character character)
+    {
+        character.SetTransformPositionX(character.CharacterButton.X - NodeSize / 2);
+        character.SetTransformPositionY(character.CharacterButton.Y - NodeSize / 2);
+
+        foreach (Character child in character.Childrens) UpdateNodePositions(child);
     }
 
     private void CheckForConflicts(Character character)
@@ -167,18 +158,17 @@ public class TreeBuilder : MonoBehaviour
         int rightIndex = leftNode.Parents[0].Childrens.IndexOf(rightNode);
 
         int numNodesBetween = rightIndex - leftIndex - 1;
-
         if (numNodesBetween > 0)
         {
-            var distanceBetweenNodesbefore = Mathf.Abs(rightNode.CharacterButton.X - leftNode.CharacterButton.X) / (numNodesBetween + 1);
-            var distanceBetweenNodesafter = Mathf.Abs(rightNode.CharacterButton.X + shiftValue - leftNode.CharacterButton.X) / (numNodesBetween + 1);
+            int distanceBetweenNodesbefore = Mathf.Abs(rightNode.CharacterButton.X - leftNode.CharacterButton.X) / (numNodesBetween + 1);
+            int distanceBetweenNodesafter = (int)Mathf.Abs(rightNode.CharacterButton.X + shiftValue - leftNode.CharacterButton.X) / (numNodesBetween + 1);
             
             int count = 1;
             for (int i = leftIndex + 1; i < rightIndex; i++)
             {
                 Character middleNode = leftNode.Parents[0].Childrens[i];
 
-                int desiredXafter = leftNode.CharacterButton.X + ((int)distanceBetweenNodesafter * count);
+                int desiredXafter = leftNode.CharacterButton.X + (distanceBetweenNodesafter * count);
                 int desiredX = leftNode.CharacterButton.X + (distanceBetweenNodesbefore * count);
                 int offset = desiredXafter - desiredX;
                 
@@ -191,14 +181,6 @@ public class TreeBuilder : MonoBehaviour
             CheckForConflicts(leftNode);
         }
     }
-    private void UpdateNodePositions(Character character)
-    {
-        character.SetTransformPositionX(character.CharacterButton.X - NodeSize / 2);
-        character.SetTransformPositionY(character.CharacterButton.Y - NodeSize / 2);
-
-        foreach (Character child in character.Childrens)
-            UpdateNodePositions(child);
-    }
 
     private void GetLeftContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
     {
@@ -210,8 +192,7 @@ public class TreeBuilder : MonoBehaviour
 
         modSum += character.CharacterButton.Mod;
 
-        foreach (Character child in character.Childrens)
-            GetLeftContour(child, modSum, ref nodeContour);
+        foreach (Character child in character.Childrens) GetLeftContour(child, modSum, ref nodeContour);
     }
     private void GetRightContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
     {
@@ -223,8 +204,7 @@ public class TreeBuilder : MonoBehaviour
 
         modSum += character.CharacterButton.Mod;
 
-        foreach (Character child in character.Childrens)
-            GetRightContour(child, modSum, ref nodeContour);
+        foreach (Character child in character.Childrens) GetRightContour(child, modSum, ref nodeContour);
     }
     
     private void DrawLines(Character character)
@@ -264,71 +244,61 @@ public class TreeBuilder : MonoBehaviour
         foreach (Character child in character.Childrens)
             DrawLines(child);
     }
-    private void CreateLine(Vector2 x, Vector2 y)
+    private void CreateLine(Vector2 startPoint, Vector2 endPoint)
     {
-        GameObject line = new("Line", typeof(Image), typeof(LinesCreator));
-        
+        GameObject line = new GameObject("Line", typeof(Image));
+
         Transform transform = line.GetComponent<Transform>();
         transform.SetParent(AllGameObject.transform);
         transform.localScale = new Vector3(1, 1, 1);
 
+        float distance = Vector2.Distance(startPoint, endPoint);
+        float angle = Mathf.Atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x) * Mathf.Rad2Deg;
         RectTransform rectTransform = line.GetComponent<RectTransform>();
         rectTransform.anchorMin = new Vector2(0.5f, 1f);
         rectTransform.anchorMax = new Vector2(0.5f, 1f);
-        
-        _tempObject1.GetComponent<RectTransform>().anchoredPosition = x;
-        _tempObject2.GetComponent<RectTransform>().anchoredPosition = y;
+        rectTransform.anchoredPosition = (startPoint + endPoint) / 2;
+        rectTransform.sizeDelta = new Vector2(distance, 5);
+        rectTransform.rotation = Quaternion.Euler(0, 0, angle);
 
-        LinesCreator linesCreator = line.GetComponent<LinesCreator>();
-        linesCreator.SetPoints(_tempObject1.transform, _tempObject2.transform);
-        linesCreator.Settings();
+        line.GetComponent<Image>().color = Color.red;
     }
 
-    private void CentrelizeTree(float shiftValue)
+    private void CentrelizeTree(Character root)
     {
+        float shiftValue = -root.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x;
         foreach (Transform child in AllGameObject.transform)
         {
             RectTransform rectTransform = child.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + shiftValue, rectTransform.anchoredPosition.y);
         }
     }
-
     private void UpdateContentsSizes()
-    {
-        //if all the nodes are on the screen, then set the size of the content to 383x250 and the position to 1.525879e-05x-125
-        
+    {        
         Character TopNode = Root, BottomNode = Root, LeftNode = Root, RightNode = Root;
         Queue<Character> queue = new();
         queue.Enqueue(Root);
+        
         while (queue.Count > 0)
         {
             Character currentCharacter = queue.Dequeue();
 
-            if (currentCharacter.CharacterButton.Y > TopNode.CharacterButton.Y)
-                TopNode = currentCharacter;
-            if (currentCharacter.CharacterButton.Y < BottomNode.CharacterButton.Y)
-                BottomNode = currentCharacter;
-            if (currentCharacter.CharacterButton.X < LeftNode.CharacterButton.X)
-                LeftNode = currentCharacter;
-            if (currentCharacter.CharacterButton.X > RightNode.CharacterButton.X)
-                RightNode = currentCharacter;
+            if (currentCharacter.CharacterButton.Y > TopNode.CharacterButton.Y) TopNode = currentCharacter;
+            if (currentCharacter.CharacterButton.Y < BottomNode.CharacterButton.Y) BottomNode = currentCharacter;
+            if (currentCharacter.CharacterButton.X < LeftNode.CharacterButton.X) LeftNode = currentCharacter;
+            if (currentCharacter.CharacterButton.X > RightNode.CharacterButton.X) RightNode = currentCharacter;
 
-            foreach (Character child in currentCharacter.Childrens)
-                queue.Enqueue(child);
+            foreach (Character child in currentCharacter.Childrens) queue.Enqueue(child);
         }
-
-        RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
 
         float contentWidth = Math.Abs(RightNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + NodeSize;
         float contentHeight = Math.Abs(TopNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + Math.Abs(BottomNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + NodeSize;
 
-        if (contentWidth < 380)
-            contentWidth = 380;
-        if (contentHeight < 250)
-            contentHeight = 250;
+        contentWidth = Mathf.Max(contentWidth, 380);
+        contentHeight = Mathf.Max(contentHeight, 250);
 
+        RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
         allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
-
         allRectTransform.anchoredPosition = new Vector2(contentWidth / 2, contentHeight / 2);
     }
 }
