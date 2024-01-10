@@ -11,15 +11,15 @@ public class CancelFactory : MonoBehaviour
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
 
         name = "CancelFactory";
-        transform.localPosition = new Vector3(-168, -237, 0);
+        transform.localPosition = new Vector3(-118, -267, 0);
         
         Image image = GetComponent<Image>();
-        image.sprite = Resources.Load<Sprite>("Sprites/Icons/Restart");
+        image.sprite = Resources.Load<Sprite>("Sprites/Icons/X");
         image.color = Color.white;
         
         Button button = GetComponent<Button>();
         button.onClick.AddListener(() => characterFactory.GetComponent<CharacterFactory>().CancelFactory());
-        button.interactable = false;
+        button.interactable = true;
 
         gameObject.SetActive(false);
     }
