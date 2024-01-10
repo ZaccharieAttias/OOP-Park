@@ -12,6 +12,7 @@ public class CharacterFactory : MonoBehaviour
     public GameObject AddButton;
     public GameObject CancelButton;
     public GameObject ConfirmButton;
+    public GameObject ResetButton;
 
     public List<GameObject> CharacterObjects;
     public List<GameObject> DuplicateCharacterObjects;
@@ -49,6 +50,9 @@ public class CharacterFactory : MonoBehaviour
         ConfirmButton = Instantiate(pureButtonPrefab, transform);
         ConfirmButton.AddComponent<ConfirmFactory>();
 
+        ResetButton = Instantiate(pureButtonPrefab, transform);
+        ResetButton.AddComponent<ResetFactory>();
+
         GameObject executeFactoryObject = new("ExecuteFactory", typeof(ExecuteFactory));
         ExecuteFactory = executeFactoryObject.GetComponent<ExecuteFactory>();
 
@@ -62,8 +66,10 @@ public class CharacterFactory : MonoBehaviour
     public void InitializeFactory()
     {
         AddButton.GetComponent<Button>().interactable = false;
+        
         CancelButton.SetActive(true);
         ConfirmButton.SetActive(true);
+        ResetButton.SetActive(true);
 
         CharacterObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
         BuildDuplicateCharacterObjects();
@@ -71,21 +77,30 @@ public class CharacterFactory : MonoBehaviour
     }
     public void CancelFactory()
     {
-        CancelButton.GetComponent<Button>().interactable = false;
+        CancelButton.SetActive(false);
+        ConfirmButton.SetActive(false);
+        ResetButton.SetActive(false);
+
+        AddButton.GetComponent<Button>().interactable = true;
         ConfirmButton.GetComponent<Button>().interactable = false;
+        ResetButton.GetComponent<Button>().interactable = false;
+        
+        DestroyObjectsList(DuplicateCharacterObjects);
+        ToggleButtonInteractability(CharacterObjects);
 
+        CharacterObjects.Clear();
+        DuplicateCharacterObjects.Clear();
         SelectedCharacterObjects.Clear();
-
-        UpdatePanelUI();
     }
     public void ConfirmFactory()
     {
         CancelButton.SetActive(false);
         ConfirmButton.SetActive(false);
+        ResetButton.SetActive(false);
 
         AddButton.GetComponent<Button>().interactable = true;
-        CancelButton.GetComponent<Button>().interactable = false;
         ConfirmButton.GetComponent<Button>().interactable = false;
+        ResetButton.GetComponent<Button>().interactable = false;
 
         ExecuteFactory.Execute();
 
@@ -95,6 +110,15 @@ public class CharacterFactory : MonoBehaviour
         CharacterObjects.Clear();
         DuplicateCharacterObjects.Clear();
         SelectedCharacterObjects.Clear();
+    }
+    public void ResetFactory()
+    {
+        ConfirmButton.GetComponent<Button>().interactable = false;
+        ResetButton.GetComponent<Button>().interactable = false;
+
+        SelectedCharacterObjects.Clear();
+
+        UpdatePanelUI();
     }
 
     private void CharacterObjectClicked()
@@ -109,9 +133,9 @@ public class CharacterFactory : MonoBehaviour
     }
     private void UpdatePanelUI()
     {
-        bool isSelectedParentsEmpty = SelectedCharacterObjects.Count > 0;
-        CancelButton.GetComponent<Button>().interactable = isSelectedParentsEmpty;
-        ConfirmButton.GetComponent<Button>().interactable = isSelectedParentsEmpty;
+        bool isSelectedParents = SelectedCharacterObjects.Count > 0;
+        ConfirmButton.GetComponent<Button>().interactable = isSelectedParents;
+        ResetButton.GetComponent<Button>().interactable = isSelectedParents;
 
         foreach (GameObject characterObject in DuplicateCharacterObjects)
         {
@@ -169,9 +193,5 @@ public class CharacterFactory : MonoBehaviour
             button.interactable = !button.interactable;
         }
     }
-    private void DestroyObjectsList(List<GameObject> gameObjects)
-    {
-        foreach (GameObject gameObject in gameObjects)
-            Destroy(gameObject);
-    }
+    private void DestroyObjectsList(List<GameObject> gameObjects) { foreach (GameObject gameObject in gameObjects) Destroy(gameObject); }
 }
