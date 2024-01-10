@@ -31,27 +31,29 @@ public class CharacterManager : MonoBehaviour
         CharacterNameText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Title").GetComponent<TMP_Text>();
         DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
         DefaultButton = Resources.Load<GameObject>("Prefabs/Buttons/Button");
-        CreateDeletionButton(); // CharacterDeleteButton
+        CharacterDeleteButton = CreateDeletionButton();
 
         AttributesContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
 
         TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<TreeBuilder>();
     }
-    private void CreateDeletionButton()
+    private GameObject CreateDeletionButton()
     {
         Transform location = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details").transform;
 
-        CharacterDeleteButton = Instantiate(DefaultButton, location);
-        CharacterDeleteButton.name = "Delete";
+        GameObject characterDeleteButton = Instantiate(DefaultButton, location);
+        characterDeleteButton.name = "Delete";
 
-        TMP_Text buttonText = CharacterDeleteButton.GetComponentInChildren<TMP_Text>();
+        TMP_Text buttonText = characterDeleteButton.GetComponentInChildren<TMP_Text>();
         buttonText.text = "Delete";
 
-        CharacterDeleteButton.transform.localPosition = new Vector3(235, -195, 0);
+        characterDeleteButton.transform.localPosition = new Vector3(235, -195, 0);
 
-        Button button1 = CharacterDeleteButton.GetComponent<Button>();
+        Button button1 = characterDeleteButton.GetComponent<Button>();
         button1.onClick.AddListener(() => DeleteCharacter());
+
+        return characterDeleteButton;
     }
    
     public void AddCharacter(Character builtCharacter)
@@ -67,6 +69,7 @@ public class CharacterManager : MonoBehaviour
     {
         CurrentCharacter.Parents.ForEach(parent => parent.Childrens.Remove(CurrentCharacter));
         CharactersCollection.Remove(CurrentCharacter);
+        
         Character parent = null;
         if (CurrentCharacter.Parents != null) parent = CurrentCharacter.Parents.First();
         else parent = CharactersCollection.First();
