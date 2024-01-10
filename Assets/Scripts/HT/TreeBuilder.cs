@@ -11,7 +11,6 @@ public class TreeBuilder : MonoBehaviour
     public static int SiblingDistance = 35;
     public static int TreeDistance = 5;
 
-    public Character Root;
     public ScrollRect ScrollView;
     public GameObject AllGameObject;
 
@@ -20,20 +19,20 @@ public class TreeBuilder : MonoBehaviour
 
     private void InitializeProperties()
     {
-        Root = null;
-        ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<ScrollRect>();
-        AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All");
+        ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<ScrollRect>();
+        AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All");
     }
 
-    public void BuildTree()
+    public void BuildTree(Character root, Character latest)
     {
         ResetLines();
-        CalculateNodePositions();
-        DrawLines(Root);
-        CentrelizeTree(Root);
-        UpdateContentsSizes();
-        // ScrollView.FocusOnItem(Root.CharacterButton.Button.GetComponent<RectTransform>());
-        // StartCoroutine(ScrollView.FocusOnItemCoroutine(Root.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
+        CalculateNodePositions(root);
+        DrawLines(root);
+        CentrelizeTree(root);
+        UpdateContentsSizes(root);
+
+        ScrollView.FocusOnItem(latest.CharacterButton.Button.GetComponent<RectTransform>());
+        StartCoroutine(ScrollView.FocusOnItemCoroutine(latest.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
     }
 
     private void ResetLines()
@@ -43,13 +42,13 @@ public class TreeBuilder : MonoBehaviour
                 Destroy(child.gameObject);
     }
 
-    private void CalculateNodePositions()
+    private void CalculateNodePositions(Character root)
     {
-        InitializeNodes(Root, 0);
-        CalculateInitialX(Root);
-        CheckAllChildrenOnScreen(Root);
-        CalculateFinalPositions(Root, 0);
-        UpdateNodePositions(Root);
+        InitializeNodes(root, 0);
+        CalculateInitialX(root);
+        CheckAllChildrenOnScreen(root);
+        CalculateFinalPositions(root, 0);
+        UpdateNodePositions(root);
     }
     private void InitializeNodes(Character character, int depth)
     {
@@ -273,11 +272,11 @@ public class TreeBuilder : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + shiftValue, rectTransform.anchoredPosition.y);
         }
     }
-    private void UpdateContentsSizes()
+    private void UpdateContentsSizes(Character root)
     {        
-        Character TopNode = Root, BottomNode = Root, LeftNode = Root, RightNode = Root;
+        Character TopNode = root, BottomNode = root, LeftNode = root, RightNode = root;
         Queue<Character> queue = new();
-        queue.Enqueue(Root);
+        queue.Enqueue(root);
         
         while (queue.Count > 0)
         {
