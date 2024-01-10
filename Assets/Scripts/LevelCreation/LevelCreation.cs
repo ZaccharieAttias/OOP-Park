@@ -22,9 +22,8 @@ public class LevelCreation : MonoBehaviour
         AttributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
         MethodsPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Methods").GetComponent<MethodsPopupManager>();
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View").GetComponent<TreeBuilder>();
+        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<TreeBuilder>();
     }
-
     private void InitializeCollections()
     {
         InitializeAttributesCollection();
@@ -91,7 +90,6 @@ public class LevelCreation : MonoBehaviour
         characterDescription = "This is the first character";
         Character character1 = new(characterName, characterDescription, characterParents, true);
         InitializeCharacterObject(character1);
-        TreeBuilder.Root = character1; // Temporary
         CharacterManager.AddCharacter(character1);
 
         // Character 2 
@@ -116,7 +114,7 @@ public class LevelCreation : MonoBehaviour
     }
     private void InitializeCharacterObject(Character characterNode)
     {
-        Transform parnetTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/Scroll View/Viewport/All").transform;
+        Transform parnetTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
         GameObject characterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
         
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
