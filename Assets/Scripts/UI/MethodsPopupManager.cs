@@ -41,7 +41,7 @@ public class MethodsPopupManager : MonoBehaviour
 
     public void AddMethod(CharacterMethod method) { MethodsCollection.Add(method); }
 
-    public void ShowMethodsPopup()
+    public void LoadPopup()
     {
         ClearContentPanel();
 
@@ -73,7 +73,7 @@ public class MethodsPopupManager : MonoBehaviour
         if (hasMethod) CharacterManager.CurrentCharacter.Methods.Remove(CharacterManager.CurrentCharacter.Methods.Find(item => item.name == method.name));
         else CharacterManager.CurrentCharacter.Methods.Add(new CharacterMethod(method.name, method.description, method.accessModifier));
 
-        ShowMethodsPopup();
+        LoadPopup();
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
@@ -90,7 +90,7 @@ public class MethodsPopupManager : MonoBehaviour
 
     private void ToggleOn() 
     { 
-        ShowMethodsPopup(); 
+        LoadPopup(); 
         gameObject.SetActive(true);
     }
     private void ToggleOff() 
