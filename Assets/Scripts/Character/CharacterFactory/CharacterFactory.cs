@@ -16,8 +16,8 @@ public class CharacterFactory : MonoBehaviour
 
     public List<GameObject> CharacterObjects;
     public List<GameObject> DuplicateCharacterObjects;
-    public List<Character> SelectedCharacterObjects;
 
+    public List<Character> SelectedCharacterObjects;
     public int ParentsLimit;
 
 
@@ -39,8 +39,10 @@ public class CharacterFactory : MonoBehaviour
     }
     private void InitializeProperties()
     {
-        GameObject pureButtonPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Pure");
+        GameObject executeFactoryObject = new("ExecuteFactory", typeof(ExecuteFactory));
+        ExecuteFactory = executeFactoryObject.GetComponent<ExecuteFactory>();
 
+        GameObject pureButtonPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Pure");
         AddButton = Instantiate(pureButtonPrefab, transform);
         AddButton.AddComponent<AddFactory>();
 
@@ -53,14 +55,11 @@ public class CharacterFactory : MonoBehaviour
         ResetButton = Instantiate(pureButtonPrefab, transform);
         ResetButton.AddComponent<ResetFactory>();
 
-        GameObject executeFactoryObject = new("ExecuteFactory", typeof(ExecuteFactory));
-        ExecuteFactory = executeFactoryObject.GetComponent<ExecuteFactory>();
-
         CharacterObjects = new List<GameObject>();
         DuplicateCharacterObjects = new List<GameObject>();
+        
         SelectedCharacterObjects = new List<Character>();
-
-        ParentsLimit = RestrictionManager.Instance.AllowMultipleInheritance ? 5 : 1;
+        ParentsLimit = RestrictionManager.Instance.AllowMultipleInheritance ? 2 : 1;
     }
 
     public void InitializeFactory()
