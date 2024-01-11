@@ -41,7 +41,7 @@ public class AttributesPopupManager : MonoBehaviour
 
     public void AddAttribute(CharacterAttribute attribute) { AttributesCollection.Add(attribute); }
 
-    public void ShowAttributesPopup()
+    public void LoadPopup()
     {
         ClearContentPanel();
 
@@ -73,13 +73,13 @@ public class AttributesPopupManager : MonoBehaviour
         if (hasAttribute) CharacterManager.CurrentCharacter.Attributes.Remove(CharacterManager.CurrentCharacter.Attributes.Find(item => item.name == attribute.name));
         else CharacterManager.CurrentCharacter.Attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
 
-        ShowAttributesPopup();
+        LoadPopup();
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
     public void ToggleOn() 
     { 
-        ShowAttributesPopup(); 
+        LoadPopup(); 
         gameObject.SetActive(true);    
     }
     public void ToggleOff() 
