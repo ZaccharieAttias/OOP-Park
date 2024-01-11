@@ -4,7 +4,8 @@ using UnityEngine;
 public class RestrictionManager : MonoBehaviour
 {
     public static RestrictionManager Instance;
-    
+
+    public bool AllowInheritance;
     public bool AllowSingleInheritance;
     public bool AllowMultipleInheritance;
 
@@ -13,26 +14,18 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowUpcasting;
 
 
-    public void Start()
+    private void Start()
     {
         Instance = this;
-        
-        AllowSingleInheritance = false;
-        AllowMultipleInheritance = true;
-        AllowAccessModifiers = false;
         
         ApplyRestrictions();
     }
 
     private void ApplyRestrictions()
     {
-        ApplyInheritanceRestriction();
+        if (AllowInheritance) ApplyRestriction<CharacterFactory>();
+        if (AllowUpcasting) ApplyRestriction<UpcastingManager>();
     }
 
-    private void ApplyInheritanceRestriction()
-    {
-        if (AllowSingleInheritance == false && AllowMultipleInheritance == false) return;
-
-        new GameObject("CharacterFactory").AddComponent<CharacterFactory>();
-    }
+    private void ApplyRestriction<T>() where T : MonoBehaviour { new GameObject(typeof(T).Name).AddComponent<T>(); }
 }
