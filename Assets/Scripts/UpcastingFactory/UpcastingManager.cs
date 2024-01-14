@@ -22,7 +22,11 @@ public class UpcastingManager : MonoBehaviour
         }
     }
     
-    private void InitializeGameObject() { transform.SetParent(GameObject.Find("Canvas/GameplayScreen/Popups").transform); }
+    private void InitializeGameObject() 
+    { 
+        transform.SetParent(GameObject.Find("Canvas/GameplayScreen/Popups").transform); 
+        transform.localPosition = new Vector3(0, 0, 0);    
+    }
     private void InitializeProperties()
     {
         GameObject upcastingUI = Instantiate(Resources.Load<GameObject>("Popups/Upcasting"), transform);
