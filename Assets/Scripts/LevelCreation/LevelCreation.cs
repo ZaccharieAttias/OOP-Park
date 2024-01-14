@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,6 @@ public class LevelCreation : MonoBehaviour
     AttributesPopupManager AttributesPopupManager;
     MethodsPopupManager MethodsPopupManager;
     CharacterManager CharacterManager;
-    TreeBuilder TreeBuilder;
 
 
     public void Start()
@@ -22,7 +22,6 @@ public class LevelCreation : MonoBehaviour
         AttributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
         MethodsPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Methods").GetComponent<MethodsPopupManager>();
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<TreeBuilder>();
     }
     private void InitializeCollections()
     {
@@ -116,7 +115,8 @@ public class LevelCreation : MonoBehaviour
     {
         Transform parnetTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
         GameObject characterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
-        
+        List<Sprite> CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
+
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
         newPlayerButton.name = characterNode.Name;
         characterNode.CharacterButton.Button = newPlayerButton;
@@ -124,5 +124,8 @@ public class LevelCreation : MonoBehaviour
 
         Button button = newPlayerButton.GetComponent<Button>();
         button.onClick.AddListener(() => CharacterManager.DisplayCharacterDetails(characterNode.Name));
+
+        Image image = newPlayerButton.GetComponent<Image>();
+        image.sprite = CharacterSprites[CharacterManager.CharactersCollection.Count % CharacterSprites.Count];
     }
 }
