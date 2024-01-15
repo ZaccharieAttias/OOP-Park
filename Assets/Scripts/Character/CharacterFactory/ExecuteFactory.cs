@@ -54,7 +54,7 @@ public class ExecuteFactory : MonoBehaviour
         string characterDescription = $"I`m {characterName}";
         List<Character> parents = CharacterFactory.SelectedCharacterObjects;
 
-        Character builtCharacter = new(characterName, characterDescription, parents, false);
+        Character builtCharacter = new(characterName, characterDescription, parents, false, false);
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
         
         return builtCharacter;
