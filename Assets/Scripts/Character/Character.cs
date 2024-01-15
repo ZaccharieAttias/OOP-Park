@@ -5,6 +5,7 @@ using UnityEngine;
 public class Character
 {
     public bool IsOriginal;
+    public bool HasBeenNamed;
 
     public string Name;
     public string Description;
@@ -18,9 +19,10 @@ public class Character
     public CharacterButton CharacterButton;
 
 
-    public Character(string name, string description, List<Character> parents, bool isOriginal)
+    public Character(string name, string description, List<Character> parents, bool isOriginal, bool hasBeenNamed)
     {
         IsOriginal = isOriginal;
+        HasBeenNamed = hasBeenNamed;
 
         Name = name;
         Description = description;
@@ -34,9 +36,10 @@ public class Character
         CharacterButton = new CharacterButton();
     }
 
-    public Character(string name, string description, List<Character> parents, List<Character> childrens, List<CharacterAttribute> attributes, List<CharacterMethod> methods, bool isOriginal, CharacterButton characterButton)
+    public Character(string name, string description, List<Character> parents, List<Character> childrens, List<CharacterAttribute> attributes, List<CharacterMethod> methods, bool isOriginal, CharacterButton characterButton, bool hasBeenNamed)
     {
         IsOriginal = isOriginal;
+        HasBeenNamed = hasBeenNamed;
 
         Name = name;
         Description = description;
@@ -53,6 +56,7 @@ public class Character
     public void InitializeCharacter(Character character)
     {
         IsOriginal = character.IsOriginal;
+        HasBeenNamed = character.HasBeenNamed;
 
         Name = character.Name;
         Description = character.Description;
