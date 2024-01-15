@@ -10,7 +10,7 @@ public class CharacterManager : MonoBehaviour
     public List<Character> CharactersCollection;
     public Character CurrentCharacter;
 
-    public TMP_Text CharacterNameText;
+    public TMP_InputField InputFieldText;
     public TMP_Text DescriptionText;
     public GameObject DefaultButton;
     public GameObject CharacterDeleteButton;
@@ -28,7 +28,7 @@ public class CharacterManager : MonoBehaviour
         CharactersCollection = new List<Character>();
         CurrentCharacter = null;
 
-        CharacterNameText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Title").GetComponent<TMP_Text>();
+        InputFieldText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/InputField").GetComponent<TMP_InputField>();
         DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
         DefaultButton = Resources.Load<GameObject>("Prefabs/Buttons/Button");
         CharacterDeleteButton = CreateDeletionButton();
@@ -83,7 +83,10 @@ public class CharacterManager : MonoBehaviour
         {
             ClearContentPanels();
 
-            CharacterNameText.text = CurrentCharacter.Name;
+            if (CurrentCharacter.HasBeenNamed) InputFieldText.interactable = false;
+            else {InputFieldText.interactable = true; InputFieldText.Select(); InputFieldText.ActivateInputField();}
+
+            InputFieldText.text = CurrentCharacter.Name;
             DescriptionText.text = CurrentCharacter.Description;
 
             DisplayAttributes();
@@ -132,5 +135,27 @@ public class CharacterManager : MonoBehaviour
     {
         foreach (Transform child in AttributesContentPanel) Destroy(child.gameObject);
         foreach (Transform child in MethodsContentPanel) Destroy(child.gameObject);
+    }
+    public void UpdateCharacterName()
+    {
+        // Cursor.visible = true;
+        // Cursor.lockState = CursorLockMode.None;
+        string newName = InputFieldText.text;
+        if (CurrentCharacter != null)
+        {
+            CurrentCharacter.Name = newName;
+            CurrentCharacter.CharacterButton.Button.name = newName;
+            CurrentCharacter.HasBeenNamed = true;
+            CurrentCharacter.Description = $"This is {newName}";
+            InputFieldText.interactable = false;
+        }
+    }
+    public void HighlightAllText()
+    {
+        InputFieldText.Select();
+        InputFieldText.ActivateInputField();
+        //disable cursor
+        // Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
     }
 }
