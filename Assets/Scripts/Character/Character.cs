@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[System.Serializable]
 public class Character
 {
     public bool IsOriginal;
@@ -32,6 +32,22 @@ public class Character
         Childrens = new List<Character>();
 
         CharacterButton = new CharacterButton();
+    }
+
+    public Character(string name, string description, List<Character> parents, List<Character> childrens, List<CharacterAttribute> attributes, List<CharacterMethod> methods, bool isOriginal, CharacterButton characterButton)
+    {
+        IsOriginal = isOriginal;
+
+        Name = name;
+        Description = description;
+
+        Attributes = new List<CharacterAttribute>(attributes);
+        Methods = new List<CharacterMethod>(methods);
+
+        Parents = new List<Character>(parents);
+        Childrens = new List<Character>(childrens);
+
+        CharacterButton = characterButton;
     }
 
     public void InitializeCharacter(Character character)
