@@ -147,7 +147,7 @@ public class CharacterManager : MonoBehaviour
             CurrentCharacter.CharacterButton.Button.name = newName;
             CurrentCharacter.HasBeenNamed = true;
             CurrentCharacter.Description = $"This is {newName}";
-            InputFieldText.interactable = false;
+            DisplayCharacterDetails(newName);
         }
     }
     public void HighlightAllText()
