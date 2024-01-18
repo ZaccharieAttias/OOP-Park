@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 
 public class CharacterManager : MonoBehaviour
@@ -10,8 +10,9 @@ public class CharacterManager : MonoBehaviour
     public List<Character> CharactersCollection;
     public Character CurrentCharacter;
 
-    public TMP_InputField InputFieldText;
+    public TMP_InputField NameText;
     public TMP_Text DescriptionText;
+    
     public GameObject DefaultButton;
     public GameObject CharacterDeleteButton;
 
@@ -28,8 +29,9 @@ public class CharacterManager : MonoBehaviour
         CharactersCollection = new List<Character>();
         CurrentCharacter = null;
 
-        InputFieldText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/InputField").GetComponent<TMP_InputField>();
+        NameText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Name").GetComponent<TMP_InputField>();
         DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
+        
         DefaultButton = Resources.Load<GameObject>("Prefabs/Buttons/Button");
         CharacterDeleteButton = CreateDeletionButton();
 
@@ -37,6 +39,7 @@ public class CharacterManager : MonoBehaviour
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
 
         TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<TreeBuilder>();
+
     }
     private GameObject CreateDeletionButton()
     {
@@ -83,12 +86,7 @@ public class CharacterManager : MonoBehaviour
         {
             ClearContentPanels();
 
-            if (CurrentCharacter.HasBeenNamed) InputFieldText.interactable = false;
-            else {InputFieldText.interactable = true; InputFieldText.Select(); InputFieldText.ActivateInputField();}
-
-            InputFieldText.text = CurrentCharacter.Name;
-            DescriptionText.text = CurrentCharacter.Description;
-
+            DisplayName();
             DisplayAttributes();
             DisplayMethods();
             DisplayDelete();
@@ -96,6 +94,21 @@ public class CharacterManager : MonoBehaviour
             PowerUp powerUp = GetComponent<PowerUp>();
             powerUp.ApplyPowerup(CurrentCharacter);
         }
+    }
+    private void DisplayName()
+    { 
+        NameText.interactable = CurrentCharacter.IsOriginal == false;
+
+        NameText.text = CurrentCharacter.Name;
+        DescriptionText.text = CurrentCharacter.Description;
+
+        NameText.onEndEdit.AddListener(text => 
+        {
+            CurrentCharacter.Name = text;
+            CurrentCharacter.CharacterButton.Button.name = text;
+            
+            DisplayCharacterDetails(text);
+        });
     }
     private void DisplayAttributes()
     {
@@ -135,27 +148,5 @@ public class CharacterManager : MonoBehaviour
     {
         foreach (Transform child in AttributesContentPanel) Destroy(child.gameObject);
         foreach (Transform child in MethodsContentPanel) Destroy(child.gameObject);
-    }
-    public void UpdateCharacterName()
-    {
-        // Cursor.visible = true;
-        // Cursor.lockState = CursorLockMode.None;
-        string newName = InputFieldText.text;
-        if (CurrentCharacter != null)
-        {
-            CurrentCharacter.Name = newName;
-            CurrentCharacter.CharacterButton.Button.name = newName;
-            CurrentCharacter.HasBeenNamed = true;
-            CurrentCharacter.Description = $"This is {newName}";
-            DisplayCharacterDetails(newName);
-        }
-    }
-    public void HighlightAllText()
-    {
-        InputFieldText.Select();
-        InputFieldText.ActivateInputField();
-        //disable cursor
-        // Cursor.visible = false;
-        // Cursor.lockState = CursorLockMode.Locked;
     }
 }

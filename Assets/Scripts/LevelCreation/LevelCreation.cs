@@ -15,6 +15,7 @@ public class LevelCreation : MonoBehaviour
     {
         InitializeProperties();
         InitializeCollections();
+        InitializeGameObjects();
     }
 
     private void InitializeProperties()
@@ -29,6 +30,7 @@ public class LevelCreation : MonoBehaviour
         InitializeMethodsCollection();
         InitializeCharactersCollection();
     }
+    private void InitializeGameObjects() { GameObject.Find("Canvas/HTMenu/Menu").SetActive(false); }
 
     private void InitializeAttributesCollection()
     {
@@ -87,7 +89,7 @@ public class LevelCreation : MonoBehaviour
         // Character 1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
-        Character character1 = new(characterName, characterDescription, characterParents, true, true);
+        Character character1 = new(characterName, characterDescription, characterParents, true);
         InitializeCharacterObject(character1);
         CharacterManager.AddCharacter(character1);
 
@@ -95,7 +97,7 @@ public class LevelCreation : MonoBehaviour
         characterName = "Character 2";
         characterDescription = "This is the second character";
         characterParents.Add(character1);
-        Character character2 = new(characterName, characterDescription, characterParents, true, true);
+        Character character2 = new(characterName, characterDescription, characterParents, true);
         character2.Parents.ForEach(parent => parent.Childrens.Add(character2));
         InitializeCharacterObject(character2);
         CharacterManager.AddCharacter(character2);
@@ -105,7 +107,7 @@ public class LevelCreation : MonoBehaviour
         characterName = "Character 3";
         characterDescription = "This is the third character";
         characterParents.Add(character1);
-        Character character3 = new(characterName, characterDescription, characterParents, true, true);
+        Character character3 = new(characterName, characterDescription, characterParents, true);
         character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
         InitializeCharacterObject(character3);
         CharacterManager.AddCharacter(character3);
