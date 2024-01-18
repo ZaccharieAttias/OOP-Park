@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[System.Serializable]
+
 public class CharacterDetails : MonoBehaviour
 {
     public Character Character;
