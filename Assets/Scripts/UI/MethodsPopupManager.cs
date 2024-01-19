@@ -17,13 +17,12 @@ public class MethodsPopupManager : MonoBehaviour
     public Transform ContentPanel;
 
 
-    private void Start()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void OnGameStart()
     {
-        InitializeGameObject();
-        InitializeProperties();
+        MethodsPopupManager methodsPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Methods").GetComponent<MethodsPopupManager>();
+        methodsPopupManager.InitializeProperties();
     }
-
-    private void InitializeGameObject() { gameObject.SetActive(false); }
     private void InitializeProperties()
     {
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
