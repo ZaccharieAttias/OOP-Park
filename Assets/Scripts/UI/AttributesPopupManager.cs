@@ -17,13 +17,12 @@ public class AttributesPopupManager : MonoBehaviour
     public Transform ContentPanel;
 
 
-    private void Start()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void OnGameStart()
     {
-        InitializeGameObject();
-        InitializeProperties();
+        AttributesPopupManager attributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
+        attributesPopupManager.InitializeProperties();
     }
-
-    private void InitializeGameObject() { gameObject.SetActive(false); }
     private void InitializeProperties()
     {
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
@@ -55,8 +54,6 @@ public class AttributesPopupManager : MonoBehaviour
 
             MarkAttributeInPopup(attributeButton, attribute);
         }
-
-        gameObject.SetActive(true);
     }
     private void MarkAttributeInPopup(GameObject attributeButton, CharacterAttribute attribute)
     {
