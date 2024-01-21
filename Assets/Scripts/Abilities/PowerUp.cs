@@ -1,37 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PowerUp : MonoBehaviour
 {
-    public SpeedBuff speedBuff;
-    public GravityBuff gravityBuff;
-    public MultipleJumpsBuff multipleJumpsBuff;
+    public SpeedBuff SpeedBuff;
+    public GravityBuff GravityBuff;
+    public MultipleJumpsBuff MultipleJumpsBuff;
 
-    public CharacterMethod[] previousMethods;
+    public List<CharacterMethod> PreviousMethods;
 
+
+    public void Start() { InitializeProperties(); }
+    public void InitializeProperties()
+    {
+        SpeedBuff = Resources.Load<SpeedBuff>("Prefabs/PowerUps/SpeedBuff");
+        GravityBuff = Resources.Load<GravityBuff>("Prefabs/PowerUps/GravityBuff");
+        MultipleJumpsBuff = Resources.Load<MultipleJumpsBuff>("Prefabs/PowerUps/MultipleJumpsBuff");
+
+        PreviousMethods = new List<CharacterMethod>();
+    }
 
     public void ApplyPowerup(Character character)
     {
-        for (int i = previousMethods.Length - 1; i >= 0; i--)
+        foreach (CharacterMethod method in PreviousMethods)
         {
-            if (previousMethods[i].name == "MoveSpeed") speedBuff.DeactivatePower(gameObject);
-            if (previousMethods[i].name == "GravityForce") gravityBuff.DeactivatePower(gameObject);
-            if (previousMethods[i].name == "DoubleJump") multipleJumpsBuff.DeactivatePower(gameObject);
+            if (method.Name == "MoveSpeed") SpeedBuff.DeactivatePower(gameObject);
+            if (method.Name == "GravityForce") GravityBuff.DeactivatePower(gameObject);
+            if (method.Name == "DoubleJump") MultipleJumpsBuff.DeactivatePower(gameObject);
 
-            List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
-            tempList.RemoveAt(i);
-            previousMethods = tempList.ToArray();
+            PreviousMethods.Remove(method);
         }
 
         foreach (CharacterMethod method in character.Methods)
         {
-            if (method.name == "MoveSpeed") speedBuff.ActivatePower(gameObject);
-            if (method.name == "GravityForce") gravityBuff.ActivatePower(gameObject);
-            if (method.name == "DoubleJump") multipleJumpsBuff.ActivatePower(gameObject);
+            if (method.Name == "MoveSpeed") SpeedBuff.ActivatePower(gameObject, method.Attribute.Value);
+            if (method.Name == "GravityForce") GravityBuff.ActivatePower(gameObject, method.Attribute.Value);
+            if (method.Name == "DoubleJump") MultipleJumpsBuff.ActivatePower(gameObject, method.Attribute.Value);
 
-            List<CharacterMethod> tempList = new List<CharacterMethod>(previousMethods);
-            tempList.Add(method);
-            previousMethods = tempList.ToArray();
+            PreviousMethods.Add(method);
         }
     }
 }
