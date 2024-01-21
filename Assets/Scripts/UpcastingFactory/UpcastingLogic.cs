@@ -18,7 +18,6 @@ public class UpcastingLogic : MonoBehaviour
         InitializeGameObject();
         InitializeProperties();     
     }
-
     private void InitializeGameObject() { gameObject.SetActive(false); }
     private void InitializeProperties()
     {
@@ -63,7 +62,7 @@ public class UpcastingLogic : MonoBehaviour
     public void SetMethod()
     {
         string methodName = "None";
-        if (CharacterData.Count > 0 ) methodName = CharacterData[CharacterIndex].Item2[MethodIndex].name;
+        if (CharacterData.Count > 0 ) methodName = CharacterData[CharacterIndex].Item2[MethodIndex].Name;
 
         UpcastingUI.Method.text = methodName;
     }
