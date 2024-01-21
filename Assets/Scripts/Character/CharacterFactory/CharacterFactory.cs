@@ -26,7 +26,6 @@ public class CharacterFactory : MonoBehaviour
         InitializeGameObject();
         InitializeProperties(); 
     }
-
     private void InitializeGameObject()
     {
         name = "CharacterFactory";
