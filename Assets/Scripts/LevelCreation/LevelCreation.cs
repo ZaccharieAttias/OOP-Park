@@ -15,9 +15,7 @@ public class LevelCreation : MonoBehaviour
     {
         InitializeProperties();
         InitializeCollections();
-        InitializeGameObjects();
     }
-
     private void InitializeProperties()
     {
         AttributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
@@ -30,31 +28,35 @@ public class LevelCreation : MonoBehaviour
         InitializeMethodsCollection();
         InitializeCharactersCollection();
     }
-    private void InitializeGameObjects() { GameObject.Find("Canvas/HTMenu/Menu").SetActive(false); }
 
     private void InitializeAttributesCollection()
     {
         string attributeName;
         string attributeDescription;
+        float attributeValue;
         AccessModifier attributeAccessModifier;
 
         // Attribute 1
-        attributeName = "MoveSpeed";
+        attributeName = "moveSpeed";
+        attributeValue = 5f;
         attributeDescription = "This is the MoveSpeed method";
         attributeAccessModifier = AccessModifier.Public;
-        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
+        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
 
         // Attribute 2
-        attributeName = "GravityForce";
+        attributeName = "gravityForce";
+        attributeValue = 20f;
+
         attributeDescription = "This is the GravityForce method";
         attributeAccessModifier = AccessModifier.Protected;
-        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
+        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
 
         // Attribute 3
-        attributeName = "DoubleJump";
+        attributeName = "doubleJump";
+        attributeValue = 2f;
         attributeDescription = "This is the DoubleJump method";
         attributeAccessModifier = AccessModifier.Private;
-        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeAccessModifier));
+        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
     }
     private void InitializeMethodsCollection()
     {
@@ -125,7 +127,7 @@ public class LevelCreation : MonoBehaviour
         newPlayerButton.GetComponent<CharacterDetails>().InitializeCharacter(characterNode);
 
         Button button = newPlayerButton.GetComponent<Button>();
-        button.onClick.AddListener(() => CharacterManager.DisplayCharacterDetails(characterNode.Name));
+        button.onClick.AddListener(() => CharacterManager.DisplayCharacter(characterNode));
 
         Image image = newPlayerButton.GetComponent<Image>();
         image.sprite = CharacterSprites[CharacterManager.CharactersCollection.Count % CharacterSprites.Count];
