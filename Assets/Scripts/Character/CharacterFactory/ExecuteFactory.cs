@@ -20,7 +20,6 @@ public class ExecuteFactory : MonoBehaviour
         InitializeGameObject(); 
         InitializeProperties();    
     }
-
     private void InitializeGameObject()
     {
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
