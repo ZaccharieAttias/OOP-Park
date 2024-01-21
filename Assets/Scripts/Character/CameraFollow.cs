@@ -5,7 +5,7 @@ public class CameraFollow : MonoBehaviour
 {
     public GameObject Player;
     public Vector3 PositionOffset;
-    private Vector3 Velocity;
+    public Vector3 Velocity;
 
     public float TimeOffset;
     
