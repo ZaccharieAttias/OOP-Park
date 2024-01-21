@@ -23,7 +23,6 @@ public class CharacterManager : MonoBehaviour
 
 
     public void Start() { InitializeProperties(); }
-
     private void InitializeProperties()
     {
         CharactersCollection = new List<Character>();
@@ -32,14 +31,13 @@ public class CharacterManager : MonoBehaviour
         NameText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Name").GetComponent<TMP_InputField>();
         DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
         
-        DefaultButton = Resources.Load<GameObject>("Prefabs/Buttons/Button");
+        DefaultButton = Resources.Load<GameObject>("Prefabs/Buttons/Default");
         CharacterDeleteButton = CreateDeletionButton();
 
         AttributesContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
 
         TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<TreeBuilder>();
-
     }
     private GameObject CreateDeletionButton()
     {
@@ -64,7 +62,7 @@ public class CharacterManager : MonoBehaviour
         CharactersCollection.Add(builtCharacter);
         TreeBuilder.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
 
-        DisplayCharacterDetails(builtCharacter.Name);
+        DisplayCharacter(builtCharacter);
     }
     public void DeleteCharacter()
     {
@@ -75,12 +73,12 @@ public class CharacterManager : MonoBehaviour
         Destroy(CurrentCharacter.CharacterButton.Button);
         
         TreeBuilder.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
-        DisplayCharacterDetails(parent.Name);
+        DisplayCharacter(parent);
     }
 
-    public void DisplayCharacterDetails(string characterName)
+    public void DisplayCharacter(Character displayCharacter)
     {
-        CurrentCharacter = CharactersCollection.Find(character => character.Name == characterName);
+        CurrentCharacter = CharactersCollection.Find(character => character == displayCharacter);
 
         if (CurrentCharacter != null)
         {
@@ -107,7 +105,7 @@ public class CharacterManager : MonoBehaviour
             CurrentCharacter.Name = text;
             CurrentCharacter.CharacterButton.Button.name = text;
             
-            DisplayCharacterDetails(text);
+            DisplayCharacter(CurrentCharacter);
         });
     }
     private void DisplayAttributes()
@@ -115,15 +113,15 @@ public class CharacterManager : MonoBehaviour
         foreach (CharacterAttribute attribute in CurrentCharacter.Attributes)
         {
             GameObject attributeButton = Instantiate(DefaultButton, AttributesContentPanel);
-            attributeButton.name = attribute.name;
+            attributeButton.name = attribute.Name;
 
             TMP_Text buttonText = attributeButton.GetComponentInChildren<TMP_Text>();
-            buttonText.text = attribute.name;
+            buttonText.text = attribute.Name;
 
             if (RestrictionManager.Instance.AllowAccessModifiers) 
             {
                 attributeButton.AddComponent<AccessModifierButton>();
-                attributeButton.GetComponent<AccessModifierButton>().setAttribute(attribute);
+                attributeButton.GetComponent<AccessModifierButton>().Attribute = attribute;
             }
         }
     }
@@ -134,12 +132,12 @@ public class CharacterManager : MonoBehaviour
             GameObject methodButton = Instantiate(DefaultButton, MethodsContentPanel);
 
             TMP_Text buttonText = methodButton.GetComponentInChildren<TMP_Text>();
-            buttonText.text = method.name;
+            buttonText.text = method.Name;
 
             if (RestrictionManager.Instance.AllowAccessModifiers)
             {
                 methodButton.AddComponent<AccessModifierButton>();
-                methodButton.GetComponent<AccessModifierButton>().setMethod(method);
+                methodButton.GetComponent<AccessModifierButton>().Method = method;
             }
         }
     }    
