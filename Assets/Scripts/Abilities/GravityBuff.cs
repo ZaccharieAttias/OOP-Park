@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "PowerUpEffects/GravityBuff")]
 
+[CreateAssetMenu(menuName = "PowerUpEffects/GravityBuff")]
 public class GravityBuff : PowerUpEffect
 {   
-    public float jumpforceeffect = 20f;
+    public float JumpForceEffect = 20f;
 
-    public override void ActivatePower(GameObject player)
+
+    public override void ActivatePower(GameObject player, float value)
     {
-        player.GetComponent<PlayerMovement>().jumpForce += jumpforceeffect;
+        JumpForceEffect = value;
+        player.GetComponent<PlayerMovement>().jumpForce += JumpForceEffect;
     }
 
-    public override void DeactivatePower(GameObject player)
-    {
-        player.GetComponent<PlayerMovement>().jumpForce -= jumpforceeffect;
-    }
+    public override void DeactivatePower(GameObject player) { player.GetComponent<PlayerMovement>().jumpForce -= JumpForceEffect; }
 }
