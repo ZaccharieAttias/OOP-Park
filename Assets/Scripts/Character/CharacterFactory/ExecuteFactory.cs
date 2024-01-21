@@ -67,7 +67,7 @@ public class ExecuteFactory : MonoBehaviour
         characterObject.GetComponent<CharacterDetails>().InitializeCharacter(character);
 
         Button button = characterObject.GetComponent<Button>();
-        button.onClick.AddListener(() => CharacterManager.DisplayCharacterDetails(character.Name));
+        button.onClick.AddListener(() => CharacterManager.DisplayCharacter(character));
 
         Image image = characterObject.GetComponent<Image>();
         image.sprite = CharacterSprites[SpriteIndex % CharacterSprites.Count];

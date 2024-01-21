@@ -91,7 +91,7 @@ public class MethodsPopupManager : MonoBehaviour
     }
     private void ToggleOff()
     { 
-        CharacterManager.DisplayCharacterDetails(CharacterManager.CurrentCharacter.Name);
+        CharacterManager.DisplayCharacterDetails(CharacterManager.CurrentCharacter);
         gameObject.SetActive(false); 
     }
 
