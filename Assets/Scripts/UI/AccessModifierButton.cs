@@ -23,12 +23,12 @@ public class AccessModifierButton : MonoBehaviour
         ProtectedColor = new Color32(255, 165, 0, 200);
         PublicColor = new Color32(0, 255, 0, 200);
 
-        GetComponent<Button>().onClick.AddListener(() => OnButtonClick());
+        GetComponent<Button>().onClick.AddListener(() => OnClick());
         
         UpdateButtonVisual();
     }
     
-    private void OnButtonClick()
+    private void OnClick()
     {
         if (Attribute != null) Attribute.AccessModifier = (AccessModifier)(((int)Attribute.AccessModifier + 1) % 3);
         if (Method != null) Method.AccessModifier = (AccessModifier)(((int)Method.AccessModifier + 1) % 3);
