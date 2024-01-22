@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class SceneLoader : MonoBehaviour
 {
+    public void SceneResume() { Time.timeScale = 1f; }
+    public void ScenePause() { Time.timeScale = 0f; }
+
     public void Presentation() { SceneManager.LoadScene("Presentation"); }
     public void Playground() { SceneManager.LoadScene("Playground"); }
     public void LocalPark() { SceneManager.LoadScene("LocalPark"); }
@@ -12,5 +16,6 @@ public class SceneLoader : MonoBehaviour
     public void Tutorial() { SceneManager.LoadScene("Tutorial"); }
     public void Hierarchy() { SceneManager.LoadScene("Hierarchy"); }
     public void Polymorphism() { SceneManager.LoadScene("Polymorphism"); }
+    
     public void Quit() { Application.Quit(); }
 }

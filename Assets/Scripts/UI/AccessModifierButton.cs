@@ -1,59 +1,56 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class AccessModifierButton : MonoBehaviour
 {
-    private Image _buttonImage;
+    public Image ButtonImage;
 
-    private CharacterAttribute _attribute;
-    private CharacterMethod _method;
+    public CharacterAttribute Attribute;
+    public CharacterMethod Method;
 
-    private Color _privateColor;
-    private Color _protectedColor;
-    private Color _publicColor;
+    public Color PrivateColor;
+    public Color ProtectedColor;
+    public Color PublicColor;
 
 
-    private void Start()
+    public void Start() { InitializeProperties(); }
+    private void InitializeProperties()
     {
-        _buttonImage = GetComponent<Image>();
+        ButtonImage = GetComponent<Image>();
 
-        _privateColor = new Color32(255, 0, 0, 200);
-        _protectedColor = new Color32(255, 165, 0, 200);
-        _publicColor = new Color32(0, 255, 0, 200);
+        PrivateColor = new Color32(255, 0, 0, 200);
+        ProtectedColor = new Color32(255, 165, 0, 200);
+        PublicColor = new Color32(0, 255, 0, 200);
 
-        GetComponent<Button>().onClick.AddListener(() => OnButtonClick());
+        GetComponent<Button>().onClick.AddListener(() => OnClick());
         
         UpdateButtonVisual();
     }
-
-    private void OnButtonClick()
+    
+    private void OnClick()
     {
-        if (_attribute != null) _attribute.accessModifier = (AccessModifier)(((int)_attribute.accessModifier + 1) % 3);
-        if (_method != null) _method.accessModifier = (AccessModifier)(((int)_method.accessModifier + 1) % 3);
+        if (Attribute != null) Attribute.AccessModifier = (AccessModifier)(((int)Attribute.AccessModifier + 1) % 3);
+        if (Method != null) Method.AccessModifier = (AccessModifier)(((int)Method.AccessModifier + 1) % 3);
 
         UpdateButtonVisual();
     }
-
     private void UpdateButtonVisual()
     {
-        AccessModifier modifier = (_attribute != null) ? _attribute.accessModifier : _method.accessModifier;
-        
-        switch (modifier)
+        AccessModifier accessModifier = (Attribute != null) ? Attribute.AccessModifier : Method.AccessModifier;
+        switch (accessModifier)
         {
             case AccessModifier.Private:
-                _buttonImage.color = _privateColor;
+                ButtonImage.color = PrivateColor;
                 break;
 
             case AccessModifier.Protected:
-                _buttonImage.color = _protectedColor;
+                ButtonImage.color = ProtectedColor;
                 break;
 
             case AccessModifier.Public:
-                _buttonImage.color = _publicColor;
+                ButtonImage.color = PublicColor;
                 break;
         }
     }
-
-    public void setAttribute(CharacterAttribute attribute) { _attribute = attribute; }
-    public void setMethod(CharacterMethod method) { _method = method; }
 }

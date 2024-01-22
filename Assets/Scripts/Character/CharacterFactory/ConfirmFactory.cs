@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class ConfirmFactory : MonoBehaviour
 {
     public void Start() { InitializeGameObject(); }
-
     private void InitializeGameObject()
     {
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");

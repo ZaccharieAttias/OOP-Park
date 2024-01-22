@@ -10,11 +10,11 @@ public class AttributesPopupManager : MonoBehaviour
     public List<CharacterAttribute> AttributesCollection;
     public CharacterManager CharacterManager;
     
-    public Button PopupToggleOn;
-    public Button PopupToggleOff;
-
     public GameObject AttributeButton;
     public Transform ContentPanel;
+
+    public Button PopupToggleOn;
+    public Button PopupToggleOff;
 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -28,14 +28,14 @@ public class AttributesPopupManager : MonoBehaviour
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         AttributesCollection = new List<CharacterAttribute>();
 
+        AttributeButton = Resources.Load<GameObject>("Prefabs/Buttons/Default");
+        ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
+
         PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
         PopupToggleOn.onClick.AddListener(() => ToggleOn());
 
         PopupToggleOff = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
-
-        AttributeButton = Resources.Load<GameObject>("Prefabs/Buttons/Button");
-        ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
     }
 
     public void AddAttribute(CharacterAttribute attribute) { AttributesCollection.Add(attribute); }
@@ -47,17 +47,17 @@ public class AttributesPopupManager : MonoBehaviour
         foreach (CharacterAttribute attribute in AttributesCollection)
         {
             GameObject attributeButton = Instantiate(AttributeButton, ContentPanel);
-            attributeButton.name = attribute.name;
+            attributeButton.name = attribute.Name;
 
             TMP_Text buttonText = attributeButton.GetComponentInChildren<TMP_Text>();
-            buttonText.text = attribute.name;
+            buttonText.text = attribute.Name;
 
             MarkAttributeInPopup(attributeButton, attribute);
         }
     }
     private void MarkAttributeInPopup(GameObject attributeButton, CharacterAttribute attribute)
     {
-        bool hasAttribute = CharacterManager.CurrentCharacter.Attributes.Any(item => item.name == attribute.name);
+        bool hasAttribute = CharacterManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name);
 
         Image image = attributeButton.GetComponent<Image>();
         image.color = hasAttribute ? Color.green : Color.white;
@@ -67,10 +67,24 @@ public class AttributesPopupManager : MonoBehaviour
     }
     private void OnClick(CharacterAttribute attribute, bool hasAttribute)
     {
-        if (hasAttribute) CharacterManager.CurrentCharacter.Attributes.Remove(CharacterManager.CurrentCharacter.Attributes.Find(item => item.name == attribute.name));
-        else CharacterManager.CurrentCharacter.Attributes.Add(new CharacterAttribute(attribute.name, attribute.description, attribute.accessModifier));
+        if (hasAttribute) 
+        {
+            var currentCharacter = CharacterManager.CurrentCharacter;
+            var currentAttribute = currentCharacter.Attributes.Find(item => item.Name == attribute.Name);
+
+            currentCharacter.Attributes.Remove(currentAttribute);
+            CancelDependentMethods(currentCharacter ,currentAttribute);
+        }
+
+        else CharacterManager.CurrentCharacter.Attributes.Add(new CharacterAttribute(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier));
 
         LoadPopup();
+    }
+    private void CancelDependentMethods(Character character, CharacterAttribute deletedAttribute)
+    {
+        var dependentMethodToRemove = character.Methods.Find(method => method.Attribute == deletedAttribute);
+        if (dependentMethodToRemove != null) character.Methods.Remove(dependentMethodToRemove);
+        foreach (Character child in character.Childrens) CancelDependentMethods(child, deletedAttribute);
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
@@ -81,7 +95,7 @@ public class AttributesPopupManager : MonoBehaviour
     }
     public void ToggleOff() 
     { 
-        CharacterManager.DisplayCharacterDetails(CharacterManager.CurrentCharacter.Name);
+        CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
         gameObject.SetActive(false); 
     }
 }

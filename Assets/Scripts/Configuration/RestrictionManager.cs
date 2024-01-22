@@ -14,18 +14,16 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowUpcasting;
 
 
-    private void Start()
+    public void Start()
     {
         Instance = this;
         
         ApplyRestrictions();
     }
-
     private void ApplyRestrictions()
     {
         if (AllowInheritance) ApplyRestriction<CharacterFactory>();
         if (AllowUpcasting) ApplyRestriction<UpcastingManager>();
     }
-
     private void ApplyRestriction<T>() where T : MonoBehaviour { new GameObject(typeof(T).Name).AddComponent<T>(); }
 }

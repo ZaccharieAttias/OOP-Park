@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 
+
 public class CameraFollow : MonoBehaviour
 {
-    public GameObject player;
-    public float timeOffset;
-    public Vector3 posOffset;
+    public GameObject Player;
+    public Vector3 PositionOffset;
+    public Vector3 Velocity;
 
-    private Vector3 velocity;
+    public float TimeOffset;
     
-    void Update()
-    {
-        transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + posOffset, ref velocity, timeOffset);
-    }
+
+    void Update() { transform.position = Vector3.SmoothDamp(transform.position, Player.transform.position + PositionOffset, ref Velocity, TimeOffset); }
 }

@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+
 [CreateAssetMenu(menuName = "PowerUpEffects/SpeedBuff")]
-
 public class SpeedBuff : PowerUpEffect
-{   
-    public float speedIncrease = 5f;
+{
+    public float SpeedIncrease = 5f;
 
-    public override void ActivatePower(GameObject player)
+
+    public override void ActivatePower(GameObject player, float value)
     {
-        player.GetComponent<PlayerMovement>().moveSpeed += speedIncrease;
+        SpeedIncrease = value;
+        player.GetComponent<PlayerMovement>().moveSpeed += SpeedIncrease;
     }
 
-    public override void DeactivatePower(GameObject player)
-    {
-        player.GetComponent<PlayerMovement>().moveSpeed -= speedIncrease;
-    }
+    public override void DeactivatePower(GameObject player) { player.GetComponent<PlayerMovement>().moveSpeed -= SpeedIncrease; }
 }

@@ -8,20 +8,11 @@ public class UpcastingManager : MonoBehaviour
     public CharacterManager CharacterManager;
 
 
-    public void Start() 
+    public void Start()
     { 
         InitializeGameObject();
         InitializeProperties(); 
     }
-    public void Update() 
-    { 
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            UpcastingLogic.LoadPopup(CharacterManager.CurrentCharacter);
-            UpcastingUI.ToggleActivation();
-        }
-    }
-    
     private void InitializeGameObject() 
     { 
         transform.SetParent(GameObject.Find("Canvas/GameplayScreen/Popups").transform); 
@@ -39,5 +30,14 @@ public class UpcastingManager : MonoBehaviour
         UpcastingLogic = upcastingLogic.GetComponent<UpcastingLogic>();
         
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+    }
+    
+    public void Update()
+    { 
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            UpcastingLogic.LoadPopup(CharacterManager.CurrentCharacter);
+            UpcastingUI.ToggleActivation();
+        }
     }
 }

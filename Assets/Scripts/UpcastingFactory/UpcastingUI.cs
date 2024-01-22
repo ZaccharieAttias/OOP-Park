@@ -27,7 +27,6 @@ public class UpcastingUI : MonoBehaviour
         InitializeGameObject();
         InitializeProperties();
     }
-
     public void InitializeGameObject() { gameObject.SetActive(false); }
     private void InitializeProperties()
     {

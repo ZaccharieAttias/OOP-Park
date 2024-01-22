@@ -1,25 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class ChangingSkin : MonoBehaviour
 {
-    public AnimatorOverrideController bandw;
-    public AnimatorOverrideController normal;
-    public AnimatorOverrideController pink;
+    public AnimatorOverrideController BnW;
+    public AnimatorOverrideController Normal;
+    public AnimatorOverrideController Pink;
 
-    public void BlackAndWhiteSkin()
-    {
-        GetComponent<Animator>().runtimeAnimatorController = bandw as RuntimeAnimatorController;
-    }
 
-    public void NormalSkin()
-    {
-        GetComponent<Animator>().runtimeAnimatorController = normal as RuntimeAnimatorController;
-    }
-
-    public void PinkSkin()
-    {
-        GetComponent<Animator>().runtimeAnimatorController = pink as RuntimeAnimatorController;
-    }
+    public void BlackAndWhiteSkin() { GetComponent<Animator>().runtimeAnimatorController = BnW; }
+    public void NormalSkin() { GetComponent<Animator>().runtimeAnimatorController = Normal; }
+    public void PinkSkin() { GetComponent<Animator>().runtimeAnimatorController = Pink; }
 }
