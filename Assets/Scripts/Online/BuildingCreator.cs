@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
-
 
 public class BuildingCreator : Singleton<BuildingCreator> {
     [SerializeField] Tilemap previewMap,
@@ -19,6 +18,11 @@ public class BuildingCreator : Singleton<BuildingCreator> {
     Vector3Int currentGridPosition;
     Vector3Int lastGridPosition;
 
+    bool holdActive;
+    Vector3Int holdStartPosition;
+
+    BoundsInt bounds;
+
     protected override void Awake () {
         base.Awake ();
         playerInput = new PlayerInput ();
@@ -29,7 +33,11 @@ public class BuildingCreator : Singleton<BuildingCreator> {
         playerInput.Enable ();
 
         playerInput.Gameplay.MousePosition.performed += OnMouseMove;
+
         playerInput.Gameplay.MouseLeftClick.performed += OnLeftClick;
+        playerInput.Gameplay.MouseLeftClick.started += OnLeftClick;
+        playerInput.Gameplay.MouseLeftClick.canceled += OnLeftClick;
+
         playerInput.Gameplay.MouseRightClick.performed += OnRightClick;
     }
 
@@ -37,7 +45,11 @@ public class BuildingCreator : Singleton<BuildingCreator> {
         playerInput.Disable ();
 
         playerInput.Gameplay.MousePosition.performed -= OnMouseMove;
+
         playerInput.Gameplay.MouseLeftClick.performed -= OnLeftClick;
+        playerInput.Gameplay.MouseLeftClick.started -= OnLeftClick;
+        playerInput.Gameplay.MouseLeftClick.canceled -= OnLeftClick;
+
         playerInput.Gameplay.MouseRightClick.performed -= OnRightClick;
     }
 
@@ -62,6 +74,10 @@ public class BuildingCreator : Singleton<BuildingCreator> {
                 currentGridPosition = gridPos;
 
                 UpdatePreview ();
+
+                if (holdActive) {
+                    HandleDrawing ();
+                }
             }
         }
     }
@@ -71,8 +87,20 @@ public class BuildingCreator : Singleton<BuildingCreator> {
     }
 
     private void OnLeftClick (InputAction.CallbackContext ctx) {
-        if (selectedObj != null) {
-            HandleDrawing ();
+        if (selectedObj != null && !EventSystem.current.IsPointerOverGameObject ()) {
+            if (ctx.phase == InputActionPhase.Started) {
+                holdActive = true;
+
+                if (ctx.interaction is TapInteraction) {
+                    holdStartPosition = currentGridPosition;
+                }
+                HandleDrawing ();
+            } else {
+                if (ctx.interaction is SlowTapInteraction || ctx.interaction is TapInteraction && ctx.phase == InputActionPhase.Performed) {
+                    holdActive = false;
+                    HandleDrawRelease ();
+                }
+            }
         }
     }
 
@@ -92,7 +120,80 @@ public class BuildingCreator : Singleton<BuildingCreator> {
     }
 
     private void HandleDrawing () {
-        DrawItem ();
+        if (selectedObj != null) {
+            switch (selectedObj.PlaceType) {
+                case PlaceType.Single:
+                default:
+                    DrawItem ();
+                    break;
+                case PlaceType.Line:
+                    LineRenderer ();
+                    break;
+                case PlaceType.Rectangle:
+                    RectangleRenderer ();
+                    break;
+            }
+        }
+
+    }
+
+    private void HandleDrawRelease () {
+        if (selectedObj != null) {
+            switch (selectedObj.PlaceType) {
+                case PlaceType.Line:
+                case PlaceType.Rectangle:
+                    DrawBounds (defaultMap);
+                    previewMap.ClearAllTiles ();
+                    break;
+            }
+        }
+    }
+
+    private void RectangleRenderer () {
+        //  Render Preview on UI Map, draw real one on Release
+
+        previewMap.ClearAllTiles ();
+
+        bounds.xMin = currentGridPosition.x < holdStartPosition.x ? currentGridPosition.x : holdStartPosition.x;
+        bounds.xMax = currentGridPosition.x > holdStartPosition.x ? currentGridPosition.x : holdStartPosition.x;
+        bounds.yMin = currentGridPosition.y < holdStartPosition.y ? currentGridPosition.y : holdStartPosition.y;
+        bounds.yMax = currentGridPosition.y > holdStartPosition.y ? currentGridPosition.y : holdStartPosition.y;
+
+        DrawBounds (previewMap);
+    }
+
+    private void LineRenderer () {
+        //  Render Preview on UI Map, draw real one on Release
+
+        previewMap.ClearAllTiles ();
+
+        float diffX = Mathf.Abs (currentGridPosition.x - holdStartPosition.x);
+        float diffY = Mathf.Abs (currentGridPosition.y - holdStartPosition.y);
+
+        bool lineIsHorizontal = diffX >= diffY;
+
+        if (lineIsHorizontal) {
+            bounds.xMin = currentGridPosition.x < holdStartPosition.x ? currentGridPosition.x : holdStartPosition.x;
+            bounds.xMax = currentGridPosition.x > holdStartPosition.x ? currentGridPosition.x : holdStartPosition.x;
+            bounds.yMin = holdStartPosition.y;
+            bounds.yMax = holdStartPosition.y;
+        } else {
+            bounds.xMin = holdStartPosition.x;
+            bounds.xMax = holdStartPosition.x;
+            bounds.yMin = currentGridPosition.y < holdStartPosition.y ? currentGridPosition.y : holdStartPosition.y;
+            bounds.yMax = currentGridPosition.y > holdStartPosition.y ? currentGridPosition.y : holdStartPosition.y;
+        }
+
+        DrawBounds (previewMap);
+    }
+
+    private void DrawBounds (Tilemap map) {
+        // Draws bounds on given map
+        for (int x = bounds.xMin; x <= bounds.xMax; x++) {
+            for (int y = bounds.yMin; y <= bounds.yMax; y++) {
+                map.SetTile (new Vector3Int (x, y, 0), tileBase);
+            }
+        }
     }
 
     private void DrawItem () {
