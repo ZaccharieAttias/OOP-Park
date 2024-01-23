@@ -44,12 +44,14 @@ public class CharacterManager : MonoBehaviour
         Transform location = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details").transform;
 
         GameObject characterDeleteButton = Instantiate(DefaultButton, location);
+        characterDeleteButton.transform.localPosition = new Vector3(684, -382, 0);
         characterDeleteButton.name = "Delete";
+        characterDeleteButton.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 50);
+        characterDeleteButton.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
 
         TMP_Text buttonText = characterDeleteButton.GetComponentInChildren<TMP_Text>();
         buttonText.text = "Delete";
-
-        characterDeleteButton.transform.localPosition = new Vector3(235, -195, 0);
+        buttonText.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 50);
 
         Button button1 = characterDeleteButton.GetComponent<Button>();
         button1.onClick.AddListener(() => DeleteCharacter());
