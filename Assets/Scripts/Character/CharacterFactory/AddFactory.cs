@@ -10,8 +10,11 @@ public class AddFactory : MonoBehaviour
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
 
         name = "AddFactory";
-        transform.localPosition = new Vector3(-118, -237, 0);
+        transform.localPosition = new Vector3(-249, -431, 0);
 
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(35, 35);
+        
         Image image = GetComponent<Image>();
         image.sprite = Resources.Load<Sprite>("Sprites/Icons/Plus");
         image.color = Color.white;
