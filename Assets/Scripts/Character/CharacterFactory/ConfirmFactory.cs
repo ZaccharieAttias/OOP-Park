@@ -10,8 +10,11 @@ public class ConfirmFactory : MonoBehaviour
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
 
         name = "ConfirmFactory";
-        transform.localPosition = new Vector3(-68, -237, 0);
+        transform.localPosition = new Vector3(-169, -431, 0);
 
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(35, 35);
+        
         Image image = GetComponent<Image>();
         image.sprite = Resources.Load<Sprite>("Sprites/Icons/Confirm");
         image.color = Color.white;
