@@ -613,7 +613,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -251, y: 400}
+  m_AnchoredPosition: {x: -321, y: 400}
   m_SizeDelta: {x: 250, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &75015620
@@ -5965,7 +5965,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -264.55524, y: -46.718994}
-  m_SizeDelta: {x: 1200, y: 693.438}
+  m_SizeDelta: {x: 1200, y: 694}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &803369184
 MonoBehaviour:
@@ -5985,8 +5985,8 @@ MonoBehaviour:
   m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_DecelerationRate: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 999301141}
   m_HorizontalScrollbar: {fileID: 928511381}
   m_VerticalScrollbar: {fileID: 604736602}
@@ -6017,6 +6017,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NodeSize: 100
+  SiblingDistance: 100
+  TreeDistance: 5
+  DepthDistance: 100
   ScrollView: {fileID: 0}
   AllGameObject: {fileID: 0}
 --- !u!1 &806999426
@@ -7103,8 +7107,8 @@ MonoBehaviour:
   m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_DecelerationRate: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 482998278}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 477678707}
@@ -8234,10 +8238,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 999301141}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -346.719}
-  m_SizeDelta: {x: 383, y: 250}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1200, y: 694}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1386168398
 GameObject:
@@ -8587,8 +8591,8 @@ MonoBehaviour:
   m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
-  m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_DecelerationRate: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 1274037212}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 2007614456}
