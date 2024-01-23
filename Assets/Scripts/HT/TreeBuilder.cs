@@ -298,8 +298,8 @@ public class TreeBuilder : MonoBehaviour
         float contentWidth = Math.Abs(RightNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + NodeSize;
         float contentHeight = Math.Abs(TopNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + Math.Abs(BottomNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + NodeSize;
 
-        contentWidth = Mathf.Max(contentWidth, 1200);
-        contentHeight = Mathf.Max(contentHeight, 694);
+        contentWidth = Mathf.Max(contentWidth, 1180);
+        contentHeight = Mathf.Max(contentHeight, 674);
 
         RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
         allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
