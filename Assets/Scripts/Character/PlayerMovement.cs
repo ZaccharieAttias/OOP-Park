@@ -11,8 +11,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded = false;
     private bool canJump;
 
-    public Transform groundCheck;
+    public Transform groundCheckCircle;
+    public Transform groundCheckBox;
     public float groundCheckRadius;
+    public float groundCheckBoxLength;
+    public float groundCheckBoxWidth;
+
     public LayerMask collisionLayers;
 
     private Rigidbody2D rb;
@@ -89,8 +93,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckGround()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
-
+        //isGrounded = Physics2D.OverlapCircle(groundCheckCircle.position, groundCheckRadius, collisionLayers);
+        //Check for the circle and the box
+        if (Physics2D.OverlapCircle(groundCheckCircle.position, groundCheckRadius, collisionLayers) || Physics2D.OverlapArea(groundCheckBox.position, new Vector2(groundCheckBox.position.x + groundCheckBoxWidth, groundCheckBox.position.y - groundCheckBoxLength), collisionLayers))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
     }
 
     void Flip(float _velocity)
@@ -107,6 +119,12 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        //draw the box
+        Gizmos.DrawLine(groundCheckBox.position, new Vector3(groundCheckBox.position.x, groundCheckBox.position.y - groundCheckBoxLength, groundCheckBox.position.z));
+        Gizmos.DrawLine(groundCheckBox.position, new Vector3(groundCheckBox.position.x + groundCheckBoxWidth, groundCheckBox.position.y, groundCheckBox.position.z));
+        Gizmos.DrawLine(new Vector3(groundCheckBox.position.x + groundCheckBoxWidth, groundCheckBox.position.y, groundCheckBox.position.z), new Vector3(groundCheckBox.position.x + groundCheckBoxWidth, groundCheckBox.position.y - groundCheckBoxLength, groundCheckBox.position.z));
+        Gizmos.DrawLine(new Vector3(groundCheckBox.position.x, groundCheckBox.position.y - groundCheckBoxLength, groundCheckBox.position.z), new Vector3(groundCheckBox.position.x + groundCheckBoxWidth, groundCheckBox.position.y - groundCheckBoxLength, groundCheckBox.position.z));
+        
+        Gizmos.DrawWireSphere(groundCheckCircle.position, groundCheckRadius);
     }
 }
