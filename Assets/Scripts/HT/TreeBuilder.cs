@@ -7,9 +7,10 @@ using UnityEngine.UI;
 
 public class TreeBuilder : MonoBehaviour
 {
-    public static int NodeSize = 40;
-    public static int SiblingDistance = 35;
-    public static int TreeDistance = 5;
+    public int NodeSize = 100;
+    public int SiblingDistance = 100;
+    public int TreeDistance = 5;
+    public int DepthDistance = 150;
 
     public ScrollRect ScrollView;
     public GameObject AllGameObject;
@@ -57,7 +58,7 @@ public class TreeBuilder : MonoBehaviour
     private void InitializeNodes(Character character, int depth)
     {
         character.CharacterButton.X = 0;
-        character.CharacterButton.Y = depth * -75;
+        character.CharacterButton.Y = depth * -DepthDistance;
         character.CharacterButton.Mod = 0;
         character.CharacterButton.Depth = depth;
 
@@ -112,7 +113,7 @@ public class TreeBuilder : MonoBehaviour
 
         foreach (Character child in character.Childrens) CalculateFinalPositions(child, modSum);
 
-        character.CharacterButton.Y = character.IsLeaf() ? character.CharacterButton.Depth * -75 : character.Childrens[0].CharacterButton.Y + 75;
+        character.CharacterButton.Y = character.IsLeaf() ? character.CharacterButton.Depth * -DepthDistance : character.Childrens[0].CharacterButton.Y + DepthDistance;
     }
     private void UpdateNodePositions(Character character)
     {
@@ -137,7 +138,7 @@ public class TreeBuilder : MonoBehaviour
             GetRightContour(sibling, 0, ref siblingContour);
 
             int minLevel = Math.Max(nodeContour.Keys.Min(), siblingContour.Keys.Min());
-            for (int level = character.CharacterButton.Y - 75; level >= minLevel; level -= 75)
+            for (int level = character.CharacterButton.Y - DepthDistance; level >= minLevel; level -= DepthDistance)
             {
                 float distance = nodeContour[level] - siblingContour[level];
                 shiftValue = Mathf.Max(minDistance - distance, shiftValue);
@@ -217,8 +218,8 @@ public class TreeBuilder : MonoBehaviour
         if (character.Parents.Count != 0)
         {
             RectTransform parentRectTransform = character.Parents[0].CharacterButton.Button.GetComponent<RectTransform>();
-
-            Vector2 nodeTopMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 16);
+            
+            Vector2 nodeTopMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 50 - 8);
             Vector2 nodeAboveMiddle = new(nodeTopMiddle.x, (rectTransform.anchoredPosition.y + parentRectTransform.anchoredPosition.y) / 2);
             
             CreateLine(nodeAboveMiddle, nodeTopMiddle);
@@ -227,8 +228,8 @@ public class TreeBuilder : MonoBehaviour
         if (character.Childrens.Count > 0)
         {
             RectTransform leftChildrenRectTransform = character.Childrens[0].CharacterButton.Button.GetComponent<RectTransform>();
-
-            Vector2 nodeBottomMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - 18);
+            
+            Vector2 nodeBottomMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - 50 + 4);
             Vector2 nodeBelowMiddle = new(nodeBottomMiddle.x, (rectTransform.anchoredPosition.y + leftChildrenRectTransform.anchoredPosition.y) / 2);
 
             CreateLine(nodeBottomMiddle, nodeBelowMiddle);
@@ -297,8 +298,8 @@ public class TreeBuilder : MonoBehaviour
         float contentWidth = Math.Abs(RightNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + NodeSize;
         float contentHeight = Math.Abs(TopNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + Math.Abs(BottomNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + NodeSize;
 
-        contentWidth = Mathf.Max(contentWidth, 380);
-        contentHeight = Mathf.Max(contentHeight, 250);
+        contentWidth = Mathf.Max(contentWidth, 1200);
+        contentHeight = Mathf.Max(contentHeight, 694);
 
         RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
         allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
