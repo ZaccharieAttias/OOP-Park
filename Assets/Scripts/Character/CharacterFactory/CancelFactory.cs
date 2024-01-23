@@ -10,8 +10,11 @@ public class CancelFactory : MonoBehaviour
         GameObject characterFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory");
 
         name = "CancelFactory";
-        transform.localPosition = new Vector3(-118, -267, 0);
+        transform.localPosition = new Vector3(-249, -481, 0);
         
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(35, 35);
+
         Image image = GetComponent<Image>();
         image.sprite = Resources.Load<Sprite>("Sprites/Icons/X");
         image.color = Color.white;
