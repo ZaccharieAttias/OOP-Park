@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed;
-    public float jumpForce;
+    public float moveSpeed = 9f;
+    public float jumpForce = 20f;
     private int amountOfJumpsLeft;
     public int amountOfJumps = 1;
 
@@ -13,9 +13,9 @@ public class PlayerMovement : MonoBehaviour
 
     public Transform groundCheckCircle;
     public Transform groundCheckBox;
-    public float groundCheckRadius;
-    public float groundCheckBoxLength;
-    public float groundCheckBoxWidth;
+    public float groundCheckRadius = 0.25f;
+    public float groundCheckBoxLength = 0.07f;
+    public float groundCheckBoxWidth = 1.71f;
 
     public LayerMask collisionLayers;
 
