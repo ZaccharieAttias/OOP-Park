@@ -36,8 +36,11 @@ public class TreeBuilder : MonoBehaviour
         CentrelizeTree(root);
         UpdateContentsSizes(root);
 
-        ScrollView.FocusOnItem(latest.CharacterButton.Button.GetComponent<RectTransform>());
-        StartCoroutine(ScrollView.FocusOnItemCoroutine(latest.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
+        if (gameObject.activeInHierarchy)
+        {
+            ScrollView.FocusOnItem(latest.CharacterButton.Button.GetComponent<RectTransform>());
+            StartCoroutine(ScrollView.FocusOnItemCoroutine(latest.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
+        }
     }
 
     private void ResetLines()
