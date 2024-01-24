@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +33,8 @@ public class Character
         Childrens = new List<Character>();
 
         CharacterButton = new CharacterButton();
+
+        if (RestrictionManager.Instance.AllowBeginnerInheritance) PreDetails();
     }
     public void InitializeCharacter(Character character)
     {
@@ -47,6 +50,19 @@ public class Character
         Childrens = character.Childrens;
 
         CharacterButton = character.CharacterButton;
+    }
+    private void PreDetails()
+    {
+        foreach (Character parent in Parents)
+        {
+            foreach (CharacterAttribute attribute in parent.Attributes)
+                if (!(Attributes.Any(item => item.Name == attribute.Name)))
+                    Attributes.Add(attribute);
+
+            foreach (CharacterMethod method in parent.Methods)
+                if (!(Methods.Any(item => item.Name == method.Name)))
+                    Methods.Add(method);    
+        }
     }
 
     public bool IsRoot() { return Parents.Count == 0; }
