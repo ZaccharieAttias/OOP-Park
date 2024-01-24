@@ -38,6 +38,7 @@ public class UpcastingManager : MonoBehaviour
         {
             UpcastingLogic.LoadPopup(CharacterManager.CurrentCharacter);
             UpcastingUI.ToggleActivation();
+            Time.timeScale = Time.timeScale == 0 ? 1f : 0;
         }
     }
 }
