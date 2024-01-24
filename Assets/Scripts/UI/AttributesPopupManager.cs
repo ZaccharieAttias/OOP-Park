@@ -82,9 +82,12 @@ public class AttributesPopupManager : MonoBehaviour
     }
     private void CancelDependentMethods(Character character, CharacterAttribute deletedAttribute)
     {
+        if (RestrictionManager.Instance.AllowBeginnerInheritance) character.Attributes.Remove(deletedAttribute);
+        
         var dependentMethodToRemove = character.Methods.Find(method => method.Attribute == deletedAttribute);
         if (dependentMethodToRemove != null) character.Methods.Remove(dependentMethodToRemove);
         foreach (Character child in character.Childrens) CancelDependentMethods(child, deletedAttribute);
+
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
@@ -94,7 +97,7 @@ public class AttributesPopupManager : MonoBehaviour
         gameObject.SetActive(true);    
     }
     public void ToggleOff() 
-    { 
+    {
         CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
         gameObject.SetActive(false); 
     }
