@@ -8,7 +8,8 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowInheritance;
     public bool AllowSingleInheritance;
     public bool AllowMultipleInheritance;
-
+    public bool AllowBeginnerInheritance;
+    
     public bool AllowAccessModifiers;
     public bool AllowOverride;
     public bool AllowUpcasting;
