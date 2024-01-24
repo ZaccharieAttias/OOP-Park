@@ -3212,6 +3212,7 @@ MonoBehaviour:
   AllowInheritance: 1
   AllowSingleInheritance: 1
   AllowMultipleInheritance: 0
+  AllowBeginnerInheritance: 1
   AllowAccessModifiers: 0
   AllowOverride: 0
   AllowUpcasting: 1
@@ -7132,7 +7133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Content: {fileID: 1924118269}
+  m_Content: {fileID: 1252266974}
   m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 2
@@ -7761,13 +7762,13 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 10
+    m_Top: 20
     m_Bottom: 0
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 30}
-  m_Spacing: {x: 40, y: 10}
+  m_CellSize: {x: 200, y: 70}
+  m_Spacing: {x: 40, y: 20}
   m_Constraint: 1
   m_ConstraintCount: 2
 --- !u!1 &1274037211
@@ -8193,10 +8194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be46ce2dd85d29545be4df0cf1bb02d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedBuff: {fileID: 0}
-  GravityBuff: {fileID: 0}
-  MultipleJumpsBuff: {fileID: 0}
-  PreviousMethods: []
+  speedBuff: {fileID: 11400000, guid: 9055434b638ecde46ac4b034b38fbdfc, type: 2}
+  gravityBuff: {fileID: 11400000, guid: a4f78dfaf69a5fc47971de44d3e294e7, type: 2}
+  multipleJumpsBuff: {fileID: 11400000, guid: 39336e0d3b159ac43a29614b84b9ee81, type: 2}
+  previousMethods: []
 --- !u!1 &1328449993
 GameObject:
   m_ObjectHideFlags: 0
@@ -11235,13 +11236,13 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 10
+    m_Top: 20
     m_Bottom: 0
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 30}
-  m_Spacing: {x: 40, y: 10}
+  m_CellSize: {x: 200, y: 70}
+  m_Spacing: {x: 40, y: 20}
   m_Constraint: 1
   m_ConstraintCount: 2
 --- !u!1 &1924770220
