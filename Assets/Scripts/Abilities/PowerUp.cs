@@ -11,6 +11,21 @@ public class PowerUp : MonoBehaviour
     public CharacterMethod[] previousMethods;
 
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void OnGameStart()
+    {
+        PowerUp powerUp = GameObject.Find("Player").GetComponent<PowerUp>();
+        powerUp.InitializeProperties();
+    }
+    private void InitializeProperties()
+    {
+        speedBuff = Resources.Load<SpeedBuff>("PowerUps/SpeedBuff");
+        gravityBuff = Resources.Load<GravityBuff>("PowerUps/GravityBuff");
+        multipleJumpsBuff = Resources.Load<MultipleJumpsBuff>("PowerUps/DoubleJump");
+
+        previousMethods = new CharacterMethod[0];
+    }
+    
     public void ApplyPowerup(Character character)
     {
         for (int i = previousMethods.Length - 1; i >= 0; i--)
