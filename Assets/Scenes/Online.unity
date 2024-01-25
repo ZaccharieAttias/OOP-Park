@@ -858,7 +858,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2058734243}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2664,7 +2664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -279}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &438062679
@@ -4079,7 +4079,7 @@ RectTransform:
   m_Father: {fileID: 1319335217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8259,7 +8259,7 @@ RectTransform:
   m_Father: {fileID: 191598938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8787,7 +8787,7 @@ RectTransform:
   m_Father: {fileID: 60205490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8846,7 +8846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1177354442
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12740,6 +12740,7 @@ MonoBehaviour:
   AllowInheritance: 1
   AllowSingleInheritance: 1
   AllowMultipleInheritance: 0
+  AllowBeginnerInheritance: 0
   AllowAccessModifiers: 0
   AllowOverride: 0
   AllowUpcasting: 1
@@ -15062,10 +15063,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be46ce2dd85d29545be4df0cf1bb02d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedBuff: {fileID: 0}
-  GravityBuff: {fileID: 0}
-  MultipleJumpsBuff: {fileID: 0}
-  PreviousMethods: []
+  speedBuff: {fileID: 0}
+  gravityBuff: {fileID: 0}
+  multipleJumpsBuff: {fileID: 0}
+  previousMethods: []
 --- !u!114 &1984125665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15876,7 +15877,7 @@ RectTransform:
   m_Father: {fileID: 2021939046}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
