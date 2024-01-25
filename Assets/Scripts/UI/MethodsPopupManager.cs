@@ -18,7 +18,7 @@ public class MethodsPopupManager : MonoBehaviour
 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void OnGameStart()
+    public static void OnGameStart()
     {
         MethodsPopupManager methodsPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Methods").GetComponent<MethodsPopupManager>();
         methodsPopupManager.InitializeProperties();
