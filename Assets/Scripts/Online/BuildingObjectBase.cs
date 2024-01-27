@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "Buildable", menuName = "BuildingObjects/Create Buildable")]
+[CreateAssetMenu(fileName = "Buildable", menuName = "LevelBuilding/Create Buildable")]
 public class BuildingObjectBase : ScriptableObject {
     [SerializeField] BuildingCategory category;
+    [SerializeField] UICategory uiCategory;
     [SerializeField] TileBase tileBase;
     [SerializeField] PlaceType placeType;
 
@@ -27,4 +26,9 @@ public class BuildingObjectBase : ScriptableObject {
         }
     }
 
+    public UICategory UICategory {
+        get {
+            return uiCategory;
+        }
+    }
 }
