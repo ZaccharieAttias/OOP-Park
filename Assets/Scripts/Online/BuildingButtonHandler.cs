@@ -7,13 +7,20 @@ public class BuildingButtonHandler : MonoBehaviour {
 
     BuildingCreator buildingCreator;
 
-    private void Awake () {
-        button = GetComponent<Button> ();
-        button.onClick.AddListener (ButtonClicked);
-        buildingCreator = BuildingCreator.GetInstance ();
+    private void Awake() {
+        button = GetComponent<Button>();
+        button.onClick.AddListener(ButtonClicked);
+        buildingCreator = BuildingCreator.GetInstance();
     }
 
-    private void ButtonClicked () {
-        buildingCreator.ObjectSelected (item);
+    public BuildingObjectBase Item {
+        set {
+            item = value;
+        }
     }
+
+    private void ButtonClicked() {
+        buildingCreator.ObjectSelected(item);
+    }
+
 }
