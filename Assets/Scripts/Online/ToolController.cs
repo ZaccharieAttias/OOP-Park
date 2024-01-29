@@ -10,7 +10,7 @@ public class ToolController : Singleton<ToolController> {
         List<Tilemap> maps = FindObjectsOfType<Tilemap>().ToList();
 
         maps.ForEach(map => {
-            if (map.name != "BuildPreview") {
+            if (map.name.Contains("Tilemap_")) {
                 tilemaps.Add(map);
             }
         });
