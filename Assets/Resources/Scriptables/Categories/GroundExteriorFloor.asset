@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97f947a96e23b434d977952e4d30b114, type: 3}
   m_Name: GroundExteriorFloor
   m_EditorClassIdentifier: 
-  placeType: 2
+  placeType: 0
   sortingOrder: 3
+  placementRestrictions:
+  - {fileID: 11400000, guid: d58731e422532d54bb12d98e962c6f89, type: 2}
+  - {fileID: 11400000, guid: d076777c323f2b744b2d1135bcfd5b75, type: 2}
+  - {fileID: 11400000, guid: 9d8e459272c77204d8dce13358ed5144, type: 2}
+  - {fileID: 11400000, guid: cf9bfe84e96589742be9042228707bb0, type: 2}
+  - {fileID: 11400000, guid: 3267d2397c2a70c44908622a3da50739, type: 2}
