@@ -17,6 +17,8 @@ public class BuildingCreator : Singleton<BuildingCreator> {
 
     PlayerInput playerInput;
 
+    BuildingHistory buildingHistory;
+
     TileBase tileBase;
     BuildingObjectBase selectedObj;
 
@@ -35,6 +37,7 @@ public class BuildingCreator : Singleton<BuildingCreator> {
         base.Awake();
         playerInput = new PlayerInput();
         _camera = Camera.main;
+        buildingHistory = BuildingHistory.GetInstance();
     }
 
     private void OnEnable() {
@@ -226,23 +229,55 @@ public class BuildingCreator : Singleton<BuildingCreator> {
 
     private void DrawBounds(Tilemap map) {
         // Draws bounds on given map
+
+        List<Vector3Int> positions = new List<Vector3Int>();
         for (int x = bounds.xMin; x <= bounds.xMax; x++) {
             for (int y = bounds.yMin; y <= bounds.yMax; y++) {
-                DrawItem(map, new Vector3Int(x, y, 0), tileBase);
+                positions.Add(new Vector3Int(x, y, 0));
             }
         }
+        DrawItem(map, positions.ToArray(), tileBase);
     }
 
     private void DrawItem(Tilemap map, Vector3Int position, TileBase tileBase) {
+        Vector3Int[] positions = new Vector3Int[] { position };
+        DrawItem(map, positions, tileBase);
+    }
+
+    private void DrawItem(Tilemap map, Vector3Int[] positions, TileBase tileBase) {
 
         if (map != previewMap && selectedObj.GetType() == typeof(BuildingTool)) {
             // it is a tool
             BuildingTool tool = (BuildingTool)selectedObj;
 
-            tool.Use(position);
+            tool.Use(positions, out BuildingHistoryStep historyStep);
 
-        } else if (!IsForbidden(position)) {
-            map.SetTile(position, tileBase);
+            // a tool must not neccessarily return a historyStep
+            if (historyStep != null) {
+                buildingHistory.Add(historyStep);
+            }
+
+        } else {
+            TileBase[] previousTiles = new TileBase[positions.Length];
+            TileBase[] newTiles = new TileBase[positions.Length];
+
+            for (int i = 0; i < positions.Length; i++) {
+                previousTiles[i] = map.GetTile(positions[i]);
+
+                if (!IsForbidden(positions[i])) {
+                    newTiles[i] = tileBase;
+                    map.SetTile(positions[i], tileBase);
+                } else {
+                    // if not allowed make sure to keep the previous one
+                    newTiles[i] = previousTiles[i];
+                }
+            }
+
+            if (map != previewMap) {
+                buildingHistory.Add(new BuildingHistoryStep(map, previousTiles, newTiles, positions));
+            }
+
+
         }
 
     }
