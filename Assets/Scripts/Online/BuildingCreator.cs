@@ -3,11 +3,18 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.Tilemaps;
+using System.Collections.Generic;
+using System.Linq;
+
 
 public class BuildingCreator : Singleton<BuildingCreator> {
     [SerializeField]
     Tilemap previewMap,
     defaultMap;
+
+    // if one of those maps contains a tile at the position, placing is not allowed
+    [SerializeField] List<Tilemap> forbidPlacingWithMaps;
+
     PlayerInput playerInput;
 
     TileBase tileBase;
@@ -40,6 +47,7 @@ public class BuildingCreator : Singleton<BuildingCreator> {
         playerInput.Gameplay.MouseClick.canceled += OnLeftClick;
 
         playerInput.Gameplay.MouseRightClick.performed += OnRightClick;
+
     }
 
     private void OnDisable() {
@@ -126,8 +134,26 @@ public class BuildingCreator : Singleton<BuildingCreator> {
     private void UpdatePreview() {
         // Remove old tile if existing
         previewMap.SetTile(lastGridPosition, null);
-        // Set current tile to current mouse positions tile
-        previewMap.SetTile(currentGridPosition, tileBase);
+
+        if (!IsForbidden(currentGridPosition)) {
+            // Set current tile to current mouse positions tile
+            previewMap.SetTile(currentGridPosition, tileBase);
+        }
+    }
+
+    private bool IsForbidden(Vector3Int pos) {
+        if (selectedObj == null) return false;
+
+        List<BuildingCategory> restrictedCategories = selectedObj.PlacementRestrictions;
+        // get the according tilemaps for each category
+        List<Tilemap> restrictedMaps = restrictedCategories.ConvertAll(category => category.Tilemap);
+
+        // merge both lists together
+        List<Tilemap> allMaps = forbidPlacingWithMaps.Concat(restrictedMaps).ToList();
+
+        return allMaps.Any(map => {
+            return map.HasTile(pos);
+        });
     }
 
     private void HandleDrawing() {
@@ -215,7 +241,7 @@ public class BuildingCreator : Singleton<BuildingCreator> {
 
             tool.Use(position);
 
-        } else {
+        } else if (!IsForbidden(position)) {
             map.SetTile(position, tileBase);
         }
 
