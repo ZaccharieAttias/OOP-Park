@@ -14,12 +14,12 @@ public class BuildingTool : BuildingObjectBase {
         tc = ToolController.GetInstance();
     }
 
-    public void Use(Vector3Int position) {
-        if( tc ==null)
-            tc = ToolController.GetInstance();
+    public void Use(Vector3Int[] positions, out BuildingHistoryStep historyStep) {
+        historyStep = null;
         switch (toolType) {
             case ToolType.Eraser:
-                tc.Eraser(position);
+                tc.Eraser(positions, out BuildingHistoryStep historyStepEraser);
+                historyStep = historyStepEraser;
                 break;
             default:
                 Debug.LogError("Tool Type not set");
