@@ -14,7 +14,7 @@ public class Character
     public List<CharacterMethod> Methods;
 
     public CharacterSpecialAbility SpecialAbility;
-    // public List<CharacterUpcastMethod> UpcastMethods;
+    public List<CharacterUpcastMethod> UpcastMethods;
 
     public List<Character> Parents;
     public List<Character> Childrens;
@@ -22,7 +22,7 @@ public class Character
     public CharacterButton CharacterButton;
 
 
-    public Character(string name, string description, List<Character> parents, bool isOriginal)
+    public Character(string name, string description, List<Character> parents, CharacterSpecialAbility specialAbility, bool isOriginal)
     {
         IsOriginal = isOriginal;
 
@@ -32,14 +32,14 @@ public class Character
         Attributes = new List<CharacterAttribute>();
         Methods = new List<CharacterMethod>();
 
-        SpecialAbility = null;
-        // UpcastMethods = new List<CharacterUpcastMethod>();
+        SpecialAbility = specialAbility;
+        UpcastMethods = new List<CharacterUpcastMethod>();
 
         Parents = new List<Character>(parents);
         Childrens = new List<Character>();
 
         CharacterButton = new CharacterButton();
-
+        
         if (RestrictionManager.Instance.AllowBeginnerInheritance) PreDetails();
     }
     public void InitializeCharacter(Character character)
@@ -52,8 +52,8 @@ public class Character
         Attributes = character.Attributes;
         Methods = character.Methods;
 
-        // SpecialAbility = character.SpecialAbility;
-        // UpcastMethods = character.UpcastMethods;
+        SpecialAbility = character.SpecialAbility;
+        UpcastMethods = character.UpcastMethods;
 
         Parents = character.Parents;
         Childrens = character.Childrens;
@@ -98,27 +98,5 @@ public class Character
     {
         RectTransform rectTransform = CharacterButton.Button.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, y);
-    }
-
-
-
-    public Character(string name, string description, List<Character> parents, CharacterSpecialAbility specialAbility, bool isOriginal)
-    {
-        IsOriginal = isOriginal;
-
-        Name = name;
-        Description = description;
-
-        Attributes = new List<CharacterAttribute>();
-        Methods = new List<CharacterMethod>();
-
-        Parents = new List<Character>(parents);
-        Childrens = new List<Character>();
-
-        CharacterButton = new CharacterButton();
-
-        SpecialAbility = specialAbility;
-        
-        if (RestrictionManager.Instance.AllowBeginnerInheritance) PreDetails();
     }
 }
