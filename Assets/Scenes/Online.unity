@@ -8215,6 +8215,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1416463841}
   m_CullTransparentMesh: 1
+--- !u!1 &1430571150
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1430571152}
+  - component: {fileID: 1430571151}
+  m_Layer: 0
+  m_Name: ToolController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1430571151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430571150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a410b213209442fb15a69799f0240a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1430571152
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430571150}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1463914156 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9153763571981296594, guid: d3b1f42bc6b4fa546aa68efa57ee92ce, type: 3}
@@ -8865,7 +8909,7 @@ GameObject:
   - component: {fileID: 1579170481}
   - component: {fileID: 1579170480}
   m_Layer: 0
-  m_Name: BuildPreview
+  m_Name: ToolPreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9248,50 +9292,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1605629095}
   m_CullTransparentMesh: 1
---- !u!1 &1612972446
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1612972448}
-  - component: {fileID: 1612972447}
-  m_Layer: 0
-  m_Name: ToolController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1612972447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1612972446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fdb441d75ada494da0de211abf66790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1612972448
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1612972446}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1630518652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1506026877241066945, guid: 84c5b3935bbc948478e846bc6a1b72b8, type: 3}
@@ -9743,8 +9743,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52b5d64b810ddb4da0b72f952c460f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previewMap: {fileID: 1579170481}
   defaultMap: {fileID: 908269977}
+  toolPreviewMap: {fileID: 1579170481}
   forbidPlacingWithMaps:
   - {fileID: 1919918640}
   - {fileID: 1236257054}
@@ -9761,12 +9761,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   categoriesToCreateTilemapFor:
-  - {fileID: 11400000, guid: 3267d2397c2a70c44908622a3da50739, type: 2}
-  - {fileID: 11400000, guid: 6e4ad916ab1bb324ea6c3741fca03c19, type: 2}
-  - {fileID: 11400000, guid: d076777c323f2b744b2d1135bcfd5b75, type: 2}
+  - {fileID: 11400000, guid: 04c8d76a5efc266498485e206cfe18d0, type: 2}
+  - {fileID: 11400000, guid: 901833977a4364c4fa92cab72ee09e6e, type: 2}
   - {fileID: 11400000, guid: d58731e422532d54bb12d98e962c6f89, type: 2}
-  - {fileID: 11400000, guid: 9d8e459272c77204d8dce13358ed5144, type: 2}
-  - {fileID: 11400000, guid: cf9bfe84e96589742be9042228707bb0, type: 2}
   grid: {fileID: 2120095060}
 --- !u!114 &1793410308
 MonoBehaviour:
@@ -11737,6 +11734,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 4f8a59fc5b478a146a0d7314e9ac7565, type: 2}
   - m_RefCount: 36
     m_Data: {fileID: 11400000, guid: 37e8e4985cff4684880780aa2daecfee, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 3
     m_Data: {fileID: 646988163, guid: 413986c4a668c374d8de72a47621b531, type: 3}
@@ -11778,11 +11777,15 @@ Tilemap:
   m_TileColorArray:
   - m_RefCount: 126
     m_Data: {r: 1, g: 1, b: 1, a: 1}
-  m_TileObjectToInstantiateArray: []
+  m_TileObjectToInstantiateArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
-  m_Size: {x: 382, y: 200, z: 1}
+  m_Size: {x: 382, y: 206, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -13106,4 +13109,4 @@ SceneRoots:
   - {fileID: 1984125673}
   - {fileID: 1791859708}
   - {fileID: 246542478}
-  - {fileID: 1612972448}
+  - {fileID: 1430571152}
