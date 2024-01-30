@@ -20,7 +20,7 @@ public class UpcastingUI : MonoBehaviour
     public Button QuantityLeft;
     
     public Button CloseButton;
-
+    public Button ConfirmButton;
 
     public void Start()
     {
@@ -54,7 +54,16 @@ public class UpcastingUI : MonoBehaviour
 
         CloseButton = buttonsPanel.Find("Close").GetComponent<Button>();
         CloseButton.onClick.AddListener(() => gameObject.SetActive(false));
+
+        ConfirmButton = buttonsPanel.Find("Confirm").GetComponent<Button>();
+        ConfirmButton.onClick.AddListener(() => ConfirmButtonClicked());
     }
 
     public void ToggleActivation() { gameObject.SetActive(!gameObject.activeSelf); }
+    public void ConfirmButtonClicked()
+    {
+        Time.timeScale = 1;
+        gameObject.SetActive(false);
+        UpcastingLogic.Execute();
+    }
 }
