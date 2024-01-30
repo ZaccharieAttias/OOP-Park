@@ -16,7 +16,7 @@ public class TilemapInitializer : Singleton<TilemapInitializer> {
             // Create new GameObject
             GameObject obj = new GameObject("Tilemap_" + category.name);
             //set layer to Ground if category.name contains "Ground"
-            if (category.name.Contains("Floor"))
+            if (category.name == "Grounded")
                 obj.layer = LayerMask.NameToLayer("Ground");
 
 
