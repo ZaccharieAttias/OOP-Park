@@ -64,8 +64,16 @@ public class BuildingHUD : Singleton<BuildingHUD> {
 
             // Set Tile Image
             Image img = inst.GetComponent<Image>();
-            Tile t = (Tile)b.TileBase;
-            img.sprite = t.sprite;
+
+            if (b.TileBase is Tile) {
+                Tile t = (Tile)b.TileBase;
+                img.sprite = t.sprite;
+            } else if (b.TileBase is RuleTile) {
+                RuleTile rt = (RuleTile)b.TileBase;
+                img.sprite = rt.m_DefaultSprite;
+            } else {
+                Debug.LogError("Unknown type of tilebase: " + b.TileBase.GetType());
+            }
 
             // Apply BuildingObjectBase to Button
             var script = inst.GetComponent<BuildingButtonHandler>();
