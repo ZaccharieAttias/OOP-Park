@@ -17,7 +17,7 @@ public class TreeBuilder : MonoBehaviour
 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void OnGameStart()
+    public static void OnGameStart()
     {
         TreeBuilder treeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<TreeBuilder>();
         treeBuilder.InitializeProperties();

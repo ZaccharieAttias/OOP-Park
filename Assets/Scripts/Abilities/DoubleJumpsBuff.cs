@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "PowerUpEffects/MutipleJumpsBuff")]
-public class MultipleJumpsBuff : PowerUpEffect
+public class DoubleJumpsBuff : PowerUpEffect
 {   
     public int NewJumpsAmount = 1;
 

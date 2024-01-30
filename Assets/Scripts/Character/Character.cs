@@ -13,13 +13,16 @@ public class Character
     public List<CharacterAttribute> Attributes;
     public List<CharacterMethod> Methods;
 
+    public CharacterSpecialAbility SpecialAbility;
+    public List<CharacterUpcastMethod> UpcastMethods;
+
     public List<Character> Parents;
     public List<Character> Childrens;
 
     public CharacterButton CharacterButton;
 
 
-    public Character(string name, string description, List<Character> parents, bool isOriginal)
+    public Character(string name, string description, List<Character> parents, CharacterSpecialAbility specialAbility, bool isOriginal)
     {
         IsOriginal = isOriginal;
 
@@ -29,11 +32,14 @@ public class Character
         Attributes = new List<CharacterAttribute>();
         Methods = new List<CharacterMethod>();
 
+        SpecialAbility = specialAbility;
+        UpcastMethods = new List<CharacterUpcastMethod>();
+
         Parents = new List<Character>(parents);
         Childrens = new List<Character>();
 
         CharacterButton = new CharacterButton();
-
+        
         if (RestrictionManager.Instance.AllowBeginnerInheritance) PreDetails();
     }
     public void InitializeCharacter(Character character)
@@ -46,6 +52,9 @@ public class Character
         Attributes = character.Attributes;
         Methods = character.Methods;
 
+        SpecialAbility = character.SpecialAbility;
+        UpcastMethods = character.UpcastMethods;
+
         Parents = character.Parents;
         Childrens = character.Childrens;
 
@@ -56,11 +65,11 @@ public class Character
         foreach (Character parent in Parents)
         {
             foreach (CharacterAttribute attribute in parent.Attributes)
-                if (!(Attributes.Any(item => item.Name == attribute.Name)))
+                if (!Attributes.Any(item => item.Name == attribute.Name))
                     Attributes.Add(attribute);
 
             foreach (CharacterMethod method in parent.Methods)
-                if (!(Methods.Any(item => item.Name == method.Name)))
+                if (!Methods.Any(item => item.Name == method.Name))
                     Methods.Add(method);    
         }
     }

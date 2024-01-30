@@ -18,7 +18,7 @@ public class AttributesPopupManager : MonoBehaviour
 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void OnGameStart()
+    public static void OnGameStart()
     {
         AttributesPopupManager attributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
         attributesPopupManager.InitializeProperties();
