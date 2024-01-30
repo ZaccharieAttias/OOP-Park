@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 
 public class UpcastingLogic : MonoBehaviour
 {
@@ -125,5 +125,18 @@ public class UpcastingLogic : MonoBehaviour
         UpcastingQuantity = UpcastingQuantity - 1 > 0 ? UpcastingQuantity - 1 : 0;
         
         SetQuantity();
+    }
+
+    public void Execute()
+    {
+        Character character = CharacterManager.CurrentCharacter;
+        CharacterMethod characterMethod = CharacterData[CharacterIndex].Item2[MethodIndex];
+        CharacterUpcastMethod upcastMethod = new(character, characterMethod, UpcastingQuantity);
+
+        character.UpcastMethods ??= new List<CharacterUpcastMethod>();
+        character.UpcastMethods.Add(upcastMethod);
+
+        PowerUp powerUp = GameObject.Find("Player").GetComponent<PowerUp>();
+        powerUp.ApplyPowerup(CharacterManager.CurrentCharacter);
     }
 }
