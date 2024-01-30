@@ -14,6 +14,7 @@ public class ExecuteFactory : MonoBehaviour
     public List<Sprite> CharacterSprites;
     public int SpriteIndex;
 
+    public SpecialAbilityManager abilityPopup;
 
     public void Start()
     { 
@@ -37,6 +38,13 @@ public class ExecuteFactory : MonoBehaviour
         CharacterParent = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
         CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
         SpriteIndex = 0;
+
+        abilityPopup = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility").GetComponent<SpecialAbilityManager>();
+    }
+
+    public void ExecuteTemp()
+    {
+        CharacterManager.CharactersCollection.Last().SpecialAbility = abilityPopup.selectedAbility;
     }
 
     public void Execute()
@@ -45,7 +53,10 @@ public class ExecuteFactory : MonoBehaviour
         BuildCharacterObject(builtCharacter);
 
         CharacterManager.AddCharacter(builtCharacter);
+
+        abilityPopup.SelectAbility(CharacterFactory.SelectedCharacterObjects);
     }
+
     private Character BuildCharacter()
     {
         int characterIndex = CharacterFactory.CharacterObjects.Count + 1;
@@ -53,11 +64,12 @@ public class ExecuteFactory : MonoBehaviour
         string characterDescription = $"I`m {characterName}";
         List<Character> parents = CharacterFactory.SelectedCharacterObjects;
 
-        Character builtCharacter = new(characterName, characterDescription, parents, false);
+        Character builtCharacter = new(characterName, characterDescription, parents, null, false);
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
         
         return builtCharacter;
     }
+
     private void BuildCharacterObject(Character character)
     {
         GameObject characterObject = Instantiate(CharacterPrefab, CharacterParent);
