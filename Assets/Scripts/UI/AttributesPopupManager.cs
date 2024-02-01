@@ -28,7 +28,7 @@ public class AttributesPopupManager : MonoBehaviour
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         AttributesCollection = new List<CharacterAttribute>();
 
-        AttributeButton = Resources.Load<GameObject>("Prefabs/Buttons/Default");
+        AttributeButton = Resources.Load<GameObject>("Buttons/Default");
         ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
 
         PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
