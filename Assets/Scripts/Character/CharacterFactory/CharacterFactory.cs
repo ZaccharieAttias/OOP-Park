@@ -19,6 +19,8 @@ public class CharacterFactory : MonoBehaviour
 
     public List<Character> SelectedCharacterObjects;
     public int ParentsLimit;
+    public CharacterManager CharacterManager;
+    public List<Button> Buttons;
 
 
     public void Start() 
@@ -59,6 +61,12 @@ public class CharacterFactory : MonoBehaviour
         
         SelectedCharacterObjects = new List<Character>();
         ParentsLimit = RestrictionManager.Instance.AllowMultipleInheritance ? 2 : 1;
+
+        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        Buttons = new List<Button>();
+        Buttons.Add(GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>());
+        Buttons.Add(GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>());
+        Buttons.Add(CharacterManager.CharacterDeleteButton.GetComponent<Button>());
     }
 
     public void InitializeFactory()
@@ -177,8 +185,11 @@ public class CharacterFactory : MonoBehaviour
             duplicateDetails.InitializeCharacter(originalDetails.Character);
 
             Button duplicateCharacterObjectButton = duplicateCharacterObject.GetComponent<Button>();
+            duplicateCharacterObjectButton.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+
             duplicateCharacterObjectButton.onClick.RemoveAllListeners();
             duplicateCharacterObjectButton.onClick.AddListener(() => CharacterObjectClicked());
+            duplicateCharacterObjectButton.onClick.AddListener(() => CharacterManager.DisplayCharacter(duplicateDetails.Character));
 
             DuplicateCharacterObjects.Add(duplicateCharacterObject);
         }
@@ -188,6 +199,10 @@ public class CharacterFactory : MonoBehaviour
         foreach (GameObject gameObject in gameObjects)
         {
             Button button = gameObject.GetComponent<Button>();
+            button.interactable = !button.interactable;
+        }
+        foreach (Button button in Buttons)
+        {
             button.interactable = !button.interactable;
         }
     }
