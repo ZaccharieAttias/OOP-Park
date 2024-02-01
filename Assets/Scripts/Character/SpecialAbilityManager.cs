@@ -27,7 +27,7 @@ public class SpecialAbilityManager : MonoBehaviour
     {
         Popup = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility");
         ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
-        ButtonPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Default");
+        ButtonPrefab = Resources.Load<GameObject>("Buttons/Default");
 
         ConfirmButton = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility/Background/Foreground/Buttons/Confirm").GetComponent<Button>();
         ConfirmButton.onClick.AddListener(() => onConfirmation());
