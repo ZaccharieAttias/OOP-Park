@@ -34,7 +34,7 @@ public class ExecuteFactory : MonoBehaviour
         GameObject characterManager = GameObject.Find("Player");
         CharacterManager = characterManager.GetComponent<CharacterManager>();
 
-        CharacterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
+        CharacterPrefab = Resources.Load<GameObject>("Buttons/Character");
         CharacterParent = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
         CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
         SpriteIndex = 0;
