@@ -80,8 +80,16 @@ public class CharacterManager : MonoBehaviour
 
     public void DisplayCharacter(Character displayCharacter)
     {
-        CurrentCharacter = CharactersCollection.Find(character => character == displayCharacter);
+        if (CurrentCharacter != null){
+            GameObject previousCharacterObject = CurrentCharacter.CharacterButton.Button;
+            previousCharacterObject.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+        }
 
+        GameObject currentCharacterObject = displayCharacter.CharacterButton.Button;
+        currentCharacterObject.GetComponent<Image>().color = new Color32(255, 165, 0, 255);
+
+        CurrentCharacter = CharactersCollection.Find(character => character == displayCharacter);
+        
         if (CurrentCharacter != null)
         {
             ClearContentPanels();
