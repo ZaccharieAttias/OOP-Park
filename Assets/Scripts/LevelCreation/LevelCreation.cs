@@ -30,7 +30,6 @@ public class LevelCreation : MonoBehaviour
         InitializeSpecialAbilityCollection();
         InitializeCharactersCollection();
     }
-
     private void InitializeAttributesCollection()
     {
         string attributeName;
@@ -213,7 +212,7 @@ public class LevelCreation : MonoBehaviour
         character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
         InitializeCharacterObject(character3);
         CharacterManager.AddCharacter(character3);
-        characterParents.Clear();        
+        characterParents.Clear();
     }
     private void InitializeCharacterObject(Character characterNode)
     {
