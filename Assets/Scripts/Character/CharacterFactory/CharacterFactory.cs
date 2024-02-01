@@ -43,7 +43,7 @@ public class CharacterFactory : MonoBehaviour
         GameObject executeFactoryObject = new("ExecuteFactory", typeof(ExecuteFactory));
         ExecuteFactory = executeFactoryObject.GetComponent<ExecuteFactory>();
 
-        GameObject pureButtonPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Pure");
+        GameObject pureButtonPrefab = Resources.Load<GameObject>("Buttons/Pure");
         AddButton = Instantiate(pureButtonPrefab, transform);
         AddButton.AddComponent<AddFactory>();
 
