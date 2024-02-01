@@ -217,7 +217,7 @@ public class LevelCreation : MonoBehaviour
     private void InitializeCharacterObject(Character characterNode)
     {
         Transform parnetTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
-        GameObject characterPrefab = Resources.Load<GameObject>("Prefabs/Buttons/Character");
+        GameObject characterPrefab = Resources.Load<GameObject>("Buttons/Character");
         List<Sprite> CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
 
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
