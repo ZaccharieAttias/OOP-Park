@@ -28,7 +28,7 @@ public class MethodsPopupManager : MonoBehaviour
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         MethodsCollection = new List<CharacterMethod>();
 
-        MethodButton = Resources.Load<GameObject>("Prefabs/Buttons/Default");
+        MethodButton = Resources.Load<GameObject>("Buttons/Default");
         ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/Methods/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
 
         PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>();
