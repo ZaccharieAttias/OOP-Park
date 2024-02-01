@@ -31,7 +31,7 @@ public class CharacterManager : MonoBehaviour
         NameText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Name").GetComponent<TMP_InputField>();
         DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
         
-        DefaultButton = Resources.Load<GameObject>("Prefabs/Buttons/Default");
+        DefaultButton = Resources.Load<GameObject>("Buttons/Default");
         CharacterDeleteButton = CreateDeletionButton();
 
         AttributesContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
