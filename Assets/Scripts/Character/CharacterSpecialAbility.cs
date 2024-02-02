@@ -1,8 +1,3 @@
-public enum AbilityType
-{
-    General, Automatic, Jump, Gravity, Speed, DoubleJump, WeakGravity, FastSpeed
-}
-
 [System.Serializable]
 public class CharacterSpecialAbility
 {
@@ -10,9 +5,9 @@ public class CharacterSpecialAbility
     public string Description;
     public float Value;
 
-    public AbilityType Type;
+    public SpecialAbility Type;
 
-    public CharacterSpecialAbility(string name, string description, float value, AbilityType abilityType)
+    public CharacterSpecialAbility(string name, string description, float value, SpecialAbility abilityType)
     {
         Name = name;
         Description = description;

@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class SpecialAbilityManager : MonoBehaviour
 {
-    public Dictionary<AbilityType, List<CharacterSpecialAbility>> SpecialAbilitiesCollection;
+    public Dictionary<SpecialAbility, List<CharacterSpecialAbility>> SpecialAbilitiesCollection;
 
     public GameObject Popup;
     public Transform ContentPanel;
     public GameObject ButtonPrefab;
 
     public CharacterSpecialAbility selectedAbility;
-    public AbilityType TempType;
+    public SpecialAbility TempType;
     public Button ConfirmButton;
 
 
@@ -33,7 +33,7 @@ public class SpecialAbilityManager : MonoBehaviour
         ConfirmButton.onClick.AddListener(() => onConfirmation());
         ConfirmButton.interactable = false;
 
-        SpecialAbilitiesCollection = new Dictionary<AbilityType, List<CharacterSpecialAbility>>();
+        SpecialAbilitiesCollection = new Dictionary<SpecialAbility, List<CharacterSpecialAbility>>();
     }
     
     
@@ -44,7 +44,7 @@ public class SpecialAbilityManager : MonoBehaviour
         LoadPopup(TempType);
     }
 
-    public void LoadPopup(AbilityType type)
+    public void LoadPopup(SpecialAbility type)
     {
         ClearContentPanel();
 
