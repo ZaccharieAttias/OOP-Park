@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class LevelCreation : MonoBehaviour
+public class SeedCollections : MonoBehaviour
 {
     AttributesPopupManager AttributesPopupManager;
     MethodsPopupManager MethodsPopupManager;
