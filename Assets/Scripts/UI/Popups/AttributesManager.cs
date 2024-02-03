@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class AttributesPopupManager : MonoBehaviour
+public class AttributesManager : MonoBehaviour
 {
+    public GameObject Popup;
     public List<CharacterAttribute> AttributesCollection;
-    public CharacterManager CharacterManager;
     
     public GameObject AttributeButton;
     public Transform ContentPanel;
@@ -16,26 +16,30 @@ public class AttributesPopupManager : MonoBehaviour
     public Button PopupToggleOn;
     public Button PopupToggleOff;
 
+    public CharacterManager CharacterManager;
+
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void OnGameStart()
     {
-        AttributesPopupManager attributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
-        attributesPopupManager.InitializeProperties();
+        AttributesManager attributesManager = GameObject.Find("Canvas/Popups").GetComponent<AttributesManager>();
+        attributesManager.InitializeProperties();
     }
     private void InitializeProperties()
     {
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        Popup = GameObject.Find("Canvas/Popups/Attributes");
         AttributesCollection = new List<CharacterAttribute>();
 
         AttributeButton = Resources.Load<GameObject>("Buttons/Default");
-        ContentPanel = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
-
+        ContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content");
+        
         PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
         PopupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        PopupToggleOff = GameObject.Find("Canvas/HTMenu/Popups/Attributes/Background/Foreground/Buttons/Close").GetComponent<Button>();
+        PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
+        
+        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
 
     public void AddAttribute(CharacterAttribute attribute) { AttributesCollection.Add(attribute); }
@@ -76,7 +80,8 @@ public class AttributesPopupManager : MonoBehaviour
             CancelDependentMethods(currentCharacter ,currentAttribute);
         }
 
-        else CharacterManager.CurrentCharacter.Attributes.Add(new CharacterAttribute(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier));
+        else 
+            CharacterManager.CurrentCharacter.Attributes.Add(new CharacterAttribute(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier));
 
         LoadPopup();
     }
@@ -86,6 +91,7 @@ public class AttributesPopupManager : MonoBehaviour
         
         var dependentMethodToRemove = character.Methods.Find(method => method.Attribute == deletedAttribute);
         if (dependentMethodToRemove != null) character.Methods.Remove(dependentMethodToRemove);
+        
         foreach (Character child in character.Childrens) CancelDependentMethods(child, deletedAttribute);
 
     }
@@ -94,11 +100,11 @@ public class AttributesPopupManager : MonoBehaviour
     public void ToggleOn() 
     { 
         LoadPopup(); 
-        gameObject.SetActive(true);    
+        Popup.SetActive(true);    
     }
     public void ToggleOff() 
     {
         CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
-        gameObject.SetActive(false); 
+        Popup.SetActive(false); 
     }
 }
