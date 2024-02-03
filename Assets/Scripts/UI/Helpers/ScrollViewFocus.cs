@@ -2,7 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public static class ScrollViewFocusFunctions
+
+public static class ScrollViewFocus
 {
 	public static Vector2 CalculateFocusedScrollPosition( this ScrollRect scrollView, Vector2 focusPoint )
 	{
