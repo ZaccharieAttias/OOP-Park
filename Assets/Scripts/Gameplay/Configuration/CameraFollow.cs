@@ -10,11 +10,15 @@ public class CameraFollow : MonoBehaviour
     public float TimeOffset;
     
 
-    public void Start()
+    public void Start() { InitializeProperties(); }
+    private void InitializeProperties()
     {
         Player = GameObject.Find("Player");
         PositionOffset = new Vector3(0, 0, -10);
+        Velocity = Vector3.zero;
+
         TimeOffset = 0.2f;
     }
+    
     public void Update() { transform.position = Vector3.SmoothDamp(transform.position, Player.transform.position + PositionOffset, ref Velocity, TimeOffset); }
 }
