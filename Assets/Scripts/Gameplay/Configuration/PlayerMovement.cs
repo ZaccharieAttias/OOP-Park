@@ -52,8 +52,7 @@ public class PlayerMovement : MonoBehaviour
     private void ProcessInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) && JumpsLeft > 0) PerformJump();
-        
-        SpriteRenderer.flipX = Rigidbody2D.velocity.x < -0.1f;
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) SpriteRenderer.flipX = Input.GetAxis("Horizontal") < 0;
     }
     private void MovePlayer()
     {
@@ -71,9 +70,9 @@ public class PlayerMovement : MonoBehaviour
     {
         Animator.SetFloat("Speed", Mathf.Abs(Rigidbody2D.velocity.x));
         Animator.SetBool("isGrounded", isGrounded);
-        Animator.SetTrigger("Jump");
-    }
 
+        if (isGrounded == false) Animator.SetTrigger("Jump");
+    }
 
     private void PerformJump()
     {
