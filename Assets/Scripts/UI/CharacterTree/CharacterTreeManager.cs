@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class TreeBuilder : MonoBehaviour
+public class CharacterTreeManager : MonoBehaviour
 {
     public int NodeSize = 100;
     public int SiblingDistance = 100;
@@ -19,12 +19,12 @@ public class TreeBuilder : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void OnGameStart()
     {
-        TreeBuilder treeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<TreeBuilder>();
+        CharacterTreeManager treeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<CharacterTreeManager>();
         treeBuilder.InitializeProperties();
     }
     private void InitializeProperties()
     {
-        ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<ScrollRect>();
+        ScrollView = gameObject.GetComponent<ScrollRect>();
         AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All");
     }
 
