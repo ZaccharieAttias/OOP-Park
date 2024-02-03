@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class AccessModifierButton : MonoBehaviour
+public class AccessModifierManager : MonoBehaviour
 {
     public Image ButtonImage;
 
