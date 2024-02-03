@@ -18,7 +18,7 @@ public class Powerup : MonoBehaviour
     private void InitializeProperties()
     {
         PowerUpEffects = new List<PowerupEffect>();
-        PowerUpEffects.AddRange(Resources.LoadAll<PowerupEffect>("PowerUps"));
+        PowerUpEffects.AddRange(Resources.LoadAll<PowerupEffect>("Powerups"));
 
         PreviousMethods = new List<CharacterMethod>();
         PreviousUpcastMethods = new List<CharacterUpcastMethod>();
