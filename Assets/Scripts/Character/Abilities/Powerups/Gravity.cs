@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "PowerUpEffects/Gravity")]
-public class Gravity : PowerUpEffect
+public class Gravity : PowerupEffect
 {   
     public float JumpForceIncrease = 20f;
 

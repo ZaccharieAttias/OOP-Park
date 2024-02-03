@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PowerUp : MonoBehaviour
+public class Powerup : MonoBehaviour
 {
-    public List<PowerUpEffect> PowerUpEffects;
+    public List<PowerupEffect> PowerUpEffects;
     public List<CharacterMethod> PreviousMethods;
     public List<CharacterUpcastMethod> PreviousUpcastMethods;
 
@@ -12,13 +12,13 @@ public class PowerUp : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void OnGameStart()
     {
-        PowerUp powerUp = GameObject.Find("Player").GetComponent<PowerUp>();
+        Powerup powerUp = GameObject.Find("Player").GetComponent<Powerup>();
         powerUp.InitializeProperties();
     }
     private void InitializeProperties()
     {
-        PowerUpEffects = new List<PowerUpEffect>();
-        PowerUpEffects.AddRange(Resources.LoadAll<PowerUpEffect>("PowerUps"));
+        PowerUpEffects = new List<PowerupEffect>();
+        PowerUpEffects.AddRange(Resources.LoadAll<PowerupEffect>("PowerUps"));
 
         PreviousMethods = new List<CharacterMethod>();
         PreviousUpcastMethods = new List<CharacterUpcastMethod>();

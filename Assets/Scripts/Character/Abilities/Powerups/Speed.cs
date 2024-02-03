@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "PowerUpEffects/Speed")]
-public class Speed : PowerUpEffect
+public class Speed : PowerupEffect
 {
     public float SpeedIncrease = 5f;
 
