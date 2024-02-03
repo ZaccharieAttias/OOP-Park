@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     public float MoveSpeed = 9f;
@@ -20,12 +21,14 @@ public class PlayerMovement : MonoBehaviour
     public Animator Animator;
     public SpriteRenderer SpriteRenderer;
 
-    public Vector3 Velocity = Vector3.zero;
+    public Vector3 Velocity;
 
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
+        JumpsLeft = MaxJumps;
+
         GroundCheckCircle = GameObject.Find("Player/GroundCheckCircle").transform;
         GroundCheckBox = GameObject.Find("Player/GroundCheckBox").transform;
 
@@ -33,14 +36,29 @@ public class PlayerMovement : MonoBehaviour
         Rigidbody2D = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
-        JumpsLeft = MaxJumps;
+
+        Velocity = Vector3.zero;
     }
 
     public void Update()
     {
-        CheckGround();
         ProcessInput();
+        MovePlayer();
+        CheckGround();
         UpdateAnimator();
+
+        if (Rigidbody2D.velocity.y == 0) JumpsLeft = MaxJumps;
+    }
+    private void ProcessInput()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow) && JumpsLeft > 0) PerformJump();
+        
+        SpriteRenderer.flipX = Rigidbody2D.velocity.x < -0.1f;
+    }
+    private void MovePlayer()
+    {
+        Vector3 targetVelocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, Rigidbody2D.velocity.y);
+        Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, .05f);
     }
     private void CheckGround()
     {   
@@ -48,32 +66,15 @@ public class PlayerMovement : MonoBehaviour
         bool boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), CollisionLayers);
 
         isGrounded = circleOverlap || boxOverlap;
-        if (isGrounded) JumpsLeft = MaxJumps;
-
-    }
-    private void ProcessInput()
-    {        
-        if (Input.GetKeyDown(KeyCode.UpArrow) && JumpsLeft > 0) PerformJump();
-        
-        SpriteRenderer.flipX = Rigidbody2D.velocity.x < -0.1f;
     }
     private void UpdateAnimator()
     {
-        float characterVelocity = Mathf.Abs(Rigidbody2D.velocity.x);
-
-        Animator.SetFloat("Speed", characterVelocity);
+        Animator.SetFloat("Speed", Mathf.Abs(Rigidbody2D.velocity.x));
         Animator.SetBool("isGrounded", isGrounded);
+        Animator.SetTrigger("Jump");
+    }
 
-        if (isGrounded == false) Animator.SetTrigger("Jump");
-    }
-    
-    public void FixedUpdate() { MovePlayer(); }
-    private void MovePlayer()
-    {
-        Vector3 targetVelocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, Rigidbody2D.velocity.y);
-        Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, .05f);
-    }
-    
+
     private void PerformJump()
     {
         Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
