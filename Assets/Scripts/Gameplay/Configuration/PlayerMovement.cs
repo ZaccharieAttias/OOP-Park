@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Linq;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -22,37 +23,55 @@ public class PlayerMovement : MonoBehaviour
     public SpriteRenderer SpriteRenderer;
 
     public Vector3 Velocity;
+    public float attackCooldown = 0.25f;
+    public float cooldownTimer = Mathf.Infinity;
+    public Transform firePoint;
+    [SerializeField] public List<GameObject> fireballs;
+    private float horizontalInput;
 
 
-    public void Start() { InitializeProperties(); }
+    public void Awake() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        JumpsLeft = MaxJumps;
-
-        GroundCheckCircle = GameObject.Find("Player/GroundCheckCircle").transform;
-        GroundCheckBox = GameObject.Find("Player/GroundCheckBox").transform;
-
         CollisionLayers = LayerMask.GetMask("Ground");
         Rigidbody2D = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
 
         Velocity = Vector3.zero;
+        JumpsLeft = MaxJumps;
+
+        GroundCheckCircle = GameObject.Find("Player/GroundCheckCircle").transform;
+        GroundCheckBox = GameObject.Find("Player/GroundCheckBox").transform;
+        firePoint = GameObject.Find("Player/FirePoint").transform;
+        fireballs = new List<GameObject>();
+        foreach (Transform child in GameObject.Find("FireballManager").transform)
+        {
+            fireballs.Add(child.gameObject);
+        }
     }
 
     public void Update()
     {
+        horizontalInput = Input.GetAxis("Horizontal");
+        CheckGround();
         ProcessInput();
         MovePlayer();
-        CheckGround();
         UpdateAnimator();
 
         if (Rigidbody2D.velocity.y == 0) JumpsLeft = MaxJumps;
+        cooldownTimer += Time.deltaTime;
     }
     private void ProcessInput()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && JumpsLeft > 0) PerformJump();
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) SpriteRenderer.flipX = Input.GetAxis("Horizontal") < 0;
+        if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
+            if (horizontalInput > 0.01f)
+                transform.localScale = new Vector3(3, 3, 3);
+            else if (horizontalInput < -0.01f)
+                transform.localScale = new Vector3(-3, 3, 3);
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown ) PerformAttack();
     }
     private void MovePlayer()
     {
@@ -62,7 +81,11 @@ public class PlayerMovement : MonoBehaviour
     private void CheckGround()
     {   
         bool circleOverlap = Physics2D.OverlapCircle(GroundCheckCircle.position, GroundCheckRadius, CollisionLayers);
-        bool boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), CollisionLayers);
+        bool boxOverlap;
+        if (transform.localScale.x > 0) 
+            boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), CollisionLayers);
+        else 
+            boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), CollisionLayers);
 
         isGrounded = circleOverlap || boxOverlap;
     }
@@ -79,16 +102,38 @@ public class PlayerMovement : MonoBehaviour
         Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         JumpsLeft--;
     }
+
+    private void PerformAttack()
+    {
+        Animator.SetTrigger("Shoot");
+        cooldownTimer = 0;
+
+        fireballs[FindFireball()].transform.position = firePoint.position;
+        fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x), MoveSpeed + 10);
+    }
+    private int FindFireball()
+    {
+        for (int i = 0; i < fireballs.Count; i++)
+        {
+            if (!fireballs[i].activeInHierarchy)
+                return i;
+        }
+        return 0;
+    }
     
-    // private void DrawGroundCheckGizmos()
-    // {
-    //     Gizmos.color = Color.red;
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
 
-    //     Gizmos.DrawLine(GroundCheckPoint.position, new Vector3(GroundCheckPoint.position.x, GroundCheckPoint.position.y - GroundCheckBoxLength, GroundCheckPoint.position.z));
-    //     Gizmos.DrawLine(GroundCheckPoint.position, new Vector3(GroundCheckPoint.position.x + GroundCheckBoxWidth, GroundCheckPoint.position.y, GroundCheckPoint.position.z));
-    //     Gizmos.DrawLine(new Vector3(GroundCheckPoint.position.x + GroundCheckBoxWidth, GroundCheckPoint.position.y, GroundCheckPoint.position.z), new Vector3(GroundCheckPoint.position.x + GroundCheckBoxWidth, GroundCheckPoint.position.y - GroundCheckBoxLength, GroundCheckPoint.position.z));
-    //     Gizmos.DrawLine(new Vector3(GroundCheckPoint.position.x, GroundCheckPoint.position.y - GroundCheckBoxLength, GroundCheckPoint.position.z), new Vector3(GroundCheckPoint.position.x + GroundCheckBoxWidth, GroundCheckPoint.position.y - GroundCheckBoxLength, GroundCheckPoint.position.z));
-
-    //     Gizmos.DrawWireSphere(GroundCheckPoint.position, GroundCheckRadius);
-    // }
+        if (transform.localScale.x > 0) {
+            Vector3 halfPosition = new Vector3(GroundCheckBox.position.x + GroundCheckBoxWidth / 2, GroundCheckBox.position.y - GroundCheckBoxLength / 2, GroundCheckBox.position.z);
+            Gizmos.DrawWireCube(halfPosition, new Vector3(GroundCheckBoxWidth, GroundCheckBoxLength, 0));}
+        else
+        {
+            Vector3 halfPosition = new Vector3(GroundCheckBox.position.x - GroundCheckBoxWidth / 2, GroundCheckBox.position.y - GroundCheckBoxLength / 2, GroundCheckBox.position.z);
+            Gizmos.DrawWireCube(halfPosition, new Vector3(GroundCheckBoxWidth, GroundCheckBoxLength, 0));
+        }
+        
+        Gizmos.DrawWireSphere(GroundCheckCircle.position, GroundCheckRadius);
+    }
 }
