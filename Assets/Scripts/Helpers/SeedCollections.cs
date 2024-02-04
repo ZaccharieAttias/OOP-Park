@@ -125,6 +125,7 @@ public class SeedCollections : MonoBehaviour
         specialAbility = new CharacterSpecialAbility(name, description, value, type);
         specialAbilities.Add(specialAbility);
         SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.General].Add(specialAbility);
 
         // Special Ability 4 (Jump)
         specialAbilities = new();
