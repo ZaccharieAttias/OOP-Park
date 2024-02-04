@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CharacterFactory : MonoBehaviour
+public class CharacterCreationManager : MonoBehaviour
 {
     public GameObject Popup;
 
@@ -33,8 +33,8 @@ public class CharacterFactory : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void OnGameStart()
     {
-        CharacterCreation characterCreation = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreation>();
-        characterCreation.InitializeProperties();
+        CharacterCreationManager characterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreationManager>();
+        characterCreationManager.InitializeProperties();
     }
     
     private void InitializeProperties()
