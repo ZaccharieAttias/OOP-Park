@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public SpriteRenderer SpriteRenderer;
 
     public Vector3 Velocity;
-    public float attackCooldown = 0.25f;
+    public float attackCooldown = Mathf.Infinity;
     public float cooldownTimer = Mathf.Infinity;
     public Transform firePoint;
     [SerializeField] public List<GameObject> fireballs;
