@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
 public class CharacterFactory : MonoBehaviour
 {
-    public ExecuteFactory ExecuteFactory;
+    public GameObject Popup;
 
     public GameObject AddButton;
     public GameObject CancelButton;
@@ -17,44 +16,46 @@ public class CharacterFactory : MonoBehaviour
     public List<GameObject> CharacterObjects;
     public List<GameObject> DuplicateCharacterObjects;
 
-    public List<Character> SelectedCharacterObjects;
     public int ParentsLimit;
+    public List<Character> SelectedCharacterObjects;
     public CharacterManager CharacterManager;
     public List<Button> Buttons;
 
 
-    public void Start() 
-    { 
-        InitializeGameObject();
-        InitializeProperties(); 
-    }
-    private void InitializeGameObject()
+
+    public GameObject CharacterPrefab;
+    public Transform CharacterParent;
+    public List<Sprite> CharacterSprites;
+    public int SpriteIndex;
+
+    public SpecialAbilityManager abilityPopup;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void OnGameStart()
     {
-        name = "CharacterFactory";
-
-        Transform parentTransform = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons").transform;
-        transform.SetParent(parentTransform);
-
-        transform.localPosition = new Vector3(0, 0, 0);
-        transform.localScale = new Vector3(1, 1, 1);
+        CharacterCreation characterCreation = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreation>();
+        characterCreation.InitializeProperties();
     }
+    
     private void InitializeProperties()
     {
-        GameObject executeFactoryObject = new("ExecuteFactory", typeof(ExecuteFactory));
-        ExecuteFactory = executeFactoryObject.GetComponent<ExecuteFactory>();
+        Popup = GameObject.Find("Canvas/Popups/CharacterCreation");
 
-        GameObject pureButtonPrefab = Resources.Load<GameObject>("Buttons/Pure");
-        AddButton = Instantiate(pureButtonPrefab, transform);
-        AddButton.AddComponent<AddFactory>();
+        AddButton = Popup.transform.Find("Buttons/Add").gameObject;
+        AddButton.GetComponent<Button>().onClick.AddListener(() => InitializeFactory());
 
-        CancelButton = Instantiate(pureButtonPrefab, transform);
-        CancelButton.AddComponent<CancelFactory>();
+        CancelButton = Popup.transform.Find("Buttons/Cancel").gameObject;
+        CancelButton.SetActive(false);
+        CancelButton.GetComponent<Button>().onClick.AddListener(() => CancelFactory());
 
-        ConfirmButton = Instantiate(pureButtonPrefab, transform);
-        ConfirmButton.AddComponent<ConfirmFactory>();
+        ConfirmButton = Popup.transform.Find("Buttons/Confirm").gameObject;
+        ConfirmButton.SetActive(false);
+        ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmFactory());
 
-        ResetButton = Instantiate(pureButtonPrefab, transform);
-        ResetButton.AddComponent<ResetFactory>();
+        ResetButton = Popup.transform.Find("Buttons/Reset").gameObject;
+        ResetButton.SetActive(false);
+        ResetButton.GetComponent<Button>().onClick.AddListener(() => ResetFactory());
+
 
         CharacterObjects = new List<GameObject>();
         DuplicateCharacterObjects = new List<GameObject>();
@@ -63,16 +64,27 @@ public class CharacterFactory : MonoBehaviour
         ParentsLimit = RestrictionManager.Instance.AllowMultipleInheritance ? 2 : 1;
 
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        Buttons = new List<Button>();
-        Buttons.Add(GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>());
-        Buttons.Add(GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>());
-        Buttons.Add(CharacterManager.CharacterDeleteButton.GetComponent<Button>());
+        Buttons = new List<Button>
+        {
+            GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>(),
+            GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>(),
+            CharacterManager.CharacterDeleteButton.GetComponent<Button>()
+        };
+
+        CharacterPrefab = Resources.Load<GameObject>("Buttons/Character");
+        CharacterParent = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
+        CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
+        SpriteIndex = 0;
+
+        abilityPopup = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility").GetComponent<SpecialAbilityManager>();
     }
 
     public void InitializeFactory()
     {
         AddButton.GetComponent<Button>().interactable = false;
-        
+        ConfirmButton.GetComponent<Button>().interactable = false;
+        ResetButton.GetComponent<Button>().interactable = false;
+
         CancelButton.SetActive(true);
         ConfirmButton.SetActive(true);
         ResetButton.SetActive(true);
@@ -83,14 +95,14 @@ public class CharacterFactory : MonoBehaviour
     }
     public void CancelFactory()
     {
+        AddButton.GetComponent<Button>().interactable = true;
+        ConfirmButton.GetComponent<Button>().interactable = false;
+        ResetButton.GetComponent<Button>().interactable = false;
+
         CancelButton.SetActive(false);
         ConfirmButton.SetActive(false);
         ResetButton.SetActive(false);
 
-        AddButton.GetComponent<Button>().interactable = true;
-        ConfirmButton.GetComponent<Button>().interactable = false;
-        ResetButton.GetComponent<Button>().interactable = false;
-        
         DestroyObjectsList(DuplicateCharacterObjects);
         ToggleButtonInteractability(CharacterObjects);
 
@@ -100,15 +112,15 @@ public class CharacterFactory : MonoBehaviour
     }
     public void ConfirmFactory()
     {
-        CancelButton.SetActive(false);
-        ConfirmButton.SetActive(false);
-        ResetButton.SetActive(false);
-
         AddButton.GetComponent<Button>().interactable = true;
         ConfirmButton.GetComponent<Button>().interactable = false;
         ResetButton.GetComponent<Button>().interactable = false;
 
-        ExecuteFactory.Execute();
+        CancelButton.SetActive(false);
+        ConfirmButton.SetActive(false);
+        ResetButton.SetActive(false);
+
+        Execute();
 
         DestroyObjectsList(DuplicateCharacterObjects);
         ToggleButtonInteractability(CharacterObjects);
@@ -207,4 +219,50 @@ public class CharacterFactory : MonoBehaviour
         }
     }
     private void DestroyObjectsList(List<GameObject> gameObjects) { foreach (GameObject gameObject in gameObjects) Destroy(gameObject); }
+
+
+
+    public void ExecuteTemp()
+    {
+        CharacterManager.CharactersCollection.Last().SpecialAbility = abilityPopup.selectedAbility;
+    }
+
+    public void Execute()
+    {
+        Character builtCharacter = BuildCharacter();
+        BuildCharacterObject(builtCharacter);
+
+        CharacterManager.AddCharacter(builtCharacter);
+
+        abilityPopup.SelectAbility(SelectedCharacterObjects);
+    }
+
+    private Character BuildCharacter()
+    {
+        int characterIndex = CharacterObjects.Count + 1;
+        string characterName = $"Character {characterIndex}";
+        string characterDescription = $"I`m {characterName}";
+        List<Character> parents = SelectedCharacterObjects;
+
+        Character builtCharacter = new(characterName, characterDescription, parents, null, false);
+        builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
+        
+        return builtCharacter;
+    }
+
+    private void BuildCharacterObject(Character character)
+    {
+        GameObject characterObject = Instantiate(CharacterPrefab, CharacterParent);
+
+        characterObject.name = character.Name;
+        character.CharacterButton.Button = characterObject;
+        characterObject.GetComponent<CharacterDetails>().InitializeCharacter(character);
+
+        Button button = characterObject.GetComponent<Button>();
+        button.onClick.AddListener(() => CharacterManager.DisplayCharacter(character));
+
+        Image image = characterObject.GetComponent<Image>();
+        image.sprite = CharacterSprites[SpriteIndex % CharacterSprites.Count];
+        SpriteIndex++;
+    }
 }
