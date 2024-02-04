@@ -97,12 +97,12 @@ public class AttributesManager : MonoBehaviour
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
-    public void ToggleOn() 
+    public void ToggleOn()
     { 
         LoadPopup(); 
         Popup.SetActive(true);    
     }
-    public void ToggleOff() 
+    public void ToggleOff()
     {
         CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
         Popup.SetActive(false); 

@@ -88,7 +88,7 @@ public class SpecialAbilityManager : MonoBehaviour
     {
         gameObject.SetActive(false);
 
-        ExecuteFactory executeFactory = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/CharacterFactory/ExecuteFactory").GetComponent<ExecuteFactory>();
-        executeFactory.ExecuteTemp();
+        CharacterCreationManager characterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreationManager>();
+        characterCreationManager.ExecuteTemp();
     }
 }

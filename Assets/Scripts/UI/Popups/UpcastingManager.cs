@@ -192,7 +192,7 @@ public class UpcastingManager : MonoBehaviour
         character.UpcastMethods ??= new List<CharacterUpcastMethod>(); //Probably doesnt need anymore
         character.UpcastMethods.Add(upcastMethod);
 
-        PowerUp powerUp = GameObject.Find("Player").GetComponent<PowerUp>();
+        Powerup powerUp = GameObject.Find("Player").GetComponent<Powerup>();
         powerUp.ApplyPowerup(CharacterManager.CurrentCharacter);
 
         ToggleOff();

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class SeedCollections : MonoBehaviour
 {
-    AttributesPopupManager AttributesPopupManager;
-    MethodsPopupManager MethodsPopupManager;
+    AttributesManager AttributesManager;
+    MethodsManager MethodsPopupManager;
     SpecialAbilityManager SpecialAbilityManager;
     CharacterManager CharacterManager;
 
@@ -19,8 +19,8 @@ public class SeedCollections : MonoBehaviour
     }
     private void InitializeProperties()
     {
-        AttributesPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Attributes").GetComponent<AttributesPopupManager>();
-        MethodsPopupManager = GameObject.Find("Canvas/HTMenu/Popups/Methods").GetComponent<MethodsPopupManager>();
+        AttributesManager = GameObject.Find("Canvas/Popups").GetComponent<AttributesManager>();
+        MethodsPopupManager = GameObject.Find("Canvas/Popups").GetComponent<MethodsManager>();
         SpecialAbilityManager = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility").GetComponent<SpecialAbilityManager>();
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
@@ -31,6 +31,7 @@ public class SeedCollections : MonoBehaviour
         InitializeSpecialAbilityCollection();
         InitializeCharactersCollection();
     }
+    
     private void InitializeAttributesCollection()
     {
         string attributeName;
@@ -39,26 +40,26 @@ public class SeedCollections : MonoBehaviour
         AccessModifier attributeAccessModifier;
 
         // Attribute 1
-        attributeName = "speedBuff";
+        attributeName = "speed";
         attributeValue = 5f;
         attributeDescription = "This is the MoveSpeed method";
         attributeAccessModifier = AccessModifier.Public;
-        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
+        AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
 
         // Attribute 2
-        attributeName = "gravityBuff";
+        attributeName = "gravity";
         attributeValue = 20f;
 
         attributeDescription = "This is the GravityForce method";
         attributeAccessModifier = AccessModifier.Protected;
-        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
+        AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
 
         // Attribute 3
-        attributeName = "doubleJumpBuff";
+        attributeName = "multipleJumps";
         attributeValue = 2f;
         attributeDescription = "This is the DoubleJump method";
         attributeAccessModifier = AccessModifier.Private;
-        AttributesPopupManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
+        AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
     }
     private void InitializeMethodsCollection()
     {
@@ -67,19 +68,19 @@ public class SeedCollections : MonoBehaviour
         AccessModifier methodAccessModifier;
 
         // Method 1
-        methodName = "SpeedBuff";
+        methodName = "Speed";
         methodDescription = "This is the MoveSpeed method";
         methodAccessModifier = AccessModifier.Public;
         MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
 
         // Method 2
-        methodName = "GravityBuff";
+        methodName = "Gravity";
         methodDescription = "This is the GravityForce method";
         methodAccessModifier = AccessModifier.Protected;
         MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
 
         // Method 3
-        methodName = "DoubleJumpBuff";
+        methodName = "MultipleJumps";
         methodDescription = "This is the DoubleJump method";
         methodAccessModifier = AccessModifier.Private;
         MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));

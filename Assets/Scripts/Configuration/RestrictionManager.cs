@@ -15,16 +15,23 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowUpcasting;
 
 
-    public void Start()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void OnGameStart()
+    {
+        Debug.Log("RestrictionManager");
+        RestrictionManager restrictionManager = GameObject.Find("GameInitializer").GetComponent<RestrictionManager>();
+        restrictionManager.InitializeProperties();
+    }
+    private void InitializeProperties()
     {
         Instance = this;
         
-        ApplyRestrictions();
+        // ApplyRestrictions();
     }
     private void ApplyRestrictions()
     {
-        if (AllowInheritance) ApplyRestriction<CharacterFactory>();
-        if (AllowUpcasting) ApplyRestriction<UpcastingManager>();
+        // if (AllowInheritance) ApplyRestriction<CharacterCreation>();
+        // if (AllowUpcasting) ApplyRestriction<UpcastingManager>();
     }
     private void ApplyRestriction<T>() where T : MonoBehaviour { new GameObject(typeof(T).Name).AddComponent<T>(); }
 }

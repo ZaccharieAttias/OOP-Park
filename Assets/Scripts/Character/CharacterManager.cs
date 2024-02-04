@@ -19,7 +19,7 @@ public class CharacterManager : MonoBehaviour
     public Transform AttributesContentPanel;
     public Transform MethodsContentPanel;
 
-    public TreeBuilder TreeBuilder;
+    public CharacterTreeManager TreeBuilder;
 
 
     public void Start() { InitializeProperties(); }
@@ -37,7 +37,7 @@ public class CharacterManager : MonoBehaviour
         AttributesContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
 
-        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<TreeBuilder>();
+        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<CharacterTreeManager>();
     }
     private GameObject CreateDeletionButton()
     {
@@ -99,7 +99,7 @@ public class CharacterManager : MonoBehaviour
             DisplayMethods();
             DisplayDelete();
 
-            PowerUp powerUp = GetComponent<PowerUp>();
+            Powerup powerUp = GetComponent<Powerup>();
             powerUp.ApplyPowerup(CurrentCharacter);
         }
     }
@@ -130,8 +130,8 @@ public class CharacterManager : MonoBehaviour
 
             if (RestrictionManager.Instance.AllowAccessModifiers) 
             {
-                attributeButton.AddComponent<AccessModifierButton>();
-                attributeButton.GetComponent<AccessModifierButton>().Attribute = attribute;
+                attributeButton.AddComponent<AccessModifierManager>();
+                attributeButton.GetComponent<AccessModifierManager>().Attribute = attribute;
             }
         }
     }
@@ -146,8 +146,8 @@ public class CharacterManager : MonoBehaviour
 
             if (RestrictionManager.Instance.AllowAccessModifiers)
             {
-                methodButton.AddComponent<AccessModifierButton>();
-                methodButton.GetComponent<AccessModifierButton>().Method = method;
+                methodButton.AddComponent<AccessModifierManager>();
+                methodButton.GetComponent<AccessModifierManager>().Method = method;
             }
         }
     }    

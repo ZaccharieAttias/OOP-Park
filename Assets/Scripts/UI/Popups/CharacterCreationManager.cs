@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
 public class CharacterCreationManager : MonoBehaviour
 {
     public GameObject Popup;
@@ -30,13 +31,7 @@ public class CharacterCreationManager : MonoBehaviour
 
     public SpecialAbilityManager abilityPopup;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void OnGameStart()
-    {
-        CharacterCreationManager characterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreationManager>();
-        characterCreationManager.InitializeProperties();
-    }
-    
+    public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/CharacterCreation");
@@ -77,6 +72,15 @@ public class CharacterCreationManager : MonoBehaviour
         SpriteIndex = 0;
 
         abilityPopup = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility").GetComponent<SpecialAbilityManager>();
+
+        if (RestrictionManager.Instance.AllowInheritance)
+        {
+            Button GameplayScreenButton = GameObject.Find("Canvas/GameplayScreen/SwapScreen").GetComponent<Button>();
+            GameplayScreenButton.onClick.AddListener(() => ToggleOn());
+
+            Button MenuScreenButton = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen").GetComponent<Button>();
+            MenuScreenButton.onClick.AddListener(() => ToggleOff());
+        }
     }
 
     public void InitializeFactory()
@@ -265,4 +269,8 @@ public class CharacterCreationManager : MonoBehaviour
         image.sprite = CharacterSprites[SpriteIndex % CharacterSprites.Count];
         SpriteIndex++;
     }
+
+
+    public void ToggleOn() { Popup.SetActive(true); }
+    public void ToggleOff() { Popup.SetActive(false); }
 }
