@@ -60,6 +60,13 @@ public class SeedCollections : MonoBehaviour
         attributeDescription = "This is the DoubleJump method";
         attributeAccessModifier = AccessModifier.Private;
         AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
+    
+        // Attribute 4
+        attributeName = "FireballShoot";
+        attributeValue = 0.25f;
+        attributeDescription = "This is the FireballShoot method";
+        attributeAccessModifier = AccessModifier.Public;
+        AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
     }
     private void InitializeMethodsCollection()
     {
@@ -83,6 +90,12 @@ public class SeedCollections : MonoBehaviour
         methodName = "MultipleJumps";
         methodDescription = "This is the DoubleJump method";
         methodAccessModifier = AccessModifier.Private;
+        MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+
+        // Method 4
+        methodName = "FireballShoot";
+        methodDescription = "This is the FireballShoot method";
+        methodAccessModifier = AccessModifier.Public;
         MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
     }
     private void InitializeSpecialAbilityCollection()
@@ -178,6 +191,17 @@ public class SeedCollections : MonoBehaviour
         specialAbilities.Add(specialAbility);
         SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
         SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Speed].Add(specialAbility);
+
+        // Special Ability 10 (FireballShoot)
+        specialAbilities = new();
+        name = "Fireball Shoot";
+        description = "Fireball Shoot";
+        value = 0.25f;
+        type = SpecialAbility.FireballShoot;
+        specialAbility = new CharacterSpecialAbility(name, description, value, type);
+        specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Automatic].Add(specialAbility);
     }
     public void InitializeCharactersCollection()
     {      
