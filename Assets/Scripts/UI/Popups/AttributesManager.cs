@@ -18,13 +18,8 @@ public class AttributesManager : MonoBehaviour
 
     public CharacterManager CharacterManager;
 
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void OnGameStart()
-    {
-        AttributesManager attributesManager = GameObject.Find("Canvas/Popups").GetComponent<AttributesManager>();
-        attributesManager.InitializeProperties();
-    }
+    
+    public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/Attributes");
@@ -44,46 +39,44 @@ public class AttributesManager : MonoBehaviour
 
     public void AddAttribute(CharacterAttribute attribute) { AttributesCollection.Add(attribute); }
 
-    public void LoadPopup()
+    private void LoadPopup()
     {
         ClearContentPanel();
 
         foreach (CharacterAttribute attribute in AttributesCollection)
         {
-            GameObject attributeButton = Instantiate(AttributeButton, ContentPanel);
-            attributeButton.name = attribute.Name;
+            GameObject attributeGameObject = Instantiate(AttributeButton, ContentPanel);
+            attributeGameObject.name = attribute.Name;
 
-            TMP_Text buttonText = attributeButton.GetComponentInChildren<TMP_Text>();
+            TMP_Text buttonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = attribute.Name;
 
-            MarkAttributeInPopup(attributeButton, attribute);
+            Button attributeButton = attributeGameObject.GetComponent<Button>();
+            attributeButton.onClick.AddListener(() => MarkAttribute(attributeGameObject, attribute));
+            
+            Image image = attributeGameObject.GetComponent<Image>();
+            image.color = CharacterManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name) ? Color.green : Color.white;
         }
     }
-    private void MarkAttributeInPopup(GameObject attributeButton, CharacterAttribute attribute)
+    private void MarkAttribute(GameObject attributeGameObject, CharacterAttribute attribute)
     {
-        bool hasAttribute = CharacterManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name);
-
-        Image image = attributeButton.GetComponent<Image>();
-        image.color = hasAttribute ? Color.green : Color.white;
-
-        Button button = attributeButton.GetComponent<Button>();
-        button.onClick.AddListener(() => OnClick(attribute, hasAttribute));
-    }
-    private void OnClick(CharacterAttribute attribute, bool hasAttribute)
-    {
-        if (hasAttribute) 
+        var currentCharacter = CharacterManager.CurrentCharacter;
+        var currentAttribute = currentCharacter.Attributes.Find(item => item.Name == attribute.Name);   
+        
+        if (currentAttribute != null)
         {
-            var currentCharacter = CharacterManager.CurrentCharacter;
-            var currentAttribute = currentCharacter.Attributes.Find(item => item.Name == attribute.Name);
-
             currentCharacter.Attributes.Remove(currentAttribute);
             CancelDependentMethods(currentCharacter ,currentAttribute);
         }
 
-        else 
-            CharacterManager.CurrentCharacter.Attributes.Add(new CharacterAttribute(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier));
+        else
+        {
+            CharacterAttribute deepCopyAttribute = new(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier);
+            currentCharacter.Attributes.Add(deepCopyAttribute);
+        }
 
-        LoadPopup();
+        Image image = attributeGameObject.GetComponent<Image>();
+        image.color = currentAttribute == null ? Color.green : Color.white;
     }
     private void CancelDependentMethods(Character character, CharacterAttribute deletedAttribute)
     {
@@ -93,7 +86,6 @@ public class AttributesManager : MonoBehaviour
         if (dependentMethodToRemove != null) character.Methods.Remove(dependentMethodToRemove);
         
         foreach (Character child in character.Childrens) CancelDependentMethods(child, deletedAttribute);
-
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
