@@ -15,10 +15,9 @@ public class SpecialAbilityManager : MonoBehaviour
 
     public Button ConfirmButton;
 
-    public CharacterSpecialAbility selectedAbility;
+    public CharacterSpecialAbility SelectedSpecialAbility;
     public List<SpecialAbility> AbilitiesType;
 
-    public CharacterManager CharacterManager;
     public CharacterCreationManager CharacterCreationManager;
 
 
@@ -32,19 +31,18 @@ public class SpecialAbilityManager : MonoBehaviour
         ContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content");
 
         ConfirmButton = Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>();
-        ConfirmButton.onClick.AddListener(() => Execute());
+        ConfirmButton.onClick.AddListener(() => ToggleOff());
         ConfirmButton.interactable = false;
 
-        selectedAbility = null;
+        SelectedSpecialAbility = null;
         AbilitiesType = new List<SpecialAbility>();
 
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         CharacterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreationManager>();
     }
 
     private void LoadPopup()
     {
-        ClearContentPanel();
+        ResetPopup();
 
         AbilitiesType = CharacterCreationManager.SelectedCharacterObjects.Select(item => item.SpecialAbility.Type).Distinct().ToList();        
         List<CharacterSpecialAbility> availableSpecialAbilities = AbilitiesType.SelectMany(abilityType => SpecialAbilitiesCollection[abilityType]).ToList();
@@ -62,32 +60,30 @@ public class SpecialAbilityManager : MonoBehaviour
     }
     private void MarkSpecialAbility(GameObject specialAbilityButton, CharacterSpecialAbility specialAbility)
     {
-        bool isSelected = selectedAbility != null;
-        bool isSameAbility = selectedAbility?.Name == specialAbility.Name;
+        bool isSelected = SelectedSpecialAbility != null;
+        bool isSameAbility = SelectedSpecialAbility?.Name == specialAbility.Name;
 
         if (isSelected && isSameAbility == false) return;
 
         Image image = specialAbilityButton.GetComponent<Image>();
         image.color = isSelected || isSameAbility ? Color.white : Color.green;
         
-        selectedAbility = isSelected || isSameAbility ? null : specialAbility;
+        SelectedSpecialAbility = isSelected || isSameAbility ? null : specialAbility;
 
         ConfirmButton.interactable = isSelected == false && isSameAbility == false;
     }
+    private void ResetPopup()
+    {
+        ClearContentPanel();
+        
+        ConfirmButton.interactable = false;
+        SelectedSpecialAbility = null;
+        AbilitiesType.Clear();
+    }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
-    private void Execute()
-    {
-        CharacterManager.CurrentCharacter.SpecialAbility = selectedAbility;
-        
-        selectedAbility = null;
-        ConfirmButton.interactable = false;
-
-        ToggleOff();
-    }
-
     public void ToggleOn()
-    { 
+    {
         LoadPopup(); 
         Popup.SetActive(true); 
     }
