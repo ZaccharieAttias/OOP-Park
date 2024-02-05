@@ -21,7 +21,7 @@ public class SeedCollections : MonoBehaviour
     {
         AttributesManager = GameObject.Find("Canvas/Popups").GetComponent<AttributesManager>();
         MethodsPopupManager = GameObject.Find("Canvas/Popups").GetComponent<MethodsManager>();
-        SpecialAbilityManager = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility").GetComponent<SpecialAbilityManager>();
+        SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
     private void InitializeCollections()
@@ -42,7 +42,7 @@ public class SeedCollections : MonoBehaviour
         // Attribute 1
         attributeName = "speed";
         attributeValue = 5f;
-        attributeDescription = "This is the MoveSpeed method";
+        attributeDescription = "This is the MoveSpeed attribute";
         attributeAccessModifier = AccessModifier.Public;
         AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
 
@@ -50,21 +50,21 @@ public class SeedCollections : MonoBehaviour
         attributeName = "gravity";
         attributeValue = 20f;
 
-        attributeDescription = "This is the GravityForce method";
+        attributeDescription = "This is the GravityForce attribute";
         attributeAccessModifier = AccessModifier.Protected;
         AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
 
         // Attribute 3
         attributeName = "multipleJumps";
         attributeValue = 2f;
-        attributeDescription = "This is the DoubleJump method";
+        attributeDescription = "This is the DoubleJump attribute";
         attributeAccessModifier = AccessModifier.Private;
         AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
     
         // Attribute 4
         attributeName = "FireballShoot";
         attributeValue = 0.25f;
-        attributeDescription = "This is the FireballShoot method";
+        attributeDescription = "This is the FireballShoot attribute";
         attributeAccessModifier = AccessModifier.Public;
         AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
     }
