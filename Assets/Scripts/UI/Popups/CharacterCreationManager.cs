@@ -29,7 +29,8 @@ public class CharacterCreationManager : MonoBehaviour
     public List<Sprite> CharacterSprites;
     public int SpriteIndex;
 
-    public SpecialAbilityManager abilityPopup;
+    public SpecialAbilityManager SpecialAbilityManager;
+
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -63,7 +64,7 @@ public class CharacterCreationManager : MonoBehaviour
         {
             GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>(),
             GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>(),
-            CharacterManager.CharacterDeleteButton.GetComponent<Button>()
+            CharacterManager.DeleteButton.GetComponent<Button>()
         };
 
         CharacterPrefab = Resources.Load<GameObject>("Buttons/Character");
@@ -71,7 +72,7 @@ public class CharacterCreationManager : MonoBehaviour
         CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
         SpriteIndex = 0;
 
-        abilityPopup = GameObject.Find("Canvas/HTMenu/Popups/SpecialAbility").GetComponent<SpecialAbilityManager>();
+        SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
 
         if (RestrictionManager.Instance.AllowInheritance)
         {
@@ -224,21 +225,13 @@ public class CharacterCreationManager : MonoBehaviour
     }
     private void DestroyObjectsList(List<GameObject> gameObjects) { foreach (GameObject gameObject in gameObjects) Destroy(gameObject); }
 
-
-
-    public void ExecuteTemp()
-    {
-        CharacterManager.CharactersCollection.Last().SpecialAbility = abilityPopup.selectedAbility;
-    }
-
     public void Execute()
     {
         Character builtCharacter = BuildCharacter();
         BuildCharacterObject(builtCharacter);
 
         CharacterManager.AddCharacter(builtCharacter);
-
-        abilityPopup.SelectAbility(SelectedCharacterObjects);
+        SpecialAbilityManager.ToggleOn();
     }
 
     private Character BuildCharacter()
