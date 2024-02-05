@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -97,6 +98,8 @@ public class CharacterCreationManager : MonoBehaviour
         CharacterObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
         BuildDuplicateCharacterObjects();
         ToggleButtonInteractability(CharacterObjects);
+
+        SelectedCharacterObjects.Clear();
     }
     public void CancelFactory()
     {
@@ -125,14 +128,13 @@ public class CharacterCreationManager : MonoBehaviour
         ConfirmButton.SetActive(false);
         ResetButton.SetActive(false);
 
-        Execute();
+        StartCoroutine(CharacterBuildPipeline());
 
         DestroyObjectsList(DuplicateCharacterObjects);
         ToggleButtonInteractability(CharacterObjects);
 
         CharacterObjects.Clear();
         DuplicateCharacterObjects.Clear();
-        SelectedCharacterObjects.Clear();
     }
     public void ResetFactory()
     {
@@ -225,28 +227,28 @@ public class CharacterCreationManager : MonoBehaviour
     }
     private void DestroyObjectsList(List<GameObject> gameObjects) { foreach (GameObject gameObject in gameObjects) Destroy(gameObject); }
 
-    public void Execute()
+    private IEnumerator CharacterBuildPipeline()
     {
+        SpecialAbilityManager.ToggleOn();
+        yield return new WaitUntil(() => SpecialAbilityManager.Popup.activeSelf == false);
+
         Character builtCharacter = BuildCharacter();
         BuildCharacterObject(builtCharacter);
 
         CharacterManager.AddCharacter(builtCharacter);
-        SpecialAbilityManager.ToggleOn();
     }
-
     private Character BuildCharacter()
     {
         int characterIndex = CharacterObjects.Count + 1;
         string characterName = $"Character {characterIndex}";
         string characterDescription = $"I`m {characterName}";
-        List<Character> parents = SelectedCharacterObjects;
-
-        Character builtCharacter = new(characterName, characterDescription, parents, null, false);
+        List<Character> characterParents = SelectedCharacterObjects;
+        CharacterSpecialAbility characterSpecialAbility = SpecialAbilityManager.SelectedSpecialAbility;
+        Character builtCharacter = new(characterName, characterDescription, characterParents, characterSpecialAbility, false);
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
         
         return builtCharacter;
     }
-
     private void BuildCharacterObject(Character character)
     {
         GameObject characterObject = Instantiate(CharacterPrefab, CharacterParent);
@@ -262,7 +264,6 @@ public class CharacterCreationManager : MonoBehaviour
         image.sprite = CharacterSprites[SpriteIndex % CharacterSprites.Count];
         SpriteIndex++;
     }
-
 
     public void ToggleOn() { Popup.SetActive(true); }
     public void ToggleOff() { Popup.SetActive(false); }
