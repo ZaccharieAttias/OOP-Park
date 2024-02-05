@@ -82,7 +82,7 @@ public class CharacterManager : MonoBehaviour
             DisplayName();
             DisplayAttributes();
             DisplayMethods();
-            DisplaySpeicalAbility();
+            DisplaySpecialAbility();
             DisplayDelete();
 
             Powerup powerUp = GetComponent<Powerup>();
@@ -141,7 +141,7 @@ public class CharacterManager : MonoBehaviour
             }
         }
     }    
-    private void DisplaySpeicalAbility()
+    private void DisplaySpecialAbility()
     {
         // Bad case: Creating a character, we initialized the special ability after...
 
