@@ -14,10 +14,11 @@ public class CharacterManager : MonoBehaviour
     public TMP_Text DescriptionText;
     
     public GameObject DefaultButton;
-    public GameObject CharacterDeleteButton;
+    public GameObject DeleteButton;
 
     public Transform AttributesContentPanel;
     public Transform MethodsContentPanel;
+    public Transform SpecialAbilityContentPanel;
 
     public CharacterTreeManager TreeBuilder;
 
@@ -32,31 +33,14 @@ public class CharacterManager : MonoBehaviour
         DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
         
         DefaultButton = Resources.Load<GameObject>("Buttons/Default");
-        CharacterDeleteButton = CreateDeletionButton();
+        DeleteButton = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Delete");
+        DeleteButton.GetComponent<Button>().onClick.AddListener(() => DeleteCharacter());
 
         AttributesContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
+        SpecialAbilityContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
 
         TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<CharacterTreeManager>();
-    }
-    private GameObject CreateDeletionButton()
-    {
-        Transform location = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details").transform;
-
-        GameObject characterDeleteButton = Instantiate(DefaultButton, location);
-        characterDeleteButton.transform.localPosition = new Vector3(684, -382, 0);
-        characterDeleteButton.name = "Delete";
-        characterDeleteButton.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 50);
-        characterDeleteButton.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
-
-        TMP_Text buttonText = characterDeleteButton.GetComponentInChildren<TMP_Text>();
-        buttonText.text = "Delete";
-        buttonText.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 50);
-
-        Button button1 = characterDeleteButton.GetComponent<Button>();
-        button1.onClick.AddListener(() => DeleteCharacter());
-
-        return characterDeleteButton;
     }
    
     public void AddCharacter(Character builtCharacter)
@@ -80,7 +64,8 @@ public class CharacterManager : MonoBehaviour
 
     public void DisplayCharacter(Character displayCharacter)
     {
-        if (CurrentCharacter != null){
+        if (CurrentCharacter != null)
+        {
             GameObject previousCharacterObject = CurrentCharacter.CharacterButton.Button;
             previousCharacterObject.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         }
@@ -97,6 +82,7 @@ public class CharacterManager : MonoBehaviour
             DisplayName();
             DisplayAttributes();
             DisplayMethods();
+            DisplaySpeicalAbility();
             DisplayDelete();
 
             Powerup powerUp = GetComponent<Powerup>();
@@ -122,16 +108,18 @@ public class CharacterManager : MonoBehaviour
     {
         foreach (CharacterAttribute attribute in CurrentCharacter.Attributes)
         {
-            GameObject attributeButton = Instantiate(DefaultButton, AttributesContentPanel);
-            attributeButton.name = attribute.Name;
+            GameObject attributeGameObject = Instantiate(DefaultButton, AttributesContentPanel);
+            attributeGameObject.AddComponent<RightClickButton>();
 
-            TMP_Text buttonText = attributeButton.GetComponentInChildren<TMP_Text>();
+            attributeGameObject.name = attribute.Name;
+
+            TMP_Text buttonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = attribute.Name;
 
             if (RestrictionManager.Instance.AllowAccessModifiers) 
             {
-                attributeButton.AddComponent<AccessModifierManager>();
-                attributeButton.GetComponent<AccessModifierManager>().Attribute = attribute;
+                attributeGameObject.AddComponent<AccessModifierManager>();
+                attributeGameObject.GetComponent<AccessModifierManager>().Attribute = attribute;
             }
         }
     }
@@ -139,22 +127,38 @@ public class CharacterManager : MonoBehaviour
     {
         foreach (CharacterMethod method in CurrentCharacter.Methods)
         {
-            GameObject methodButton = Instantiate(DefaultButton, MethodsContentPanel);
+            GameObject methodGameObject = Instantiate(DefaultButton, MethodsContentPanel);
+            methodGameObject.AddComponent<RightClickButton>();
+            methodGameObject.name = method.Name;
 
-            TMP_Text buttonText = methodButton.GetComponentInChildren<TMP_Text>();
+            TMP_Text buttonText = methodGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = method.Name;
 
             if (RestrictionManager.Instance.AllowAccessModifiers)
             {
-                methodButton.AddComponent<AccessModifierManager>();
-                methodButton.GetComponent<AccessModifierManager>().Method = method;
+                methodGameObject.AddComponent<AccessModifierManager>();
+                methodGameObject.GetComponent<AccessModifierManager>().Method = method;
             }
         }
     }    
-    private void DisplayDelete() { CharacterDeleteButton.SetActive(CurrentCharacter.IsOriginal == false && CurrentCharacter.IsLeaf()); }
+    private void DisplaySpeicalAbility()
+    {
+        // Bad case: Creating a character, we initialized the special ability after...
+
+        if (CurrentCharacter.SpecialAbility == null) return;
+        
+        GameObject specialAbilityGameObject = Instantiate(DefaultButton, SpecialAbilityContentPanel);
+        specialAbilityGameObject.AddComponent<RightClickButton>();
+        specialAbilityGameObject.name = CurrentCharacter.SpecialAbility.Name;
+        
+        TMP_Text buttonText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
+        buttonText.text = CurrentCharacter.SpecialAbility.Name;
+    }    
+    private void DisplayDelete() { DeleteButton.SetActive(CurrentCharacter.IsOriginal == false && CurrentCharacter.IsLeaf()); }
     private void ClearContentPanels()
     {
         foreach (Transform child in AttributesContentPanel) Destroy(child.gameObject);
         foreach (Transform child in MethodsContentPanel) Destroy(child.gameObject);
+        foreach (Transform child in SpecialAbilityContentPanel) Destroy(child.gameObject);
     }
 }
