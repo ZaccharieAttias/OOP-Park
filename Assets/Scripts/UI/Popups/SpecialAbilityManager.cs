@@ -44,7 +44,7 @@ public class SpecialAbilityManager : MonoBehaviour
     {
         ResetPopup();
 
-        AbilitiesType = CharacterCreationManager.SelectedCharacterObjects.Select(item => item.SpecialAbility.Type).Distinct().ToList();        
+        AbilitiesType = CharacterCreationManager.SelectedCharacterParents.Select(item => item.SpecialAbility.Type).Distinct().ToList();        
         List<CharacterSpecialAbility> availableSpecialAbilities = AbilitiesType.SelectMany(abilityType => SpecialAbilitiesCollection[abilityType]).ToList();
         foreach (CharacterSpecialAbility specialAbility in availableSpecialAbilities)
         {
