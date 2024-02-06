@@ -8839,7 +8839,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &740110351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10124,7 +10124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &931756360
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10581,7 +10581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &969932916
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15301,16 +15301,18 @@ MonoBehaviour:
   CancelButton: {fileID: 0}
   ConfirmButton: {fileID: 0}
   ResetButton: {fileID: 0}
-  CharacterObjects: []
-  DuplicateCharacterObjects: []
-  ParentsLimit: 0
-  CharacterManager: {fileID: 0}
-  Buttons: []
-  CharacterPrefab: {fileID: 0}
-  CharacterParent: {fileID: 0}
-  CharacterSprites: []
   SpriteIndex: 0
+  CharacterSprites: []
+  CharacterPrefab: {fileID: 0}
+  CharacterContentPanel: {fileID: 0}
+  CharacterParentsLimit: 0
+  CharacterGameObjects: []
+  DuplicateCharacterGameObjects: []
+  PopupToggleOn: {fileID: 0}
+  PopupToggleOff: {fileID: 0}
+  CharacterManager: {fileID: 0}
   SpecialAbilityManager: {fileID: 0}
+  NotAllowedButtons: []
 --- !u!114 &1448592964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15393,13 +15395,12 @@ MonoBehaviour:
   SpecialAbilityButton: {fileID: 0}
   ContentPanel: {fileID: 0}
   ConfirmButton: {fileID: 0}
-  selectedAbility:
+  SelectedSpecialAbility:
     Name: 
     Description: 
     Value: 0
     Type: 0
   AbilitiesType: 
-  CharacterManager: {fileID: 0}
   CharacterCreationManager: {fileID: 0}
 --- !u!4 &1463914156 stripped
 Transform:
