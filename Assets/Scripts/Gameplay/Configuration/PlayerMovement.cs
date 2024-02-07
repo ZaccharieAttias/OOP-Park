@@ -29,6 +29,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public List<GameObject> fireballs;
     private float horizontalInput;
 
+    public Powerup Powerup;
+    public float PowerupTimer = 0f;
+
 
     public void Awake() { InitializeProperties(); }
     private void InitializeProperties()
@@ -49,10 +52,14 @@ public class PlayerMovement : MonoBehaviour
         {
             fireballs.Add(child.gameObject);
         }
+
+        Powerup = GetComponent<Powerup>();
     }
 
     public void Update()
     {
+        PowerupTimer = 0f;
+
         horizontalInput = Input.GetAxis("Horizontal");
         CheckGround();
         ProcessInput();
@@ -71,12 +78,15 @@ public class PlayerMovement : MonoBehaviour
             else if (horizontalInput < -0.01f)
                 transform.localScale = new Vector3(-3, 3, 3);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown ) PerformAttack();
+        if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown) PerformAttack();
     }
     private void MovePlayer()
     {
         Vector3 targetVelocity = new Vector2(Input.GetAxis("Horizontal") * MoveSpeed, Rigidbody2D.velocity.y);
         Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, .05f);
+
+        PowerupTimer += Time.deltaTime;
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Speed") Powerup.PreviousUpcastMethod.UpdateUpcast(PowerupTimer);
     }
     private void CheckGround()
     {   
@@ -101,6 +111,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         JumpsLeft--;
+
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpdateUpcast(1);
     }
 
     private void PerformAttack()
@@ -110,6 +122,9 @@ public class PlayerMovement : MonoBehaviour
 
         fireballs[FindFireball()].transform.position = firePoint.position;
         fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x), MoveSpeed + 10);
+
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "FireballShoot") Powerup.PreviousUpcastMethod.UpdateUpcast(1);
+
     }
     private int FindFireball()
     {

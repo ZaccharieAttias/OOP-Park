@@ -6,7 +6,7 @@ public class Powerup : MonoBehaviour
 {
     public List<PowerupEffect> PowerUpEffects;
     public List<CharacterMethod> PreviousMethods;
-    public List<CharacterUpcastMethod> PreviousUpcastMethods;
+    public CharacterUpcastMethod PreviousUpcastMethod;
 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -21,19 +21,15 @@ public class Powerup : MonoBehaviour
         PowerUpEffects.AddRange(Resources.LoadAll<PowerupEffect>("Powerups"));
 
         PreviousMethods = new List<CharacterMethod>();
-        PreviousUpcastMethods = new List<CharacterUpcastMethod>();
+        PreviousUpcastMethod = null;
     }
     
     public void ApplyPowerup(Character character)
     {
-        if (PreviousUpcastMethods?.Count > 0)
+        if (PreviousUpcastMethod != null)
         {
-            for (int i = 0; i < PreviousUpcastMethods.Count; i++)
-            {
-                PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(PreviousUpcastMethods[i].CharacterMethod.Name)).DeactivatePower(gameObject);
-                PreviousUpcastMethods[i].UpdateUpcast();
-                PreviousUpcastMethods.Remove(PreviousUpcastMethods[i]);
-            }
+            PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(PreviousUpcastMethod.CharacterMethod.Name)).DeactivatePower(gameObject);
+            PreviousUpcastMethod = null;
         }
 
         if (PreviousMethods?.Count > 0)
@@ -45,20 +41,17 @@ public class Powerup : MonoBehaviour
             }
         }
 
-        if (character.UpcastMethods?.Count > 0)
+        if (character.UpcastMethod != null)
         {
-            for (int i = 0; i < character.UpcastMethods.Count; i++)
-            {
-                PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(character.UpcastMethods[i].CharacterMethod.Name)).ActivatePower(gameObject, character.UpcastMethods[i].CharacterMethod.Attribute.Value);
-                PreviousUpcastMethods.Add(character.UpcastMethods[i]);
-            }
+            PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(character.UpcastMethod.CharacterMethod.Name)).ActivatePower(gameObject, character.UpcastMethod.CharacterMethod.Attribute.Value);
+            PreviousUpcastMethod = character.UpcastMethod;
         }
 
         if (character.Methods?.Count > 0)
         {
             for (int i = 0; i < character.Methods.Count; i++)
             {
-                if (PreviousUpcastMethods.Find(upcast => upcast.CharacterMethod.Name == character.Methods[i].Name) != null) continue;
+                if (PreviousUpcastMethod?.CharacterMethod?.Name == character.Methods[i].Name) continue;
                 PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(character.Methods[i].Name)).ActivatePower(gameObject, character.Methods[i].Attribute.Value);
                 PreviousMethods.Add(character.Methods[i]);
             }

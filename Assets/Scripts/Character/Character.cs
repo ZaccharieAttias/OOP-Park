@@ -14,7 +14,7 @@ public class Character
     public List<CharacterMethod> Methods;
 
     public CharacterSpecialAbility SpecialAbility;
-    public List<CharacterUpcastMethod> UpcastMethods;
+    public CharacterUpcastMethod UpcastMethod;
 
     public List<Character> Parents;
     public List<Character> Childrens;
@@ -33,7 +33,7 @@ public class Character
         Methods = new List<CharacterMethod>();
 
         SpecialAbility = specialAbility;
-        UpcastMethods = new List<CharacterUpcastMethod>();
+        UpcastMethod = null;
 
         Parents = new List<Character>(parents);
         Childrens = new List<Character>();
@@ -53,7 +53,7 @@ public class Character
         Methods = character.Methods;
 
         SpecialAbility = character.SpecialAbility;
-        UpcastMethods = character.UpcastMethods;
+        UpcastMethod = character.UpcastMethod;
 
         Parents = character.Parents;
         Childrens = character.Childrens;

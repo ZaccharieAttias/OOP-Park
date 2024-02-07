@@ -29,6 +29,7 @@ public class UpcastingManager : MonoBehaviour
 
     public CharacterManager CharacterManager;
 
+
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void OnGameStart()
@@ -189,11 +190,12 @@ public class UpcastingManager : MonoBehaviour
         CharacterMethod characterMethod = CharacterData[CharacterIndex].Item2[MethodIndex];
         CharacterUpcastMethod upcastMethod = new(character, characterMethod, UpcastingQuantity);
 
-        character.UpcastMethods ??= new List<CharacterUpcastMethod>(); //Probably doesnt need anymore
-        character.UpcastMethods.Add(upcastMethod);
+        character.UpcastMethod = upcastMethod;
 
         Powerup powerUp = GameObject.Find("Player").GetComponent<Powerup>();
         powerUp.ApplyPowerup(CharacterManager.CurrentCharacter);
+        
+        upcastMethod.ToggleOn();
 
         ToggleOff();
     }

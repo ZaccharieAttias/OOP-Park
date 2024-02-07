@@ -60,17 +60,17 @@ public class SpecialAbilityManager : MonoBehaviour
     }
     private void MarkSpecialAbility(GameObject specialAbilityButton, CharacterSpecialAbility specialAbility)
     {
-        bool isSelected = SelectedSpecialAbility != null;
+        bool isSelectedAlready = SelectedSpecialAbility != null;
         bool isSameAbility = SelectedSpecialAbility?.Name == specialAbility.Name;
 
-        if (isSelected && isSameAbility == false) return;
+        if (isSelectedAlready && isSameAbility == false) return;
 
         Image image = specialAbilityButton.GetComponent<Image>();
-        image.color = isSelected || isSameAbility ? Color.white : Color.green;
+        image.color = isSelectedAlready || isSameAbility ? Color.white : Color.green;
         
-        SelectedSpecialAbility = isSelected || isSameAbility ? null : specialAbility;
+        SelectedSpecialAbility = isSelectedAlready || isSameAbility ? null : specialAbility;
 
-        ConfirmButton.interactable = isSelected == false && isSameAbility == false;
+        ConfirmButton.interactable = isSelectedAlready == false && isSameAbility == false;
     }
     private void ResetPopup()
     {
