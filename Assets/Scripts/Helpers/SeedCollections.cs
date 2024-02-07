@@ -62,7 +62,7 @@ public class SeedCollections : MonoBehaviour
         AttributesManager.AddAttribute(new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier));
     
         // Attribute 4
-        attributeName = "FireballShoot";
+        attributeName = "fireballShoot";
         attributeValue = 0.25f;
         attributeDescription = "This is the FireballShoot attribute";
         attributeAccessModifier = AccessModifier.Public;
@@ -127,6 +127,17 @@ public class SeedCollections : MonoBehaviour
         SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
         SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.General].Add(specialAbility);
 
+        // Special Ability 3 (Manual)
+        specialAbilities = new();
+        name = "Manual";
+        description = "Manually";
+        value = 0;
+        type = SpecialAbility.Manual;
+        specialAbility = new CharacterSpecialAbility(name, description, value, type);
+        specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.General].Add(specialAbility);
+
         // Special Ability 4 (Jump)
         specialAbilities = new();
         name = "Jump";
@@ -160,7 +171,18 @@ public class SeedCollections : MonoBehaviour
         SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
         SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Automatic].Add(specialAbility);
 
-        // Special Ability 7 (DoubleJump)
+        // Special Ability 7 (FireballShoot)
+        specialAbilities = new();
+        name = "Fireball Shoot";
+        description = "Fireball Shoot";
+        value = 0.25f;
+        type = SpecialAbility.FireballShoot;
+        specialAbility = new CharacterSpecialAbility(name, description, value, type);
+        specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Manual].Add(specialAbility);
+
+        // Special Ability 8 (DoubleJump)
         specialAbilities = new();
         name = "Double Jump";
         description = "Double Jump";
@@ -171,7 +193,7 @@ public class SeedCollections : MonoBehaviour
         SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
         SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Jump].Add(specialAbility);
 
-        // Special Ability 8 (WeakGravity)
+        // Special Ability 9 (WeakGravity)
         specialAbilities = new();
         name = "Weak Gravity";
         description = "Weak Gravity";
@@ -182,7 +204,7 @@ public class SeedCollections : MonoBehaviour
         SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
         SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Gravity].Add(specialAbility);
 
-        // Special Ability 9 (FastSpeed)
+        // Special Ability 10 (FastSpeed)
         specialAbilities = new();
         name = "Fast Speed";
         description = "Fast Speed";
@@ -192,17 +214,6 @@ public class SeedCollections : MonoBehaviour
         specialAbilities.Add(specialAbility);
         SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
         SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Speed].Add(specialAbility);
-
-        // Special Ability 10 (FireballShoot)
-        specialAbilities = new();
-        name = "Fireball Shoot";
-        description = "Fireball Shoot";
-        value = 0.25f;
-        type = SpecialAbility.FireballShoot;
-        specialAbility = new CharacterSpecialAbility(name, description, value, type);
-        specialAbilities.Add(specialAbility);
-        SpecialAbilityManager.SpecialAbilitiesCollection.Add(type, specialAbilities);
-        SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Automatic].Add(specialAbility);
     }
     public void InitializeCharactersCollection()
     {      
