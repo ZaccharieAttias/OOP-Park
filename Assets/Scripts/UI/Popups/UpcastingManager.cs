@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,205 +8,168 @@ using UnityEngine.UI;
 public class UpcastingManager : MonoBehaviour
 {
     public GameObject Popup;
-    public List<(Character, List<CharacterMethod>)> CharacterData;
+    public List<(Character, List<CharacterMethod>)> UpcastableData;
 
-    public int CharacterIndex;
-    public TextMeshProUGUI Character;
-    public Button CharacterRight;
-    public Button CharacterLeft;
-    
-    public int MethodIndex;
-    public TextMeshProUGUI Method;
-    public Button MethodRight;
-    public Button MethodLeft;
-    
-    public int UpcastingQuantity;
-    public TextMeshProUGUI Quantity;
-    public Button QuantityRight;
-    public Button QuantityLeft;
-    
+    public List<int> Indices;
+    public List<TextMeshProUGUI> Texts;
+    public List<Button> Buttons;
+
     public Button CloseButton;
     public Button ConfirmButton;
 
     public CharacterManager CharacterManager;
 
-
     
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void OnGameStart()
-    {
-        UpcastingManager upcastingManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastingManager>();
-        upcastingManager.InitializeProperties();
-    }
+    private void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/Upcasting");
-        CharacterData = new List<(Character, List<CharacterMethod>)>();
+        UpcastableData = new List<(Character, List<CharacterMethod>)>();
 
-        CharacterIndex = 0;
-        Character = Popup.transform.Find("Background/Foreground/Buttons/Character/Text").GetComponent<TextMeshProUGUI>();
-        CharacterRight = Popup.transform.Find("Background/Foreground/Buttons/Character/Right").GetComponent<Button>();
-        CharacterLeft = Popup.transform.Find("Background/Foreground/Buttons/Character/Left").GetComponent<Button>();
-        CharacterRight.onClick.AddListener(() => CharacterRightArrowClicked());
-        CharacterLeft.onClick.AddListener(() => CharacterLeftArrowClicked());
+        Indices = new List<int>
+        { 
+            0, 
+            0, 
+            0 
+        };
+        Texts = new List<TextMeshProUGUI>
+        {
+            Popup.transform.Find("Background/Foreground/Buttons/Character/Text").GetComponent<TextMeshProUGUI>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Method/Text").GetComponent<TextMeshProUGUI>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Amount/Text").GetComponent<TextMeshProUGUI>()
+        };
+        Buttons = new List<Button>()
+        {
+            Popup.transform.Find("Background/Foreground/Buttons/Character/Right").GetComponent<Button>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Character/Left").GetComponent<Button>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Method/Right").GetComponent<Button>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Method/Left").GetComponent<Button>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Amount/Right").GetComponent<Button>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Amount/Left").GetComponent<Button>()
 
-        MethodIndex = 0;
-        Method = Popup.transform.Find("Background/Foreground/Buttons/Method/Text").GetComponent<TextMeshProUGUI>();
-        MethodRight = Popup.transform.Find("Background/Foreground/Buttons/Method/Right").GetComponent<Button>();
-        MethodLeft = Popup.transform.Find("Background/Foreground/Buttons/Method/Left").GetComponent<Button>();
-        MethodRight.onClick.AddListener(() => MethodRightArrowClicked());
-        MethodLeft.onClick.AddListener(() => MethodLeftArrowClicked());
+        };
 
-        UpcastingQuantity = 0;
-        Quantity = Popup.transform.Find("Background/Foreground/Buttons/Quantity/Text").GetComponent<TextMeshProUGUI>();
-        QuantityRight = Popup.transform.Find("Background/Foreground/Buttons/Quantity/Right").GetComponent<Button>();
-        QuantityLeft = Popup.transform.Find("Background/Foreground/Buttons/Quantity/Left").GetComponent<Button>();
-        QuantityRight.onClick.AddListener(() => QuantityRightArrowClicked());
-        QuantityLeft.onClick.AddListener(() => QuantityLeftArrowClicked());
+        Buttons[0].onClick.AddListener(() => UpdateCharacter(1));
+        Buttons[1].onClick.AddListener(() => UpdateCharacter(-1));
+        Buttons[2].onClick.AddListener(() => UpdateMethod(1));
+        Buttons[3].onClick.AddListener(() => UpdateMethod(-1));
+        Buttons[4].onClick.AddListener(() => UpdateAmount(1));
+        Buttons[5].onClick.AddListener(() => UpdateAmount(-1));
 
         CloseButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         CloseButton.onClick.AddListener(() => ToggleOff());
 
         ConfirmButton = Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>();
-        ConfirmButton.onClick.AddListener(() => Execute());
+        ConfirmButton.onClick.AddListener(() => ApplyUpcasting());
 
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
     
-    public void Update() { if (RestrictionManager.Instance.AllowUpcasting && Input.GetKeyDown(KeyCode.U)) ToggleActivation(); }
+    public void Update() { if (Input.GetKeyDown(KeyCode.U)) ToggleActivation(); }
 
     private void LoadPopup()
     {
         ClearContentPanel();
         
-        SetCharacterUpcastable(CharacterManager.CurrentCharacter);
-        SetCharacter();
-        SetMethod();
-        SetQuantity();
-        SetButtonsInteractable();
+        CollectUpcastableData(CharacterManager.CurrentCharacter);
+        DisplayCharacter();
+        DisplayMethod();
+        DisplayAmount();
+
+        DisplayButtonsInteractable();
     }
-    private void SetCharacterUpcastable(Character character)
+    private void CollectUpcastableData(Character character)
     {
         foreach (Character parent in character.Parents)
         {
-            SetCharacterUpcastable(parent);
+            CollectUpcastableData(parent);
 
-            List<CharacterMethod> parentMethods = new();
-            parentMethods.AddRange(parent.Methods);
-            
-            if (parentMethods.Count > 0) CharacterData.Add((parent, parentMethods));
+            List<CharacterMethod> parentMethods = parent.Methods
+                .Where(method => RestrictionManager.Instance.AllowAccessModifiers == false || method.AccessModifier != AccessModifier.Private)
+                .ToList();
+            if (parentMethods.Count > 0) UpcastableData.Add((parent, parentMethods));
         }
     }
-    private void SetCharacter()
-    {
-        string characterName = "None";
-        if (CharacterData.Count > 0) characterName = CharacterData[CharacterIndex].Item1.Name;
-
-        Character.text = characterName;
-    }
-    private void SetMethod()
-    {
-        string methodName = "None";
-        if (CharacterData.Count > 0 ) methodName = CharacterData[CharacterIndex].Item2[MethodIndex].Name;
-
-        Method.text = methodName;
-    }
-    private void SetQuantity() { Quantity.text = UpcastingQuantity.ToString(); }
-    private void SetButtonsInteractable()
-    {
-        CharacterRight.interactable = CharacterData.Count > 1;
-        CharacterLeft.interactable = CharacterData.Count > 1;
-        
-        MethodRight.interactable = CharacterData.Count > 0 && CharacterData[CharacterIndex].Item2.Count > 1;
-        MethodLeft.interactable = CharacterData.Count > 0 && CharacterData[CharacterIndex].Item2.Count > 1;
-        
-        QuantityRight.interactable = CharacterData.Count > 0 && CharacterData[CharacterIndex].Item2.Count > 0;
-        QuantityLeft.interactable = CharacterData.Count > 0 && CharacterData[CharacterIndex].Item2.Count > 0;
-
-        ConfirmButton.interactable = CharacterData.Count > 0 && CharacterData[CharacterIndex].Item2.Count > 0;
-    }
-    public void ClearContentPanel()
-    {
-        CharacterData.Clear();
-
-        CharacterIndex = 0;
-        MethodIndex = 0;
-        UpcastingQuantity = 0;
-    }
-
-    public void CharacterRightArrowClicked()
-    {
-        CharacterIndex = (CharacterIndex + 1) % CharacterData.Count;
-        MethodIndex = 0;
-        UpcastingQuantity = 0;
-
-        SetCharacter();
-        SetMethod();
-        SetQuantity();
-    }
-    public void CharacterLeftArrowClicked()
-    {
-        CharacterIndex = (CharacterIndex - 1 + CharacterData.Count) % CharacterData.Count;
-        MethodIndex = 0;
-        UpcastingQuantity = 0;
-
-        SetCharacter();
-        SetMethod();
-        SetQuantity();
-    }
+    private void DisplayCharacter()
+    { 
+        Texts[0].text = UpcastableData.Count > 0 ? UpcastableData[Indices[0]].Item1.Name : ""; 
     
-    public void MethodRightArrowClicked()
-    {
-        MethodIndex = (MethodIndex + 1) % CharacterData[CharacterIndex].Item2.Count;
-        UpcastingQuantity = 0;
-
-        SetMethod();
-        SetQuantity();
+        Buttons[0].interactable = UpcastableData.Count > 1;
+        Buttons[1].interactable = UpcastableData.Count > 1;
     }
-    public void MethodLeftArrowClicked()
+    private void DisplayMethod()
     {
-        MethodIndex = (MethodIndex - 1 + CharacterData[CharacterIndex].Item2.Count) % CharacterData[CharacterIndex].Item2.Count;
-        UpcastingQuantity = 0;
+        Texts[1].text = UpcastableData.Count > 0 ? UpcastableData[Indices[0]].Item2[Indices[1]].Name : ""; 
 
-        SetMethod();
-        SetQuantity();
+        Buttons[2].interactable = UpcastableData.Count > 0 && UpcastableData[Indices[0]].Item2.Count > 1;
+        Buttons[3].interactable = UpcastableData.Count > 0 && UpcastableData[Indices[0]].Item2.Count > 1;    
+    }
+    private void DisplayAmount() 
+    { 
+        Texts[2].text = UpcastableData.Count > 0 ? Indices[2].ToString() : ""; 
+
+        Buttons[4].interactable = UpcastableData.Count > 0;
+        Buttons[5].interactable = UpcastableData.Count > 0;
+
+        ConfirmButton.interactable = UpcastableData.Count > 0 && Indices[2] > 0;
+    }
+    private void DisplayButtonsInteractable()
+    {
+        Buttons[0].interactable = UpcastableData.Count > 1;
+        Buttons[1].interactable = UpcastableData.Count > 1;
+        Buttons[2].interactable = UpcastableData.Count > 0 && UpcastableData[Indices[0]].Item2.Count > 1;
+        Buttons[3].interactable = UpcastableData.Count > 0 && UpcastableData[Indices[0]].Item2.Count > 1;    
+        Buttons[4].interactable = UpcastableData.Count > 0;
+        Buttons[5].interactable = UpcastableData.Count > 0;
+
+        ConfirmButton.interactable = UpcastableData.Count > 0 && Indices[2] > 0;
+    }
+    private void ClearContentPanel()
+    {
+        UpcastableData.Clear();
+
+        Indices.ForEach(index => index = 0);
     }
 
-    public void QuantityRightArrowClicked()
+    private void UpdateCharacter(int direction)
     {
-        UpcastingQuantity++;
-        
-        SetQuantity();
+        Indices[0] = (Indices[0] + direction + UpcastableData.Count) % UpcastableData.Count;
+        Indices[1] = 0;
+        Indices[2] = 0;
+
+        DisplayCharacter();
+        DisplayMethod();
+        DisplayAmount();
     }
-    public void QuantityLeftArrowClicked()
+    private void UpdateMethod(int direction)
     {
-        UpcastingQuantity = UpcastingQuantity - 1 > 0 ? UpcastingQuantity - 1 : 0;
-        
-        SetQuantity();
+        Indices[1] = (Indices[1] + direction + UpcastableData[Indices[0]].Item2.Count) % UpcastableData[Indices[0]].Item2.Count;
+        Indices[2] = 0;
+
+        DisplayMethod();
+        DisplayAmount();
+    }
+    private void UpdateAmount(int direction)
+    {
+        Indices[2] = Mathf.Clamp(Indices[2] + direction, 0, 300);
+
+        DisplayAmount();        
     }
 
-    public void Execute()
+    private void ApplyUpcasting()
     {
-        Character character = CharacterManager.CurrentCharacter;
-        CharacterMethod characterMethod = CharacterData[CharacterIndex].Item2[MethodIndex];
-        CharacterUpcastMethod upcastMethod = new(character, characterMethod, UpcastingQuantity);
-
-        character.UpcastMethod = upcastMethod;
-
-        Powerup powerUp = GameObject.Find("Player").GetComponent<Powerup>();
-        powerUp.ApplyPowerup(CharacterManager.CurrentCharacter);
-        
-        upcastMethod.ToggleOn();
+        CharacterManager.CurrentCharacter.UpcastMethod = new CharacterUpcastMethod(CharacterManager.CurrentCharacter, UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
+        CharacterManager.CurrentCharacter.UpcastMethod.UpcastTrackerManager.ToggleOn();
 
         ToggleOff();
     }
 
-    private void ToggleOn()
+    public void ToggleOn()
     { 
         LoadPopup();
         Popup.SetActive(true);    
     }
-    private void ToggleOff()
+    public void ToggleOff()
     {
         CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
         Popup.SetActive(false); 
