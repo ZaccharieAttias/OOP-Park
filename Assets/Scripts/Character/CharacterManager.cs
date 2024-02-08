@@ -40,7 +40,7 @@ public class CharacterManager : MonoBehaviour
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
         SpecialAbilityContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
 
-        TreeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<CharacterTreeManager>();
+        TreeBuilder = GameObject.Find("Canvas/HTMenu").GetComponent<CharacterTreeManager>();
     }
    
     public void AddCharacter(Character builtCharacter)
@@ -82,6 +82,7 @@ public class CharacterManager : MonoBehaviour
             DisplayName();
             DisplayAttributes();
             DisplayMethods();
+            DisplayUpcastMethod();
             DisplaySpecialAbility();
             DisplayDelete();
 
@@ -133,11 +134,39 @@ public class CharacterManager : MonoBehaviour
             if (RestrictionManager.Instance.AllowAccessModifiers) { methodGameObject.AddComponent<AccessModifierButton>().AccessModifier = method.AccessModifier; }
         }
     }
+    public void DisplayUpcastMethod()
+    {
+        if (MethodsContentPanel.childCount > CurrentCharacter.Methods.Count)
+        {
+            for (int i = 0; i < MethodsContentPanel.childCount; i++)
+            {
+                GameObject child = MethodsContentPanel.GetChild(i).gameObject;
+                if (CurrentCharacter.Methods.Any(method => method.Name == child.name) == false) { Destroy(child); break; }
+            }
+        }
+
+        if (CurrentCharacter.UpcastMethod != null)
+        {
+            GameObject upcastMethodGameObject = Instantiate(DefaultButton, MethodsContentPanel);
+            
+            upcastMethodGameObject.AddComponent<DescriptionButton>();
+            upcastMethodGameObject.name = "UpcastMethod";
+
+            Image upcastMethodGameObjectImage = upcastMethodGameObject.GetComponent<Image>();
+            upcastMethodGameObjectImage.color = new Color32(128, 0, 128, 255);
+
+            TMP_Text buttonText = upcastMethodGameObject.GetComponentInChildren<TMP_Text>();
+            buttonText.text = CurrentCharacter.UpcastMethod.CharacterMethod.Name;
+        }
+    }
     private void DisplaySpecialAbility()
     {   
         GameObject specialAbilityGameObject = Instantiate(DefaultButton, SpecialAbilityContentPanel);
         specialAbilityGameObject.AddComponent<DescriptionButton>();
         specialAbilityGameObject.name = CurrentCharacter.SpecialAbility.Name;
+        
+        Image specialAbilityGameObjectImage = specialAbilityGameObject.GetComponent<Image>();
+        specialAbilityGameObjectImage.color = new Color32(0, 128, 128, 255);
         
         TMP_Text buttonText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
         buttonText.text = CurrentCharacter.SpecialAbility.Name;

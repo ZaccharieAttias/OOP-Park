@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     public Powerup Powerup;
     public float PowerupTimer = 0f;
 
+    public CharacterManager CharacterManager;
+
 
     public void Awake() { InitializeProperties(); }
     private void InitializeProperties()
@@ -54,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Powerup = GetComponent<Powerup>();
+        CharacterManager = GetComponent<CharacterManager>();
     }
 
     public void Update()
@@ -86,7 +89,8 @@ public class PlayerMovement : MonoBehaviour
         Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, .05f);
 
         PowerupTimer += Time.deltaTime;
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Speed") Powerup.PreviousUpcastMethod.UpdateUpcast(PowerupTimer);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Speed") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Gravity") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
     }
     private void CheckGround()
     {   
@@ -112,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
         Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         JumpsLeft--;
 
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpdateUpcast(1);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
     }
 
     private void PerformAttack()
@@ -123,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
         fireballs[FindFireball()].transform.position = firePoint.position;
         fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x), MoveSpeed + 10);
 
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "FireballShoot") Powerup.PreviousUpcastMethod.UpdateUpcast(1);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "FireballShoot") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
 
     }
     private int FindFireball()

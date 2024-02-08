@@ -5,7 +5,6 @@ public class RestrictionManager : MonoBehaviour
 {
     public static RestrictionManager Instance;
 
-    public bool AllowInheritance;
     public bool AllowSingleInheritance;
     public bool AllowMultipleInheritance;
     public bool AllowBeginnerInheritance;
@@ -16,5 +15,16 @@ public class RestrictionManager : MonoBehaviour
 
 
     public void Start() { InitializeProperties(); }
-    private void InitializeProperties() { Instance = this; }
+    private void InitializeProperties()
+    { 
+        Instance = this;
+
+        ApplyRestrictions(); 
+    }
+
+    private void ApplyRestrictions()
+    {
+        if (AllowSingleInheritance || AllowMultipleInheritance) GameObject.Find("Canvas/Popups").AddComponent<CharacterCreationManager>();
+        if (AllowUpcasting) GameObject.Find("Canvas/Popups").AddComponent<UpcastingManager>();
+    }
 }

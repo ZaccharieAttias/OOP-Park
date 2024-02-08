@@ -246,7 +246,7 @@ public class SeedCollections : MonoBehaviour
         characterName = "Character 3";
         characterDescription = "This is the third character";
         characterParents.Add(character1);
-        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Automatic][0];
+        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Manual][0];
         Character character3 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true);
         character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
         InitializeCharacterObject(character3);
