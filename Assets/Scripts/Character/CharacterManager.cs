@@ -116,11 +116,7 @@ public class CharacterManager : MonoBehaviour
             TMP_Text buttonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = attribute.Name;
 
-            if (RestrictionManager.Instance.AllowAccessModifiers) 
-            {
-                attributeGameObject.AddComponent<AccessModifierManager>();
-                attributeGameObject.GetComponent<AccessModifierManager>().Attribute = attribute;
-            }
+            if (RestrictionManager.Instance.AllowAccessModifiers) { attributeGameObject.AddComponent<AccessModifierButton>().AccessModifier = attribute.AccessModifier; }
         }
     }
     private void DisplayMethods()
@@ -134,13 +130,9 @@ public class CharacterManager : MonoBehaviour
             TMP_Text buttonText = methodGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = method.Name;
 
-            if (RestrictionManager.Instance.AllowAccessModifiers)
-            {
-                methodGameObject.AddComponent<AccessModifierManager>();
-                methodGameObject.GetComponent<AccessModifierManager>().Method = method;
-            }
+            if (RestrictionManager.Instance.AllowAccessModifiers) { methodGameObject.AddComponent<AccessModifierButton>().AccessModifier = method.AccessModifier; }
         }
-    }    
+    }
     private void DisplaySpecialAbility()
     {
         // Bad case: Creating a character, we initialized the special ability after...
