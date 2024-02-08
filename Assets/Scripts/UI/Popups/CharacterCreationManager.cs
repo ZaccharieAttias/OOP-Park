@@ -61,13 +61,10 @@ public class CharacterCreationManager : MonoBehaviour
         DuplicateCharacterGameObjects = new List<GameObject>();
 
         PopupToggleOn = GameObject.Find("Canvas/GameplayScreen/SwapScreen").GetComponent<Button>();
-        PopupToggleOff = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen").GetComponent<Button>();
+        PopupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        if (RestrictionManager.Instance.AllowInheritance)
-        {
-            PopupToggleOn.onClick.AddListener(() => ToggleOn());
-            PopupToggleOff.onClick.AddListener(() => ToggleOff());    
-        }
+        PopupToggleOff = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen").GetComponent<Button>();
+        PopupToggleOff.onClick.AddListener(() => ToggleOff());    
 
         CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
         SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
