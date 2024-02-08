@@ -109,7 +109,7 @@ public class CharacterManager : MonoBehaviour
         foreach (CharacterAttribute attribute in CurrentCharacter.Attributes)
         {
             GameObject attributeGameObject = Instantiate(DefaultButton, AttributesContentPanel);
-            attributeGameObject.AddComponent<RightClickButton>();
+            attributeGameObject.AddComponent<DescriptionButton>();
 
             attributeGameObject.name = attribute.Name;
 
@@ -124,7 +124,7 @@ public class CharacterManager : MonoBehaviour
         foreach (CharacterMethod method in CurrentCharacter.Methods)
         {
             GameObject methodGameObject = Instantiate(DefaultButton, MethodsContentPanel);
-            methodGameObject.AddComponent<RightClickButton>();
+            methodGameObject.AddComponent<DescriptionButton>();
             methodGameObject.name = method.Name;
 
             TMP_Text buttonText = methodGameObject.GetComponentInChildren<TMP_Text>();
@@ -134,13 +134,9 @@ public class CharacterManager : MonoBehaviour
         }
     }
     private void DisplaySpecialAbility()
-    {
-        // Bad case: Creating a character, we initialized the special ability after...
-
-        if (CurrentCharacter.SpecialAbility == null) return;
-        
+    {   
         GameObject specialAbilityGameObject = Instantiate(DefaultButton, SpecialAbilityContentPanel);
-        specialAbilityGameObject.AddComponent<RightClickButton>();
+        specialAbilityGameObject.AddComponent<DescriptionButton>();
         specialAbilityGameObject.name = CurrentCharacter.SpecialAbility.Name;
         
         TMP_Text buttonText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();

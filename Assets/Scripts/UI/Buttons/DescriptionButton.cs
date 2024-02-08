@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class RightClickButton : MonoBehaviour, IPointerClickHandler
+public class DescriptionButton : MonoBehaviour, IPointerClickHandler
 {
     public CharacterManager CharacterManager;
 
