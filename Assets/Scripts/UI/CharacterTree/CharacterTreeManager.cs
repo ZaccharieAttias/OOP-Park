@@ -16,15 +16,10 @@ public class CharacterTreeManager : MonoBehaviour
     public GameObject AllGameObject;
 
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void OnGameStart()
-    {
-        CharacterTreeManager treeBuilder = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<CharacterTreeManager>();
-        treeBuilder.InitializeProperties();
-    }
+    public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        ScrollView = gameObject.GetComponent<ScrollRect>();
+        ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<ScrollRect>();
         AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All");
     }
 
