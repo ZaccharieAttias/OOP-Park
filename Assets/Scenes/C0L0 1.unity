@@ -4530,11 +4530,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f659f6834b2f7874b8fedffaec61b75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllowInheritance: 1
   AllowSingleInheritance: 1
-  AllowMultipleInheritance: 1
-  AllowBeginnerInheritance: 1
-  AllowAccessModifiers: 1
+  AllowMultipleInheritance: 0
+  AllowBeginnerInheritance: 0
+  AllowAccessModifiers: 0
   AllowOverride: 0
   AllowUpcasting: 1
 --- !u!4 &444932010
@@ -5183,6 +5182,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 489265638}
+  - component: {fileID: 489265639}
   m_Layer: 5
   m_Name: HTMenu
   m_TagString: Untagged
@@ -5211,6 +5211,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &489265639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489265637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeSize: 100
+  SiblingDistance: 100
+  TreeDistance: 5
+  DepthDistance: 185
+  ScrollView: {fileID: 0}
+  AllGameObject: {fileID: 0}
 --- !u!1 &492268003
 GameObject:
   m_ObjectHideFlags: 0
@@ -8077,7 +8095,6 @@ GameObject:
   - component: {fileID: 803369183}
   - component: {fileID: 803369186}
   - component: {fileID: 803369184}
-  - component: {fileID: 803369187}
   m_Layer: 0
   m_Name: ScrollView
   m_TagString: Untagged
@@ -8145,24 +8162,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 803369182}
   m_CullTransparentMesh: 1
---- !u!114 &803369187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803369182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NodeSize: 100
-  SiblingDistance: 100
-  TreeDistance: 5
-  DepthDistance: 185
-  ScrollView: {fileID: 0}
-  AllGameObject: {fileID: 0}
 --- !u!1 &806999426
 GameObject:
   m_ObjectHideFlags: 0
@@ -10837,6 +10836,7 @@ MonoBehaviour:
   fireballs: []
   Powerup: {fileID: 0}
   PowerupTimer: 0
+  CharacterManager: {fileID: 0}
 --- !u!50 &1289166414
 Rigidbody2D:
   serializedVersion: 4
@@ -10993,10 +10993,8 @@ MonoBehaviour:
         Description: 
         Value: 0
         AccessModifier: 0
-    Quantity: 0
-    CharacterManager: {fileID: 0}
-    ContentPanel: {fileID: 0}
-    QuantityDescriptionText: {fileID: 0}
+    Amount: 0
+    UpcastTrackerManager: {fileID: 0}
 --- !u!1 &1315087453
 GameObject:
   m_ObjectHideFlags: 0
@@ -13094,9 +13092,8 @@ GameObject:
   - component: {fileID: 1567994913}
   - component: {fileID: 1567994914}
   - component: {fileID: 1567994915}
-  - component: {fileID: 1567994916}
-  - component: {fileID: 1567994917}
   - component: {fileID: 1567994918}
+  - component: {fileID: 1567994919}
   m_Layer: 5
   m_Name: Popups
   m_TagString: Untagged
@@ -13167,63 +13164,6 @@ MonoBehaviour:
   PopupToggleOn: {fileID: 0}
   PopupToggleOff: {fileID: 0}
   CharacterManager: {fileID: 0}
---- !u!114 &1567994916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567994912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 529674af712b07d49b3ff7e6c91216f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  CharacterIndex: 0
-  Character: {fileID: 0}
-  CharacterRight: {fileID: 0}
-  CharacterLeft: {fileID: 0}
-  MethodIndex: 0
-  Method: {fileID: 0}
-  MethodRight: {fileID: 0}
-  MethodLeft: {fileID: 0}
-  UpcastingQuantity: 0
-  Quantity: {fileID: 0}
-  QuantityRight: {fileID: 0}
-  QuantityLeft: {fileID: 0}
-  CloseButton: {fileID: 0}
-  ConfirmButton: {fileID: 0}
-  CharacterManager: {fileID: 0}
---- !u!114 &1567994917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567994912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 062aa66dd86c19e40a6b6b52a5308eec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  AddButton: {fileID: 0}
-  CancelButton: {fileID: 0}
-  ConfirmButton: {fileID: 0}
-  ResetButton: {fileID: 0}
-  SpriteIndex: 0
-  CharacterSprites: []
-  CharacterPrefab: {fileID: 0}
-  CharacterContentPanel: {fileID: 0}
-  CharacterParentsLimit: 0
-  CharacterGameObjects: []
-  DuplicateCharacterGameObjects: []
-  PopupToggleOn: {fileID: 0}
-  PopupToggleOff: {fileID: 0}
-  CharacterManager: {fileID: 0}
-  SpecialAbilityManager: {fileID: 0}
-  NotAllowedButtons: []
 --- !u!114 &1567994918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13247,6 +13187,23 @@ MonoBehaviour:
     Type: 0
   AbilitiesType: 
   CharacterCreationManager: {fileID: 0}
+--- !u!114 &1567994919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567994912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 663a9876b1f1b8946a590cb9cf38c939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Popup: {fileID: 0}
+  AmountDescriptionText: {fileID: 0}
+  ActivateGameplayButton: {fileID: 0}
+  ActivateMenuButton: {fileID: 0}
+  CharacterManager: {fileID: 0}
 --- !u!1 &1571909973
 GameObject:
   m_ObjectHideFlags: 0
@@ -15971,7 +15928,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1986940060}
   m_Layer: 5
-  m_Name: SpecialAbilityCoolDown
+  m_Name: UpcastTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17455,7 +17412,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5255912114607801116}
   m_Layer: 5
-  m_Name: Quantity
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
