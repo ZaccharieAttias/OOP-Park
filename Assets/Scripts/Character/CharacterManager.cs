@@ -117,7 +117,7 @@ public class CharacterManager : MonoBehaviour
             TMP_Text buttonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = attribute.Name;
 
-            if (RestrictionManager.Instance.AllowAccessModifiers) { attributeGameObject.AddComponent<AccessModifierButton>().AccessModifier = attribute.AccessModifier; }
+            if (RestrictionManager.Instance.AllowAccessModifiers) { attributeGameObject.AddComponent<AccessModifierButton>().Attribute = attribute; }
         }
     }
     private void DisplayMethods()
@@ -131,7 +131,7 @@ public class CharacterManager : MonoBehaviour
             TMP_Text buttonText = methodGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = method.Name;
 
-            if (RestrictionManager.Instance.AllowAccessModifiers) { methodGameObject.AddComponent<AccessModifierButton>().AccessModifier = method.AccessModifier; }
+            if (RestrictionManager.Instance.AllowAccessModifiers) { methodGameObject.AddComponent<AccessModifierButton>().Method = method; }
         }
     }
     public void DisplayUpcastMethod()

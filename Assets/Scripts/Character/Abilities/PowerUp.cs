@@ -9,15 +9,10 @@ public class Powerup : MonoBehaviour
     public CharacterUpcastMethod PreviousUpcastMethod;
 
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void OnGameStart()
-    {
-        Powerup powerUp = GameObject.Find("Player").GetComponent<Powerup>();
-        powerUp.InitializeProperties();
-    }
+    public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        PowerUpEffects = new List<PowerupEffect>();
+        PowerUpEffects = new List<PowerupEffect>(Resources.LoadAll<PowerupEffect>("Powerups"));
         PowerUpEffects.AddRange(Resources.LoadAll<PowerupEffect>("Powerups"));
 
         PreviousMethods = new List<CharacterMethod>();

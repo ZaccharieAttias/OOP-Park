@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 public class CharacterTreeManager : MonoBehaviour
 {
-    public int NodeSize = 100;
-    public int SiblingDistance = 100;
-    public int TreeDistance = 5;
-    public int DepthDistance = 150;
+    public int NodeSize;
+    public int SiblingDistance;
+    public int TreeDistance;
+    public int DepthDistance;
 
     public ScrollRect ScrollView;
     public GameObject AllGameObject;
@@ -19,6 +19,11 @@ public class CharacterTreeManager : MonoBehaviour
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
+        NodeSize = 100;
+        SiblingDistance = 100;
+        TreeDistance = 5;
+        DepthDistance = 150;
+
         ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<ScrollRect>();
         AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All");
     }
@@ -31,20 +36,15 @@ public class CharacterTreeManager : MonoBehaviour
         CentrelizeTree(root);
         UpdateContentsSizes(root);
 
-        if (gameObject.activeInHierarchy)
-        {
-            ScrollView.FocusOnItem(latest.CharacterButton.Button.GetComponent<RectTransform>());
-            StartCoroutine(ScrollView.FocusOnItemCoroutine(latest.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
-        }
+        ScrollViewFocus.FocusOnItem(ScrollView, latest.CharacterButton.Button.GetComponent<RectTransform>());
+        StartCoroutine(ScrollView.FocusOnItemCoroutine(latest.CharacterButton.Button.GetComponent<RectTransform>(), 1.0f));
     }
-
     private void ResetLines()
     {
         foreach (Transform child in AllGameObject.transform)
             if (child.gameObject.name.Contains("Line"))
                 Destroy(child.gameObject);
     }
-
     private void CalculateNodePositions(Character root)
     {
         InitializeNodes(root, 0);
@@ -295,9 +295,11 @@ public class CharacterTreeManager : MonoBehaviour
 
         float contentWidth = Math.Abs(RightNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + NodeSize;
         float contentHeight = Math.Abs(TopNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + Math.Abs(BottomNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + NodeSize;
-
-        contentWidth = Mathf.Max(contentWidth, 1180);
-        contentHeight = Mathf.Max(contentHeight, 674);
+        float defaultWidth = 1180;
+        float defaultHeight = 674;
+        
+        contentWidth = Mathf.Max(contentWidth, defaultWidth);
+        contentHeight = Mathf.Max(contentHeight, defaultHeight);
 
         RectTransform allRectTransform = AllGameObject.GetComponent<RectTransform>();
         allRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);

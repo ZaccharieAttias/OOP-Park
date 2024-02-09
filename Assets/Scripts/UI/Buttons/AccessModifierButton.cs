@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class AccessModifierButton : MonoBehaviour
 {
-    public List<Color> AccessModifierColors;
-
     public int AccessModifierIndex;
     public int AccessModifierCount;
-    public AccessModifier AccessModifier;
+    public List<Color> AccessModifierColors;
+    
+    public CharacterAttribute Attribute;
+    public CharacterMethod Method;
 
     public Image ButtonImage;
 
@@ -17,14 +18,10 @@ public class AccessModifierButton : MonoBehaviour
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        Color Public = new Color32(0, 255, 0, 200);
-        Color Protected = new Color32(255, 165, 0, 200);
-        Color Private = new Color32(255, 0, 0, 200);
-        AccessModifierColors = new List<Color> { Public, Protected, Private };
+        AccessModifierIndex = Attribute != null ? Attribute.AccessModifier.GetHashCode() : Method.AccessModifier.GetHashCode();
+        AccessModifierCount = System.Enum.GetNames(typeof(AccessModifier)).Length;;
+        AccessModifierColors = new List<Color> { new Color32(0, 255, 0, 200), new Color32(255, 165, 0, 200), new Color32(255, 0, 0, 200) };
         
-        AccessModifierIndex = (int)AccessModifier;
-        AccessModifierCount = System.Enum.GetNames(typeof(AccessModifier)).Length;
-
         ButtonImage = GetComponent<Image>();
         ButtonImage.color = AccessModifierColors[AccessModifierIndex];
 
@@ -34,7 +31,9 @@ public class AccessModifierButton : MonoBehaviour
     private void MarkAccessModifier()
     { 
         AccessModifierIndex = (AccessModifierIndex + 1) % AccessModifierCount;
-        AccessModifier = (AccessModifier)AccessModifierIndex;
+
+        if (Attribute != null) Attribute.AccessModifier = (AccessModifier)AccessModifierIndex;
+        else Method.AccessModifier = (AccessModifier)AccessModifierIndex;
         
         ButtonImage.color = AccessModifierColors[AccessModifierIndex];
     }

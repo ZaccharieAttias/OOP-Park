@@ -33,6 +33,7 @@ public class UpcastTrackerManager : MonoBehaviour
     {
         CharacterManager.CurrentCharacter.UpcastMethod.Amount -= amount;
         amount = (int)CharacterManager.CurrentCharacter.UpcastMethod.Amount;
+
         if (amount > 0) { AmountDescriptionText.text = amount.ToString(); }
 
         else
@@ -43,6 +44,6 @@ public class UpcastTrackerManager : MonoBehaviour
         }
     }
 
-    public void ToggleOn() { if (CharacterManager.CurrentCharacter.UpcastMethod != null) Popup.SetActive(true);}
+    public void ToggleOn() { if (CharacterManager.CurrentCharacter.UpcastMethod != null) Popup.SetActive(true); }
     public void ToggleOff() { Popup.SetActive(false); }
 }
