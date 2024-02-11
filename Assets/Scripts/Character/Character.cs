@@ -21,10 +21,13 @@ public class Character
 
     public CharacterButton CharacterButton;
 
+    public bool IsAbstract;
 
-    public Character(string name, string description, List<Character> parents, CharacterSpecialAbility specialAbility, bool isOriginal)
+
+    public Character(string name, string description, List<Character> parents, CharacterSpecialAbility specialAbility, bool isOriginal, bool isAbstract)
     {
         IsOriginal = isOriginal;
+        IsAbstract = isAbstract;
 
         Name = name;
         Description = description;
@@ -45,6 +48,7 @@ public class Character
     public void InitializeCharacter(Character character)
     {
         IsOriginal = character.IsOriginal;
+        IsAbstract = character.IsAbstract;
 
         Name = character.Name;
         Description = character.Description;
