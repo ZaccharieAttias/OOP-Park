@@ -235,7 +235,7 @@ public class CharacterCreationManager : MonoBehaviour
         string characterDescription = $"I`m {characterName}";
         List<Character> characterParents = SelectedCharacterParents;
         CharacterSpecialAbility characterSpecialAbility = SpecialAbilityManager.SelectedSpecialAbility;
-        Character builtCharacter = new(characterName, characterDescription, characterParents, characterSpecialAbility, false);
+        Character builtCharacter = new(characterName, characterDescription, characterParents, characterSpecialAbility, false, false);
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
         
         return builtCharacter;
