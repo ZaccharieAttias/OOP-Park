@@ -11,6 +11,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject Popup;
     public List<Texture2D> Images;
     public int CurrentImageIndex = 0;
+    int TotalImages=0;
 
 
 
@@ -53,8 +54,8 @@ public class TutorialManager : MonoBehaviour
 
     public void TakeScreenshot()
     {
-        string filepath = Directory.GetCurrentDirectory() + "/Assets/Ressources/Tutorial/" + SceneManager.GetActiveScene().name[^1];
-        ScreenCapture.CaptureScreenshot(Path.Combine(filepath, "Level-Screenshot.png"));
+        string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Tutorial/" + SceneManager.GetActiveScene().name[^1];
+        ScreenCapture.CaptureScreenshot(Path.Combine(filepath, $"Level-Screenshot{TotalImages++}.png"));
     }
 
 
