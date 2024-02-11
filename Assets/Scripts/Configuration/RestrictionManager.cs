@@ -12,6 +12,7 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowAccessModifiers;
     public bool AllowOverride;
     public bool AllowUpcasting;
+    public bool AllowAbstractClasses;
 
 
     public void Start() { InitializeProperties(); }
