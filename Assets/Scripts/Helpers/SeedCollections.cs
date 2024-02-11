@@ -73,30 +73,43 @@ public class SeedCollections : MonoBehaviour
         string methodName;
         string methodDescription;
         AccessModifier methodAccessModifier;
+        CharacterMethod characterMethod = null;
 
         // Method 1
         methodName = "Speed";
         methodDescription = "This is the MoveSpeed method";
         methodAccessModifier = AccessModifier.Public;
-        MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+        characterMethod = new(methodName, methodDescription, methodAccessModifier);
+        characterMethod.Attribute = AttributesManager.AttributesCollection[0];
+        MethodsPopupManager.AddMethod(characterMethod);
 
         // Method 2
+        characterMethod = null;
         methodName = "Gravity";
         methodDescription = "This is the GravityForce method";
         methodAccessModifier = AccessModifier.Protected;
-        MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+        characterMethod = new(methodName, methodDescription, methodAccessModifier);
+        characterMethod.Attribute = AttributesManager.AttributesCollection[0];
+        MethodsPopupManager.AddMethod(characterMethod);
+        
 
         // Method 3
+        characterMethod = null;
         methodName = "MultipleJumps";
         methodDescription = "This is the DoubleJump method";
         methodAccessModifier = AccessModifier.Private;
-        MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+        characterMethod = new(methodName, methodDescription, methodAccessModifier);
+        characterMethod.Attribute = AttributesManager.AttributesCollection[0];
+        MethodsPopupManager.AddMethod(characterMethod);
 
         // Method 4
+        characterMethod = null;
         methodName = "FireballShoot";
         methodDescription = "This is the FireballShoot method";
         methodAccessModifier = AccessModifier.Public;
-        MethodsPopupManager.AddMethod(new CharacterMethod(methodName, methodDescription, methodAccessModifier));
+        characterMethod = new(methodName, methodDescription, methodAccessModifier);
+        characterMethod.Attribute = AttributesManager.AttributesCollection[0];
+        MethodsPopupManager.AddMethod(characterMethod);
     }
     private void InitializeSpecialAbilityCollection()
     {
@@ -227,7 +240,7 @@ public class SeedCollections : MonoBehaviour
         characterDescription = "This is the first character";
         
         characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.General][0];
-        Character character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true);
+        Character character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, true);
         InitializeCharacterObject(character1);
         CharacterManager.AddCharacter(character1);
 
@@ -236,8 +249,12 @@ public class SeedCollections : MonoBehaviour
         characterDescription = "This is the second character";
         characterParents.Add(character1);
         characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Automatic][0];
-        Character character2 = new(characterName, characterDescription, characterParents,characterSpecialAbility, true);
+        Character character2 = new(characterName, characterDescription, characterParents,characterSpecialAbility, true, false);
         character2.Parents.ForEach(parent => parent.Childrens.Add(character2));
+        character2.Attributes.Add(AttributesManager.AttributesCollection[0]);
+        character2.Attributes.Add(AttributesManager.AttributesCollection[1]);
+        character2.Methods.Add(MethodsPopupManager.MethodsCollection[0]);
+        character2.Methods.Add(MethodsPopupManager.MethodsCollection[1]);
         InitializeCharacterObject(character2);
         CharacterManager.AddCharacter(character2);
         characterParents.Clear();
@@ -247,8 +264,12 @@ public class SeedCollections : MonoBehaviour
         characterDescription = "This is the third character";
         characterParents.Add(character1);
         characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Manual][0];
-        Character character3 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true);
+        Character character3 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
         character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
+        character3.Attributes.Add(AttributesManager.AttributesCollection[2]);
+        character3.Methods.Add(MethodsPopupManager.MethodsCollection[2]);
+        character3.Attributes.Add(AttributesManager.AttributesCollection[1]);
+        character3.Methods.Add(MethodsPopupManager.MethodsCollection[1]);
         InitializeCharacterObject(character3);
         CharacterManager.AddCharacter(character3);
         characterParents.Clear();
