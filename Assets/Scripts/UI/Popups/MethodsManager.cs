@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+[System.Serializable]
 public class MethodsManager : MonoBehaviour
 {
     public GameObject Popup;
