@@ -25,7 +25,7 @@ public class JsonUtilityManager : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) Save();
+        //if (Input.GetKeyDown(KeyCode.S)) Save();
         // if (Input.GetKeyDown(KeyCode.L)) Load();
     }
     
