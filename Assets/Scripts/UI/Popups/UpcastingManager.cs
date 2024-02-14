@@ -158,7 +158,7 @@ public class UpcastingManager : MonoBehaviour
 
     private void ApplyUpcasting()
     {
-        CharacterManager.CurrentCharacter.UpcastMethod = new CharacterUpcastMethod(CharacterManager.CurrentCharacter, UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
+        CharacterManager.CurrentCharacter.UpcastMethod = new CharacterUpcastMethod(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
         CharacterManager.CurrentCharacter.UpcastMethod.UpcastTrackerManager.ToggleOn();
 
         ToggleOff();
