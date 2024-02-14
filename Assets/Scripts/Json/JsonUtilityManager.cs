@@ -16,6 +16,7 @@ public class JsonUtilityManager : MonoBehaviour
         MethodsData.Initialize(FolderPath);
         SpecialAbilitiesData.Initialize(FolderPath);
         CharactersData.Initialize(FolderPath);
+        CharactersGameObjectData.Initialize();
     }
     public void Update()
     {
@@ -37,5 +38,6 @@ public class JsonUtilityManager : MonoBehaviour
         MethodsData.Load();
         SpecialAbilitiesData.Load();
         CharactersData.Load();
+        CharactersGameObjectData.Load();
     }
 }
