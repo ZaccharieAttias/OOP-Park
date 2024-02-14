@@ -240,7 +240,7 @@ public class CharacterCreationManager : MonoBehaviour
         
         return builtCharacter;
     }
-    private void BuildCharacterObject(Character character)
+    public void BuildCharacterObject(Character character)
     {
         GameObject characterGameObject = Instantiate(CharacterPrefab, CharacterContentPanel);
 
