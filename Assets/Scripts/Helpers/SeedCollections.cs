@@ -251,10 +251,6 @@ public class SeedCollections : MonoBehaviour
         characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Automatic][0];
         Character character2 = new(characterName, characterDescription, characterParents,characterSpecialAbility, true, false);
         character2.Parents.ForEach(parent => parent.Childrens.Add(character2));
-        character2.Attributes.Add(AttributesManager.AttributesCollection[0]);
-        character2.Attributes.Add(AttributesManager.AttributesCollection[1]);
-        character2.Methods.Add(MethodsPopupManager.MethodsCollection[0]);
-        character2.Methods.Add(MethodsPopupManager.MethodsCollection[1]);
         InitializeCharacterObject(character2);
         CharacterManager.AddCharacter(character2);
         characterParents.Clear();
@@ -266,10 +262,6 @@ public class SeedCollections : MonoBehaviour
         characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection[SpecialAbility.Manual][0];
         Character character3 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
         character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
-        character3.Attributes.Add(AttributesManager.AttributesCollection[2]);
-        character3.Methods.Add(MethodsPopupManager.MethodsCollection[2]);
-        character3.Attributes.Add(AttributesManager.AttributesCollection[1]);
-        character3.Methods.Add(MethodsPopupManager.MethodsCollection[1]);
         InitializeCharacterObject(character3);
         CharacterManager.AddCharacter(character3);
         characterParents.Clear();
