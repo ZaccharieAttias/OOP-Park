@@ -1,1 +1,119 @@
-{"Items":[{"key":"Character 1","characters":[{"Name":"Character 1","description":"This is the first character","parents":[],"children":[],"specialAbility":"General","isOriginal":true,"isAbstract":true,"attributes":[],"methods":[]}]},{"key":"Character 2","characters":[{"Name":"Character 2","description":"This is the second character","parents":[],"children":[],"specialAbility":"Automatic","isOriginal":true,"isAbstract":false,"attributes":[],"methods":[]}]},{"key":"Character 3","characters":[{"Name":"Character 3","description":"This is the third character","parents":[],"children":[],"specialAbility":"Manual","isOriginal":true,"isAbstract":false,"attributes":[],"methods":[]}]}]}
+[
+  {
+    "IsOriginal": true,
+    "Name": "Character 1",
+    "Description": "This is the first character",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": {
+      "Item1": 0,
+      "Item2": "General"
+    },
+    "Parents": [],
+    "Childrens": [
+      "Character 2",
+      "Character 3"
+    ],
+    "IsAbstract": true
+  },
+  {
+    "IsOriginal": true,
+    "Name": "Character 2",
+    "Description": "This is the second character",
+    "Attributes": [
+      {
+        "Owner": "Character 2",
+        "Name": "speed",
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 2",
+        "Name": "gravity",
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 2",
+        "Name": "Speed",
+        "Description": "This is the MoveSpeed method",
+        "AccessModifier": 0,
+        "Attribute": {
+          "Owner": "Character 2",
+          "Name": "speed",
+          "AccessModifier": 0
+        }
+      },
+      {
+        "Owner": "Character 2",
+        "Name": "Gravity",
+        "Description": "This is the GravityForce method",
+        "AccessModifier": 1,
+        "Attribute": {
+          "Owner": "Character 2",
+          "Name": "speed",
+          "AccessModifier": 0
+        }
+      }
+    ],
+    "SpecialAbility": {
+      "Item1": 1,
+      "Item2": "Automatic"
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": [],
+    "IsAbstract": false
+  },
+  {
+    "IsOriginal": true,
+    "Name": "Character 3",
+    "Description": "This is the third character",
+    "Attributes": [
+      {
+        "Owner": "Character 3",
+        "Name": "multipleJumps",
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "gravity",
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 3",
+        "Name": "MultipleJumps",
+        "Description": "This is the DoubleJump method",
+        "AccessModifier": 2,
+        "Attribute": {
+          "Owner": null,
+          "Name": "speed",
+          "AccessModifier": 0
+        }
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "Gravity",
+        "Description": "This is the GravityForce method",
+        "AccessModifier": 1,
+        "Attribute": {
+          "Owner": null,
+          "Name": "speed",
+          "AccessModifier": 0
+        }
+      }
+    ],
+    "SpecialAbility": {
+      "Item1": 2,
+      "Item2": "Manual"
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": [],
+    "IsAbstract": false
+  }
+]
