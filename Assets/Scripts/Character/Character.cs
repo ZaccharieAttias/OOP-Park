@@ -24,7 +24,25 @@ public class Character
 
     public bool IsAbstract;
 
+    public Character()
+    {
+        IsOriginal = false;
+        IsAbstract = false;
 
+        Name = "";
+        Description = "";
+
+        Attributes = new List<CharacterAttribute>();
+        Methods = new List<CharacterMethod>();
+
+        SpecialAbility = null;
+        UpcastMethod = null;
+
+        Parents = new List<Character>();
+        Childrens = new List<Character>();
+
+        CharacterButton = new CharacterButton();
+    }
     public Character(string name, string description, List<Character> parents, CharacterSpecialAbility specialAbility, bool isOriginal, bool isAbstract)
     {
         IsOriginal = isOriginal;
