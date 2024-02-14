@@ -3,7 +3,6 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.Linq;
-using System;
 
 
 public static class CharactersData
