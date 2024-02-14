@@ -6,11 +6,24 @@ public class CharacterMethod
     public AccessModifier AccessModifier;
     public CharacterAttribute Attribute;
 
-
+    public CharacterMethod() 
+    { 
+        Name = "";
+        Description = "";
+        AccessModifier = AccessModifier.Public;
+        Attribute = new CharacterAttribute();
+    }
     public CharacterMethod(string name, string description, AccessModifier accessModifier)
     {
         Name = name;
         Description = description;
         AccessModifier = accessModifier;
+    }
+    public CharacterMethod(CharacterMethod method)
+    {
+        Name = method.Name;
+        Description = method.Description;
+        AccessModifier = method.AccessModifier;
+        Attribute = method.Attribute;
     }
 }
