@@ -30,14 +30,8 @@ public class SaveHandler : Singleton<SaveHandler> {
     }
 
     private void InitTilemaps() {
-        // get all tilemaps from scene
-        // and write to dictionary
         Tilemap[] maps = FindObjectsOfType<Tilemap>();
-
-        // the hierarchy name must be unique
-        // you might add some checks here to make sure
         foreach (var map in maps) {
-            // if you have tilemaps you don't want to safe - filter them here
             if (!tilemaps.ContainsKey(map.name))
                 tilemaps.Add(map.name, map);
         }
@@ -46,17 +40,11 @@ public class SaveHandler : Singleton<SaveHandler> {
     public void OnSave(string filename) {
         Filename = filename;
         
-        // List that will later be safed
         List<TilemapData> data = new List<TilemapData>();
 
-        // foreach existing tilemap
         foreach (var mapObj in tilemaps) {
             TilemapData mapData = new TilemapData();
             mapData.key = mapObj.Key;
-
-            // use your boundsInt variable for the bounds
-            // alternatetively you can use mapObj.Value.cellBounds
-            // https://docs.unity3d.com/ScriptReference/Tilemaps.Tilemap-cellBounds.html
 
             BoundsInt boundsForThisMap = mapObj.Value.cellBounds;
 
@@ -68,13 +56,11 @@ public class SaveHandler : Singleton<SaveHandler> {
                     if (tile != null && tileBaseToBuildingObject.ContainsKey(tile)) {
                         String guid = tileBaseToBuildingObject[tile].name;
                         TileInfo ti = new TileInfo(pos, guid);
-                        // Add "TileInfo" to "Tiles" List of "TilemapData"
                         mapData.tiles.Add(ti);
                     }
                 }
             }
 
-            // Add "TilemapData" Object to List
             data.Add(mapData);
         }
         FileHandler.SaveToJSON<TilemapData>(data, Filename);
@@ -84,16 +70,13 @@ public class SaveHandler : Singleton<SaveHandler> {
         List<TilemapData> data = FileHandler.ReadListFromJSON<TilemapData>(filename);
 
         foreach (var mapData in data) {
-            // if key does NOT exist in dictionary skip it
             if (!tilemaps.ContainsKey(mapData.key)) {
                 Debug.LogError("Found saved data for tilemap called '" + mapData.key + "', but Tilemap does not exist in scene.");
                 continue;
             }
 
-            // get according map
             var map = tilemaps[mapData.key];
 
-            // clear map
             map.ClearAllTiles();
 
             if (mapData.tiles != null && mapData.tiles.Count > 0) {
@@ -108,11 +91,6 @@ public class SaveHandler : Singleton<SaveHandler> {
                 }
             }
         }
-    }
-
-    public void CreateAsset(){
-        
-
     }
 }
 
