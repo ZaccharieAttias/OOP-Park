@@ -7,18 +7,18 @@ using UnityEngine;
 public static class MethodsData
 {
     public static string FilePath;
-    public static List<CharacterMethod> MethodsCollection;
+    public static MethodsManager MethodsManager;
 
 
     public static void Initialize(string folderPath)
     {
         FilePath = Path.Combine(folderPath, "Methods.json");
-        MethodsCollection = GameObject.Find("Canvas/Popups").GetComponent<MethodsManager>().MethodsCollection;
+        MethodsManager = GameObject.Find("Canvas/Popups").GetComponent<MethodsManager>();
     }
 
 
-    public static void Save() { File.WriteAllText(FilePath, Serialize(MethodsCollection)); }
-    public static void Load() { MethodsCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Save() { File.WriteAllText(FilePath, Serialize(MethodsManager.MethodsCollection)); }
+    public static void Load() { MethodsManager.MethodsCollection = Deserialize(File.ReadAllText(FilePath)); }
 
     public static string Serialize(List<CharacterMethod> methods) { return JsonConvert.SerializeObject(methods, Formatting.Indented); }
     public static List<CharacterMethod> Deserialize(string json) { return JsonConvert.DeserializeObject<List<CharacterMethod>>(json); }
@@ -53,8 +53,8 @@ public static class MethodsData
         foreach (var methodData in characterData.Methods)
         {
             CharacterMethod method = (methodData.Owner != characterData.Name)
-                ? CharactersData.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
-                : new(MethodsCollection.Find(method => method.Name == methodData.Name));
+                ? CharactersData.CharacterManager.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
+                : new(MethodsManager.MethodsCollection.Find(method => method.Name == methodData.Name));
 
             method.AccessModifier = methodData.Owner != characterData.Name ? method.AccessModifier : methodData.AccessModifier;
             methodsCollection.Add(method);

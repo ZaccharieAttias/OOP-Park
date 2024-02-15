@@ -8,18 +8,18 @@ using UnityEngine;
 public static class CharactersData
 {
     public static string FilePath;
-    public static List<Character> CharactersCollection;
+    public static CharacterManager CharacterManager;
 
 
     public static void Initialize(string folderPath)
     {
         FilePath = Path.Combine(folderPath, "Characters.json");
-        CharactersCollection = GameObject.Find("Player").GetComponent<CharacterManager>().CharactersCollection;
+        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
 
 
-    public static void Save() { File.WriteAllText(FilePath, Serialize(CharactersCollection)); }
-    public static void Load() { CharactersCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Save() { File.WriteAllText(FilePath, Serialize(CharacterManager.CharactersCollection)); }
+    public static void Load() { CharacterManager.CharactersCollection = Deserialize(File.ReadAllText(FilePath)); }
 
     public static string Serialize(List<Character> characters) { return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented); }
     public static List<Character> Deserialize(string json) { return UnpackData(JsonConvert.DeserializeObject<List<CharacterData>>(json)); }
@@ -45,8 +45,6 @@ public static class CharactersData
 
                 Parents = character.Parents.Select(parent => parent.Name).ToList(),
                 Childrens = character.Childrens.Select(child => child.Name).ToList(),
-            
-                // CharacterButton = character.CharacterButton
             };
 
             characterData.Add(data);
@@ -71,7 +69,7 @@ public static class CharactersData
                 Methods = MethodsData.UnpackData(characterData),
 
                 SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
-                UpcastMethod = characterData.UpcastMethod == null ? null : UpcastMethodsData.UnpackData(characterData)
+                UpcastMethod = UpcastMethodsData.UnpackData(characterData)
             };
 
             character.Parents.AddRange(charactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());

@@ -16,7 +16,7 @@ public static class UpcastMethodsData
     {
         if (characterData.UpcastMethod.Name == null) return null;
         
-        CharacterMethod method = CharactersData.CharactersCollection.Find(character => character.Name == characterData.UpcastMethod.Owner).Methods.Find(method => method.Name == characterData.UpcastMethod.Name);
+        CharacterMethod method = CharactersData.CharacterManager.CharactersCollection.Find(character => character.Name == characterData.UpcastMethod.Owner).Methods.Find(method => method.Name == characterData.UpcastMethod.Name);
         float amount = characterData.UpcastMethod.Amount;
 
         CharacterUpcastMethod upcastMethod = new(method, amount);

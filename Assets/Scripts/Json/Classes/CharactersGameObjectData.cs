@@ -18,8 +18,8 @@ public static class CharactersGameObjectData
 
     public static void Load()
     {
-        List<Character> characters = CharactersData.CharactersCollection;
-        CharactersData.CharactersCollection.Clear();
+        List<Character> characters = CharactersData.CharacterManager.CharactersCollection;
+        CharactersData.CharacterManager.CharactersCollection.Clear();
 
         foreach (var character in characters)
         {

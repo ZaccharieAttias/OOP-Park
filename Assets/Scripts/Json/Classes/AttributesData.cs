@@ -7,18 +7,18 @@ using UnityEngine;
 public static class AttributesData
 {
     public static string FilePath;
-    public static List<CharacterAttribute> AttributesCollection;
+    public static AttributesManager AttributesManager;
 
 
     public static void Initialize(string folderPath)
     {
         FilePath = Path.Combine(folderPath, "Attributes.json");
-        AttributesCollection = GameObject.Find("Canvas/Popups").GetComponent<AttributesManager>().AttributesCollection;
+        AttributesManager = GameObject.Find("Canvas/Popups").GetComponent<AttributesManager>();
     }
 
 
-    public static void Save() { File.WriteAllText(FilePath, Serialize(AttributesCollection)); }
-    public static void Load() { AttributesCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Save() { File.WriteAllText(FilePath, Serialize(AttributesManager.AttributesCollection)); }
+    public static void Load() { AttributesManager.AttributesCollection = Deserialize(File.ReadAllText(FilePath)); }
 
     public static string Serialize(List<CharacterAttribute> attributes) { return JsonConvert.SerializeObject(attributes, Formatting.Indented); }
     public static List<CharacterAttribute> Deserialize(string json) { return JsonConvert.DeserializeObject<List<CharacterAttribute>>(json); }
@@ -46,8 +46,8 @@ public static class AttributesData
         foreach (var attributeData in characterData.Attributes)
         {
             CharacterAttribute attribute = (attributeData.Owner != characterData.Name)
-               ? CharactersData.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
-               : new(AttributesCollection.Find(attribute => attribute.Name == attributeData.Name));
+               ? CharactersData.CharacterManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
+               : new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name));
 
             attribute.AccessModifier = attributeData.Owner != characterData.Name ? attribute.AccessModifier : attributeData.AccessModifier;
             attributesCollection.Add(attribute);
