@@ -4498,8 +4498,8 @@ GameObject:
   m_Component:
   - component: {fileID: 444932010}
   - component: {fileID: 444932009}
-  - component: {fileID: 444932008}
   - component: {fileID: 444932011}
+  - component: {fileID: 444932012}
   m_Layer: 0
   m_Name: GameInitializer
   m_TagString: Untagged
@@ -4507,18 +4507,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &444932008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 444932007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3428a604d6f86c488118d99f7a7035d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &444932009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4566,6 +4554,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FolderPath: 
+--- !u!114 &444932012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444932007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3428a604d6f86c488118d99f7a7035d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &456852488
 GameObject:
   m_ObjectHideFlags: 0
@@ -10979,6 +10979,7 @@ MonoBehaviour:
   CharactersCollection: []
   CurrentCharacter:
     IsOriginal: 0
+    IsAbstract: 0
     Name: 
     Description: 
     Attributes: []
@@ -11002,7 +11003,6 @@ MonoBehaviour:
       UpcastTrackerManager: {fileID: 0}
     Parents: []
     Childrens: []
-    IsAbstract: 0
   NameText: {fileID: 0}
   DescriptionText: {fileID: 0}
   DefaultButton: {fileID: 0}
