@@ -1,7 +1,7 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Newtonsoft.Json;
 
 
 public static class MethodsData
@@ -28,31 +28,33 @@ public static class MethodsData
         List<MethodData> methodsData = new();
         foreach (var method in character.Methods)
         {
-            MethodData methodData = new MethodData();
-            methodData.Owner = FindMethodOwner(character, method);
-            methodData.Name = method.Name;
-            methodData.Description = method.Description;
-            methodData.AccessModifier = method.AccessModifier;
+            MethodData methodData = new()
+            {
+                Owner = FindMethodOwner(character, method),
+                Name = method.Name,
+                Description = method.Description,
+                AccessModifier = method.AccessModifier,
+                Attribute = new AttributeData()
+                {
+                    Owner = AttributesData.FindAttributeOwner(character, method.Attribute),
+                    Name = method.Attribute.Name,
+                    AccessModifier = method.Attribute.AccessModifier
+                }
+            };
 
-            AttributeData attributeData = new AttributeData();
-            attributeData.Owner = AttributesData.FindAttributeOwner(character, method.Attribute);
-            attributeData.Name = method.Attribute.Name;
-            attributeData.AccessModifier = method.Attribute.AccessModifier;
-
-            methodData.Attribute = attributeData;
             methodsData.Add(methodData);
         }
 
         return methodsData;
     }
-    public static List<CharacterMethod> UnpackData(CharacterData characterData, Character character)
+    public static List<CharacterMethod> UnpackData(CharacterData characterData)
     {
         List<CharacterMethod> methodsCollection = new();
         foreach (var methodData in characterData.Methods)
         {
             CharacterMethod method = (methodData.Owner != characterData.Name)
                 ? CharactersData.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
-                : new(MethodsData.MethodsCollection.Find(method => method.Name == methodData.Name));
+                : new(MethodsCollection.Find(method => method.Name == methodData.Name));
 
             method.AccessModifier = methodData.Owner != characterData.Name ? method.AccessModifier : methodData.AccessModifier;
             methodsCollection.Add(method);

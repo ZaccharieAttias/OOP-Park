@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using UnityEngine;
-using Newtonsoft.Json;
-using System.Linq;
 
 
 public static class CharactersData
@@ -29,20 +29,26 @@ public static class CharactersData
         List<CharacterData> characterData = new();
         foreach (var character in characters)
         {
-            CharacterData data = new CharacterData();
-            data.IsOriginal = character.IsOriginal;
-            data.Name = character.Name;
-            data.Description = character.Description;
+            CharacterData data = new()
+            {
+                IsOriginal = character.IsOriginal,
+                IsAbstract = character.IsAbstract,
 
-            data.Attributes = AttributesData.PackData(character);
-            data.Methods = MethodsData.PackData(character);
+                Name = character.Name,
+                Description = character.Description,
 
-            data.SpecialAbility = (character.SpecialAbility.Type, character.SpecialAbility.Name);
+                Attributes = AttributesData.PackData(character),
+                Methods = MethodsData.PackData(character),
 
-            data.Parents = character.Parents.Select(parent => parent.Name).ToList();
-            data.Childrens = character.Childrens.Select(child => child.Name).ToList();
+                SpecialAbility = SpecialAbilitiesData.PackData(character),
+                UpcastMethod = UpcastMethodsData.PackData(character),
 
-            data.IsAbstract = character.IsAbstract;
+                Parents = character.Parents.Select(parent => parent.Name).ToList(),
+                Childrens = character.Childrens.Select(child => child.Name).ToList(),
+            
+                // CharacterButton = character.CharacterButton
+            };
+
             characterData.Add(data);
         }
 
@@ -51,23 +57,26 @@ public static class CharactersData
     public static List<Character> UnpackData(List<CharacterData> characters)
     {
         List<Character> charactersCollection = new();
-
         foreach (var characterData in characters)
         {
-            Character character = new();
-            character.IsOriginal = characterData.IsOriginal;
-            character.Name = characterData.Name;
-            character.Description = characterData.Description;
-            
-            character.Attributes = AttributesData.UnpackData(characterData);
-            character.Methods = MethodsData.UnpackData(characterData, character);
+            Character character = new()
+            {
+                IsOriginal = characterData.IsOriginal,
+                IsAbstract = characterData.IsAbstract,
 
-            character.SpecialAbility = SpecialAbilitiesData.SpecialAbilitiesCollection[characterData.SpecialAbility.Item1].Find(ability => ability.Name == characterData.SpecialAbility.Item2);
+                Name = characterData.Name,
+                Description = characterData.Description,
+
+                Attributes = AttributesData.UnpackData(characterData),
+                Methods = MethodsData.UnpackData(characterData),
+
+                SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
+                UpcastMethod = characterData.UpcastMethod == null ? null : UpcastMethodsData.UnpackData(characterData)
+            };
 
             character.Parents.AddRange(charactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());
             character.Parents.ForEach(parent => parent.Childrens.Add(character));
 
-            character.IsAbstract = characterData.IsAbstract;
             charactersCollection.Add(character);
         }
         
@@ -80,16 +89,17 @@ public static class CharactersData
 public class CharacterData
 {
     public bool IsOriginal;
+    public bool IsAbstract;
+
     public string Name;
     public string Description;
 
     public List<AttributeData> Attributes;
     public List<MethodData> Methods;
 
-    public (SpecialAbility, string) SpecialAbility;
+    public SpecialAbilityData SpecialAbility;
+    public UpcastMethodData UpcastMethod;
 
     public List<string> Parents;
     public List<string> Childrens;
-
-    public bool IsAbstract;
 }

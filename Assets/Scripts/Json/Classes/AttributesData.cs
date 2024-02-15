@@ -1,7 +1,7 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Newtonsoft.Json;
 
 
 public static class AttributesData
@@ -28,10 +28,12 @@ public static class AttributesData
         List<AttributeData> attributesData = new();
         foreach (var attribute in character.Attributes)
         {
-            AttributeData attributeData = new AttributeData();
-            attributeData.Owner = FindAttributeOwner(character, attribute);
-            attributeData.Name = attribute.Name;
-            attributeData.AccessModifier = attribute.AccessModifier;
+            AttributeData attributeData = new()
+            {
+                Owner = FindAttributeOwner(character, attribute),
+                Name = attribute.Name,
+                AccessModifier = attribute.AccessModifier
+            };
 
             attributesData.Add(attributeData);
         }
@@ -45,7 +47,7 @@ public static class AttributesData
         {
             CharacterAttribute attribute = (attributeData.Owner != characterData.Name)
                ? CharactersData.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
-               : new(AttributesData.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name));
+               : new(AttributesCollection.Find(attribute => attribute.Name == attributeData.Name));
 
             attribute.AccessModifier = attributeData.Owner != characterData.Name ? attribute.AccessModifier : attributeData.AccessModifier;
             attributesCollection.Add(attribute);
