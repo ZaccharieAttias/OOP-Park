@@ -7,7 +7,8 @@ using UnityEngine;
 public class Character
 {
     public bool IsOriginal;
-
+    public bool IsAbstract;
+    
     public string Name;
     public string Description;
 
@@ -22,7 +23,6 @@ public class Character
 
     public CharacterButton CharacterButton;
 
-    public bool IsAbstract;
 
     public Character()
     {
