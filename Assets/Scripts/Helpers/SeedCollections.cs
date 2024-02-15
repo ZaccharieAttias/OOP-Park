@@ -26,10 +26,10 @@ public class SeedCollections : MonoBehaviour
     }
     private void InitializeCollections()
     {
-        InitializeAttributesCollection();
-        InitializeMethodsCollection();
-        InitializeSpecialAbilityCollection();
-        InitializeCharactersCollection();
+        // InitializeAttributesCollection();
+        // InitializeMethodsCollection();
+        // InitializeSpecialAbilityCollection();
+        // InitializeCharactersCollection();
     }
     
     private void InitializeAttributesCollection()
