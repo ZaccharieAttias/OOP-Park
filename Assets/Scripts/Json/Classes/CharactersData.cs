@@ -57,20 +57,19 @@ public static class CharactersData
         List<Character> charactersCollection = new();
         foreach (var characterData in characters)
         {
-            Character character = new()
-            {
-                IsOriginal = characterData.IsOriginal,
-                IsAbstract = characterData.IsAbstract,
+            Character character = new();
+            character.IsOriginal = characterData.IsOriginal;
+            character.IsAbstract = characterData.IsAbstract;
 
-                Name = characterData.Name,
-                Description = characterData.Description,
+            character.Name = characterData.Name;
+            character.Description = characterData.Description;
 
-                Attributes = AttributesData.UnpackData(characterData),
-                Methods = MethodsData.UnpackData(characterData),
+            character.Attributes = AttributesData.UnpackData(characterData);
+            character.Methods = MethodsData.UnpackData(characterData);
 
-                SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
-                UpcastMethod = UpcastMethodsData.UnpackData(characterData)
-            };
+            character.SpecialAbility = SpecialAbilitiesData.UnpackData(characterData);
+            
+            character.UpcastMethod = UpcastMethodsData.UnpackData(characterData);
 
             character.Parents.AddRange(charactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());
             character.Parents.ForEach(parent => parent.Childrens.Add(character));
