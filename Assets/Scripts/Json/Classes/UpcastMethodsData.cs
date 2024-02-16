@@ -9,18 +9,16 @@ public static class UpcastMethodsData
             Name = upcastMethod?.Name,
             Amount = upcastMethod == null ? 0 : character.UpcastMethod.Amount
         };
-        
+
         return upcastMethodData;
     }
     public static CharacterUpcastMethod UnpackData(CharacterData characterData)
     {
-        if (characterData.UpcastMethod.Name == null) return null;
+        var upcastMethodData = characterData.UpcastMethod.Name == null ? null : CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == characterData.UpcastMethod.Owner).Methods.Find(method => method.Name == characterData.UpcastMethod.Name);
         
-        CharacterMethod method = CharactersData.CharacterManager.CharactersCollection.Find(character => character.Name == characterData.UpcastMethod.Owner).Methods.Find(method => method.Name == characterData.UpcastMethod.Name);
-        float amount = characterData.UpcastMethod.Amount;
-
-        CharacterUpcastMethod upcastMethod = new(method, amount);
-        return upcastMethod;
+        CharacterUpcastMethod upcastMethod = new(upcastMethodData, characterData.UpcastMethod.Amount);
+        
+        return upcastMethodData == null ? null : upcastMethod;
     }
 }
 

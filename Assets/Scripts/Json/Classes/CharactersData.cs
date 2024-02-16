@@ -1,25 +1,25 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 
 public static class CharactersData
 {
     public static string FilePath;
-    public static CharacterManager CharacterManager;
+    public static CharacterManager CharactersManager;
 
 
     public static void Initialize(string folderPath)
     {
         FilePath = Path.Combine(folderPath, "Characters.json");
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        CharactersManager = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
 
 
-    public static void Save() { File.WriteAllText(FilePath, Serialize(CharacterManager.CharactersCollection)); }
-    public static void Load() { CharacterManager.CharactersCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Save() { File.WriteAllText(FilePath, Serialize(CharactersManager.CharactersCollection)); }
+    public static void Load() { CharactersManager.CharactersCollection = Deserialize(File.ReadAllText(FilePath)); }
 
     public static string Serialize(List<Character> characters) { return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented); }
     public static List<Character> Deserialize(string json) { return UnpackData(JsonConvert.DeserializeObject<List<CharacterData>>(json)); }
@@ -57,23 +57,24 @@ public static class CharactersData
         List<Character> charactersCollection = new();
         foreach (var characterData in characters)
         {
-            Character character = new();
-            character.IsOriginal = characterData.IsOriginal;
-            character.IsAbstract = characterData.IsAbstract;
+            Character character = new()
+            {
+                IsOriginal = characterData.IsOriginal,
+                IsAbstract = characterData.IsAbstract,
 
-            character.Name = characterData.Name;
-            character.Description = characterData.Description;
+                Name = characterData.Name,
+                Description = characterData.Description,
 
-            character.Attributes = AttributesData.UnpackData(characterData);
-            character.Methods = MethodsData.UnpackData(characterData);
+                Attributes = AttributesData.UnpackData(characterData),
+                Methods = MethodsData.UnpackData(characterData),
 
-            character.SpecialAbility = SpecialAbilitiesData.UnpackData(characterData);
-            
-            character.UpcastMethod = UpcastMethodsData.UnpackData(characterData);
+                SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
+                UpcastMethod = UpcastMethodsData.UnpackData(characterData)
+            };
 
             character.Parents.AddRange(charactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());
             character.Parents.ForEach(parent => parent.Childrens.Add(character));
-
+            
             charactersCollection.Add(character);
         }
         

@@ -53,7 +53,7 @@ public static class MethodsData
         foreach (var methodData in characterData.Methods)
         {
             CharacterMethod method = (methodData.Owner != characterData.Name)
-                ? CharactersData.CharacterManager.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
+                ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
                 : new(MethodsManager.MethodsCollection.Find(method => method.Name == methodData.Name));
 
             method.AccessModifier = methodData.Owner != characterData.Name ? method.AccessModifier : methodData.AccessModifier;

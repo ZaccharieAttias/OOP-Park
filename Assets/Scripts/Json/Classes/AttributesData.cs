@@ -46,7 +46,7 @@ public static class AttributesData
         foreach (var attributeData in characterData.Attributes)
         {
             CharacterAttribute attribute = (attributeData.Owner != characterData.Name)
-               ? CharactersData.CharacterManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
+               ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
                : new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name));
 
             attribute.AccessModifier = attributeData.Owner != characterData.Name ? attribute.AccessModifier : attributeData.AccessModifier;
