@@ -7,13 +7,13 @@ using UnityEngine;
 public static class SpecialAbilitiesData
 {
     public static string FilePath;
-    public static SpecialAbilityManager SpecialAbilitiesManager;
+    public static SpecialAbilitiesManager SpecialAbilitiesManager;
 
 
     public static void Initialize(string folderPath)
     {
         FilePath = Path.Combine(folderPath, "SpecialAbilities.json");
-        SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
+        SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
     }
 
 

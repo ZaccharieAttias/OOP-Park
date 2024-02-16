@@ -8,13 +8,13 @@ using UnityEngine;
 public static class CharactersData
 {
     public static string FilePath;
-    public static CharacterManager CharactersManager;
+    public static CharactersManager CharactersManager;
 
 
     public static void Initialize(string folderPath)
     {
         FilePath = Path.Combine(folderPath, "Characters.json");
-        CharactersManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
 
 

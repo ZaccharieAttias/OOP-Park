@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     public Powerup Powerup;
     public float PowerupTimer = 0f;
 
-    public CharacterManager CharacterManager;
+    public CharactersManager CharactersManager;
 
 
     public void Awake() { InitializeProperties(); }
@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Powerup = GetComponent<Powerup>();
-        CharacterManager = GetComponent<CharacterManager>();
+        CharactersManager = GetComponent<CharactersManager>();
     }
 
     public void Update()

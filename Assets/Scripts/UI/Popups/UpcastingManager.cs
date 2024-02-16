@@ -17,7 +17,7 @@ public class UpcastingManager : MonoBehaviour
     public Button CloseButton;
     public Button ConfirmButton;
 
-    public CharacterManager CharacterManager;
+    public CharactersManager CharactersManager;
 
     
     private void Start() { InitializeProperties(); }
@@ -62,7 +62,7 @@ public class UpcastingManager : MonoBehaviour
         ConfirmButton = Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>();
         ConfirmButton.onClick.AddListener(() => ApplyUpcasting());
 
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
     
     public void Update() { if (Input.GetKeyDown(KeyCode.U)) ToggleActivation(); }
@@ -71,7 +71,7 @@ public class UpcastingManager : MonoBehaviour
     {
         ClearContentPanel();
         
-        CollectUpcastableData(CharacterManager.CurrentCharacter);
+        CollectUpcastableData(CharactersManager.CurrentCharacter);
         DisplayCharacter();
         DisplayMethod();
         DisplayAmount();
@@ -158,8 +158,8 @@ public class UpcastingManager : MonoBehaviour
 
     private void ApplyUpcasting()
     {
-        CharacterManager.CurrentCharacter.UpcastMethod = new CharacterUpcastMethod(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
-        CharacterManager.CurrentCharacter.UpcastMethod.UpcastTrackerManager.ToggleOn();
+        CharactersManager.CurrentCharacter.UpcastMethod = new CharacterUpcastMethod(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
+        CharactersManager.CurrentCharacter.UpcastMethod.UpcastTrackerManager.ToggleOn();
 
         ToggleOff();
     }
@@ -171,7 +171,7 @@ public class UpcastingManager : MonoBehaviour
     }
     public void ToggleOff()
     {
-        CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
+        CharactersManager.DisplayCharacter(CharactersManager.CurrentCharacter);
         Popup.SetActive(false); 
     }
     private void ToggleActivation() { if (Popup.activeSelf) ToggleOff(); else ToggleOn(); }

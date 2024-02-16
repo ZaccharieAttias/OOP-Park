@@ -10,7 +10,7 @@ public class JsonUtilityManager : MonoBehaviour
 
     public void Start()
     {
-        FolderPath = Path.Combine(Application.dataPath, "Resources/Json", SceneManager.GetActiveScene().name);
+        FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
         AttributesData.Initialize(FolderPath);
         MethodsData.Initialize(FolderPath);

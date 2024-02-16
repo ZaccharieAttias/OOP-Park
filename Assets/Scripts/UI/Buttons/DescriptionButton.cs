@@ -4,11 +4,11 @@ using UnityEngine.EventSystems;
 
 public class DescriptionButton : MonoBehaviour, IPointerClickHandler
 {
-    public CharacterManager CharacterManager;
+    public CharactersManager CharactersManager;
 
 
     public void Start() { InitializeProperties(); }
-    private void InitializeProperties() { CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>(); }
+    private void InitializeProperties() { CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>(); }
     
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -16,11 +16,11 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
         {
             string gameObjectDescription = null;
             
-            gameObjectDescription ??= CharacterManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name)?.Description;
-            gameObjectDescription ??= CharacterManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name)?.Description;
-            gameObjectDescription ??= CharacterManager.CurrentCharacter.SpecialAbility.Name == gameObject.name ? CharacterManager.CurrentCharacter.SpecialAbility.Description : null;
+            gameObjectDescription ??= CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name)?.Description;
+            gameObjectDescription ??= CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name)?.Description;
+            gameObjectDescription ??= CharactersManager.CurrentCharacter.SpecialAbility.Name == gameObject.name ? CharactersManager.CurrentCharacter.SpecialAbility.Description : null;
 
-            CharacterManager.DescriptionText.text = gameObjectDescription;
+            CharactersManager.DescriptionText.text = gameObjectDescription;
         }
     }
 }

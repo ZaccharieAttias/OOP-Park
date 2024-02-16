@@ -17,7 +17,7 @@ public class AttributesManager : MonoBehaviour
     public Button PopupToggleOn;
     public Button PopupToggleOff;
 
-    public CharacterManager CharacterManager;
+    public CharactersManager CharactersManager;
 
     
     public void Start() { InitializeProperties(); }
@@ -35,7 +35,7 @@ public class AttributesManager : MonoBehaviour
         PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
         
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
 
     public void AddAttribute(CharacterAttribute attribute) { AttributesCollection.Add(attribute); }
@@ -56,12 +56,12 @@ public class AttributesManager : MonoBehaviour
             attributeButton.onClick.AddListener(() => MarkAttribute(attributeGameObject, attribute));
             
             Image image = attributeGameObject.GetComponent<Image>();
-            image.color = CharacterManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name) ? Color.green : Color.white;
+            image.color = CharactersManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name) ? Color.green : Color.white;
         }
     }
     private void MarkAttribute(GameObject attributeGameObject, CharacterAttribute attribute)
     {
-        var currentCharacter = CharacterManager.CurrentCharacter;
+        var currentCharacter = CharactersManager.CurrentCharacter;
         var currentAttribute = currentCharacter.Attributes.Find(item => item.Name == attribute.Name);   
         
         if (currentAttribute != null)
@@ -97,7 +97,7 @@ public class AttributesManager : MonoBehaviour
     }
     public void ToggleOff()
     {
-        CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
+        CharactersManager.DisplayCharacter(CharactersManager.CurrentCharacter);
         Popup.SetActive(false); 
     }
 }

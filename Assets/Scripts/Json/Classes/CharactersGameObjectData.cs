@@ -4,16 +4,16 @@ using UnityEngine;
 
 public static class CharactersGameObjectData
 {
-    public static CharacterManager CharactersManager;
-    public static CharacterTreeManager CharactersTreeManager;
-    public static CharacterCreationManager CharactersCreationManager;
+    public static CharactersManager CharactersManager;
+    public static CharactersTreeManager CharactersTreeManager;
+    public static CharactersCreationManager CharactersCreationManager;
 
 
     public static void Initialize()
     {
         CharactersManager = CharactersData.CharactersManager;
         CharactersTreeManager = CharactersManager.TreeBuilder;
-        CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreationManager>();    
+        CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();    
     }
 
 

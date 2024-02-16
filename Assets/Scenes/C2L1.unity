@@ -4101,7 +4101,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1791859709}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_TargetAssemblyTypeName: SceneManager, Assembly-CSharp
         m_MethodName: ScenePause
         m_Mode: 1
         m_Arguments:
@@ -5221,13 +5221,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 489265637}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
+  m_Script: {fileID: 11500000, guid: b0219db2cce479b4da5b3d0f63b9589f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NodeSize: 100
-  SiblingDistance: 100
-  TreeDistance: 5
-  DepthDistance: 185
+  NodeSize: 0
+  SiblingDistance: 0
+  TreeDistance: 0
+  DepthDistance: 0
   ScrollView: {fileID: 0}
   AllGameObject: {fileID: 0}
 --- !u!1 &492268003
@@ -8268,7 +8268,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1791859709}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_TargetAssemblyTypeName: SceneManager, Assembly-CSharp
         m_MethodName: SceneResume
         m_Mode: 1
         m_Arguments:
@@ -10981,6 +10981,7 @@ GameObject:
   - component: {fileID: 1289166417}
   - component: {fileID: 1289166418}
   - component: {fileID: 1289166419}
+  - component: {fileID: 1289166420}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -11093,7 +11094,7 @@ MonoBehaviour:
   fireballs: []
   Powerup: {fileID: 0}
   PowerupTimer: 0
-  CharacterManager: {fileID: 0}
+  CharactersManager: {fileID: 0}
 --- !u!50 &1289166414
 Rigidbody2D:
   serializedVersion: 4
@@ -11252,6 +11253,53 @@ MonoBehaviour:
         AccessModifier: 0
     Amount: 0
     UpcastTrackerManager: {fileID: 0}
+--- !u!114 &1289166420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289166409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7b519f030b6db488211cf6abba4584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharactersCollection: []
+  CurrentCharacter:
+    IsOriginal: 0
+    IsAbstract: 0
+    Name: 
+    Description: 
+    Attributes: []
+    Methods: []
+    SpecialAbility:
+      Name: 
+      Description: 
+      Value: 0
+      Type: 0
+    UpcastMethod:
+      CharacterMethod:
+        Name: 
+        Description: 
+        AccessModifier: 0
+        Attribute:
+          Name: 
+          Description: 
+          Value: 0
+          AccessModifier: 0
+      Amount: 0
+      UpcastTrackerManager: {fileID: 0}
+    Parents: []
+    Childrens: []
+  NameText: {fileID: 0}
+  DescriptionText: {fileID: 0}
+  DefaultButton: {fileID: 0}
+  DeleteButton: {fileID: 0}
+  AttributesContentPanel: {fileID: 0}
+  MethodsContentPanel: {fileID: 0}
+  SpecialAbilityContentPanel: {fileID: 0}
+  TreeBuilder: {fileID: 0}
 --- !u!1 &1315087453
 GameObject:
   m_ObjectHideFlags: 0
@@ -13349,9 +13397,8 @@ GameObject:
   - component: {fileID: 1567994913}
   - component: {fileID: 1567994914}
   - component: {fileID: 1567994915}
-  - component: {fileID: 1567994918}
-  - component: {fileID: 1567994919}
   - component: {fileID: 1567994920}
+  - component: {fileID: 1567994921}
   m_Layer: 5
   m_Name: Popups
   m_TagString: Untagged
@@ -13403,7 +13450,7 @@ MonoBehaviour:
   ContentPanel: {fileID: 0}
   PopupToggleOn: {fileID: 0}
   PopupToggleOff: {fileID: 0}
-  CharacterManager: {fileID: 0}
+  CharactersManager: {fileID: 0}
 --- !u!114 &1567994915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13422,47 +13469,7 @@ MonoBehaviour:
   ContentPanel: {fileID: 0}
   PopupToggleOn: {fileID: 0}
   PopupToggleOff: {fileID: 0}
-  CharacterManager: {fileID: 0}
---- !u!114 &1567994918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567994912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55a6574b089a5e0499ae11dbeae8c164, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  SpecialAbilityButton: {fileID: 0}
-  ContentPanel: {fileID: 0}
-  ConfirmButton: {fileID: 0}
-  SelectedSpecialAbility:
-    Name: 
-    Description: 
-    Value: 0
-    Type: 0
-  AbilitiesType: 
-  CharacterCreationManager: {fileID: 0}
---- !u!114 &1567994919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567994912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 663a9876b1f1b8946a590cb9cf38c939, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  AmountDescriptionText: {fileID: 0}
-  ActivateGameplayButton: {fileID: 0}
-  ActivateMenuButton: {fileID: 0}
-  CharacterManager: {fileID: 0}
+  CharactersManager: {fileID: 0}
 --- !u!114 &1567994920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13476,8 +13483,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConfirmButton: {fileID: 0}
-  CharacterManager: {fileID: 0}
+  CharactersManager: {fileID: 0}
+  AbsractClasses: []
   MessagePopup: {fileID: 0}
+--- !u!114 &1567994921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567994912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001f701d08b9d7b488bbabc498237a5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Popup: {fileID: 0}
+  SpecialAbilityButton: {fileID: 0}
+  ContentPanel: {fileID: 0}
+  ConfirmButton: {fileID: 0}
+  SelectedSpecialAbility:
+    Name: 
+    Description: 
+    Value: 0
+    Type: 0
+  AbilitiesType: 
+  CharactersCreationManager: {fileID: 0}
 --- !u!1 &1571909973
 GameObject:
   m_ObjectHideFlags: 0
@@ -15244,7 +15275,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791859704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 532dfc20d237cf849b9b46f1a9dcf805, type: 3}
+  m_Script: {fileID: 11500000, guid: 14ad778b748bb834f8c61b51a22998fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1824413323

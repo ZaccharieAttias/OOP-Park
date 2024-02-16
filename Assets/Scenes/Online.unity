@@ -1181,7 +1181,6 @@ GameObject:
   - component: {fileID: 108119736}
   - component: {fileID: 108119739}
   - component: {fileID: 108119738}
-  - component: {fileID: 108119737}
   m_Layer: 0
   m_Name: ScrollView
   m_TagString: Untagged
@@ -1211,24 +1210,6 @@ RectTransform:
   m_AnchoredPosition: {x: -264.55524, y: -46.718994}
   m_SizeDelta: {x: 1200, y: 694}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &108119737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 108119735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c4a659b6bce54645a1e482a1c64b4e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NodeSize: 100
-  SiblingDistance: 100
-  TreeDistance: 5
-  DepthDistance: 185
-  ScrollView: {fileID: 0}
-  AllGameObject: {fileID: 0}
 --- !u!114 &108119738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1529,6 +1510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 152378548}
+  - component: {fileID: 152378549}
   m_Layer: 5
   m_Name: HTMenu
   m_TagString: Untagged
@@ -1557,6 +1539,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &152378549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152378547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0219db2cce479b4da5b3d0f63b9589f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NodeSize: 0
+  SiblingDistance: 0
+  TreeDistance: 0
+  DepthDistance: 0
+  ScrollView: {fileID: 0}
+  AllGameObject: {fileID: 0}
 --- !u!1 &154426812
 GameObject:
   m_ObjectHideFlags: 0
@@ -3870,8 +3870,8 @@ GameObject:
   - component: {fileID: 342602101}
   - component: {fileID: 342602100}
   - component: {fileID: 342602099}
-  - component: {fileID: 342602098}
   - component: {fileID: 342602097}
+  - component: {fileID: 342602107}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3903,30 +3903,8 @@ MonoBehaviour:
         Description: 
         Value: 0
         AccessModifier: 0
-    Quantity: 0
-    CharacterManager: {fileID: 0}
-    ContentPanel: {fileID: 0}
-    QuantityDescriptionText: {fileID: 0}
---- !u!114 &342602098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 342602096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e1155f68a756b84b95ec7c0da59c074, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NameText: {fileID: 0}
-  DescriptionText: {fileID: 0}
-  DefaultButton: {fileID: 0}
-  DeleteButton: {fileID: 0}
-  AttributesContentPanel: {fileID: 0}
-  MethodsContentPanel: {fileID: 0}
-  SpecialAbilityContentPanel: {fileID: 0}
-  TreeBuilder: {fileID: 0}
+    Amount: 0
+    UpcastTrackerManager: {fileID: 0}
 --- !u!114 &342602099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3991,6 +3969,7 @@ MonoBehaviour:
   fireballs: []
   Powerup: {fileID: 0}
   PowerupTimer: 0
+  CharactersManager: {fileID: 0}
 --- !u!95 &342602102
 Animator:
   serializedVersion: 5
@@ -4144,6 +4123,53 @@ Transform:
   - {fileID: 1987581043}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &342602107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342602096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7b519f030b6db488211cf6abba4584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharactersCollection: []
+  CurrentCharacter:
+    IsOriginal: 0
+    IsAbstract: 0
+    Name: 
+    Description: 
+    Attributes: []
+    Methods: []
+    SpecialAbility:
+      Name: 
+      Description: 
+      Value: 0
+      Type: 0
+    UpcastMethod:
+      CharacterMethod:
+        Name: 
+        Description: 
+        AccessModifier: 0
+        Attribute:
+          Name: 
+          Description: 
+          Value: 0
+          AccessModifier: 0
+      Amount: 0
+      UpcastTrackerManager: {fileID: 0}
+    Parents: []
+    Childrens: []
+  NameText: {fileID: 0}
+  DescriptionText: {fileID: 0}
+  DefaultButton: {fileID: 0}
+  DeleteButton: {fileID: 0}
+  AttributesContentPanel: {fileID: 0}
+  MethodsContentPanel: {fileID: 0}
+  SpecialAbilityContentPanel: {fileID: 0}
+  TreeBuilder: {fileID: 0}
 --- !u!1 &342845397
 GameObject:
   m_ObjectHideFlags: 0
@@ -7486,7 +7512,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1791859709}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_TargetAssemblyTypeName: SceneManager, Assembly-CSharp
         m_MethodName: ScenePause
         m_Mode: 1
         m_Arguments:
@@ -15436,8 +15462,6 @@ GameObject:
   - component: {fileID: 1448592962}
   - component: {fileID: 1448592966}
   - component: {fileID: 1448592965}
-  - component: {fileID: 1448592964}
-  - component: {fileID: 1448592963}
   - component: {fileID: 1448592967}
   m_Layer: 5
   m_Name: Popups
@@ -15471,63 +15495,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1448592963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448592961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 062aa66dd86c19e40a6b6b52a5308eec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  AddButton: {fileID: 0}
-  CancelButton: {fileID: 0}
-  ConfirmButton: {fileID: 0}
-  ResetButton: {fileID: 0}
-  SpriteIndex: 0
-  CharacterSprites: []
-  CharacterPrefab: {fileID: 0}
-  CharacterContentPanel: {fileID: 0}
-  CharacterParentsLimit: 0
-  CharacterGameObjects: []
-  DuplicateCharacterGameObjects: []
-  PopupToggleOn: {fileID: 0}
-  PopupToggleOff: {fileID: 0}
-  CharacterManager: {fileID: 0}
-  SpecialAbilityManager: {fileID: 0}
-  NotAllowedButtons: []
---- !u!114 &1448592964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448592961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 529674af712b07d49b3ff7e6c91216f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  CharacterIndex: 0
-  Character: {fileID: 0}
-  CharacterRight: {fileID: 0}
-  CharacterLeft: {fileID: 0}
-  MethodIndex: 0
-  Method: {fileID: 0}
-  MethodRight: {fileID: 0}
-  MethodLeft: {fileID: 0}
-  UpcastingQuantity: 0
-  Quantity: {fileID: 0}
-  QuantityRight: {fileID: 0}
-  QuantityLeft: {fileID: 0}
-  CloseButton: {fileID: 0}
-  ConfirmButton: {fileID: 0}
-  CharacterManager: {fileID: 0}
 --- !u!114 &1448592965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15546,7 +15513,7 @@ MonoBehaviour:
   ContentPanel: {fileID: 0}
   PopupToggleOn: {fileID: 0}
   PopupToggleOff: {fileID: 0}
-  CharacterManager: {fileID: 0}
+  CharactersManager: {fileID: 0}
 --- !u!114 &1448592966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15565,7 +15532,7 @@ MonoBehaviour:
   ContentPanel: {fileID: 0}
   PopupToggleOn: {fileID: 0}
   PopupToggleOff: {fileID: 0}
-  CharacterManager: {fileID: 0}
+  CharactersManager: {fileID: 0}
 --- !u!114 &1448592967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15575,7 +15542,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1448592961}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55a6574b089a5e0499ae11dbeae8c164, type: 3}
+  m_Script: {fileID: 11500000, guid: 001f701d08b9d7b488bbabc498237a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
@@ -15588,7 +15555,7 @@ MonoBehaviour:
     Value: 0
     Type: 0
   AbilitiesType: 
-  CharacterCreationManager: {fileID: 0}
+  CharactersCreationManager: {fileID: 0}
 --- !u!4 &1463914156 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9153763571981296594, guid: dc3ae3abac828d64590bb60dd0621bf2, type: 3}
@@ -18297,7 +18264,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791859704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 532dfc20d237cf849b9b46f1a9dcf805, type: 3}
+  m_Script: {fileID: 11500000, guid: 14ad778b748bb834f8c61b51a22998fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1793410302
@@ -18346,13 +18313,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f659f6834b2f7874b8fedffaec61b75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllowInheritance: 1
   AllowSingleInheritance: 1
   AllowMultipleInheritance: 0
   AllowBeginnerInheritance: 0
   AllowAccessModifiers: 0
   AllowOverride: 0
   AllowUpcasting: 1
+  AllowAbstractClasses: 0
 --- !u!4 &1793410305
 Transform:
   m_ObjectHideFlags: 0
@@ -21735,7 +21702,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1791859709}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_TargetAssemblyTypeName: SceneManager, Assembly-CSharp
         m_MethodName: SceneResume
         m_Mode: 1
         m_Arguments:

@@ -11,7 +11,7 @@ public class UpcastTrackerManager : MonoBehaviour
     public Button ActivateGameplayButton;
     public Button ActivateMenuButton;
 
-    public CharacterManager CharacterManager;
+    public CharactersManager CharactersManager;
 
 
     public void Start() { InitializeProperties(); }
@@ -26,24 +26,24 @@ public class UpcastTrackerManager : MonoBehaviour
         ActivateMenuButton = GameObject.Find("Canvas/GameplayScreen/SwapScreen").GetComponent<Button>();
         ActivateMenuButton.onClick.AddListener(() => ToggleOff());
 
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>(); 
+        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>(); 
     }
 
     public void UpdateUpcastingMethod(float amount)
     {
-        CharacterManager.CurrentCharacter.UpcastMethod.Amount -= amount;
-        amount = (int)CharacterManager.CurrentCharacter.UpcastMethod.Amount;
+        CharactersManager.CurrentCharacter.UpcastMethod.Amount -= amount;
+        amount = (int)CharactersManager.CurrentCharacter.UpcastMethod.Amount;
 
         if (amount > 0) { AmountDescriptionText.text = amount.ToString(); }
 
         else
         {
-            CharacterManager.CurrentCharacter.UpcastMethod = null;
-            CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
+            CharactersManager.CurrentCharacter.UpcastMethod = null;
+            CharactersManager.DisplayCharacter(CharactersManager.CurrentCharacter);
             ToggleOff();
         }
     }
 
-    public void ToggleOn() { if (CharacterManager.CurrentCharacter.UpcastMethod != null) Popup.SetActive(true); }
+    public void ToggleOn() { if (CharactersManager.CurrentCharacter.UpcastMethod != null) Popup.SetActive(true); }
     public void ToggleOff() { Popup.SetActive(false); }
 }

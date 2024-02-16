@@ -17,7 +17,7 @@ public class MethodsManager : MonoBehaviour
     public Button PopupToggleOn;
     public Button PopupToggleOff;
 
-    public CharacterManager CharacterManager;
+    public CharactersManager CharactersManager;
 
 
     public void Start() { InitializeProperties(); }
@@ -35,7 +35,7 @@ public class MethodsManager : MonoBehaviour
         PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
         
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
 
     public void AddMethod(CharacterMethod method) { MethodsCollection.Add(method); }
@@ -54,15 +54,15 @@ public class MethodsManager : MonoBehaviour
 
             Button methodButton = methodGameObject.GetComponent<Button>();
             methodButton.onClick.AddListener(() => MarkMethod(methodGameObject, method));
-            methodButton.interactable = HasRequiredAttribute(CharacterManager.CurrentCharacter, method.Name.ToLower(), RestrictionManager.Instance.AllowAccessModifiers);
+            methodButton.interactable = HasRequiredAttribute(CharactersManager.CurrentCharacter, method.Name.ToLower(), RestrictionManager.Instance.AllowAccessModifiers);
             
             Image image = methodGameObject.GetComponent<Image>();
-            image.color = CharacterManager.CurrentCharacter.Methods.Any(item => item.Name == method.Name) ? Color.green : Color.white;
+            image.color = CharactersManager.CurrentCharacter.Methods.Any(item => item.Name == method.Name) ? Color.green : Color.white;
         }
     }
     private void MarkMethod(GameObject methodGameObject, CharacterMethod method)
     {
-        var currentCharacter = CharacterManager.CurrentCharacter;
+        var currentCharacter = CharactersManager.CurrentCharacter;
         var currentMethod = currentCharacter.Methods.Find(item => item.Name == method.Name); 
 
         if (currentMethod != null)
@@ -80,13 +80,13 @@ public class MethodsManager : MonoBehaviour
     }
     private bool HasRequiredAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
-        if (character.Attributes.Any(attribute => attribute.Name.ToLower() == methodName && (CharacterManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private))) return true;
+        if (character.Attributes.Any(attribute => attribute.Name.ToLower() == methodName && (CharactersManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private))) return true;
         
         return character.Parents.Any(parent => HasRequiredAttribute(parent, methodName, allowAccessModifiers));
     }
     private CharacterAttribute FindDependentAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
-        var currentAttribute = character.Attributes.Find(attribute => attribute.Name.ToLower() == methodName.ToLower() && (CharacterManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
+        var currentAttribute = character.Attributes.Find(attribute => attribute.Name.ToLower() == methodName.ToLower() && (CharactersManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
         if (currentAttribute != null) return currentAttribute;
         
         return character.Parents.Select(parent => FindDependentAttribute(parent, methodName, allowAccessModifiers)).FirstOrDefault(parentAttribute => parentAttribute != null);
@@ -100,7 +100,7 @@ public class MethodsManager : MonoBehaviour
     }
     private void ToggleOff()
     { 
-        CharacterManager.DisplayCharacter(CharacterManager.CurrentCharacter);
+        CharactersManager.DisplayCharacter(CharactersManager.CurrentCharacter);
         Popup.SetActive(false); 
     }
 }

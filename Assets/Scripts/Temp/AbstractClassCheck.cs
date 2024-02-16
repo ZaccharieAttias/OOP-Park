@@ -8,7 +8,7 @@ using System.Linq;
 public class AbstractClassCheck : MonoBehaviour
 {
     public GameObject ConfirmButton;
-    public CharacterManager CharacterManager;
+    public CharactersManager CharactersManager;
     public List<Character> AbsractClasses;
     public GameObject MessagePopup;
     
@@ -16,9 +16,9 @@ public class AbstractClassCheck : MonoBehaviour
 
     public void Start()
     {
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
         AbsractClasses = new List<Character>();
-        foreach (Character character in CharacterManager.CharactersCollection) if (character.IsAbstract) AbsractClasses.Add(character);  
+        foreach (Character character in CharactersManager.CharactersCollection) if (character.IsAbstract) AbsractClasses.Add(character);  
         
         ConfirmButton = GameObject.Find("Canvas/Popups/Abstract/Confirm");  
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmAbstractClasses());
