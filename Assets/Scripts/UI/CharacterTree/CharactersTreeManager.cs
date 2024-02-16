@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class CharacterTreeManager : MonoBehaviour
+public class CharactersTreeManager : MonoBehaviour
 {
     public int NodeSize;
     public int SiblingDistance;
