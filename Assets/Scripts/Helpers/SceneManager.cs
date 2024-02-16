@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class SceneLoader : MonoBehaviour
+public class SceneManager : MonoBehaviour
 {
     public void SceneResume() { Time.timeScale = 1f; }
     public void ScenePause() { Time.timeScale = 0f; }
