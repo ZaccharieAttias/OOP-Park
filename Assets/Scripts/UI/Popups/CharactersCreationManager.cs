@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class CharacterCreationManager : MonoBehaviour
+public class CharactersCreationManager : MonoBehaviour
 {
     public GameObject Popup;
 
@@ -28,8 +28,8 @@ public class CharacterCreationManager : MonoBehaviour
     public Button PopupToggleOn;
     public Button PopupToggleOff;
 
-    public CharacterManager CharacterManager;
-    public SpecialAbilityManager SpecialAbilityManager;
+    public CharactersManager CharactersManager;
+    public SpecialAbilitiesManager SpecialAbilitiesManager;
 
     public List<Button> NotAllowedButtons;
 
@@ -66,14 +66,14 @@ public class CharacterCreationManager : MonoBehaviour
         PopupToggleOff = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());    
 
-        CharacterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
+        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
+        SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
         
         NotAllowedButtons = new List<Button>
         {
             GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>(),
             GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>(),
-            CharacterManager.DeleteButton.GetComponent<Button>()
+            CharactersManager.DeleteButton.GetComponent<Button>()
         };
     }
 
@@ -152,7 +152,7 @@ public class CharacterCreationManager : MonoBehaviour
             Button duplicateCharacterGameObjectButton = duplicateCharacterDetails.GetComponent<Button>();
             duplicateCharacterGameObjectButton.onClick.RemoveAllListeners();
             duplicateCharacterGameObjectButton.onClick.AddListener(() => MarkCharacter());
-            duplicateCharacterGameObjectButton.onClick.AddListener(() => CharacterManager.DisplayCharacter(duplicateCharacterDetails.Character));
+            duplicateCharacterGameObjectButton.onClick.AddListener(() => CharactersManager.DisplayCharacter(duplicateCharacterDetails.Character));
 
             DuplicateCharacterGameObjects.Add(duplicateCharacterGameObject);
         }
@@ -220,13 +220,13 @@ public class CharacterCreationManager : MonoBehaviour
 
     private IEnumerator CharacterBuildPipeline()
     {
-        SpecialAbilityManager.ToggleOn();
-        yield return new WaitUntil(() => SpecialAbilityManager.Popup.activeSelf == false);
+        SpecialAbilitiesManager.ToggleOn();
+        yield return new WaitUntil(() => SpecialAbilitiesManager.Popup.activeSelf == false);
 
         Character builtCharacter = BuildCharacter();
         BuildCharacterObject(builtCharacter);
 
-        CharacterManager.AddCharacter(builtCharacter);
+        CharactersManager.AddCharacter(builtCharacter);
     }
     private Character BuildCharacter()
     {
@@ -234,7 +234,7 @@ public class CharacterCreationManager : MonoBehaviour
         string characterName = $"Character {characterIndex}";
         string characterDescription = $"I`m {characterName}";
         List<Character> characterParents = SelectedCharacterParents;
-        CharacterSpecialAbility characterSpecialAbility = SpecialAbilityManager.SelectedSpecialAbility;
+        CharacterSpecialAbility characterSpecialAbility = SpecialAbilitiesManager.SelectedSpecialAbility;
         Character builtCharacter = new(characterName, characterDescription, characterParents, characterSpecialAbility, false, false);
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
         
@@ -249,7 +249,7 @@ public class CharacterCreationManager : MonoBehaviour
         characterGameObject.GetComponent<CharacterDetails>().InitializeCharacter(character);
 
         Button button = characterGameObject.GetComponent<Button>();
-        button.onClick.AddListener(() => CharacterManager.DisplayCharacter(character));
+        button.onClick.AddListener(() => CharactersManager.DisplayCharacter(character));
 
         Image image = characterGameObject.GetComponent<Image>();
         image.sprite = CharacterSprites[SpriteIndex % CharacterSprites.Count];
