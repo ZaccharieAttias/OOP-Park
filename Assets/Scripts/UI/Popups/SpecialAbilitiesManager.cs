@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 
 [System.Serializable]
-public class SpecialAbilityManager : MonoBehaviour
+public class SpecialAbilitiesManager : MonoBehaviour
 {
     public GameObject Popup;
     public Dictionary<SpecialAbility, List<CharacterSpecialAbility>> SpecialAbilitiesCollection;
@@ -19,7 +19,7 @@ public class SpecialAbilityManager : MonoBehaviour
     public CharacterSpecialAbility SelectedSpecialAbility;
     public List<SpecialAbility> AbilitiesType;
 
-    public CharacterCreationManager CharacterCreationManager;
+    public CharactersCreationManager CharactersCreationManager;
 
 
     public void Start() { InitializeProperties(); }
@@ -38,14 +38,14 @@ public class SpecialAbilityManager : MonoBehaviour
         SelectedSpecialAbility = null;
         AbilitiesType = new List<SpecialAbility>();
 
-        CharacterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterCreationManager>();
+        CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
     }
 
     private void LoadPopup()
     {
         ResetPopup();
 
-        AbilitiesType = CharacterCreationManager.SelectedCharacterParents.Select(item => item.SpecialAbility.Type).Distinct().ToList();        
+        AbilitiesType = CharactersCreationManager.SelectedCharacterParents.Select(item => item.SpecialAbility.Type).Distinct().ToList();        
         List<CharacterSpecialAbility> availableSpecialAbilities = AbilitiesType.SelectMany(abilityType => SpecialAbilitiesCollection[abilityType]).ToList();
         foreach (CharacterSpecialAbility specialAbility in availableSpecialAbilities)
         {
