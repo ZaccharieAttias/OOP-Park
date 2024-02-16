@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class CharacterManager : MonoBehaviour
+public class CharactersManager : MonoBehaviour
 {
     public List<Character> CharactersCollection;
     public Character CurrentCharacter;
@@ -20,7 +20,7 @@ public class CharacterManager : MonoBehaviour
     public Transform MethodsContentPanel;
     public Transform SpecialAbilityContentPanel;
 
-    public CharacterTreeManager TreeBuilder;
+    public CharactersTreeManager TreeBuilder;
 
 
     public void Start() { InitializeProperties(); }
@@ -40,7 +40,7 @@ public class CharacterManager : MonoBehaviour
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
         SpecialAbilityContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
 
-        TreeBuilder = GameObject.Find("Canvas/HTMenu").GetComponent<CharacterTreeManager>();
+        TreeBuilder = GameObject.Find("Canvas/HTMenu").GetComponent<CharactersTreeManager>();
     }
    
     public void AddCharacter(Character builtCharacter)
