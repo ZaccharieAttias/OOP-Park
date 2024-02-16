@@ -44,6 +44,6 @@ public class UpcastTrackerManager : MonoBehaviour
         }
     }
 
-    public void ToggleOn() { if (CharactersManager.CurrentCharacter.UpcastMethod != null) Popup.SetActive(true); }
+    public void ToggleOn() { if (CharactersManager.CurrentCharacter?.UpcastMethod != null) Popup.SetActive(true); }
     public void ToggleOff() { Popup.SetActive(false); }
 }
