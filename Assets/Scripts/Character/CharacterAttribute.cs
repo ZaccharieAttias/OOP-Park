@@ -13,6 +13,7 @@ public class CharacterAttribute
         Name = "";
         Description = "";
         Value = 0;
+
         AccessModifier = AccessModifier.Public;
     }
     public CharacterAttribute(string name, string description, float value, AccessModifier accessModifier)
@@ -20,7 +21,7 @@ public class CharacterAttribute
         Name = name;
         Description = description;
         Value = value;
-        
+
         AccessModifier = accessModifier;
     }
     public CharacterAttribute(CharacterAttribute attribute)
