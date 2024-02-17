@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-[System.Serializable]
 public class AttributesManager : MonoBehaviour
 {
     public GameObject Popup;
@@ -38,7 +37,6 @@ public class AttributesManager : MonoBehaviour
         CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
 
-    public void AddAttribute(CharacterAttribute attribute) { AttributesCollection.Add(attribute); }
 
     private void LoadPopup()
     {
@@ -49,8 +47,8 @@ public class AttributesManager : MonoBehaviour
             GameObject attributeGameObject = Instantiate(AttributeButton, ContentPanel);
             attributeGameObject.name = attribute.Name;
 
-            TMP_Text buttonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
-            buttonText.text = attribute.Name;
+            TMP_Text attributeButtonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
+            attributeButtonText.text = attribute.Name;
 
             Button attributeButton = attributeGameObject.GetComponent<Button>();
             attributeButton.onClick.AddListener(() => MarkAttribute(attributeGameObject, attribute));
@@ -59,12 +57,13 @@ public class AttributesManager : MonoBehaviour
             image.color = CharactersManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name) ? Color.green : Color.white;
         }
     }
+    private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
     private void MarkAttribute(GameObject attributeGameObject, CharacterAttribute attribute)
     {
         var currentCharacter = CharactersManager.CurrentCharacter;
         var currentAttribute = currentCharacter.Attributes.Find(item => item.Name == attribute.Name);   
         
-        if (currentAttribute != null)
+        if (currentAttribute is not null)
         {
             currentCharacter.Attributes.Remove(currentAttribute);
             CancelDependentMethods(currentCharacter ,currentAttribute);
@@ -72,27 +71,26 @@ public class AttributesManager : MonoBehaviour
 
         else
         {
-            CharacterAttribute deepCopyAttribute = new(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier);
-            currentCharacter.Attributes.Add(deepCopyAttribute);
+            CharacterAttribute newAttribute = new(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier);
+            currentCharacter.Attributes.Add(newAttribute);
         }
 
         Image image = attributeGameObject.GetComponent<Image>();
-        image.color = currentAttribute == null ? Color.green : Color.white;
+        image.color = currentAttribute is null ? Color.green : Color.white;
     }
-    private void CancelDependentMethods(Character character, CharacterAttribute deletedAttribute)
+    private void CancelDependentMethods(Character character, CharacterAttribute attribute)
     {
-        if (RestrictionManager.Instance.AllowBeginnerInheritance) character.Attributes.Remove(deletedAttribute);
+        if (RestrictionManager.Instance.AllowBeginnerInheritance) character.Attributes.Remove(attribute);
         
-        var dependentMethodToRemove = character.Methods.Find(method => method.Attribute == deletedAttribute);
-        if (dependentMethodToRemove != null) character.Methods.Remove(dependentMethodToRemove);
+        var dependentMethodToRemove = character.Methods.Find(method => method.Attribute == attribute);
+        if (dependentMethodToRemove is not null) character.Methods.Remove(dependentMethodToRemove);
         
-        foreach (Character child in character.Childrens) CancelDependentMethods(child, deletedAttribute);
+        foreach (Character child in character.Childrens) CancelDependentMethods(child, attribute);
     }
-    private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
     public void ToggleOn()
     { 
-        LoadPopup(); 
+        LoadPopup();
         Popup.SetActive(true);    
     }
     public void ToggleOff()

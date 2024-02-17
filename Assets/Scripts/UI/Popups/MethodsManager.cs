@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-[System.Serializable]
 public class MethodsManager : MonoBehaviour
 {
     public GameObject Popup;
@@ -38,7 +37,6 @@ public class MethodsManager : MonoBehaviour
         CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
 
-    public void AddMethod(CharacterMethod method) { MethodsCollection.Add(method); }
 
     private void LoadPopup()
     {
@@ -49,8 +47,8 @@ public class MethodsManager : MonoBehaviour
             GameObject methodGameObject = Instantiate(MethodButton, ContentPanel);
             methodGameObject.name = method.Name;
 
-            TMP_Text buttonText = methodGameObject.GetComponentInChildren<TMP_Text>();
-            buttonText.text = method.Name;
+            TMP_Text methodButtonText = methodGameObject.GetComponentInChildren<TMP_Text>();
+            methodButtonText.text = method.Name;
 
             Button methodButton = methodGameObject.GetComponent<Button>();
             methodButton.onClick.AddListener(() => MarkMethod(methodGameObject, method));
@@ -60,23 +58,24 @@ public class MethodsManager : MonoBehaviour
             image.color = CharactersManager.CurrentCharacter.Methods.Any(item => item.Name == method.Name) ? Color.green : Color.white;
         }
     }
+    private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
     private void MarkMethod(GameObject methodGameObject, CharacterMethod method)
     {
         var currentCharacter = CharactersManager.CurrentCharacter;
         var currentMethod = currentCharacter.Methods.Find(item => item.Name == method.Name); 
 
-        if (currentMethod != null)
+        if (currentMethod is null)
             currentCharacter.Methods.Remove(currentMethod);
 
         else
         {
-            CharacterMethod deepCopyMethod = new(method.Name, method.Description, method.AccessModifier);
-            currentCharacter.Methods.Add(deepCopyMethod);
-            currentCharacter.Methods.Last().Attribute = FindDependentAttribute(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifiers);
+            CharacterAttribute requiredAttribute = FindDependentAttribute(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifiers);
+            CharacterMethod newMethod = new(method.Name, method.Description, requiredAttribute, method.AccessModifier);
+            currentCharacter.Methods.Add(newMethod);
         }
 
         Image image = methodGameObject.GetComponent<Image>();
-        image.color = currentMethod == null ? Color.green : Color.white;
+        image.color = currentMethod is null ? Color.green : Color.white;
     }
     private bool HasRequiredAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
@@ -87,11 +86,10 @@ public class MethodsManager : MonoBehaviour
     private CharacterAttribute FindDependentAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
         var currentAttribute = character.Attributes.Find(attribute => attribute.Name.ToLower() == methodName.ToLower() && (CharactersManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
-        if (currentAttribute != null) return currentAttribute;
+        if (currentAttribute is not null) return currentAttribute;
         
-        return character.Parents.Select(parent => FindDependentAttribute(parent, methodName, allowAccessModifiers)).FirstOrDefault(parentAttribute => parentAttribute != null);
+        return character.Parents.Select(parent => FindDependentAttribute(parent, methodName, allowAccessModifiers)).FirstOrDefault(parentAttribute => parentAttribute is not null);
     }   
-    private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
 
     private void ToggleOn()
     { 
