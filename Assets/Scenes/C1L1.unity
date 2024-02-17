@@ -4561,7 +4561,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444932007}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3428a604d6f86c488118d99f7a7035d, type: 3}
   m_Name: 
@@ -10982,12 +10982,12 @@ MonoBehaviour:
     CharacterMethod:
       Name: 
       Description: 
-      AccessModifier: 0
       Attribute:
         Name: 
         Description: 
         Value: 0
         AccessModifier: 0
+      AccessModifier: 0
     Amount: 0
     UpcastTrackerManager: {fileID: 0}
 --- !u!114 &1289166420
@@ -11002,33 +11002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7b519f030b6db488211cf6abba4584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharactersCollection: []
-  CurrentCharacter:
-    IsOriginal: 0
-    IsAbstract: 0
-    Name: 
-    Description: 
-    Attributes: []
-    Methods: []
-    SpecialAbility:
-      Name: 
-      Description: 
-      Value: 0
-      Type: 0
-    UpcastMethod:
-      CharacterMethod:
-        Name: 
-        Description: 
-        AccessModifier: 0
-        Attribute:
-          Name: 
-          Description: 
-          Value: 0
-          AccessModifier: 0
-      Amount: 0
-      UpcastTrackerManager: {fileID: 0}
-    Parents: []
-    Childrens: []
   NameText: {fileID: 0}
   DescriptionText: {fileID: 0}
   DefaultButton: {fileID: 0}
@@ -11036,7 +11009,7 @@ MonoBehaviour:
   AttributesContentPanel: {fileID: 0}
   MethodsContentPanel: {fileID: 0}
   SpecialAbilityContentPanel: {fileID: 0}
-  TreeBuilder: {fileID: 0}
+  CharactersTreeManager: {fileID: 0}
 --- !u!1 &1315087453
 GameObject:
   m_ObjectHideFlags: 0
