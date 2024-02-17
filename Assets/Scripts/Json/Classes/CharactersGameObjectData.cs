@@ -12,7 +12,7 @@ public static class CharactersGameObjectData
     public static void Initialize()
     {
         CharactersManager = CharactersData.CharactersManager;
-        CharactersTreeManager = CharactersManager.TreeBuilder;
+        CharactersTreeManager = CharactersManager.CharactersTreeManager;
         CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();    
     }
 
