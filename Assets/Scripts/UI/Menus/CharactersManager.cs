@@ -12,7 +12,7 @@ public class CharactersManager : MonoBehaviour
 
     public TMP_InputField NameText;
     public TMP_Text DescriptionText;
-    
+
     public GameObject DefaultButton;
     public GameObject DeleteButton;
 
@@ -20,7 +20,7 @@ public class CharactersManager : MonoBehaviour
     public Transform MethodsContentPanel;
     public Transform SpecialAbilityContentPanel;
 
-    public CharactersTreeManager TreeBuilder;
+    public CharactersTreeManager CharactersTreeManager;
 
 
     public void Start() { InitializeProperties(); }
@@ -31,7 +31,7 @@ public class CharactersManager : MonoBehaviour
 
         NameText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Name").GetComponent<TMP_InputField>();
         DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
-        
+
         DefaultButton = Resources.Load<GameObject>("Buttons/Default");
         DeleteButton = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Delete");
         DeleteButton.GetComponent<Button>().onClick.AddListener(() => DeleteCharacter());
@@ -40,25 +40,25 @@ public class CharactersManager : MonoBehaviour
         MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
         SpecialAbilityContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
 
-        TreeBuilder = GameObject.Find("Canvas/HTMenu").GetComponent<CharactersTreeManager>();
+        CharactersTreeManager = GameObject.Find("Canvas/HTMenu").GetComponent<CharactersTreeManager>();
     }
-   
+
     public void AddCharacter(Character builtCharacter)
     {
         CharactersCollection.Add(builtCharacter);
-        TreeBuilder.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
+        CharactersTreeManager.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
 
         DisplayCharacter(builtCharacter);
     }
     public void DeleteCharacter()
     {
         Character parent = CurrentCharacter.Parents != null ? CurrentCharacter.Parents.First() : CharactersCollection.First();
-        
+
         CurrentCharacter.Parents.ForEach(parent => parent.Childrens.Remove(CurrentCharacter));
         CharactersCollection.Remove(CurrentCharacter);
         Destroy(CurrentCharacter.CharacterButton.Button);
-        
-        TreeBuilder.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
+
+        CharactersTreeManager.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
         DisplayCharacter(parent);
     }
 
@@ -74,7 +74,7 @@ public class CharactersManager : MonoBehaviour
         currentCharacterObject.GetComponent<Image>().color = new Color32(255, 165, 0, 255);
 
         CurrentCharacter = CharactersCollection.Find(character => character == displayCharacter);
-        
+
         if (CurrentCharacter != null)
         {
             ClearContentPanels();
@@ -91,17 +91,17 @@ public class CharactersManager : MonoBehaviour
         }
     }
     private void DisplayName()
-    { 
+    {
         NameText.interactable = CurrentCharacter.IsOriginal == false;
 
         NameText.text = CurrentCharacter.Name;
         DescriptionText.text = CurrentCharacter.Description;
 
-        NameText.onEndEdit.AddListener(text => 
+        NameText.onEndEdit.AddListener(text =>
         {
             CurrentCharacter.Name = text;
             CurrentCharacter.CharacterButton.Button.name = text;
-            
+
             DisplayCharacter(CurrentCharacter);
         });
     }
@@ -148,7 +148,7 @@ public class CharactersManager : MonoBehaviour
         if (CurrentCharacter.UpcastMethod != null)
         {
             GameObject upcastMethodGameObject = Instantiate(DefaultButton, MethodsContentPanel);
-            
+
             upcastMethodGameObject.AddComponent<DescriptionButton>();
             upcastMethodGameObject.name = "UpcastMethod";
 
@@ -160,17 +160,17 @@ public class CharactersManager : MonoBehaviour
         }
     }
     private void DisplaySpecialAbility()
-    {   
+    {
         GameObject specialAbilityGameObject = Instantiate(DefaultButton, SpecialAbilityContentPanel);
         specialAbilityGameObject.AddComponent<DescriptionButton>();
         specialAbilityGameObject.name = CurrentCharacter.SpecialAbility.Name;
-        
+
         Image specialAbilityGameObjectImage = specialAbilityGameObject.GetComponent<Image>();
         specialAbilityGameObjectImage.color = new Color32(0, 128, 128, 255);
-        
+
         TMP_Text buttonText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
         buttonText.text = CurrentCharacter.SpecialAbility.Name;
-    }    
+    }
     private void DisplayDelete() { DeleteButton.SetActive(CurrentCharacter.IsOriginal == false && CurrentCharacter.IsLeaf()); }
     private void ClearContentPanels()
     {
