@@ -10977,19 +10977,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PowerUpEffects: []
-  PreviousMethods: []
-  PreviousUpcastMethod:
-    CharacterMethod:
-      Name: 
-      Description: 
-      Attribute:
-        Name: 
-        Description: 
-        Value: 0
-        AccessModifier: 0
-      AccessModifier: 0
-    Amount: 0
-    UpcastTrackerManager: {fileID: 0}
 --- !u!114 &1289166420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12060,7 +12047,6 @@ GameObject:
   - component: {fileID: 1436524944}
   - component: {fileID: 1436524943}
   - component: {fileID: 1436524942}
-  - component: {fileID: 1436524941}
   m_Layer: 5
   m_Name: Yes
   m_TagString: Untagged
@@ -12088,18 +12074,6 @@ RectTransform:
   m_AnchoredPosition: {x: 75, y: 0}
   m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1436524941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1436524939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 532dfc20d237cf849b9b46f1a9dcf805, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1436524942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12144,8 +12118,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1436524941}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+      - m_Target: {fileID: 1791859709}
+        m_TargetAssemblyTypeName: SceneManager, Assembly-CSharp
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
@@ -13153,11 +13127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  AttributesCollection: []
   AttributeButton: {fileID: 0}
   ContentPanel: {fileID: 0}
-  PopupToggleOn: {fileID: 0}
-  PopupToggleOff: {fileID: 0}
   CharactersManager: {fileID: 0}
 --- !u!114 &1567994915
 MonoBehaviour:
@@ -13172,11 +13143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  MethodsCollection: []
   MethodButton: {fileID: 0}
   ContentPanel: {fileID: 0}
-  PopupToggleOn: {fileID: 0}
-  PopupToggleOff: {fileID: 0}
   CharactersManager: {fileID: 0}
 --- !u!114 &1567994916
 MonoBehaviour:
@@ -13194,11 +13162,6 @@ MonoBehaviour:
   SpecialAbilityButton: {fileID: 0}
   ContentPanel: {fileID: 0}
   ConfirmButton: {fileID: 0}
-  SelectedSpecialAbility:
-    Name: 
-    Description: 
-    Value: 0
-    Type: 0
   AbilitiesType: 
   CharactersCreationManager: {fileID: 0}
 --- !u!1 &1571909973
