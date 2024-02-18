@@ -20,8 +20,8 @@ public static class SpecialAbilitiesData
     public static void Save() { File.WriteAllText(FilePath, Serialize(SpecialAbilitiesManager.SpecialAbilitiesCollection)); }
     public static void Load() { SpecialAbilitiesManager.SpecialAbilitiesCollection = Deserialize(File.ReadAllText(FilePath)); }
 
-    public static string Serialize(Dictionary<SpecialAbility, List<CharacterSpecialAbility>> specialAbilities) { return JsonConvert.SerializeObject(specialAbilities, Formatting.Indented); }
-    public static Dictionary<SpecialAbility, List<CharacterSpecialAbility>> Deserialize(string json) { return JsonConvert.DeserializeObject<Dictionary<SpecialAbility, List<CharacterSpecialAbility>>>(json); }
+    public static string Serialize(Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>> specialAbilities) { return JsonConvert.SerializeObject(specialAbilities, Formatting.Indented); }
+    public static Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>> Deserialize(string json) { return JsonConvert.DeserializeObject<Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>>>(json); }
 
     public static SpecialAbilityData PackData(Character character)
     {
@@ -36,7 +36,7 @@ public static class SpecialAbilitiesData
     public static CharacterSpecialAbility UnpackData(CharacterData characterData)
     {
         string specialAbilityName = characterData.SpecialAbility.Name;
-        SpecialAbility specialAbilityType = characterData.SpecialAbility.Type;
+        SpecialAbilityType specialAbilityType = characterData.SpecialAbility.Type;
         
         return SpecialAbilitiesManager.SpecialAbilitiesCollection[specialAbilityType].Find(ability => ability.Name == specialAbilityName);
     }
@@ -47,5 +47,5 @@ public static class SpecialAbilitiesData
 public class SpecialAbilityData
 {
     public string Name;
-    public SpecialAbility Type;
+    public SpecialAbilityType Type;
 }

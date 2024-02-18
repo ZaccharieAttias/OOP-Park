@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class SpecialAbilitiesManager : MonoBehaviour
 {
     public GameObject Popup;
-    public Dictionary<SpecialAbility, List<CharacterSpecialAbility>> SpecialAbilitiesCollection;
+    public Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>> SpecialAbilitiesCollection;
 
     public GameObject SpecialAbilityButton;
     public Transform ContentPanel;
@@ -16,7 +16,7 @@ public class SpecialAbilitiesManager : MonoBehaviour
     public Button ConfirmButton;
 
     public CharacterSpecialAbility SelectedSpecialAbility;
-    public List<SpecialAbility> AbilitiesType;
+    public List<SpecialAbilityType> AbilitiesType;
 
     public CharactersCreationManager CharactersCreationManager;
 
@@ -25,7 +25,7 @@ public class SpecialAbilitiesManager : MonoBehaviour
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/SpecialAbility");
-        SpecialAbilitiesCollection = new Dictionary<SpecialAbility, List<CharacterSpecialAbility>>();
+        SpecialAbilitiesCollection = new Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>>();
         
         SpecialAbilityButton = Resources.Load<GameObject>("Buttons/Default");
         ContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content");
@@ -35,7 +35,7 @@ public class SpecialAbilitiesManager : MonoBehaviour
         ConfirmButton.interactable = false;
 
         SelectedSpecialAbility = null;
-        AbilitiesType = new List<SpecialAbility>();
+        AbilitiesType = new List<SpecialAbilityType>();
 
         CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
     }
