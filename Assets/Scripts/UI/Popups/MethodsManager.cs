@@ -8,13 +8,10 @@ using UnityEngine.UI;
 public class MethodsManager : MonoBehaviour
 {
     public GameObject Popup;
-    public List<CharacterMethod> MethodsCollection;
+    public List<Method> MethodsCollection;
     
     public GameObject MethodButton;
     public Transform ContentPanel;
-
-    public Button PopupToggleOn;
-    public Button PopupToggleOff;
 
     public CharactersManager CharactersManager;
 
@@ -23,15 +20,15 @@ public class MethodsManager : MonoBehaviour
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/Methods");
-        MethodsCollection = new List<CharacterMethod>();
+        MethodsCollection = new List<Method>();
 
         MethodButton = Resources.Load<GameObject>("Buttons/Default");
         ContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
 
-        PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>();
+        Button PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>();
         PopupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
+        Button PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
         
         CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
@@ -42,7 +39,7 @@ public class MethodsManager : MonoBehaviour
     {
         ClearContentPanel();
 
-        foreach (CharacterMethod method in MethodsCollection)
+        foreach (Method method in MethodsCollection)
         {
             GameObject methodGameObject = Instantiate(MethodButton, ContentPanel);
             methodGameObject.name = method.Name;
@@ -59,18 +56,18 @@ public class MethodsManager : MonoBehaviour
         }
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
-    private void MarkMethod(GameObject methodGameObject, CharacterMethod method)
+    private void MarkMethod(GameObject methodGameObject, Method method)
     {
         var currentCharacter = CharactersManager.CurrentCharacter;
         var currentMethod = currentCharacter.Methods.Find(item => item.Name == method.Name); 
 
-        if (currentMethod is null)
+        if (currentMethod is not null)
             currentCharacter.Methods.Remove(currentMethod);
 
         else
         {
-            CharacterAttribute requiredAttribute = FindDependentAttribute(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifiers);
-            CharacterMethod newMethod = new(method.Name, method.Description, requiredAttribute, method.AccessModifier);
+            Attribute requiredAttribute = FindDependentAttribute(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifiers);
+            Method newMethod = new(method.Name, method.Description, requiredAttribute, method.AccessModifier);
             currentCharacter.Methods.Add(newMethod);
         }
 
@@ -83,7 +80,7 @@ public class MethodsManager : MonoBehaviour
         
         return character.Parents.Any(parent => HasRequiredAttribute(parent, methodName, allowAccessModifiers));
     }
-    private CharacterAttribute FindDependentAttribute(Character character, string methodName, bool allowAccessModifiers)
+    private Attribute FindDependentAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
         var currentAttribute = character.Attributes.Find(attribute => attribute.Name.ToLower() == methodName.ToLower() && (CharactersManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
         if (currentAttribute is not null) return currentAttribute;
