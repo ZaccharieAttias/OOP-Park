@@ -1,22 +1,21 @@
-[System.Serializable]
-public class CharacterMethod
+public class Method
 {
     public string Name;
     public string Description;
-    public CharacterAttribute Attribute;
+    public Attribute Attribute;
 
     public AccessModifier AccessModifier;
 
 
-    public CharacterMethod()
+    public Method()
     { 
-        Name = "";
-        Description = "";
-        Attribute = new CharacterAttribute();
+        Name = "Default";
+        Description = "Default";
+        Attribute = new Attribute();
 
         AccessModifier = AccessModifier.Public;
     }
-    public CharacterMethod(string name, string description, CharacterAttribute attribute, AccessModifier accessModifier)
+    public Method(string name, string description, Attribute attribute, AccessModifier accessModifier)
     {
         Name = name;
         Description = description;
@@ -24,7 +23,7 @@ public class CharacterMethod
         
         AccessModifier = accessModifier;
     }
-    public CharacterMethod(CharacterMethod method)
+    public Method(Method method)
     {
         Name = method.Name;
         Description = method.Description;
