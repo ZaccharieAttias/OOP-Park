@@ -8,9 +8,6 @@ public class UpcastTrackerManager : MonoBehaviour
     public GameObject Popup;
     public TextMeshProUGUI AmountDescriptionText;
 
-    public Button ActivateGameplayButton;
-    public Button ActivateMenuButton;
-
     public CharactersManager CharactersManager;
 
 
@@ -20,10 +17,10 @@ public class UpcastTrackerManager : MonoBehaviour
         Popup = GameObject.Find("Canvas/Popups/UpcastTracker");
         AmountDescriptionText = Popup.transform.Find("Description").GetComponent<TextMeshProUGUI>();
 
-        ActivateGameplayButton = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen").GetComponent<Button>();
+        Button ActivateGameplayButton = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen").GetComponent<Button>();
         ActivateGameplayButton.onClick.AddListener(() => ToggleOn());
 
-        ActivateMenuButton = GameObject.Find("Canvas/GameplayScreen/SwapScreen").GetComponent<Button>();
+        Button ActivateMenuButton = GameObject.Find("Canvas/GameplayScreen/SwapScreen").GetComponent<Button>();
         ActivateMenuButton.onClick.AddListener(() => ToggleOff());
 
         CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>(); 

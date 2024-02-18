@@ -26,12 +26,13 @@ public static class AttributesData
     public static List<AttributeData> PackData(Character character)
     {
         List<AttributeData> attributesData = new();
-        foreach (var attribute in character.Attributes)
+        foreach (Attribute attribute in character.Attributes)
         {
             AttributeData attributeData = new()
             {
                 Owner = FindAttributeOwner(character, attribute),
                 Name = attribute.Name,
+                
                 AccessModifier = attribute.AccessModifier
             };
 
@@ -43,7 +44,7 @@ public static class AttributesData
     public static List<Attribute> UnpackData(CharacterData characterData)
     {
         List<Attribute> attributesCollection = new();
-        foreach (var attributeData in characterData.Attributes)
+        foreach (AttributeData attributeData in characterData.Attributes)
         {
             Attribute attribute = (attributeData.Owner != characterData.Name)
                ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
@@ -66,10 +67,10 @@ public static class AttributesData
 }
 
 
-[System.Serializable]
 public class AttributeData
 {
     public string Owner;
     public string Name;
+    
     public AccessModifier AccessModifier;
 }

@@ -27,7 +27,7 @@ public static class CharactersData
     public static List<CharacterData> PackData(List<Character> characters)
     {
         List<CharacterData> characterData = new();
-        foreach (var character in characters)
+        foreach (Character character in characters)
         {
             CharacterData data = new()
             {
@@ -55,7 +55,7 @@ public static class CharactersData
     public static List<Character> UnpackData(List<CharacterData> characters)
     {
         List<Character> charactersCollection = new();
-        foreach (var characterData in characters)
+        foreach (CharacterData characterData in characters)
         {
             Character character = new()
             {
@@ -83,7 +83,6 @@ public static class CharactersData
 }
 
 
-[System.Serializable]
 public class CharacterData
 {
     public bool IsOriginal;

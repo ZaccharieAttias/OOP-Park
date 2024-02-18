@@ -6,7 +6,7 @@ public class Powerup : MonoBehaviour
 {
     public List<PowerupEffect> PowerUpEffects;
     public List<Method> PreviousMethods;
-    public CharacterUpcastMethod PreviousUpcastMethod;
+    public UpcastMethod PreviousUpcastMethod;
 
 
     public void Start() { InitializeProperties(); }

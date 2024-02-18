@@ -26,20 +26,21 @@ public static class MethodsData
     public static List<MethodData> PackData(Character character)
     {
         List<MethodData> methodsData = new();
-        foreach (var method in character.Methods)
+        foreach (Method method in character.Methods)
         {
             MethodData methodData = new()
             {
                 Owner = FindMethodOwner(character, method),
                 Name = method.Name,
                 Description = method.Description,
-                AccessModifier = method.AccessModifier,
                 Attribute = new AttributeData()
                 {
                     Owner = AttributesData.FindAttributeOwner(character, method.Attribute),
                     Name = method.Attribute.Name,
                     AccessModifier = method.Attribute.AccessModifier
-                }
+                },
+                
+                AccessModifier = method.AccessModifier
             };
 
             methodsData.Add(methodData);
@@ -50,7 +51,7 @@ public static class MethodsData
     public static List<Method> UnpackData(CharacterData characterData)
     {
         List<Method> methodsCollection = new();
-        foreach (var methodData in characterData.Methods)
+        foreach (MethodData methodData in characterData.Methods)
         {
             Method method = (methodData.Owner != characterData.Name)
                 ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
@@ -73,12 +74,12 @@ public static class MethodsData
 }
 
 
-[System.Serializable]
 public class MethodData
 {
     public string Owner;
     public string Name;
     public string Description;
-    public AccessModifier AccessModifier;
     public AttributeData Attribute;
+
+    public AccessModifier AccessModifier;
 }

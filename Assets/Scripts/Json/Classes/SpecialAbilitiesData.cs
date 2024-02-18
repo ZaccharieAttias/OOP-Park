@@ -43,7 +43,6 @@ public static class SpecialAbilitiesData
 }
 
 
-[System.Serializable]
 public class SpecialAbilityData
 {
     public string Name;

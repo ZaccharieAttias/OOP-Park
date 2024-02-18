@@ -12,18 +12,17 @@ public static class UpcastMethodsData
 
         return upcastMethodData;
     }
-    public static CharacterUpcastMethod UnpackData(CharacterData characterData)
+    public static UpcastMethod UnpackData(CharacterData characterData)
     {
-        var upcastMethodData = characterData.UpcastMethod.Name is null ? null : CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == characterData.UpcastMethod.Owner).Methods.Find(method => method.Name == characterData.UpcastMethod.Name);
+        var upcastMethodData = characterData.UpcastMethod.Owner is null ? null : CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == characterData.UpcastMethod.Owner).Methods.Find(method => method.Name == characterData.UpcastMethod.Name);
         
-        CharacterUpcastMethod upcastMethod = new(upcastMethodData, characterData.UpcastMethod.Amount);
+        UpcastMethod upcastMethod = new(upcastMethodData, characterData.UpcastMethod.Amount);
         
         return upcastMethodData is null ? null : upcastMethod;
     }
 }
 
 
-[System.Serializable]
 public class UpcastMethodData
 {
     public string Owner;

@@ -1,5 +1,5 @@
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -15,7 +15,7 @@ public class Character
     public List<Method> Methods;
 
     public SpecialAbility SpecialAbility;
-    public CharacterUpcastMethod UpcastMethod;
+    public UpcastMethod UpcastMethod;
 
     public List<Character> Parents;
     public List<Character> Childrens;
@@ -28,8 +28,8 @@ public class Character
         IsOriginal = false;
         IsAbstract = false;
 
-        Name = "";
-        Description = "";
+        Name = "Default";
+        Description = "Default";
 
         Attributes = new List<Attribute>();
         Methods = new List<Method>();
