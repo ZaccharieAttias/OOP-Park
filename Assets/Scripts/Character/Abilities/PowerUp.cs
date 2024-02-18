@@ -5,7 +5,7 @@ using UnityEngine;
 public class Powerup : MonoBehaviour
 {
     public List<PowerupEffect> PowerUpEffects;
-    public List<CharacterMethod> PreviousMethods;
+    public List<Method> PreviousMethods;
     public CharacterUpcastMethod PreviousUpcastMethod;
 
 
@@ -15,7 +15,7 @@ public class Powerup : MonoBehaviour
         PowerUpEffects = new List<PowerupEffect>(Resources.LoadAll<PowerupEffect>("Powerups"));
         PowerUpEffects.AddRange(Resources.LoadAll<PowerupEffect>("Powerups"));
 
-        PreviousMethods = new List<CharacterMethod>();
+        PreviousMethods = new List<Method>();
         PreviousUpcastMethod = null;
     }
     

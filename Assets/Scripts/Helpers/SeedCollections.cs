@@ -39,14 +39,14 @@ public class SeedCollections : MonoBehaviour
         string attributeDescription;
         float attributeValue;
         AccessModifier attributeAccessModifier;
-        CharacterAttribute attribute;
+        Attribute attribute;
 
         // Attribute 1
         attributeName = "speed";
         attributeValue = 5f;
         attributeDescription = "This is the MoveSpeed attribute";
         attributeAccessModifier = AccessModifier.Public;
-        attribute = new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 2
@@ -54,7 +54,7 @@ public class SeedCollections : MonoBehaviour
         attributeValue = 20f;
         attributeDescription = "This is the GravityForce attribute";
         attributeAccessModifier = AccessModifier.Protected;
-        attribute = new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 3
@@ -62,7 +62,7 @@ public class SeedCollections : MonoBehaviour
         attributeValue = 2f;
         attributeDescription = "This is the DoubleJump attribute";
         attributeAccessModifier = AccessModifier.Private;
-        attribute = new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 4
@@ -70,31 +70,31 @@ public class SeedCollections : MonoBehaviour
         attributeValue = 0.25f;
         attributeDescription = "This is the FireballShoot attribute";
         attributeAccessModifier = AccessModifier.Public;
-        attribute = new CharacterAttribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
         AttributesManager.AttributesCollection.Add(attribute);
     }
     private void InitializeMethodsCollection()
     {
         string methodName;
         string methodDescription;
-        CharacterAttribute methodAttribute;
+        Attribute methodAttribute;
         AccessModifier methodAccessModifier;
-        CharacterMethod method;
+        Method method;
 
         // Method 1
         methodName = "Speed";
         methodDescription = "This is the MoveSpeed method";
         methodAttribute = AttributesManager.AttributesCollection[0];
         methodAccessModifier = AccessModifier.Public;
-        method = new CharacterMethod(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
         MethodsManager.MethodsCollection.Add(method);
-
+        
         // Method 2
         methodName = "Gravity";
         methodDescription = "This is the GravityForce method";
         methodAttribute = AttributesManager.AttributesCollection[1];
         methodAccessModifier = AccessModifier.Protected;
-        method = new CharacterMethod(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
         MethodsManager.MethodsCollection.Add(method);
 
         // Method 3
@@ -102,7 +102,7 @@ public class SeedCollections : MonoBehaviour
         methodDescription = "This is the DoubleJump method";
         methodAttribute = AttributesManager.AttributesCollection[2];
         methodAccessModifier = AccessModifier.Private;
-        method = new CharacterMethod(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
         MethodsManager.MethodsCollection.Add(method);
 
         // Method 4
@@ -110,7 +110,7 @@ public class SeedCollections : MonoBehaviour
         methodDescription = "This is the FireballShoot method";
         methodAttribute = AttributesManager.AttributesCollection[3];
         methodAccessModifier = AccessModifier.Public;
-        method = new CharacterMethod(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
         MethodsManager.MethodsCollection.Add(method);
     }
     private void InitializeSpecialAbilityCollection()

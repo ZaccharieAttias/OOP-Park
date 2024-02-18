@@ -4,13 +4,13 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterUpcastMethod
 {
-    public CharacterMethod CharacterMethod;
+    public Method CharacterMethod;
     public float Amount;
 
     public UpcastTrackerManager UpcastTrackerManager;
 
 
-    public CharacterUpcastMethod(CharacterMethod characterMethod, float amount)
+    public CharacterUpcastMethod(Method characterMethod, float amount)
     {
         CharacterMethod = characterMethod;
         Amount = amount;

@@ -107,7 +107,7 @@ public class CharactersManager : MonoBehaviour
     }
     private void DisplayAttributes()
     {
-        foreach (CharacterAttribute attribute in CurrentCharacter.Attributes)
+        foreach (Attribute attribute in CurrentCharacter.Attributes)
         {
             GameObject attributeGameObject = Instantiate(DefaultButton, AttributesContentPanel);
             attributeGameObject.AddComponent<DescriptionButton>();
@@ -122,7 +122,7 @@ public class CharactersManager : MonoBehaviour
     }
     private void DisplayMethods()
     {
-        foreach (CharacterMethod method in CurrentCharacter.Methods)
+        foreach (Method method in CurrentCharacter.Methods)
         {
             GameObject methodGameObject = Instantiate(DefaultButton, MethodsContentPanel);
             methodGameObject.AddComponent<DescriptionButton>();

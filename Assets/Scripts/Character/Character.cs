@@ -11,8 +11,8 @@ public class Character
     public string Name;
     public string Description;
 
-    public List<CharacterAttribute> Attributes;
-    public List<CharacterMethod> Methods;
+    public List<Attribute> Attributes;
+    public List<Method> Methods;
 
     public CharacterSpecialAbility SpecialAbility;
     public CharacterUpcastMethod UpcastMethod;
@@ -31,8 +31,8 @@ public class Character
         Name = "";
         Description = "";
 
-        Attributes = new List<CharacterAttribute>();
-        Methods = new List<CharacterMethod>();
+        Attributes = new List<Attribute>();
+        Methods = new List<Method>();
 
         SpecialAbility = null;
         UpcastMethod = null;
@@ -50,8 +50,8 @@ public class Character
         Name = name;
         Description = description;
 
-        Attributes = new List<CharacterAttribute>();
-        Methods = new List<CharacterMethod>();
+        Attributes = new List<Attribute>();
+        Methods = new List<Method>();
 
         SpecialAbility = specialAbility;
         UpcastMethod = null;
@@ -86,11 +86,11 @@ public class Character
     {
         foreach (Character parent in Parents)
         {
-            foreach (CharacterAttribute attribute in parent.Attributes)
+            foreach (Attribute attribute in parent.Attributes)
                 if (!Attributes.Any(item => item.Name == attribute.Name))
                     Attributes.Add(attribute);
 
-            foreach (CharacterMethod method in parent.Methods)
+            foreach (Method method in parent.Methods)
                 if (!Methods.Any(item => item.Name == method.Name))
                     Methods.Add(method);    
         }

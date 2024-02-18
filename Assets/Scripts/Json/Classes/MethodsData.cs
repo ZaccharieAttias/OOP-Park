@@ -20,8 +20,8 @@ public static class MethodsData
     public static void Save() { File.WriteAllText(FilePath, Serialize(MethodsManager.MethodsCollection)); }
     public static void Load() { MethodsManager.MethodsCollection = Deserialize(File.ReadAllText(FilePath)); }
 
-    public static string Serialize(List<CharacterMethod> methods) { return JsonConvert.SerializeObject(methods, Formatting.Indented); }
-    public static List<CharacterMethod> Deserialize(string json) { return JsonConvert.DeserializeObject<List<CharacterMethod>>(json); }
+    public static string Serialize(List<Method> methods) { return JsonConvert.SerializeObject(methods, Formatting.Indented); }
+    public static List<Method> Deserialize(string json) { return JsonConvert.DeserializeObject<List<Method>>(json); }
 
     public static List<MethodData> PackData(Character character)
     {
@@ -47,12 +47,12 @@ public static class MethodsData
 
         return methodsData;
     }
-    public static List<CharacterMethod> UnpackData(CharacterData characterData)
+    public static List<Method> UnpackData(CharacterData characterData)
     {
-        List<CharacterMethod> methodsCollection = new();
+        List<Method> methodsCollection = new();
         foreach (var methodData in characterData.Methods)
         {
-            CharacterMethod method = (methodData.Owner != characterData.Name)
+            Method method = (methodData.Owner != characterData.Name)
                 ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
                 : new(MethodsManager.MethodsCollection.Find(method => method.Name == methodData.Name));
 
@@ -63,7 +63,7 @@ public static class MethodsData
         return methodsCollection;
     }
 
-    public static string FindMethodOwner(Character character, CharacterMethod method)
+    public static string FindMethodOwner(Character character, Method method)
     {
         if (character.Methods.Contains(method)) return character.Name;
         else foreach (var parent in character.Parents) return FindMethodOwner(parent, method);

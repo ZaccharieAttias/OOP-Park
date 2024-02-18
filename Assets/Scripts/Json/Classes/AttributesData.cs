@@ -20,8 +20,8 @@ public static class AttributesData
     public static void Save() { File.WriteAllText(FilePath, Serialize(AttributesManager.AttributesCollection)); }
     public static void Load() { AttributesManager.AttributesCollection = Deserialize(File.ReadAllText(FilePath)); }
 
-    public static string Serialize(List<CharacterAttribute> attributes) { return JsonConvert.SerializeObject(attributes, Formatting.Indented); }
-    public static List<CharacterAttribute> Deserialize(string json) { return JsonConvert.DeserializeObject<List<CharacterAttribute>>(json); }
+    public static string Serialize(List<Attribute> attributes) { return JsonConvert.SerializeObject(attributes, Formatting.Indented); }
+    public static List<Attribute> Deserialize(string json) { return JsonConvert.DeserializeObject<List<Attribute>>(json); }
 
     public static List<AttributeData> PackData(Character character)
     {
@@ -40,12 +40,12 @@ public static class AttributesData
 
         return attributesData;
     }
-    public static List<CharacterAttribute> UnpackData(CharacterData characterData)
+    public static List<Attribute> UnpackData(CharacterData characterData)
     {
-        List<CharacterAttribute> attributesCollection = new();
+        List<Attribute> attributesCollection = new();
         foreach (var attributeData in characterData.Attributes)
         {
-            CharacterAttribute attribute = (attributeData.Owner != characterData.Name)
+            Attribute attribute = (attributeData.Owner != characterData.Name)
                ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
                : new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name));
 
@@ -56,7 +56,7 @@ public static class AttributesData
         return attributesCollection;
     }
 
-    public static string FindAttributeOwner(Character character, CharacterAttribute attribute)
+    public static string FindAttributeOwner(Character character, Attribute attribute)
     {
         if (character.Attributes.Contains(attribute)) return character.Name;
         else foreach (var parent in character.Parents) return FindAttributeOwner(parent, attribute);

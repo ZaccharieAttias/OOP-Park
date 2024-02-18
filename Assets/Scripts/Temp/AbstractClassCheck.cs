@@ -60,7 +60,7 @@ public class AbstractClassCheck : MonoBehaviour
         foreach (Character child in character.Childrens)
             BuildMaps(ref AttributeMap, ref MethodMap, child);
 
-        foreach (CharacterAttribute attribute in character.Attributes) 
+        foreach (Attribute attribute in character.Attributes) 
         {
             if (!AttributeMap.ContainsKey(attribute.Name)) {
                     AttributeMap.Add(attribute.Name, new List<Character>()); 
@@ -69,7 +69,7 @@ public class AbstractClassCheck : MonoBehaviour
             else 
                 AttributeMap[attribute.Name].Add(character);
         }
-        foreach (CharacterMethod method in character.Methods) 
+        foreach (Method method in character.Methods) 
         {
             if (!MethodMap.ContainsKey(method.Name)) {
                     MethodMap.Add(method.Name, new List<Character>()); 

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UpcastingManager : MonoBehaviour
 {
     public GameObject Popup;
-    public List<(Character, List<CharacterMethod>)> UpcastableData;
+    public List<(Character, List<Method>)> UpcastableData;
 
     public List<int> Indices;
     public List<TextMeshProUGUI> Texts;
@@ -24,7 +24,7 @@ public class UpcastingManager : MonoBehaviour
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/Upcasting");
-        UpcastableData = new List<(Character, List<CharacterMethod>)>();
+        UpcastableData = new List<(Character, List<Method>)>();
 
         Indices = new List<int>
         { 
@@ -84,7 +84,7 @@ public class UpcastingManager : MonoBehaviour
         {
             CollectUpcastableData(parent);
 
-            List<CharacterMethod> parentMethods = parent.Methods
+            List<Method> parentMethods = parent.Methods
                 .Where(method => RestrictionManager.Instance.AllowAccessModifiers == false || method.AccessModifier != AccessModifier.Private)
                 .ToList();
             if (parentMethods.Count > 0) UpcastableData.Add((parent, parentMethods));

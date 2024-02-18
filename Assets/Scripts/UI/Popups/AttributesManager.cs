@@ -8,13 +8,10 @@ using UnityEngine.UI;
 public class AttributesManager : MonoBehaviour
 {
     public GameObject Popup;
-    public List<CharacterAttribute> AttributesCollection;
+    public List<Attribute> AttributesCollection;
     
     public GameObject AttributeButton;
     public Transform ContentPanel;
-
-    public Button PopupToggleOn;
-    public Button PopupToggleOff;
 
     public CharactersManager CharactersManager;
 
@@ -23,15 +20,15 @@ public class AttributesManager : MonoBehaviour
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/Attributes");
-        AttributesCollection = new List<CharacterAttribute>();
+        AttributesCollection = new List<Attribute>();
 
         AttributeButton = Resources.Load<GameObject>("Buttons/Default");
         ContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content");
         
-        PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
+        Button PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
         PopupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
+        Button PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
         
         CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
@@ -42,7 +39,7 @@ public class AttributesManager : MonoBehaviour
     {
         ClearContentPanel();
 
-        foreach (CharacterAttribute attribute in AttributesCollection)
+        foreach (Attribute attribute in AttributesCollection)
         {
             GameObject attributeGameObject = Instantiate(AttributeButton, ContentPanel);
             attributeGameObject.name = attribute.Name;
@@ -58,7 +55,7 @@ public class AttributesManager : MonoBehaviour
         }
     }
     private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
-    private void MarkAttribute(GameObject attributeGameObject, CharacterAttribute attribute)
+    private void MarkAttribute(GameObject attributeGameObject, Attribute attribute)
     {
         var currentCharacter = CharactersManager.CurrentCharacter;
         var currentAttribute = currentCharacter.Attributes.Find(item => item.Name == attribute.Name);   
@@ -71,14 +68,14 @@ public class AttributesManager : MonoBehaviour
 
         else
         {
-            CharacterAttribute newAttribute = new(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier);
+            Attribute newAttribute = new(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier);
             currentCharacter.Attributes.Add(newAttribute);
         }
 
         Image image = attributeGameObject.GetComponent<Image>();
         image.color = currentAttribute is null ? Color.green : Color.white;
     }
-    private void CancelDependentMethods(Character character, CharacterAttribute attribute)
+    private void CancelDependentMethods(Character character, Attribute attribute)
     {
         if (RestrictionManager.Instance.AllowBeginnerInheritance) character.Attributes.Remove(attribute);
         

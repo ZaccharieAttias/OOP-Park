@@ -9,8 +9,8 @@ public class AccessModifierButton : MonoBehaviour
     public int AccessModifierCount;
     public List<Color> AccessModifierColors;
     
-    public CharacterAttribute Attribute;
-    public CharacterMethod Method;
+    public Attribute Attribute;
+    public Method Method;
 
     public Image ButtonImage;
 
