@@ -1,5 +1,4 @@
-[System.Serializable]
-public class CharacterAttribute
+public class Attribute
 {
     public string Name;
     public string Description;
@@ -8,15 +7,15 @@ public class CharacterAttribute
     public AccessModifier AccessModifier;
 
     
-    public CharacterAttribute()
+    public Attribute()
     { 
-        Name = "";
-        Description = "";
+        Name = "Default";
+        Description = "Default";
         Value = 0;
 
         AccessModifier = AccessModifier.Public;
     }
-    public CharacterAttribute(string name, string description, float value, AccessModifier accessModifier)
+    public Attribute(string name, string description, float value, AccessModifier accessModifier)
     {
         Name = name;
         Description = description;
@@ -24,7 +23,7 @@ public class CharacterAttribute
 
         AccessModifier = accessModifier;
     }
-    public CharacterAttribute(CharacterAttribute attribute)
+    public Attribute(Attribute attribute)
     {
         Name = attribute.Name;
         Description = attribute.Description;
