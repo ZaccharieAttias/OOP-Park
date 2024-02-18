@@ -21,6 +21,7 @@ public class CharactersManager : MonoBehaviour
     public Transform SpecialAbilityContentPanel;
 
     public CharactersTreeManager CharactersTreeManager;
+    public GameObject SwapScreen;
 
 
     public void Start() { InitializeProperties(); }
@@ -41,6 +42,8 @@ public class CharactersManager : MonoBehaviour
         SpecialAbilityContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
 
         CharactersTreeManager = GameObject.Find("Canvas/HTMenu").GetComponent<CharactersTreeManager>();
+
+        SwapScreen = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen");
     }
 
     public void AddCharacter(Character builtCharacter)
@@ -74,7 +77,8 @@ public class CharactersManager : MonoBehaviour
         currentCharacterObject.GetComponent<Image>().color = new Color32(255, 165, 0, 255);
 
         CurrentCharacter = CharactersCollection.Find(character => character == displayCharacter);
-
+        var CharacterPlayable = CurrentCharacter.IsAbstract == false;
+        SwapScreen.GetComponent<Button>().interactable = CharacterPlayable;
         if (CurrentCharacter != null)
         {
             ClearContentPanels();
@@ -94,7 +98,8 @@ public class CharactersManager : MonoBehaviour
     {
         NameText.interactable = CurrentCharacter.IsOriginal == false;
 
-        NameText.text = CurrentCharacter.Name;
+        string prefix = CurrentCharacter.IsAbstract ? "Abs " : "";
+        NameText.text = prefix + CurrentCharacter.Name;
         DescriptionText.text = CurrentCharacter.Description;
 
         NameText.onEndEdit.AddListener(text =>
