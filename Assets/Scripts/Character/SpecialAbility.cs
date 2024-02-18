@@ -1,4 +1,4 @@
-public class CharacterSpecialAbility
+public class SpecialAbility
 {
     public string Name;
     public string Description;
@@ -7,7 +7,7 @@ public class CharacterSpecialAbility
     public SpecialAbilityType Type;
 
 
-    public CharacterSpecialAbility()
+    public SpecialAbility()
     { 
         Name = "Default";
         Description = "Default";
@@ -15,7 +15,7 @@ public class CharacterSpecialAbility
 
         Type = SpecialAbilityType.General;
     }
-    public CharacterSpecialAbility(string name, string description, float value, SpecialAbilityType type)
+    public SpecialAbility(string name, string description, float value, SpecialAbilityType type)
     {
         Name = name;
         Description = description;
@@ -23,7 +23,7 @@ public class CharacterSpecialAbility
 
         Type = type;
     }
-    public CharacterSpecialAbility(CharacterSpecialAbility specialAbility)
+    public SpecialAbility(SpecialAbility specialAbility)
     {
         Name = specialAbility.Name;
         Description = specialAbility.Description;
