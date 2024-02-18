@@ -11,7 +11,7 @@ public class MethodsManager : MonoBehaviour
     public List<Method> MethodsCollection;
     
     public GameObject MethodButton;
-    public Transform ContentPanel;
+    public Transform MethodsContentPanel;
 
     public CharactersManager CharactersManager;
 
@@ -23,7 +23,7 @@ public class MethodsManager : MonoBehaviour
         MethodsCollection = new List<Method>();
 
         MethodButton = Resources.Load<GameObject>("Buttons/Default");
-        ContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
+        MethodsContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
 
         Button PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>();
         PopupToggleOn.onClick.AddListener(() => ToggleOn());
@@ -41,7 +41,7 @@ public class MethodsManager : MonoBehaviour
 
         foreach (Method method in MethodsCollection)
         {
-            GameObject methodGameObject = Instantiate(MethodButton, ContentPanel);
+            GameObject methodGameObject = Instantiate(MethodButton, MethodsContentPanel);
             methodGameObject.name = method.Name;
 
             TMP_Text methodButtonText = methodGameObject.GetComponentInChildren<TMP_Text>();
@@ -55,7 +55,7 @@ public class MethodsManager : MonoBehaviour
             image.color = CharactersManager.CurrentCharacter.Methods.Any(item => item.Name == method.Name) ? Color.green : Color.white;
         }
     }
-    private void ClearContentPanel() { foreach (Transform child in ContentPanel) Destroy(child.gameObject); }
+    private void ClearContentPanel() { foreach (Transform methodTransform in MethodsContentPanel) Destroy(methodTransform.gameObject); }
     private void MarkMethod(GameObject methodGameObject, Method method)
     {
         var currentCharacter = CharactersManager.CurrentCharacter;
@@ -83,9 +83,8 @@ public class MethodsManager : MonoBehaviour
     private Attribute FindDependentAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
         var currentAttribute = character.Attributes.Find(attribute => attribute.Name.ToLower() == methodName.ToLower() && (CharactersManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
-        if (currentAttribute is not null) return currentAttribute;
-        
-        return character.Parents.Select(parent => FindDependentAttribute(parent, methodName, allowAccessModifiers)).FirstOrDefault(parentAttribute => parentAttribute is not null);
+
+        return currentAttribute is not null ? currentAttribute : character.Parents.Select(parent => FindDependentAttribute(parent, methodName, allowAccessModifiers)).FirstOrDefault(parentAttribute => parentAttribute is not null);
     }   
 
     private void ToggleOn()

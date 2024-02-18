@@ -67,7 +67,7 @@ public static class MethodsData
     public static string FindMethodOwner(Character character, Method method)
     {
         if (character.Methods.Contains(method)) return character.Name;
-        else foreach (var parent in character.Parents) return FindMethodOwner(parent, method);
+        else foreach (Character parent in character.Parents) return FindMethodOwner(parent, method);
 
         return null;
     }

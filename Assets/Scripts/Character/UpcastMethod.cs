@@ -1,9 +1,12 @@
+using UnityEngine;
+
+
 public class UpcastMethod
 {
     public Method CharacterMethod;
     public float Amount;
 
-    public UpcastTrackerManager UpcastTrackerManager; 
+    public UpcastTrackerManager UpcastTrackerManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastTrackerManager>(); 
 
 
     public UpcastMethod()

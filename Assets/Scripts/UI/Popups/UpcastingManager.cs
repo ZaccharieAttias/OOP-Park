@@ -158,10 +158,7 @@ public class UpcastingManager : MonoBehaviour
 
     private void ApplyUpcasting()
     {
-        UpcastMethod upcastMethod = new(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2])
-        {
-            UpcastTrackerManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastTrackerManager>()
-        };
+        UpcastMethod upcastMethod = new(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
         CharactersManager.CurrentCharacter.UpcastMethod = upcastMethod;
         CharactersManager.CurrentCharacter.UpcastMethod.UpcastTrackerManager.ToggleOn();
 

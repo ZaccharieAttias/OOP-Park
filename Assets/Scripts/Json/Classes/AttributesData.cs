@@ -60,7 +60,7 @@ public static class AttributesData
     public static string FindAttributeOwner(Character character, Attribute attribute)
     {
         if (character.Attributes.Contains(attribute)) return character.Name;
-        else foreach (var parent in character.Parents) return FindAttributeOwner(parent, attribute);
+        else foreach (Character parent in character.Parents) return FindAttributeOwner(parent, attribute);
 
         return null;
     }

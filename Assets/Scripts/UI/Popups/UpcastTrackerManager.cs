@@ -26,12 +26,13 @@ public class UpcastTrackerManager : MonoBehaviour
         CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>(); 
     }
 
+
     public void UpdateUpcastingMethod(float amount)
     {
         CharactersManager.CurrentCharacter.UpcastMethod.Amount -= amount;
         amount = (int)CharactersManager.CurrentCharacter.UpcastMethod.Amount;
 
-        if (amount > 0) { AmountDescriptionText.text = amount.ToString(); }
+        if (amount > 0) AmountDescriptionText.text = amount.ToString();
 
         else
         {
@@ -41,6 +42,6 @@ public class UpcastTrackerManager : MonoBehaviour
         }
     }
 
-    public void ToggleOn() { if (CharactersManager.CurrentCharacter?.UpcastMethod != null) Popup.SetActive(true); }
+    public void ToggleOn() { if (CharactersManager.CurrentCharacter?.UpcastMethod is not null) Popup.SetActive(true); }
     public void ToggleOff() { Popup.SetActive(false); }
 }
