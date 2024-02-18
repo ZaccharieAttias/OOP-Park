@@ -20,8 +20,8 @@ public static class SpecialAbilitiesData
     public static void Save() { File.WriteAllText(FilePath, Serialize(SpecialAbilitiesManager.SpecialAbilitiesCollection)); }
     public static void Load() { SpecialAbilitiesManager.SpecialAbilitiesCollection = Deserialize(File.ReadAllText(FilePath)); }
 
-    public static string Serialize(Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>> specialAbilities) { return JsonConvert.SerializeObject(specialAbilities, Formatting.Indented); }
-    public static Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>> Deserialize(string json) { return JsonConvert.DeserializeObject<Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>>>(json); }
+    public static string Serialize(Dictionary<SpecialAbilityType, List<SpecialAbility>> specialAbilities) { return JsonConvert.SerializeObject(specialAbilities, Formatting.Indented); }
+    public static Dictionary<SpecialAbilityType, List<SpecialAbility>> Deserialize(string json) { return JsonConvert.DeserializeObject<Dictionary<SpecialAbilityType, List<SpecialAbility>>>(json); }
 
     public static SpecialAbilityData PackData(Character character)
     {
@@ -33,7 +33,7 @@ public static class SpecialAbilitiesData
 
         return specialAbilityData;
     }
-    public static CharacterSpecialAbility UnpackData(CharacterData characterData)
+    public static SpecialAbility UnpackData(CharacterData characterData)
     {
         string specialAbilityName = characterData.SpecialAbility.Name;
         SpecialAbilityType specialAbilityType = characterData.SpecialAbility.Type;

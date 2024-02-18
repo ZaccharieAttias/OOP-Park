@@ -14,7 +14,7 @@ public class Character
     public List<Attribute> Attributes;
     public List<Method> Methods;
 
-    public CharacterSpecialAbility SpecialAbility;
+    public SpecialAbility SpecialAbility;
     public CharacterUpcastMethod UpcastMethod;
 
     public List<Character> Parents;
@@ -42,7 +42,7 @@ public class Character
 
         CharacterButton = new CharacterButton();
     }
-    public Character(string name, string description, List<Character> parents, CharacterSpecialAbility specialAbility, bool isOriginal, bool isAbstract)
+    public Character(string name, string description, List<Character> parents, SpecialAbility specialAbility, bool isOriginal, bool isAbstract)
     {
         IsOriginal = isOriginal;
         IsAbstract = isAbstract;

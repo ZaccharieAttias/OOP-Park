@@ -8,14 +8,14 @@ using UnityEngine.UI;
 public class SpecialAbilitiesManager : MonoBehaviour
 {
     public GameObject Popup;
-    public Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>> SpecialAbilitiesCollection;
+    public Dictionary<SpecialAbilityType, List<SpecialAbility>> SpecialAbilitiesCollection;
 
     public GameObject SpecialAbilityButton;
     public Transform ContentPanel;
 
     public Button ConfirmButton;
 
-    public CharacterSpecialAbility SelectedSpecialAbility;
+    public SpecialAbility SelectedSpecialAbility;
     public List<SpecialAbilityType> AbilitiesType;
 
     public CharactersCreationManager CharactersCreationManager;
@@ -25,7 +25,7 @@ public class SpecialAbilitiesManager : MonoBehaviour
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/SpecialAbility");
-        SpecialAbilitiesCollection = new Dictionary<SpecialAbilityType, List<CharacterSpecialAbility>>();
+        SpecialAbilitiesCollection = new Dictionary<SpecialAbilityType, List<SpecialAbility>>();
         
         SpecialAbilityButton = Resources.Load<GameObject>("Buttons/Default");
         ContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content");
@@ -45,8 +45,8 @@ public class SpecialAbilitiesManager : MonoBehaviour
         ResetPopup();
 
         AbilitiesType = CharactersCreationManager.SelectedCharacterParents.Select(item => item.SpecialAbility.Type).Distinct().ToList();        
-        List<CharacterSpecialAbility> availableSpecialAbilities = AbilitiesType.SelectMany(abilityType => SpecialAbilitiesCollection[abilityType]).ToList();
-        foreach (CharacterSpecialAbility specialAbility in availableSpecialAbilities)
+        List<SpecialAbility> availableSpecialAbilities = AbilitiesType.SelectMany(abilityType => SpecialAbilitiesCollection[abilityType]).ToList();
+        foreach (SpecialAbility specialAbility in availableSpecialAbilities)
         {
             GameObject specialAbilityGameObject = Instantiate(SpecialAbilityButton, ContentPanel);
             specialAbilityGameObject.name = specialAbility.Name;
@@ -58,7 +58,7 @@ public class SpecialAbilitiesManager : MonoBehaviour
             specialAbilityButton.onClick.AddListener(() => MarkSpecialAbility(specialAbilityGameObject, specialAbility));
         }
     }
-    private void MarkSpecialAbility(GameObject specialAbilityButton, CharacterSpecialAbility specialAbility)
+    private void MarkSpecialAbility(GameObject specialAbilityButton, SpecialAbility specialAbility)
     {
         bool isSelectedAlready = SelectedSpecialAbility != null;
         bool isSameAbility = SelectedSpecialAbility?.Name == specialAbility.Name;
