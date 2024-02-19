@@ -34,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
 
     public CharactersManager CharactersManager;
 
+    public GameObject Gun;
+
 
     public void Awake() { InitializeProperties(); }
     private void InitializeProperties()
@@ -57,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
 
         Powerup = GetComponent<Powerup>();
         CharactersManager = GetComponent<CharactersManager>();
+
+        Gun = GameObject.Find("Player/GunPivot");
     }
 
     public void Update()
@@ -91,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
         PowerupTimer += Time.deltaTime;
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Speed") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Gravity") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Grappling") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(10);
     }
     private void CheckGround()
     {   
