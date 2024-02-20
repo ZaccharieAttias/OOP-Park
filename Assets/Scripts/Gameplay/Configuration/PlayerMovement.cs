@@ -4,37 +4,54 @@ using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float MoveSpeed = 9f;
-    public float JumpForce = 20f;
+    [Header("Scripts Ref:")]
+    public Rigidbody2D Rigidbody2D;
+    public Animator Animator;
+    public SpriteRenderer SpriteRenderer;
+    public CharactersManager CharactersManager;
+    public Powerup Powerup;
 
-    public int MaxJumps = 1;
-    public int JumpsLeft = 1;
-    public bool isGrounded = false;
-
+    [Header("Object Ref:")]
     public Transform GroundCheckCircle;
     public Transform GroundCheckBox;
+    public Transform firePoint;
+    [SerializeField] public List<GameObject> fireballs;
+    public Transform WallCheck;
+    public GameObject Gun;
+
+    [Header("Movement:")]
+    private float horizontalInput;
+    public float MoveSpeed = 9f;
+    public float JumpForce = 20f;
+    public int MaxJumps = 1;
+    public int JumpsLeft = 1;
+    public Vector3 Velocity;
+    public float WallSlideSpeed = 2f;
+    public float WallJumpingDirection = 1f;
+    public float WallJumpingCounter = 1f;
+    public Vector2 WallJumpingVector;
+
+
+    [Header("Ground Check:")]
+    public LayerMask CollisionLayers;
+    public bool isGrounded = false;
     public float GroundCheckRadius = 0.25f;
     public float GroundCheckBoxLength = 0.07f;
     public float GroundCheckBoxWidth = 1.71f;
 
-    public LayerMask CollisionLayers;
-    public Rigidbody2D Rigidbody2D;
-    public Animator Animator;
-    public SpriteRenderer SpriteRenderer;
+    [Header("Wall Check:")]
+    public LayerMask WallLayer;
+    public bool IsWallSliding = false;
+    public bool IsWallJumping = false;
 
-    public Vector3 Velocity;
+    public bool AllowToWallJump = false;
+
+    [Header("Timers:")]
     public float attackCooldown = Mathf.Infinity;
     public float cooldownTimer = Mathf.Infinity;
-    public Transform firePoint;
-    [SerializeField] public List<GameObject> fireballs;
-    private float horizontalInput;
-
-    public Powerup Powerup;
     public float PowerupTimer = 0f;
-
-    public CharactersManager CharactersManager;
-
-    public GameObject Gun;
+    public float WallJumpingTime = 0.2f;
+    public float WallJumpingDuration = 0.4f;
 
 
     public void Awake() { InitializeProperties(); }
@@ -61,6 +78,10 @@ public class PlayerMovement : MonoBehaviour
         CharactersManager = GetComponent<CharactersManager>();
 
         Gun = GameObject.Find("Player/GunPivot");
+
+        WallLayer = LayerMask.GetMask("Wall");
+        WallCheck = GameObject.Find("Grid/Walls").transform;
+        WallJumpingVector = new Vector2(24f, 18f);
     }
 
     public void Update()
@@ -69,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
 
         horizontalInput = Input.GetAxis("Horizontal");
         CheckGround();
+        CheckWallSliding();
+        PerformWallSlide();
         ProcessInput();
         MovePlayer();
         UpdateAnimator();
@@ -78,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ProcessInput()
     {
+        if (AllowToWallJump) WallJump();
         if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
             if (horizontalInput > 0.01f)
@@ -122,7 +146,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded == false) Animator.SetTrigger("Jump");
     }
-
     private void PerformJump()
     {   
         //si la gravité est inversée, on saute vers le bas
@@ -132,7 +155,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
     }
-
     private void PerformAttack()
     {
         Animator.SetTrigger("Shoot");
@@ -152,6 +174,54 @@ public class PlayerMovement : MonoBehaviour
                 return i;
         }
         return 0;
+    }
+    private void CheckWallSliding()
+    {
+        bool boxOverlap;
+        if (transform.localScale.x > 0) 
+            boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), WallLayer);
+        else 
+            boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), WallLayer);
+
+        IsWallSliding = boxOverlap && !isGrounded && horizontalInput != 0;
+        
+    }
+    private void  PerformWallSlide()
+    {
+        if (IsWallSliding)
+        {
+            Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, Mathf.Clamp(Rigidbody2D.velocity.y, -WallSlideSpeed, float.MaxValue));
+        }
+    }
+    private void WallJump()
+    {
+        if (IsWallSliding)
+        {
+            IsWallJumping = false;
+            WallJumpingDirection = -transform.localScale.x;
+            WallJumpingCounter = WallJumpingTime;
+            CancelInvoke(nameof(StopwallJumping));
+        }
+        else
+            WallJumpingCounter -= Time.deltaTime;
+        
+        if (Input.GetKeyDown(KeyCode.W) && WallJumpingCounter > 0)
+        {
+            IsWallJumping = true;
+            Rigidbody2D.velocity = new Vector2(WallJumpingDirection * WallJumpingVector.x, WallJumpingVector.y);
+            WallJumpingCounter = 0;
+
+            if (transform.localScale.x != WallJumpingDirection) 
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }
+            Invoke(nameof(StopwallJumping), WallJumpingDuration);
+            if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "WallJump") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
+        }
+    }
+    private void StopwallJumping()
+    {
+        IsWallJumping = false;
     }
     
     private void OnDrawGizmos()
