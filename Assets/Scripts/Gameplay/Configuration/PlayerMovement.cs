@@ -84,6 +84,12 @@ public class PlayerMovement : MonoBehaviour
                 transform.localScale = new Vector3(3, 3, 3);
             else if (horizontalInput < -0.01f)
                 transform.localScale = new Vector3(-3, 3, 3);
+            if (Rigidbody2D.gravityScale < 0)
+                if (horizontalInput > 0.01f)
+                    transform.localScale = new Vector3(3, -3, 3);
+                else if (horizontalInput < -0.01f)
+                    transform.localScale = new Vector3(-3, -3, 3);
+            
         }
         if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown) PerformAttack();
     }
@@ -96,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Speed") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Gravity") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Grappling") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(10);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
     }
     private void CheckGround()
     {   
@@ -117,8 +124,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void PerformJump()
-    {
-        Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
+    {   
+        //si la gravité est inversée, on saute vers le bas
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, -JumpForce);
+        else Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         JumpsLeft--;
 
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
