@@ -20,6 +20,8 @@ public class GrapplingGunMovement : MonoBehaviour
     [Header("Physics Ref:")]
     public SpringJoint2D m_springJoint2D;
     public Rigidbody2D m_rigidbody;
+    [SerializeField] private float PreviousGravityScale;
+
 
     [Header("Rotation:")]
     [SerializeField] private bool rotateOverTime = true;
@@ -28,6 +30,7 @@ public class GrapplingGunMovement : MonoBehaviour
     [Header("Distance:")]
     [SerializeField] private bool hasMaxDistance = false;
     [SerializeField] private float maxDistnace = 20;
+
 
     private enum LaunchType
     {
@@ -87,7 +90,7 @@ public class GrapplingGunMovement : MonoBehaviour
         {
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
-            m_rigidbody.gravityScale = 5;
+            m_rigidbody.gravityScale = PreviousGravityScale;
         }
         else
         {
@@ -162,6 +165,7 @@ public class GrapplingGunMovement : MonoBehaviour
                     m_springJoint2D.enabled = true;
                     break;
                 case LaunchType.Transform_Launch:
+                    PreviousGravityScale = m_rigidbody.gravityScale;
                     m_rigidbody.gravityScale = 0;
                     m_rigidbody.velocity = Vector2.zero;
                     break;
