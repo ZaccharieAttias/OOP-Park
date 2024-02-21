@@ -1,82 +1,239 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System.IO;
+
 
 public class AbstractClassCheck : MonoBehaviour
 {
+    public GameObject Popup;
+
     public GameObject ConfirmButton;
-    public CharactersManager CharactersManager;
-    public List<Character> AbsractClasses;
     public GameObject MessagePopup;
-    
-    //set the possibility to change the tree after completing the first stage etc
+
+    public Transform CharactersContentPanel;
+
+    public int stage;
+    public int maxStage;
+    public string FolderPath;
+
+    public Dictionary<Character, List<string>> FinalCharacterAttributesMap;
+    public Dictionary<Character, List<string>> FinalCharacterMethodsMap;
+    public Dictionary<Character, List<string>> ErrorsMap;
+    public List<(Character, bool)> AbstractClasses;
 
     public void Start()
     {
-        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
-        AbsractClasses = new List<Character>();
-        foreach (Character character in CharactersManager.CharactersCollection) if (character.IsAbstract) AbsractClasses.Add(character);  
-        
-        ConfirmButton = GameObject.Find("Canvas/Popups/Abstract/Confirm");  
-        ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmAbstractClasses());
+        Popup = GameObject.Find("Canvas/Popups/Abstract");
 
-        MessagePopup = GameObject.Find("Canvas/Popups/Abstract/Message");
+        MessagePopup = Popup.transform.Find("Message").gameObject;
+        ConfirmButton = Popup.transform.Find("Confirm").gameObject;
+        ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmStage());
+
+        CharactersContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
+
+        stage = -1;
+        maxStage = 2;
+        FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
+        SetStage();
     }
-    public void ConfirmAbstractClasses()
+    public void SetStage()
     {
-        Dictionary<string, List<Character>> AttributeMap = new Dictionary<string, List<Character>>();
-        Dictionary<string, List<Character>> MethodMap = new Dictionary<string, List<Character>>();
-        foreach (Character character in AbsractClasses) BuildMaps(ref AttributeMap, ref MethodMap, character);
+        stage++;
+        foreach (Transform child in CharactersContentPanel) Destroy(child.gameObject);
 
-        List<string> AkeysToRemove = new List<string>();
-        foreach (KeyValuePair<string, List<Character>> entry in AttributeMap) if (entry.Value.Count == 1) AkeysToRemove.Add(entry.Key);
-        foreach (string key in AkeysToRemove) AttributeMap.Remove(key);
-
-        List<string> MkeysToRemove = new List<string>();
-        foreach (KeyValuePair<string, List<Character>> entry in MethodMap) if (entry.Value.Count == 1) MkeysToRemove.Add(entry.Key);
-        foreach (string key in MkeysToRemove) MethodMap.Remove(key);
-        
-        if (AttributeMap.Keys.Count > 0 || MethodMap.Keys.Count > 0)
+        if (stage < maxStage)
         {
-            MessagePopup.SetActive(true);
-            MessagePopup.GetComponentInChildren<TMP_Text>().text = "The following attributes and methods are duplicated: \n";
-            foreach (KeyValuePair<string, List<Character>> entry in AttributeMap.ToList())
-                MessagePopup.GetComponentInChildren<TMP_Text>().text += entry.Key + " is duplicated in " + entry.Value.Count + " classes \n";
-            foreach (KeyValuePair<string, List<Character>> entry in MethodMap.ToList())
-                MessagePopup.GetComponentInChildren<TMP_Text>().text += entry.Key + " is duplicated in " + entry.Value.Count + " classes \n";
+            AttributesData.Load($"{FolderPath}/{stage}/Attributes.json");
+            MethodsData.Load($"{FolderPath}/{stage}/Methods.json");
+            SpecialAbilitiesData.Load($"{FolderPath}/{stage}/SpecialAbilities.json");
+            CharactersData.Load($"{FolderPath}/{stage}/Characters.json");
+            CharactersGameObjectData.Load();
+
+
+            FinalCharacterAttributesMap = new();
+            FinalCharacterMethodsMap = new();
+            ErrorsMap = new();
+
+            AbstractClasses = new();
+
+            BuildFinalDataMap();
         }
-        else 
+
+        else
         {
+            string text = "Well Done Bitch, I`m Batman";
+            MessagePopup.GetComponentInChildren<TMP_Text>().text = text;
             MessagePopup.SetActive(true);
-            MessagePopup.GetComponentInChildren<TMP_Text>().text = "All abstract classes are valid";
-            ConfirmButton.SetActive(false);
         }
     }
-    public void BuildMaps(ref Dictionary<string, List<Character>> AttributeMap, ref Dictionary<string, List<Character>> MethodMap, Character character)
+    private void BuildFinalDataMap()
     {
+        List<Character> charactersCollection = CharactersData.CharactersManager.CharactersCollection;
+
+        foreach (Character character in charactersCollection)
+        {
+            FinalCharacterAttributesMap.Add(character, character.Attributes.Select(attribute => attribute.Name).ToList());
+            FinalCharacterMethodsMap.Add(character, character.Methods.Select(method => method.Name).ToList());
+
+            if (character.IsAbstract) AbstractClasses.Add((character, false));
+        }
+
+        // Call the AbstractMapModifier for each of the abstract classses in AbstractClasses only if their corresponds value is False, Please
+        for (int i = 0; i < AbstractClasses.Count; i++)
+        {
+            (Character, bool) item = AbstractClasses[i];
+            AbstractMapModifier(item.Item1);
+        }
+    }
+    
+    private void AbstractMapModifier(Character character)
+    {
+        if (AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)].Item2)
+        {
+            return;
+        }
+        AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)] = (character, true);
+    
+        Dictionary<string, List<Character>> commonAttributes = new();
+        Dictionary<string, List<Character>> commonMethods = new();
+
         foreach (Character child in character.Childrens)
-            BuildMaps(ref AttributeMap, ref MethodMap, child);
+        {
+            if (child.IsAbstract) AbstractMapModifier(child);
+            
+            foreach (Attribute attribute in child.Attributes)
+            {
+                if (commonAttributes.TryGetValue(attribute.Name, out List<Character> characters) == false)
+                {
+                    characters = new List<Character>();
+                    commonAttributes.Add(attribute.Name, characters);
+                }
+                commonAttributes[attribute.Name].Add(child);
+            }
 
-        foreach (Attribute attribute in character.Attributes) 
-        {
-            if (!AttributeMap.ContainsKey(attribute.Name)) {
-                    AttributeMap.Add(attribute.Name, new List<Character>()); 
-                    AttributeMap[attribute.Name].Add(character);
+            foreach (Method method in child.Methods)
+            {
+                if (commonMethods.TryGetValue(method.Name, out List<Character> characters) == false)
+                {
+                    characters = new List<Character>();
+                    commonMethods.Add(method.Name, characters);
                 }
-            else 
-                AttributeMap[attribute.Name].Add(character);
+                commonMethods[method.Name].Add(child);
+            }
         }
-        foreach (Method method in character.Methods) 
+
+        foreach (KeyValuePair<string, List<Character>> entry in commonAttributes)
         {
-            if (!MethodMap.ContainsKey(method.Name)) {
-                    MethodMap.Add(method.Name, new List<Character>()); 
-                    MethodMap[method.Name].Add(character);
+            if (entry.Value.Count > 1)
+            {
+                FinalCharacterAttributesMap[character].Add(entry.Key);
+
+                foreach (Character characterFix in entry.Value)
+                {
+                    FinalCharacterAttributesMap[characterFix].Remove(entry.Key);
                 }
-            else 
-                MethodMap[method.Name].Add(character);
+            }
+        }
+        foreach (KeyValuePair<string, List<Character>> entry in commonMethods)
+        {
+            if (entry.Value.Count > 1)
+            {
+                FinalCharacterMethodsMap[character].Add(entry.Key);
+
+                foreach (Character characterFix in entry.Value)
+                {
+                    FinalCharacterMethodsMap[characterFix].Remove(entry.Key);
+                }
+            }
+        }
+    }
+    public void ConfirmStage()
+    {
+        ErrorsMap = new();
+        List<Character> CharactersCollection = CharactersData.CharactersManager.CharactersCollection;
+        foreach (Character character in CharactersCollection)
+        {
+            List<string> characterAttributes = character.Attributes.Select(attribute => attribute.Name).ToList();
+            List<string> finalAttributes = FinalCharacterAttributesMap[character];
+
+            foreach (string attribute in characterAttributes)
+            {
+                if (finalAttributes.Contains(attribute) == false)
+                {
+                    if (ErrorsMap.ContainsKey(character) == false)
+                    {
+                        List<string> errors = new();
+                        ErrorsMap.Add(character, errors);
+                    }
+                    ErrorsMap[character].Add($"{attribute} is not needed.");
+                }
+            }
+            foreach (string attribute in finalAttributes)
+            {
+                if (characterAttributes.Contains(attribute) == false)
+                {
+                    if (ErrorsMap.ContainsKey(character) == false)
+                    {
+                        List<string> errors = new();
+                        ErrorsMap.Add(character, errors);
+                    }
+                    ErrorsMap[character].Add($"{attribute} is missing.");
+                }
+            }
+
+            List<string> characterMethods = character.Methods.Select(method => method.Name).ToList();
+            List<string> finalMethods = FinalCharacterMethodsMap[character];
+
+            foreach (string method in characterMethods)
+            {
+                if (finalMethods.Contains(method) == false)
+                {
+                    if (ErrorsMap.ContainsKey(character) == false)
+                    {
+                        List<string> errors = new();
+                        ErrorsMap.Add(character, errors);
+                    }
+                    ErrorsMap[character].Add($"{method} is not needed.");
+                }
+            }
+            foreach (string method in finalMethods)
+            {
+                if (characterMethods.Contains(method) == false)
+                {
+                    if (ErrorsMap.ContainsKey(character) == false)
+                    {
+                        List<string> errors = new();
+                        ErrorsMap.Add(character, errors);
+                    }
+                    ErrorsMap[character].Add($"{method} is missing.");
+                }
+            }
+            
+        }
+    
+        if (ErrorsMap.Count > 0)
+        {
+            string text = "";
+            foreach (KeyValuePair<Character, List<string>> entry in ErrorsMap)
+            {
+                text += $"{entry.Key.Name}:\n";
+                foreach (string error in entry.Value)
+                {
+                    text += $"{error}\n";
+                }
+                text += "\n";
+            }
+            MessagePopup.GetComponentInChildren<TMP_Text>().text = text;
+            MessagePopup.SetActive(true);
+        }
+        
+        else
+        {
+            SetStage();
         }
     }
 }
