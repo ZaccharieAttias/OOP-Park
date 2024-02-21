@@ -25,18 +25,6 @@ public class RestrictionManager : MonoBehaviour
 
     private void ApplyRestrictions()
     {
-        GameObject popupsGameObject = GameObject.Find("Canvas/Popups");
-        
-        if (AllowSingleInheritance || AllowMultipleInheritance)
-        {
-            popupsGameObject.AddComponent<CharactersCreationManager>();
-            popupsGameObject.GetComponent<SpecialAbilitiesManager>().CharactersCreationManager = popupsGameObject.GetComponent<CharactersCreationManager>();
-        }
-
-        if (AllowUpcasting)
-        {
-            popupsGameObject.AddComponent<UpcastingManager>();
-            popupsGameObject.AddComponent<UpcastTrackerManager>();
-        }           
+        GameObject popupsGameObject = GameObject.Find("Canvas/Popups");      
     }
 }
