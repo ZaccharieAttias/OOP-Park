@@ -72,6 +72,30 @@ public class SeedCollections : MonoBehaviour
         attributeAccessModifier = AccessModifier.Public;
         attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
         AttributesManager.AttributesCollection.Add(attribute);
+
+        // Attribute 5
+        attributeName = "grapplingGun";
+        attributeValue = 10f;
+        attributeDescription = "This is the GrapplingGun attribute";
+        attributeAccessModifier = AccessModifier.Public;
+        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        AttributesManager.AttributesCollection.Add(attribute);
+
+        // Attribute 6
+        attributeName = "inverseGravity";
+        attributeValue = -40f;
+        attributeDescription = "This is the InverseGravity attribute";
+        attributeAccessModifier = AccessModifier.Protected;
+        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        AttributesManager.AttributesCollection.Add(attribute);
+
+        // Attribute 7
+        attributeName = "wallJump";
+        attributeValue = 1f;
+        attributeDescription = "This is the WallJump attribute";
+        attributeAccessModifier = AccessModifier.Private;
+        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        AttributesManager.AttributesCollection.Add(attribute); 
     }
     private void InitializeMethodsCollection()
     {
@@ -110,6 +134,30 @@ public class SeedCollections : MonoBehaviour
         methodDescription = "This is the FireballShoot method";
         methodAttribute = AttributesManager.AttributesCollection[3];
         methodAccessModifier = AccessModifier.Public;
+        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        MethodsManager.MethodsCollection.Add(method);
+
+        // Method 5
+        methodName = "GrapplingGun";
+        methodDescription = "This is the GrapplingGun method";
+        methodAttribute = AttributesManager.AttributesCollection[4];
+        methodAccessModifier = AccessModifier.Public;
+        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        MethodsManager.MethodsCollection.Add(method);
+
+        // Method 6
+        methodName = "InverseGravity";
+        methodDescription = "This is the InverseGravity method";
+        methodAttribute = AttributesManager.AttributesCollection[5];
+        methodAccessModifier = AccessModifier.Protected;
+        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        MethodsManager.MethodsCollection.Add(method);
+
+        // Method 7
+        methodName = "WallJump";
+        methodDescription = "This is the WallJump method";
+        methodAttribute = AttributesManager.AttributesCollection[6];
+        methodAccessModifier = AccessModifier.Private;
         method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
         MethodsManager.MethodsCollection.Add(method);
     }
@@ -229,6 +277,40 @@ public class SeedCollections : MonoBehaviour
         specialAbilities.Add(specialAbility);
         SpecialAbilitiesManager.SpecialAbilitiesCollection.Add(abilityType, specialAbilities);
         SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Speed].Add(specialAbility);
+
+        // Special Ability 11 (GrapplingGun)
+        specialAbilities = new();
+        abilityName = "Grappling Gun";
+        abilityDescription = "Grappling Gun";
+        abilityValue = 10;
+        abilityType = SpecialAbilityType.GrapplingGun;
+        specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
+        specialAbilities.Add(specialAbility);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection.Add(abilityType, specialAbilities);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Automatic].Add(specialAbility);
+
+        // Special Ability 12 (InverseGravity)
+        specialAbilities = new();
+        abilityName = "Inverse Gravity";
+        abilityDescription = "Inverse Gravity";
+        abilityValue = -40;
+        abilityType = SpecialAbilityType.InverseGravity;
+        specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
+        specialAbilities.Add(specialAbility);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection.Add(abilityType, specialAbilities);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Gravity].Add(specialAbility);
+
+        // Special Ability 13 (WallJump)
+        specialAbilities = new();
+        abilityName = "Wall Jump";
+        abilityDescription = "Wall Jump";
+        abilityValue = 1;
+        abilityType = SpecialAbilityType.WallJump;
+        specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
+        specialAbilities.Add(specialAbility);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection.Add(abilityType, specialAbilities);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Jump].Add(specialAbility);
+
     }
     public void InitializeCharactersCollection()
     {
@@ -241,7 +323,7 @@ public class SeedCollections : MonoBehaviour
         characterName = "Character 1";
         characterDescription = "This is the first character";
         characterSpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.General][0];
-        Character character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, true);
+        Character character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
         InitializeCharacterObject(character1);
         CharactersManager.AddCharacter(character1);
 
