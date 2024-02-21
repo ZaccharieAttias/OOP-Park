@@ -19,6 +19,7 @@ public static class MethodsData
 
     public static void Save() { File.WriteAllText(FilePath, Serialize(MethodsManager.MethodsCollection)); }
     public static void Load() { MethodsManager.MethodsCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Load(string filename) { MethodsManager.MethodsCollection = Deserialize(File.ReadAllText(filename)); }
 
     public static string Serialize(List<Method> methods) { return JsonConvert.SerializeObject(methods, Formatting.Indented); }
     public static List<Method> Deserialize(string json) { return JsonConvert.DeserializeObject<List<Method>>(json); }
@@ -53,9 +54,27 @@ public static class MethodsData
         List<Method> methodsCollection = new();
         foreach (MethodData methodData in characterData.Methods)
         {
-            Method method = (methodData.Owner != characterData.Name)
-                ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name)
-                : new(MethodsManager.MethodsCollection.Find(method => method.Name == methodData.Name));
+            Method method;
+
+            if (methodData.Owner is null)
+            {
+                Attribute attribute = CharactersData.CharactersManager.CharactersCollection.Find(c => c.Name == methodData.Attribute.Owner).Attributes.Find(attribute => attribute.Name == methodData.Attribute.Name);
+                method = new Method(MethodsManager.MethodsCollection.Find(item => item.Name == methodData.Name), attribute);
+            }
+
+            else if (methodData.Owner == characterData.Name)
+            {
+                Character character1 = CharactersData.CharactersManager.CharactersCollection.Find(character => methodData.Attribute.Owner == character.Name);
+                Attribute attribute = character1.Attributes.Find(attribute => attribute.Name == methodData.Attribute.Name);
+                Method methodToBuild = MethodsManager.MethodsCollection.Find(method => method.Name == methodData.Name);
+                method = new Method(methodToBuild, attribute);
+            }
+
+            else
+            {
+                method = CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == methodData.Owner).Methods.Find(method => method.Name == methodData.Name);
+            }
+ 
 
             method.AccessModifier = methodData.Owner != characterData.Name ? method.AccessModifier : methodData.AccessModifier;
             methodsCollection.Add(method);

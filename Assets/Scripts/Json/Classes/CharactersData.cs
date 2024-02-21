@@ -19,10 +19,12 @@ public static class CharactersData
 
 
     public static void Save() { File.WriteAllText(FilePath, Serialize(CharactersManager.CharactersCollection)); }
-    public static void Load() { CharactersManager.CharactersCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Load() { Deserialize(File.ReadAllText(FilePath)); }
+    public static void Load(string filename) { Deserialize(File.ReadAllText(filename)); }
+
 
     public static string Serialize(List<Character> characters) { return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented); }
-    public static List<Character> Deserialize(string json) { return UnpackData(JsonConvert.DeserializeObject<List<CharacterData>>(json)); }
+    public static void Deserialize(string json) { UnpackData(JsonConvert.DeserializeObject<List<CharacterData>>(json)); }
 
     public static List<CharacterData> PackData(List<Character> characters)
     {
@@ -52,9 +54,8 @@ public static class CharactersData
 
         return characterData;
     }
-    public static List<Character> UnpackData(List<CharacterData> characters)
+    public static void UnpackData(List<CharacterData> characters)
     {
-        List<Character> charactersCollection = new();
         foreach (CharacterData characterData in characters)
         {
             Character character = new()
@@ -65,20 +66,19 @@ public static class CharactersData
                 Name = characterData.Name,
                 Description = characterData.Description,
 
-                Attributes = AttributesData.UnpackData(characterData),
-                Methods = MethodsData.UnpackData(characterData),
-
                 SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
                 UpcastMethod = UpcastMethodsData.UnpackData(characterData)
             };
 
-            character.Parents.AddRange(charactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());
+            CharactersManager.CharactersCollection.Add(character);
+            
+            character.Attributes = AttributesData.UnpackData(characterData);
+            character.Methods = MethodsData.UnpackData(characterData);
+
+            character.Parents.AddRange(CharactersManager.CharactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());
             character.Parents.ForEach(parent => parent.Childrens.Add(character));
             
-            charactersCollection.Add(character);
         }
-        
-        return charactersCollection;
     }
 }
 

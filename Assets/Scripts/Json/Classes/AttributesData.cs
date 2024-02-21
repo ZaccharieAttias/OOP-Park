@@ -19,6 +19,7 @@ public static class AttributesData
 
     public static void Save() { File.WriteAllText(FilePath, Serialize(AttributesManager.AttributesCollection)); }
     public static void Load() { AttributesManager.AttributesCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Load(string filename) { AttributesManager.AttributesCollection = Deserialize(File.ReadAllText(filename)); }
 
     public static string Serialize(List<Attribute> attributes) { return JsonConvert.SerializeObject(attributes, Formatting.Indented); }
     public static List<Attribute> Deserialize(string json) { return JsonConvert.DeserializeObject<List<Attribute>>(json); }
@@ -46,9 +47,9 @@ public static class AttributesData
         List<Attribute> attributesCollection = new();
         foreach (AttributeData attributeData in characterData.Attributes)
         {
-            Attribute attribute = (attributeData.Owner != characterData.Name)
-               ? CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name)
-               : new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name));
+            Attribute attribute = (attributeData.Owner is null || attributeData.Owner == characterData.Name)
+               ? new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name))
+               : CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name);
 
             attribute.AccessModifier = attributeData.Owner != characterData.Name ? attribute.AccessModifier : attributeData.AccessModifier;
             attributesCollection.Add(attribute);
