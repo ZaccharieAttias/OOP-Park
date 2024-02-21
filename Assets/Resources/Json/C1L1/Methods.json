@@ -2,45 +2,45 @@
   {
     "Name": "Speed",
     "Description": "This is the MoveSpeed method",
-    "AccessModifier": 0,
     "Attribute": {
       "Name": "speed",
       "Description": "This is the MoveSpeed attribute",
       "Value": 5.0,
       "AccessModifier": 0
-    }
+    },
+    "AccessModifier": 0
   },
   {
     "Name": "Gravity",
     "Description": "This is the GravityForce method",
-    "AccessModifier": 1,
     "Attribute": {
-      "Name": "speed",
-      "Description": "This is the MoveSpeed attribute",
-      "Value": 5.0,
-      "AccessModifier": 0
-    }
+      "Name": "gravity",
+      "Description": "This is the GravityForce attribute",
+      "Value": 20.0,
+      "AccessModifier": 1
+    },
+    "AccessModifier": 1
   },
   {
     "Name": "MultipleJumps",
     "Description": "This is the DoubleJump method",
-    "AccessModifier": 2,
     "Attribute": {
-      "Name": "speed",
-      "Description": "This is the MoveSpeed attribute",
-      "Value": 5.0,
-      "AccessModifier": 0
-    }
+      "Name": "multipleJumps",
+      "Description": "This is the DoubleJump attribute",
+      "Value": 2.0,
+      "AccessModifier": 2
+    },
+    "AccessModifier": 2
   },
   {
     "Name": "FireballShoot",
     "Description": "This is the FireballShoot method",
-    "AccessModifier": 0,
     "Attribute": {
-      "Name": "speed",
-      "Description": "This is the MoveSpeed attribute",
-      "Value": 5.0,
+      "Name": "fireballShoot",
+      "Description": "This is the FireballShoot attribute",
+      "Value": 0.25,
       "AccessModifier": 0
-    }
+    },
+    "AccessModifier": 0
   }
 ]
