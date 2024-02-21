@@ -1,0 +1,144 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": true,
+    "Name": "Character 1",
+    "Description": "This is the first character",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "General",
+      "Type": 0
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [],
+    "Childrens": [
+      "Character 2",
+      "Character 3"
+    ]
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 2",
+    "Description": "This is the second character",
+    "Attributes": [
+      {
+        "Owner": "Character 2",
+        "Name": "speed",
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 2",
+        "Name": "multipleJumps",
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 2",
+        "Name": "fireballShoot",
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 2",
+        "Name": "MultipleJumps",
+        "Description": "This is the DoubleJump method",
+        "Attribute": {
+          "Owner": "Character 2",
+          "Name": "multipleJumps",
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 2",
+        "Name": "Speed",
+        "Description": "This is the MoveSpeed method",
+        "Attribute": {
+          "Owner": "Character 2",
+          "Name": "speed",
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": {
+      "Name": "Automatic",
+      "Type": 1
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": []
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 3",
+    "Description": "This is the third character",
+    "Attributes": [
+      {
+        "Owner": "Character 3",
+        "Name": "gravity",
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "fireballShoot",
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "speed",
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 3",
+        "Name": "FireballShoot",
+        "Description": "This is the FireballShoot method",
+        "Attribute": {
+          "Owner": "Character 3",
+          "Name": "fireballShoot",
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "Gravity",
+        "Description": "This is the GravityForce method",
+        "Attribute": {
+          "Owner": "Character 3",
+          "Name": "gravity",
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      }
+    ],
+    "SpecialAbility": {
+      "Name": "Manual",
+      "Type": 2
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": []
+  }
+]
