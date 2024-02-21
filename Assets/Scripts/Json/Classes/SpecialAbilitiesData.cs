@@ -19,6 +19,7 @@ public static class SpecialAbilitiesData
 
     public static void Save() { File.WriteAllText(FilePath, Serialize(SpecialAbilitiesManager.SpecialAbilitiesCollection)); }
     public static void Load() { SpecialAbilitiesManager.SpecialAbilitiesCollection = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Load(string filename) { SpecialAbilitiesManager.SpecialAbilitiesCollection = Deserialize(File.ReadAllText(filename)); }
 
     public static string Serialize(Dictionary<SpecialAbilityType, List<SpecialAbility>> specialAbilities) { return JsonConvert.SerializeObject(specialAbilities, Formatting.Indented); }
     public static Dictionary<SpecialAbilityType, List<SpecialAbility>> Deserialize(string json) { return JsonConvert.DeserializeObject<Dictionary<SpecialAbilityType, List<SpecialAbility>>>(json); }

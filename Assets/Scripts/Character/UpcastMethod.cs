@@ -21,6 +21,7 @@ public class UpcastMethod
         CharacterMethod = characterMethod;
         Amount = amount;
 
+        UpcastTrackerManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastTrackerManager>();
         UpcastTrackerManager.AmountDescriptionText.text = ((int)Amount).ToString();
     }
     public UpcastMethod(UpcastMethod upcastMethod)
