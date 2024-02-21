@@ -4,7 +4,18 @@
     "IsAbstract": true,
     "Name": "Character 1",
     "Description": "This is the first character",
-    "Attributes": [],
+    "Attributes": [
+      {
+        "Owner": "Character 1",
+        "Name": "speed",
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 1",
+        "Name": "fireballShoot",
+        "AccessModifier": 0
+      }
+    ],
     "Methods": [],
     "SpecialAbility": {
       "Name": "General",
@@ -29,18 +40,8 @@
     "Attributes": [
       {
         "Owner": "Character 2",
-        "Name": "speed",
-        "AccessModifier": 0
-      },
-      {
-        "Owner": "Character 2",
         "Name": "multipleJumps",
         "AccessModifier": 2
-      },
-      {
-        "Owner": "Character 2",
-        "Name": "fireballShoot",
-        "AccessModifier": 0
       }
     ],
     "Methods": [
@@ -54,17 +55,6 @@
           "AccessModifier": 2
         },
         "AccessModifier": 2
-      },
-      {
-        "Owner": "Character 2",
-        "Name": "Speed",
-        "Description": "This is the MoveSpeed method",
-        "Attribute": {
-          "Owner": "Character 2",
-          "Name": "speed",
-          "AccessModifier": 0
-        },
-        "AccessModifier": 0
       }
     ],
     "SpecialAbility": {
@@ -91,30 +81,9 @@
         "Owner": "Character 3",
         "Name": "gravity",
         "AccessModifier": 1
-      },
-      {
-        "Owner": "Character 3",
-        "Name": "fireballShoot",
-        "AccessModifier": 0
-      },
-      {
-        "Owner": "Character 3",
-        "Name": "speed",
-        "AccessModifier": 0
       }
     ],
     "Methods": [
-      {
-        "Owner": "Character 3",
-        "Name": "FireballShoot",
-        "Description": "This is the FireballShoot method",
-        "Attribute": {
-          "Owner": "Character 3",
-          "Name": "fireballShoot",
-          "AccessModifier": 0
-        },
-        "AccessModifier": 0
-      },
       {
         "Owner": "Character 3",
         "Name": "Gravity",
