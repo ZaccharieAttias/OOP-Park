@@ -31,4 +31,12 @@ public class Method
         
         AccessModifier = method.AccessModifier;
     }
+    public Method(Method method, Attribute attribute) // Fix in the future
+    {
+        Name = method.Name;
+        Description = method.Description;
+        Attribute = attribute;
+        
+        AccessModifier = method.AccessModifier;
+    }
 }
