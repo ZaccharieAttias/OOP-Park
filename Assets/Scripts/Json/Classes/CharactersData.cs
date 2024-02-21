@@ -19,8 +19,16 @@ public static class CharactersData
 
 
     public static void Save() { File.WriteAllText(FilePath, Serialize(CharactersManager.CharactersCollection)); }
-    public static void Load() { Deserialize(File.ReadAllText(FilePath)); }
-    public static void Load(string filename) { Deserialize(File.ReadAllText(filename)); }
+    public static void Load() 
+    { 
+        CharactersManager.CharactersCollection = new();
+        Deserialize(File.ReadAllText(FilePath)); 
+    }
+    public static void Load(string filename) 
+    { 
+        CharactersManager.CharactersCollection = new();
+        Deserialize(File.ReadAllText(filename)); 
+    }
 
 
     public static string Serialize(List<Character> characters) { return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented); }
