@@ -241,7 +241,7 @@ public class SeedCollections : MonoBehaviour
         characterName = "Character 1";
         characterDescription = "This is the first character";
         characterSpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.General][0];
-        Character character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, true);
+        Character character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
         InitializeCharacterObject(character1);
         CharactersManager.AddCharacter(character1);
 
