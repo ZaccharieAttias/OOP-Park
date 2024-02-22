@@ -77,14 +77,23 @@ public class MethodsManager : MonoBehaviour
     private bool HasRequiredAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
         bool isCurrentCharacter = CharactersData.CharactersManager.CurrentCharacter == character;
-        bool hasRequiredAttribute = character.Attributes.Any(attribute => attribute.Name.ToLower() == methodName.ToLower() && (isCurrentCharacter || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
+        bool hasRequiredAttribute = character.Attributes.Any(attribute => attribute.Name.ToLower() == methodName.ToLower() && (isCurrentCharacter || allowAccessModifiers is false || attribute.AccessModifier is not AccessModifier.Private));
         
-        return hasRequiredAttribute || character.Parents.Any(parent => HasRequiredAttribute(parent, methodName, allowAccessModifiers));
+        if (hasRequiredAttribute is false && character.Parents.Count > 0)
+        {
+            foreach (Character parent in character.Parents)
+            {
+                hasRequiredAttribute = HasRequiredAttribute(parent, methodName, allowAccessModifiers);
+                if (hasRequiredAttribute) break;
+            }
+        }
+
+        return hasRequiredAttribute;
     }
     private Attribute FindDependentAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
         bool isCurrentCharacter = CharactersData.CharactersManager.CurrentCharacter == character;
-        var currentAttribute = character.Attributes.FirstOrDefault(attribute => attribute.Name.ToLower() == methodName.ToLower() && (isCurrentCharacter || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
+        var currentAttribute = character.Attributes.FirstOrDefault(attribute => attribute.Name.ToLower() == methodName.ToLower() && (isCurrentCharacter || allowAccessModifiers is false || attribute.AccessModifier is not AccessModifier.Private));
 
         if (currentAttribute is null && character.Parents.Count > 0)
         {
