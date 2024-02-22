@@ -13,8 +13,6 @@ public class MethodsManager : MonoBehaviour
     public GameObject MethodButton;
     public Transform MethodsContentPanel;
 
-    public CharactersManager CharactersManager;
-
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -30,8 +28,6 @@ public class MethodsManager : MonoBehaviour
 
         Button PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
-        
-        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
 
 
@@ -47,45 +43,66 @@ public class MethodsManager : MonoBehaviour
             TMP_Text methodButtonText = methodGameObject.GetComponentInChildren<TMP_Text>();
             methodButtonText.text = method.Name;
 
+            Image image = methodGameObject.GetComponent<Image>();
+            image.color = CharactersData.CharactersManager.CurrentCharacter.Methods.Any(item => item.Name == method.Name) ? Color.green : Color.white;
+
             Button methodButton = methodGameObject.GetComponent<Button>();
             methodButton.onClick.AddListener(() => MarkMethod(methodGameObject, method));
-            methodButton.interactable = HasRequiredAttribute(CharactersManager.CurrentCharacter, method.Name.ToLower(), RestrictionManager.Instance.AllowAccessModifiers);
-            
-            Image image = methodGameObject.GetComponent<Image>();
-            image.color = CharactersManager.CurrentCharacter.Methods.Any(item => item.Name == method.Name) ? Color.green : Color.white;
+            methodButton.interactable = HasRequiredAttribute(CharactersData.CharactersManager.CurrentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifiers);
         }
     }
     private void ClearContentPanel() { foreach (Transform methodTransform in MethodsContentPanel) Destroy(methodTransform.gameObject); }
     private void MarkMethod(GameObject methodGameObject, Method method)
     {
-        var currentCharacter = CharactersManager.CurrentCharacter;
-        var currentMethod = currentCharacter.Methods.Find(item => item.Name == method.Name); 
+        Character currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+        var currentMethod = currentCharacter.Methods.FirstOrDefault(item => item.Name == method.Name); 
 
-        if (currentMethod is not null)
-            currentCharacter.Methods.Remove(currentMethod);
-
-        else
+        if (currentMethod is null)
         {
             Attribute requiredAttribute = FindDependentAttribute(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifiers);
-            Method newMethod = new(method.Name, method.Description, requiredAttribute, method.AccessModifier);
+            Method newMethod = new(method, requiredAttribute);
             currentCharacter.Methods.Add(newMethod);
         }
 
+        else
+        {
+            bool isMethodOwner = currentCharacter.Name == MethodsData.FindMethodOwner(currentCharacter, currentMethod);
+            if (isMethodOwner) CancelMethodReferences(currentCharacter, currentMethod);
+            else currentCharacter.Methods.Remove(currentMethod);
+        }
+        
         Image image = methodGameObject.GetComponent<Image>();
         image.color = currentMethod is null ? Color.green : Color.white;
     }
     private bool HasRequiredAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
-        if (character.Attributes.Any(attribute => attribute.Name.ToLower() == methodName && (CharactersManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private))) return true;
+        bool isCurrentCharacter = CharactersData.CharactersManager.CurrentCharacter == character;
+        bool hasRequiredAttribute = character.Attributes.Any(attribute => attribute.Name.ToLower() == methodName.ToLower() && (isCurrentCharacter || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
         
-        return character.Parents.Any(parent => HasRequiredAttribute(parent, methodName, allowAccessModifiers));
+        return hasRequiredAttribute || character.Parents.Any(parent => HasRequiredAttribute(parent, methodName, allowAccessModifiers));
     }
     private Attribute FindDependentAttribute(Character character, string methodName, bool allowAccessModifiers)
     {
-        var currentAttribute = character.Attributes.Find(attribute => attribute.Name.ToLower() == methodName.ToLower() && (CharactersManager.CurrentCharacter == character || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
+        bool isCurrentCharacter = CharactersData.CharactersManager.CurrentCharacter == character;
+        var currentAttribute = character.Attributes.FirstOrDefault(attribute => attribute.Name.ToLower() == methodName.ToLower() && (isCurrentCharacter || allowAccessModifiers == false || attribute.AccessModifier != AccessModifier.Private));
 
-        return currentAttribute is not null ? currentAttribute : character.Parents.Select(parent => FindDependentAttribute(parent, methodName, allowAccessModifiers)).FirstOrDefault(parentAttribute => parentAttribute is not null);
+        if (currentAttribute is null && character.Parents.Count > 0)
+        {
+            foreach (Character parent in character.Parents)
+            {
+                currentAttribute = FindDependentAttribute(parent, methodName, allowAccessModifiers);
+                if (currentAttribute is not null) break;
+            }
+        }
+        return currentAttribute;
     }   
+    public void CancelMethodReferences(Character character, Method method)
+    {
+        var referencedMethod = character.Methods.FirstOrDefault(item => item == method);
+        if (referencedMethod is not null) character.Methods.Remove(referencedMethod);
+
+        foreach (Character child in character.Childrens) CancelMethodReferences(child, method);
+    }
 
     private void ToggleOn()
     { 
@@ -94,7 +111,7 @@ public class MethodsManager : MonoBehaviour
     }
     private void ToggleOff()
     { 
-        CharactersManager.DisplayCharacter(CharactersManager.CurrentCharacter);
+        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false); 
     }
 }
