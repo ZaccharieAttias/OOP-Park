@@ -13,8 +13,6 @@ public class AttributesManager : MonoBehaviour
     public GameObject AttributeButton;
     public Transform AttributesContentPanel;
 
-    public CharactersManager CharactersManager;
-
     
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -30,15 +28,13 @@ public class AttributesManager : MonoBehaviour
 
         Button PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         PopupToggleOff.onClick.AddListener(() => ToggleOff());
-        
-        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
     }
 
 
     private void LoadPopup()
     {
         ClearContentPanel();
-
+        
         foreach (Attribute attribute in AttributesCollection)
         {
             GameObject attributeGameObject = Instantiate(AttributeButton, AttributesContentPanel);
@@ -47,50 +43,54 @@ public class AttributesManager : MonoBehaviour
             TMP_Text attributeButtonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             attributeButtonText.text = attribute.Name;
 
+            Image image = attributeGameObject.GetComponent<Image>();
+            image.color = CharactersData.CharactersManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name) ? Color.green : Color.white;
+            
             Button attributeButton = attributeGameObject.GetComponent<Button>();
             attributeButton.onClick.AddListener(() => MarkAttribute(attributeGameObject, attribute));
-            
-            Image image = attributeGameObject.GetComponent<Image>();
-            image.color = CharactersManager.CurrentCharacter.Attributes.Any(item => item.Name == attribute.Name) ? Color.green : Color.white;
         }
     }
     private void ClearContentPanel() { foreach (Transform attributeTransform in AttributesContentPanel) Destroy(attributeTransform.gameObject); }
     private void MarkAttribute(GameObject attributeGameObject, Attribute attribute)
     {
-        Character currentCharacter = CharactersManager.CurrentCharacter;
-        var currentAttribute = currentCharacter.Attributes.Find(item => item.Name == attribute.Name);   
-        
-        if (currentAttribute is not null)
+        Character currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+        var currentAttribute = currentCharacter.Attributes.FirstOrDefault(item => item.Name == attribute.Name);
+    
+        if (currentAttribute is null)
         {
-            currentCharacter.Attributes.Remove(currentAttribute);
-            CancelAttributeDependencies(currentCharacter, currentAttribute);
+            Attribute newAttribute = new(attribute);
+            currentCharacter.Attributes.Add(newAttribute);
         }
-
+        
         else
         {
-            Attribute newAttribute = new(attribute.Name, attribute.Description, attribute.Value, attribute.AccessModifier);
-            currentCharacter.Attributes.Add(newAttribute);
+            bool isAttributeOwner = currentCharacter.Name == AttributesData.FindAttributeOwner(currentCharacter, currentAttribute);
+            if (isAttributeOwner) CancelAttributeReferences(currentCharacter, currentAttribute);
+            else currentCharacter.Attributes.Remove(currentAttribute);
         }
 
         Image image = attributeGameObject.GetComponent<Image>();
         image.color = currentAttribute is null ? Color.green : Color.white;
     }
-    private void CancelAttributeDependencies(Character character, Attribute attribute)
+    public void CancelAttributeReferences(Character character, Attribute attribute)
     {
-        var dependentMethod = character.Methods.Find(method => method.Attribute == attribute);
+        var referencedAttribute = character.Attributes.FirstOrDefault(item => item == attribute);
+        if (referencedAttribute is not null) character.Attributes.Remove(referencedAttribute);
+
+        var dependentMethod = character.Methods.FirstOrDefault(item => item.Attribute == attribute);
         if (dependentMethod is not null) character.Methods.Remove(dependentMethod);
-        
-        foreach (Character child in character.Childrens) CancelAttributeDependencies(child, attribute);
+
+        foreach (Character child in character.Childrens) CancelAttributeReferences(child, attribute);
     }
 
     public void ToggleOn()
-    { 
+    {
         LoadPopup();
         Popup.SetActive(true);    
     }
     public void ToggleOff()
     {
-        CharactersManager.DisplayCharacter(CharactersManager.CurrentCharacter);
+        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false); 
     }
 }
