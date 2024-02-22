@@ -1,1 +1,6 @@
-public enum AccessModifier { Public, Protected, Private }
+public enum AccessModifier
+{
+    Public,
+    Protected,
+    Private
+}
