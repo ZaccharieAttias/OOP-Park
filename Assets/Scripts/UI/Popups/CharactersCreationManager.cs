@@ -220,7 +220,7 @@ public class CharactersCreationManager : MonoBehaviour
 
     private IEnumerator CharacterBuildPipeline()
     {
-        SpecialAbilitiesManager.ToggleOn();
+        SpecialAbilitiesManager.ToggleOn(SelectedCharacterParents);
         yield return new WaitUntil(() => SpecialAbilitiesManager.Popup.activeSelf == false);
 
         Character builtCharacter = BuildCharacter();
