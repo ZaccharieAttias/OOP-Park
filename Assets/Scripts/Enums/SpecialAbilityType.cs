@@ -1,1 +1,6 @@
-public enum SpecialAbilityType { General, Automatic, Manual, Jump, Gravity, Speed, FireballShoot, DoubleJump, WeakGravity, FastSpeed, GrapplingGun, InverseGravity, WallJump}
+public enum SpecialAbilityType
+{
+    General, Automatic, Manual,
+    Jump, Gravity, Speed, FireballShoot,
+    DoubleJump, WeakGravity, FastSpeed, GrapplingGun, InverseGravity, WallJump
+}
