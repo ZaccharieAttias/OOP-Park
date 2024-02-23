@@ -16,7 +16,7 @@ public class LootLockerManager : MonoBehaviour
                 //SceneManager.LoadScene("OnlineLoadLevel");
                 
                 //set the object to active
-                GameObject.Find("Canvas/GameplayScreen/Login").SetActive(false);
+                GameObject.Find("Canvas/Menus/Gameplay/Login").SetActive(false);
                 
             }
             else

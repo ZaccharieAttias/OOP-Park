@@ -24,8 +24,8 @@ public class CharactersTreeManager : MonoBehaviour
         TreeDistance = 5;
         DepthDistance = 150;
 
-        ScrollView = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView").GetComponent<ScrollRect>();
-        AllGameObject = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All");
+        ScrollView = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView").GetComponent<ScrollRect>();
+        AllGameObject = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All");
     }
 
     public void BuildTree(Character root, Character latest)

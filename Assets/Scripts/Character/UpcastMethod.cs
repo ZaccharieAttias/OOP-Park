@@ -6,29 +6,14 @@ public class UpcastMethod
     public Method CharacterMethod;
     public float Amount;
 
-    public UpcastTrackerManager UpcastTrackerManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastTrackerManager>(); 
+    public UpcastingTrackerManager UpcastingTrackerManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastingTrackerManager>();
 
 
-    public UpcastMethod()
-    {
-        CharacterMethod = null;
-        Amount = 0;
-
-        UpcastTrackerManager.AmountDescriptionText.text = ((int)Amount).ToString();
-    }
     public UpcastMethod(Method characterMethod, float amount)
     {
         CharacterMethod = characterMethod;
         Amount = amount;
 
-        UpcastTrackerManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastTrackerManager>();
-        UpcastTrackerManager.AmountDescriptionText.text = ((int)Amount).ToString();
-    }
-    public UpcastMethod(UpcastMethod upcastMethod)
-    {
-        CharacterMethod = upcastMethod.CharacterMethod;
-        Amount = upcastMethod.Amount;
-
-        UpcastTrackerManager.AmountDescriptionText.text = ((int)Amount).ToString();
+        UpcastingTrackerManager.AmountDescriptionText.text = ((int)Amount).ToString();
     }
 }

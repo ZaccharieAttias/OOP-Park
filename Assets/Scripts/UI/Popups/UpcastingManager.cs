@@ -14,11 +14,6 @@ public class UpcastingManager : MonoBehaviour
     public List<TextMeshProUGUI> Texts;
     public List<Button> Buttons;
 
-    public Button CloseButton;
-    public Button ConfirmButton;
-
-    public CharactersManager CharactersManager;
-
     
     private void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -45,8 +40,8 @@ public class UpcastingManager : MonoBehaviour
             Popup.transform.Find("Background/Foreground/Buttons/Method/Right").GetComponent<Button>(),
             Popup.transform.Find("Background/Foreground/Buttons/Method/Left").GetComponent<Button>(),
             Popup.transform.Find("Background/Foreground/Buttons/Amount/Right").GetComponent<Button>(),
-            Popup.transform.Find("Background/Foreground/Buttons/Amount/Left").GetComponent<Button>()
-
+            Popup.transform.Find("Background/Foreground/Buttons/Amount/Left").GetComponent<Button>(),
+            Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>()
         };
 
         Buttons[0].onClick.AddListener(() => UpdateCharacter(1));
@@ -55,28 +50,34 @@ public class UpcastingManager : MonoBehaviour
         Buttons[3].onClick.AddListener(() => UpdateMethod(-1));
         Buttons[4].onClick.AddListener(() => UpdateAmount(1));
         Buttons[5].onClick.AddListener(() => UpdateAmount(-1));
-
-        CloseButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
-        CloseButton.onClick.AddListener(() => ToggleOff());
-
-        ConfirmButton = Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>();
-        ConfirmButton.onClick.AddListener(() => ApplyUpcasting());
-
-        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
+        Buttons[6].onClick.AddListener(() => ApplyUpcasting());
+        
+        Button closeButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
+        closeButton.onClick.AddListener(() => ToggleOff());
     }
-    
-    public void Update() { if (Input.GetKeyDown(KeyCode.U)) ToggleActivation(); }
+    public void Update() { if (RestrictionManager.Instance.AllowUpcasting && Input.GetKeyDown(KeyCode.U)) ToggleActivation(); }
+
 
     private void LoadPopup()
     {
         ClearContentPanel();
         
-        CollectUpcastableData(CharactersManager.CurrentCharacter);
+        CollectUpcastableData(CharactersData.CharactersManager.CurrentCharacter);
         DisplayCharacter();
         DisplayMethod();
         DisplayAmount();
 
         DisplayButtonsInteractable();
+    }
+    private void ClearContentPanel()
+    {
+        UpcastableData = new();
+        Indices = new List<int>
+        { 
+            0, 
+            0, 
+            0 
+        };
     }
     private void CollectUpcastableData(Character character)
     {
@@ -85,7 +86,7 @@ public class UpcastingManager : MonoBehaviour
             CollectUpcastableData(parent);
 
             List<Method> parentMethods = parent.Methods
-                .Where(method => RestrictionManager.Instance.AllowAccessModifiers == false || method.AccessModifier != AccessModifier.Private)
+                .Where(method => RestrictionManager.Instance.AllowAccessModifiers is false || method.AccessModifier is not AccessModifier.Private)
                 .ToList();
             if (parentMethods.Count > 0) UpcastableData.Add((parent, parentMethods));
         }
@@ -104,14 +105,13 @@ public class UpcastingManager : MonoBehaviour
         Buttons[2].interactable = UpcastableData.Count > 0 && UpcastableData[Indices[0]].Item2.Count > 1;
         Buttons[3].interactable = UpcastableData.Count > 0 && UpcastableData[Indices[0]].Item2.Count > 1;    
     }
-    private void DisplayAmount() 
+    private void DisplayAmount()
     { 
         Texts[2].text = UpcastableData.Count > 0 ? Indices[2].ToString() : ""; 
 
         Buttons[4].interactable = UpcastableData.Count > 0;
         Buttons[5].interactable = UpcastableData.Count > 0;
-
-        ConfirmButton.interactable = UpcastableData.Count > 0 && Indices[2] > 0;
+        Buttons[6].interactable = UpcastableData.Count > 0 && Indices[2] > 0;
     }
     private void DisplayButtonsInteractable()
     {
@@ -121,14 +121,7 @@ public class UpcastingManager : MonoBehaviour
         Buttons[3].interactable = UpcastableData.Count > 0 && UpcastableData[Indices[0]].Item2.Count > 1;    
         Buttons[4].interactable = UpcastableData.Count > 0;
         Buttons[5].interactable = UpcastableData.Count > 0;
-
-        ConfirmButton.interactable = UpcastableData.Count > 0 && Indices[2] > 0;
-    }
-    private void ClearContentPanel()
-    {
-        UpcastableData.Clear();
-
-        Indices.ForEach(index => index = 0);
+        Buttons[6].interactable = UpcastableData.Count > 0 && Indices[2] > 0;
     }
 
     private void UpdateCharacter(int direction)
@@ -158,21 +151,24 @@ public class UpcastingManager : MonoBehaviour
 
     private void ApplyUpcasting()
     {
-        UpcastMethod upcastMethod = new(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
-        CharactersManager.CurrentCharacter.UpcastMethod = upcastMethod;
-        CharactersManager.CurrentCharacter.UpcastMethod.UpcastTrackerManager.ToggleOn();
+        CharactersData.CharactersManager.CurrentCharacter.UpcastMethod = new(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
+        CharactersData.CharactersManager.CurrentCharacter.UpcastMethod.UpcastingTrackerManager.ToggleOn();
 
         ToggleOff();
     }
 
     public void ToggleOn()
-    { 
+    {
+        SceneManagement.ScenePause();
+
         LoadPopup();
         Popup.SetActive(true);    
     }
     public void ToggleOff()
     {
-        CharactersManager.DisplayCharacter(CharactersManager.CurrentCharacter);
+        SceneManagement.SceneResume();
+        
+        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false); 
     }
     private void ToggleActivation() { if (Popup.activeSelf) ToggleOff(); else ToggleOn(); }

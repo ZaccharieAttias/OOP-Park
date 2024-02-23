@@ -123,10 +123,10 @@ public class PlayerMovement : MonoBehaviour
         Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, .05f);
 
         PowerupTimer += Time.deltaTime;
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Speed") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Gravity") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Grappling") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(10);
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(PowerupTimer);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Speed") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(PowerupTimer);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Gravity") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(PowerupTimer);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Grappling") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(10);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(PowerupTimer);
     }
     private void CheckGround()
     {   
@@ -153,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         else Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         JumpsLeft--;
 
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(1);
     }
     private void PerformAttack()
     {
@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
         fireballs[FindFireball()].transform.position = firePoint.position;
         fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x), MoveSpeed + 10);
 
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "FireballShoot") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "FireballShoot") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(1);
 
     }
     private int FindFireball()
@@ -216,7 +216,7 @@ public class PlayerMovement : MonoBehaviour
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             }
             Invoke(nameof(StopwallJumping), WallJumpingDuration);
-            if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "WallJump") Powerup.PreviousUpcastMethod.UpcastTrackerManager.UpdateUpcastingMethod(1);
+            if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "WallJump") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(1);
         }
     }
     private void StopwallJumping()

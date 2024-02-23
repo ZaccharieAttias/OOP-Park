@@ -23,11 +23,11 @@ public class MethodsManager : MonoBehaviour
         MethodButton = Resources.Load<GameObject>("Buttons/Default");
         MethodsContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content").transform;
 
-        Button PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>();
-        PopupToggleOn.onClick.AddListener(() => ToggleOn());
+        Button popupToggleOn = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>();
+        popupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        Button PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
-        PopupToggleOff.onClick.AddListener(() => ToggleOff());
+        Button popupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
+        popupToggleOff.onClick.AddListener(() => ToggleOff());
     }
 
 

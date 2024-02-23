@@ -1,10 +1,10 @@
 using UnityEngine;
 
 
-public class SceneManager : MonoBehaviour
+public static class SceneManagement
 {
-    public void SceneResume() { Time.timeScale = 1f; }
-    public void ScenePause() { Time.timeScale = 0f; }
+    public static void SceneResume() { Time.timeScale = 1f; }
+    public static void ScenePause() { Time.timeScale = 0f; }
 
     /* Implement Scenes & Levels
     public void Presentation() { SceneManager.LoadScene("Presentation"); }
@@ -18,5 +18,5 @@ public class SceneManager : MonoBehaviour
     public void Polymorphism() { SceneManager.LoadScene("Polymorphism"); }
     */
     
-    public void Quit() { Application.Quit(); }
+    public static void Quit() { Application.Quit(); }
 }

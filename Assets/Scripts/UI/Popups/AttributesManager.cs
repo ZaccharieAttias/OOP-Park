@@ -23,11 +23,11 @@ public class AttributesManager : MonoBehaviour
         AttributeButton = Resources.Load<GameObject>("Buttons/Default");
         AttributesContentPanel = Popup.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content");
         
-        Button PopupToggleOn = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
-        PopupToggleOn.onClick.AddListener(() => ToggleOn());
+        Button popupToggleOn = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>();
+        popupToggleOn.onClick.AddListener(() => ToggleOn());
 
-        Button PopupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
-        PopupToggleOff.onClick.AddListener(() => ToggleOff());
+        Button popupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
+        popupToggleOff.onClick.AddListener(() => ToggleOff());
     }
 
 
