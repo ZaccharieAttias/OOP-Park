@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class CharactersManager : MonoBehaviour
 {
+    public GameObject Menu;
+
     public List<Character> CharactersCollection;
     public Character CurrentCharacter;
 
@@ -15,36 +17,38 @@ public class CharactersManager : MonoBehaviour
 
     public GameObject DefaultButton;
     public GameObject DeleteButton;
+    public GameObject GameplayButton;
 
     public Transform AttributesContentPanel;
     public Transform MethodsContentPanel;
     public Transform SpecialAbilityContentPanel;
 
     public CharactersTreeManager CharactersTreeManager;
-    public GameObject SwapScreen;
 
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
+        Menu = GameObject.Find("Canvas/Menus/CharacterCenter");
+        
         CharactersCollection = new List<Character>();
         CurrentCharacter = null;
 
-        NameText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Name").GetComponent<TMP_InputField>();
-        DescriptionText = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Description/Text").GetComponent<TMP_Text>();
+        NameText = Menu.transform.Find("Characters/Details/Name").GetComponent<TMP_InputField>();
+        DescriptionText = Menu.transform.Find("Characters/Details/Description/Text").GetComponent<TMP_Text>();
 
         DefaultButton = Resources.Load<GameObject>("Buttons/Default");
-        DeleteButton = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Delete");
+        DeleteButton = Menu.transform.Find("Characters/Details/Delete").gameObject;
         DeleteButton.GetComponent<Button>().onClick.AddListener(() => DeleteCharacter());
+        GameplayButton = Menu.transform.Find("SwapScreen").gameObject;
 
-        AttributesContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
-        MethodsContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
-        SpecialAbilityContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
+        AttributesContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
+        MethodsContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
+        SpecialAbilityContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
 
-        CharactersTreeManager = GameObject.Find("Canvas/HTMenu").GetComponent<CharactersTreeManager>();
-
-        SwapScreen = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen");
+        CharactersTreeManager = GameObject.Find("Canvas/Menus").GetComponent<CharactersTreeManager>();
     }
+
 
     public void AddCharacter(Character builtCharacter)
     {
@@ -55,19 +59,17 @@ public class CharactersManager : MonoBehaviour
     }
     public void DeleteCharacter()
     {
-        Character parent = CurrentCharacter.Parents != null ? CurrentCharacter.Parents.First() : CharactersCollection.First();
-
         CurrentCharacter.Parents.ForEach(parent => parent.Childrens.Remove(CurrentCharacter));
         CharactersCollection.Remove(CurrentCharacter);
         Destroy(CurrentCharacter.CharacterButton.Button);
 
         CharactersTreeManager.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
-        DisplayCharacter(parent);
+        DisplayCharacter(CharactersCollection.Last());
     }
 
     public void DisplayCharacter(Character displayCharacter)
     {
-        if (CurrentCharacter != null)
+        if (CurrentCharacter is not null)
         {
             GameObject previousCharacterObject = CurrentCharacter.CharacterButton.Button;
             previousCharacterObject.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
@@ -77,9 +79,8 @@ public class CharactersManager : MonoBehaviour
         currentCharacterObject.GetComponent<Image>().color = new Color32(255, 165, 0, 255);
 
         CurrentCharacter = CharactersCollection.Find(character => character == displayCharacter);
-        var CharacterPlayable = CurrentCharacter.IsAbstract == false;
-        SwapScreen.GetComponent<Button>().interactable = CharacterPlayable;
-        if (CurrentCharacter != null)
+        GameplayButton.GetComponent<Button>().interactable = CurrentCharacter.IsAbstract is false;
+        if (CurrentCharacter is not null)
         {
             ClearContentPanels();
 
@@ -96,9 +97,9 @@ public class CharactersManager : MonoBehaviour
     }
     private void DisplayName()
     {
-        NameText.interactable = CurrentCharacter.IsOriginal == false;
+        NameText.interactable = CurrentCharacter.IsOriginal is false;
 
-        string prefix = CurrentCharacter.IsAbstract ? "Abs " : "";
+        string prefix = CurrentCharacter.IsAbstract ? "[Abs] " : "";
         NameText.text = prefix + CurrentCharacter.Name;
         DescriptionText.text = CurrentCharacter.Description;
 
