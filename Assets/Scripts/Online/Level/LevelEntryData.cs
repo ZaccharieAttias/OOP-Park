@@ -49,6 +49,6 @@ public class LevelEntryData : MonoBehaviour
         yield return new WaitForSeconds(1f);
         GameObject.Find("LevelManager").GetComponent<SaveHandler>().OnLoad(filePath);
         yield return new WaitForSeconds(2f);
-        GameObject.Find("Canvas/GameplayScreen/DownloadScreen").SetActive(false);
+        GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
 }

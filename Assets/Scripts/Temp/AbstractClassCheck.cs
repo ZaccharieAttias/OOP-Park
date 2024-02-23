@@ -32,7 +32,7 @@ public class AbstractClassCheck : MonoBehaviour
         ConfirmButton = Popup.transform.Find("Confirm").gameObject;
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmStage());
 
-        CharactersContentPanel = GameObject.Find("Canvas/HTMenu/Menu/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
+        CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
 
         stage = -1;
         maxStage = 2;
