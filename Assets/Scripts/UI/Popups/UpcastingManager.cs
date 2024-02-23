@@ -41,7 +41,6 @@ public class UpcastingManager : MonoBehaviour
             Popup.transform.Find("Background/Foreground/Buttons/Method/Left").GetComponent<Button>(),
             Popup.transform.Find("Background/Foreground/Buttons/Amount/Right").GetComponent<Button>(),
             Popup.transform.Find("Background/Foreground/Buttons/Amount/Left").GetComponent<Button>(),
-            Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>(),
             Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>()
         };
 
@@ -160,11 +159,15 @@ public class UpcastingManager : MonoBehaviour
 
     public void ToggleOn()
     {
+        SceneManagement.ScenePause();
+
         LoadPopup();
         Popup.SetActive(true);    
     }
     public void ToggleOff()
     {
+        SceneManagement.SceneResume();
+        
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false); 
     }

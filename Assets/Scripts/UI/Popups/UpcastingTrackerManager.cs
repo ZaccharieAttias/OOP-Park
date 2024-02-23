@@ -15,10 +15,10 @@ public class UpcastingTrackerManager : MonoBehaviour
         Popup = GameObject.Find("Canvas/Popups/UpcastingTracker");
         AmountDescriptionText = Popup.transform.Find("Description").GetComponent<TextMeshProUGUI>();
 
-        Button ActivateGameplayButton = GameObject.Find("Canvas/HTMenu/Menu/SwapScreen").GetComponent<Button>();
+        Button ActivateGameplayButton = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
         ActivateGameplayButton.onClick.AddListener(() => ToggleOn());
 
-        Button ActivateMenuButton = GameObject.Find("Canvas/GameplayScreen/SwapScreen").GetComponent<Button>();
+        Button ActivateMenuButton = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
         ActivateMenuButton.onClick.AddListener(() => ToggleOff());
     }
 
