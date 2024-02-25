@@ -76,7 +76,7 @@ public class CharactersManager : MonoBehaviour
         }
 
         GameObject currentCharacterObject = displayCharacter.CharacterButton.Button;
-        currentCharacterObject.GetComponent<Image>().color = new Color32(255, 165, 0, 255);
+        currentCharacterObject.GetComponent<Image>().color = displayCharacter.IsAbstract ? new Color32(173, 216, 230, 255) : new Color32(255, 165, 0, 255);
 
         CurrentCharacter = CharactersCollection.Find(character => character == displayCharacter);
         GameplayButton.GetComponent<Button>().interactable = CurrentCharacter.IsAbstract is false;
@@ -123,7 +123,8 @@ public class CharactersManager : MonoBehaviour
             TMP_Text buttonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = attribute.Name;
 
-            if (RestrictionManager.Instance.AllowAccessModifiers) { attributeGameObject.AddComponent<AccessModifierButton>().Attribute = attribute; }
+            bool isAttributeOwner = AttributesData.FindAttributeOwner(CurrentCharacter, attribute) == CurrentCharacter.Name;
+            if (RestrictionManager.Instance.AllowAccessModifiers && isAttributeOwner) { attributeGameObject.AddComponent<AccessModifierButton>().Attribute = attribute; }
         }
     }
     private void DisplayMethods()
@@ -137,7 +138,8 @@ public class CharactersManager : MonoBehaviour
             TMP_Text buttonText = methodGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = method.Name;
 
-            if (RestrictionManager.Instance.AllowAccessModifiers) { methodGameObject.AddComponent<AccessModifierButton>().Method = method; }
+            bool isMethodOwner = MethodsData.FindMethodOwner(CurrentCharacter, method) == CurrentCharacter.Name;
+            if (RestrictionManager.Instance.AllowAccessModifiers && isMethodOwner) { methodGameObject.AddComponent<AccessModifierButton>().Method = method; }
         }
     }
     public void DisplayUpcastMethod()
