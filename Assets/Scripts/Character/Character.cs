@@ -82,17 +82,19 @@ public class Character
 
         CharacterButton = character.CharacterButton;
     }
-    private void PreDetails()
+    public void PreDetails()
     {
         foreach (Character parent in Parents)
         {
             foreach (Attribute attribute in parent.Attributes)
                 if (!Attributes.Any(item => item.Name == attribute.Name))
-                    Attributes.Add(attribute);
+                    if (RestrictionManager.Instance.AllowAccessModifiers is false || attribute.AccessModifier is not AccessModifier.Private)
+                        Attributes.Add(attribute);
 
             foreach (Method method in parent.Methods)
                 if (!Methods.Any(item => item.Name == method.Name))
-                    Methods.Add(method);    
+                    if (RestrictionManager.Instance.AllowAccessModifiers is false || method.AccessModifier is not AccessModifier.Private)
+                        Methods.Add(method);
         }
     }
 

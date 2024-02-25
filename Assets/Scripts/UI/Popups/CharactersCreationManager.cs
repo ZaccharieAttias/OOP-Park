@@ -63,8 +63,15 @@ public class CharactersCreationManager : MonoBehaviour
 
         SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
 
-        Button popupToggleOn = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
-        popupToggleOn.onClick.AddListener(() => ToggleOn());
+        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.AllowMultipleInheritance)
+        {
+            Button popupToggleOn = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
+            popupToggleOn.onClick.AddListener(() => ToggleOn());
+
+            Button popupToggleOff = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
+            popupToggleOff.onClick.AddListener(() => ToggleOff());
+        }
+        
     }
 
 
@@ -229,6 +236,7 @@ public class CharactersCreationManager : MonoBehaviour
             Parents = SelectedCharacterParents
         };
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
+        if (RestrictionManager.Instance.AllowBeginnerInheritance) builtCharacter.PreDetails();
         
         return builtCharacter;
     }
@@ -248,6 +256,6 @@ public class CharactersCreationManager : MonoBehaviour
         button.onClick.AddListener(() => CharactersData.CharactersManager.DisplayCharacter(character));
     }
 
-    public void ToggleOn() { if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.AllowMultipleInheritance) Popup.SetActive(true); }
+    public void ToggleOn() { Popup.SetActive(true); }
     public void ToggleOff() { Popup.SetActive(false); }
 }

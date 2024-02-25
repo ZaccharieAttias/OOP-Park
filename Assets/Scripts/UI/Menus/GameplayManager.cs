@@ -24,14 +24,14 @@ public class GameplayManager : MonoBehaviour
 
     public void ToggleOn()
     {
-        SceneManagement.ScenePause();
+        SceneManagement.SceneResume();
 
         Gameplay.SetActive(true);
         CharacterCenter.SetActive(false);
     }
     public void ToggleOff()
     {
-        SceneManagement.SceneResume();
+        SceneManagement.ScenePause();
 
         Gameplay.SetActive(false);
         CharacterCenter.SetActive(true);
