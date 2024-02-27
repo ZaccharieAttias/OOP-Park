@@ -1,11 +1,33 @@
 [
   {
     "IsOriginal": true,
-    "IsAbstract": true,
+    "IsAbstract": false,
     "Name": "Character 1",
     "Description": "This is the first character",
-    "Attributes": [],
-    "Methods": [],
+    "Attributes": [
+      {
+        "Owner": "Character 1",
+        "Name": "gravity",
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 1",
+        "Name": "fireballShoot",
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 1",
+        "Name": "FireballShoot",
+        "Attribute": {
+          "Owner": "Character 1",
+          "Name": "fireballShoot",
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
     "SpecialAbility": {
       "Name": "General",
       "Type": 0
@@ -48,15 +70,26 @@
     "Name": "Character 3",
     "Description": "This is the third character",
     "Attributes": [],
-    "Methods": [],
+    "Methods": [
+      {
+        "Owner": "Character 3",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Character 1",
+          "Name": "gravity",
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      }
+    ],
     "SpecialAbility": {
       "Name": "Manual",
       "Type": 2
     },
     "UpcastMethod": {
-      "Owner": null,
-      "Name": null,
-      "Amount": 0.0
+      "Owner": "Character 1",
+      "Name": "FireballShoot",
+      "Amount": 5.0
     },
     "Parents": [
       "Character 1"
