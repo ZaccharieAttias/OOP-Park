@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using System.IO;
+using UnityEditor.PackageManager;
+using System;
 
 
 public class AbstractClassCheck : MonoBehaviour
@@ -24,6 +26,10 @@ public class AbstractClassCheck : MonoBehaviour
     public Dictionary<Character, List<string>> ErrorsMap;
     public List<(Character, bool)> AbstractClasses;
 
+    public GameObject ErrorObjectPrefab;
+    public GameObject ErrorContentPanel;
+
+
     public void Start()
     {
         Popup = GameObject.Find("Canvas/Popups/Abstract");
@@ -37,6 +43,11 @@ public class AbstractClassCheck : MonoBehaviour
         stage = -1;
         maxStage = 2;
         FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
+
+        ErrorObjectPrefab = Resources.Load<GameObject>("ErrorObject");
+        ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Message/ScrollView/ViewPort/Content");
+
 
         SetStage();
     }
@@ -217,17 +228,24 @@ public class AbstractClassCheck : MonoBehaviour
     
         if (ErrorsMap.Count > 0)
         {
-            string text = "";
+            foreach (Transform child in ErrorContentPanel.transform) Destroy(child.gameObject);
+
             foreach (KeyValuePair<Character, List<string>> entry in ErrorsMap)
             {
-                text += $"{entry.Key.Name}:\n";
                 foreach (string error in entry.Value)
                 {
-                    text += $"{error}\n";
+                    GameObject errorObject = Instantiate(ErrorObjectPrefab, ErrorContentPanel.transform);
+                    errorObject.transform.Find("Sprite").GetComponent<Image>().sprite = entry.Key.CharacterButton.Button.GetComponent<Image>().sprite;
+
+                    List<string> errorWords = error.Split(' ').ToList();
+                    errorObject.transform.Find("Error/Title").GetComponent<TMP_Text>().text = errorWords[0];
+                    errorWords.RemoveAt(0);
+                    errorObject.transform.Find("Error/Description").GetComponent<TMP_Text>().text = string.Join(" ", errorWords);
+
+                    errorObject.GetComponent<Image>().color = errorWords[^1] == "missing." ? Color.red : Color.yellow;
                 }
-                text += "\n";
             }
-            MessagePopup.GetComponentInChildren<TMP_Text>().text = text;
+
             MessagePopup.SetActive(true);
         }
         
