@@ -35,130 +35,178 @@ public class SeedCollections : MonoBehaviour
 
     private void InitializeAttributesCollection()
     {
-        string attributeName;
-        string attributeDescription;
-        float attributeValue;
-        AccessModifier attributeAccessModifier;
         Attribute attribute;
 
         // Attribute 1
-        attributeName = "speed";
-        attributeValue = 5f;
-        attributeDescription = "This is the MoveSpeed attribute";
-        attributeAccessModifier = AccessModifier.Public;
-        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new()
+        {
+           Owner = null,
+            Name = "speed",
+            Description = "This is the MoveSpeed attribute",
+            Value = 5f,
+
+            AccessModifier = AccessModifier.Public
+        };
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 2
-        attributeName = "gravity";
-        attributeValue = 20f;
-        attributeDescription = "This is the GravityForce attribute";
-        attributeAccessModifier = AccessModifier.Protected;
-        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new()
+        {
+            Owner = null,
+            Name = "gravity",
+            Description = "This is the GravityForce attribute",
+            Value = 20f,
+
+            AccessModifier = AccessModifier.Protected
+        };
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 3
-        attributeName = "multipleJumps";
-        attributeValue = 2f;
-        attributeDescription = "This is the DoubleJump attribute";
-        attributeAccessModifier = AccessModifier.Private;
-        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new()
+        {
+            Owner = null,
+            Name = "multipleJumps",
+            Description = "This is the DoubleJump attribute",
+            Value = 2f,
+
+            AccessModifier = AccessModifier.Private
+        };
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 4
-        attributeName = "fireballShoot";
-        attributeValue = 0.25f;
-        attributeDescription = "This is the FireballShoot attribute";
-        attributeAccessModifier = AccessModifier.Public;
-        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new()
+        {
+            Owner = null,
+            Name = "fireballShoot",
+            Description = "This is the FireballShoot attribute",
+            Value = 0.25f,
+
+            AccessModifier = AccessModifier.Public
+        };
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 5
-        attributeName = "grapplingGun";
-        attributeValue = 10f;
-        attributeDescription = "This is the GrapplingGun attribute";
-        attributeAccessModifier = AccessModifier.Public;
-        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new()
+        {
+            Owner = null,
+            Name = "grapplingGun",
+            Description = "This is the GrapplingGun attribute",
+            Value = 10f,
+
+            AccessModifier = AccessModifier.Public
+        };
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 6
-        attributeName = "inverseGravity";
-        attributeValue = -40f;
-        attributeDescription = "This is the InverseGravity attribute";
-        attributeAccessModifier = AccessModifier.Protected;
-        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new()
+        {
+            Owner = null,
+            Name = "inverseGravity",
+            Description = "This is the InverseGravity attribute",
+            Value = -40f,
+
+            AccessModifier = AccessModifier.Protected
+        };
         AttributesManager.AttributesCollection.Add(attribute);
 
         // Attribute 7
-        attributeName = "wallJump";
-        attributeValue = 1f;
-        attributeDescription = "This is the WallJump attribute";
-        attributeAccessModifier = AccessModifier.Private;
-        attribute = new Attribute(attributeName, attributeDescription, attributeValue, attributeAccessModifier);
+        attribute = new()
+        {
+            Owner = null,
+            Name = "wallJump",
+            Description = "This is the WallJump attribute",
+            Value = 1f,
+
+            AccessModifier = AccessModifier.Private
+        };
         AttributesManager.AttributesCollection.Add(attribute); 
     }
     private void InitializeMethodsCollection()
     {
-        string methodName;
-        string methodDescription;
-        Attribute methodAttribute;
-        AccessModifier methodAccessModifier;
         Method method;
 
         // Method 1
-        methodName = "Speed";
-        methodDescription = "This is the MoveSpeed method";
-        methodAttribute = AttributesManager.AttributesCollection[0];
-        methodAccessModifier = AccessModifier.Public;
-        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new()
+        {
+            Owner = null,
+            Name = "Speed",
+            Description = "This is the MoveSpeed method",
+            Attribute = AttributesManager.AttributesCollection[0],
+
+            AccessModifier = AccessModifier.Public
+        };
         MethodsManager.MethodsCollection.Add(method);
         
         // Method 2
-        methodName = "Gravity";
-        methodDescription = "This is the GravityForce method";
-        methodAttribute = AttributesManager.AttributesCollection[1];
-        methodAccessModifier = AccessModifier.Protected;
-        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new()
+        {
+            Owner = null,
+            Name = "Gravity",
+            Description = "This is the GravityForce method",
+            Attribute = AttributesManager.AttributesCollection[1],
+
+            AccessModifier = AccessModifier.Protected
+        };
         MethodsManager.MethodsCollection.Add(method);
 
         // Method 3
-        methodName = "MultipleJumps";
-        methodDescription = "This is the DoubleJump method";
-        methodAttribute = AttributesManager.AttributesCollection[2];
-        methodAccessModifier = AccessModifier.Private;
-        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new()
+        {
+            Owner = null,
+            Name = "MultipleJumps",
+            Description = "This is the DoubleJump method",
+            Attribute = AttributesManager.AttributesCollection[2],
+
+            AccessModifier = AccessModifier.Private
+        };
         MethodsManager.MethodsCollection.Add(method);
 
         // Method 4
-        methodName = "FireballShoot";
-        methodDescription = "This is the FireballShoot method";
-        methodAttribute = AttributesManager.AttributesCollection[3];
-        methodAccessModifier = AccessModifier.Public;
-        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new()
+        {
+            Owner = null,
+            Name = "FireballShoot",
+            Description = "This is the FireballShoot method",
+            Attribute = AttributesManager.AttributesCollection[3],
+
+            AccessModifier = AccessModifier.Public
+        };
         MethodsManager.MethodsCollection.Add(method);
 
         // Method 5
-        methodName = "GrapplingGun";
-        methodDescription = "This is the GrapplingGun method";
-        methodAttribute = AttributesManager.AttributesCollection[4];
-        methodAccessModifier = AccessModifier.Public;
-        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new()
+        {
+            Owner = null,
+            Name = "GrapplingGun",
+            Description = "This is the GrapplingGun method",
+            Attribute = AttributesManager.AttributesCollection[4],
+
+            AccessModifier = AccessModifier.Public
+        };
         MethodsManager.MethodsCollection.Add(method);
 
         // Method 6
-        methodName = "InverseGravity";
-        methodDescription = "This is the InverseGravity method";
-        methodAttribute = AttributesManager.AttributesCollection[5];
-        methodAccessModifier = AccessModifier.Protected;
-        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new()
+        {
+            Owner = null,
+            Name = "InverseGravity",
+            Description = "This is the InverseGravity method",
+            Attribute = AttributesManager.AttributesCollection[5],
+
+            AccessModifier = AccessModifier.Protected
+        };
         MethodsManager.MethodsCollection.Add(method);
 
         // Method 7
-        methodName = "WallJump";
-        methodDescription = "This is the WallJump method";
-        methodAttribute = AttributesManager.AttributesCollection[6];
-        methodAccessModifier = AccessModifier.Private;
-        method = new Method(methodName, methodDescription, methodAttribute, methodAccessModifier);
+        method = new()
+        {
+            Owner = null,
+            Name = "WallJump",
+            Description = "This is the WallJump method",
+            Attribute = AttributesManager.AttributesCollection[6],
+
+            AccessModifier = AccessModifier.Private
+        };
         MethodsManager.MethodsCollection.Add(method);
     }
     private void InitializeSpecialAbilityCollection()

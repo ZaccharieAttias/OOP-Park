@@ -85,7 +85,6 @@ public static class CharactersData
 
             character.Parents.AddRange(CharactersManager.CharactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());
             character.Parents.ForEach(parent => parent.Childrens.Add(character));
-            
         }
     }
 }

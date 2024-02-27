@@ -123,7 +123,7 @@ public class CharactersManager : MonoBehaviour
             TMP_Text buttonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = attribute.Name;
 
-            bool isAttributeOwner = AttributesData.FindAttributeOwner(CurrentCharacter, attribute) == CurrentCharacter.Name;
+            bool isAttributeOwner = CurrentCharacter.Name == attribute.Owner;
             if (RestrictionManager.Instance.AllowAccessModifiers && isAttributeOwner) { attributeGameObject.AddComponent<AccessModifierButton>().Attribute = attribute; }
         }
     }
@@ -138,7 +138,7 @@ public class CharactersManager : MonoBehaviour
             TMP_Text buttonText = methodGameObject.GetComponentInChildren<TMP_Text>();
             buttonText.text = method.Name;
 
-            bool isMethodOwner = MethodsData.FindMethodOwner(CurrentCharacter, method) == CurrentCharacter.Name;
+            bool isMethodOwner = CurrentCharacter.Name == method.Owner;
             if (RestrictionManager.Instance.AllowAccessModifiers && isMethodOwner) { methodGameObject.AddComponent<AccessModifierButton>().Method = method; }
         }
     }

@@ -1,5 +1,6 @@
 public class Method
 {
+    public string Owner;
     public string Name;
     public string Description;
     public Attribute Attribute;
@@ -9,30 +10,16 @@ public class Method
 
     public Method()
     { 
+        Owner = null;
         Name = "Default";
         Description = "Default";
         Attribute = new Attribute();
 
         AccessModifier = AccessModifier.Public;
     }
-    public Method(string name, string description, Attribute attribute, AccessModifier accessModifier)
+    public Method(Method method, string owner, Attribute attribute)
     {
-        Name = name;
-        Description = description;
-        Attribute = attribute;
-        
-        AccessModifier = accessModifier;
-    }
-    public Method(Method method)
-    {
-        Name = method.Name;
-        Description = method.Description;
-        Attribute = method.Attribute;
-        
-        AccessModifier = method.AccessModifier;
-    }
-    public Method(Method method, Attribute attribute)
-    {
+        Owner = owner;
         Name = method.Name;
         Description = method.Description;
         Attribute = attribute;

@@ -58,13 +58,13 @@ public class AttributesManager : MonoBehaviour
     
         if (currentAttribute is null)
         {
-            Attribute newAttribute = new(attribute);
+            Attribute newAttribute = new(attribute, currentCharacter.Name);
             currentCharacter.Attributes.Add(newAttribute);
         }
         
         else
         {
-            bool isAttributeOwner = currentCharacter.Name == AttributesData.FindAttributeOwner(currentCharacter, currentAttribute);
+            bool isAttributeOwner = currentCharacter.Name == currentAttribute.Owner;
             if (isAttributeOwner) CancelAttributeReferences(currentCharacter, currentAttribute);
             else currentCharacter.Attributes.Remove(currentAttribute);
         }

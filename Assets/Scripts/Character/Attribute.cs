@@ -1,5 +1,6 @@
 public class Attribute
 {
+    public string Owner;
     public string Name;
     public string Description;
     public float Value;
@@ -9,22 +10,16 @@ public class Attribute
     
     public Attribute()
     { 
+        Owner = null;
         Name = "Default";
         Description = "Default";
         Value = 0;
 
         AccessModifier = AccessModifier.Public;
     }
-    public Attribute(string name, string description, float value, AccessModifier accessModifier)
+    public Attribute(Attribute attribute, string owner)
     {
-        Name = name;
-        Description = description;
-        Value = value;
-
-        AccessModifier = accessModifier;
-    }
-    public Attribute(Attribute attribute)
-    {
+        Owner = owner;
         Name = attribute.Name;
         Description = attribute.Description;
         Value = attribute.Value;
