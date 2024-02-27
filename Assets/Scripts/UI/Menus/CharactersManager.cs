@@ -105,6 +105,9 @@ public class CharactersManager : MonoBehaviour
 
         NameText.onEndEdit.AddListener(text =>
         {
+            foreach (Attribute attribute in CurrentCharacter.Attributes) { if (attribute.Owner == CurrentCharacter.Name) { attribute.Owner = text; } }
+            foreach (Method method in CurrentCharacter.Methods) { if (method.Owner == CurrentCharacter.Name) { method.Owner = text; } }
+
             CurrentCharacter.Name = text;
             CurrentCharacter.CharacterButton.Button.name = text;
 
