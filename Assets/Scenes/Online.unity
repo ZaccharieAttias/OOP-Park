@@ -2594,11 +2594,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7b519f030b6db488211cf6abba4584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tree: {fileID: 0}
+  Menu: {fileID: 0}
   NameText: {fileID: 0}
   DescriptionText: {fileID: 0}
   DefaultButton: {fileID: 0}
   DeleteButton: {fileID: 0}
+  GameplayButton: {fileID: 0}
   AttributesContentPanel: {fileID: 0}
   MethodsContentPanel: {fileID: 0}
   SpecialAbilityContentPanel: {fileID: 0}
@@ -3972,6 +3973,7 @@ GameObject:
   m_Component:
   - component: {fileID: 522020849}
   - component: {fileID: 522020850}
+  - component: {fileID: 522020851}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -4022,6 +4024,20 @@ MonoBehaviour:
   m_Spacing: {x: 300, y: 30}
   m_Constraint: 1
   m_ConstraintCount: 2
+--- !u!114 &522020851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522020848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &528714850
 GameObject:
   m_ObjectHideFlags: 0
@@ -10200,7 +10216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Gameplay: {fileID: 0}
-  Tree: {fileID: 0}
+  CharacterCenter: {fileID: 0}
 --- !u!1 &1020286871
 GameObject:
   m_ObjectHideFlags: 0
@@ -10288,6 +10304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1022988172}
   - component: {fileID: 1022988173}
+  - component: {fileID: 1022988174}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -10338,6 +10355,20 @@ MonoBehaviour:
   m_Spacing: {x: 40, y: 20}
   m_Constraint: 1
   m_ConstraintCount: 2
+--- !u!114 &1022988174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1022988171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1030190433
 GameObject:
   m_ObjectHideFlags: 0
@@ -11311,6 +11342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1144809114}
   - component: {fileID: 1144809115}
+  - component: {fileID: 1144809116}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -11361,6 +11393,20 @@ MonoBehaviour:
   m_Spacing: {x: 40, y: 20}
   m_Constraint: 1
   m_ConstraintCount: 2
+--- !u!114 &1144809116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144809113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1146250914
 GameObject:
   m_ObjectHideFlags: 0
@@ -14646,6 +14692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1489237313}
   - component: {fileID: 1489237314}
+  - component: {fileID: 1489237315}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -14696,6 +14743,20 @@ MonoBehaviour:
   m_Spacing: {x: 300, y: 30}
   m_Constraint: 1
   m_ConstraintCount: 2
+--- !u!114 &1489237315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489237312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1489316258
 GameObject:
   m_ObjectHideFlags: 0
