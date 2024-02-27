@@ -60,13 +60,13 @@ public class MethodsManager : MonoBehaviour
         if (currentMethod is null)
         {
             Attribute requiredAttribute = FindDependentAttribute(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifiers);
-            Method newMethod = new(method, requiredAttribute);
+            Method newMethod = new(method, currentCharacter.Name, requiredAttribute);
             currentCharacter.Methods.Add(newMethod);
         }
 
         else
         {
-            bool isMethodOwner = currentCharacter.Name == MethodsData.FindMethodOwner(currentCharacter, currentMethod);
+            bool isMethodOwner = currentCharacter.Name == currentMethod.Owner;
             if (isMethodOwner) CancelMethodReferences(currentCharacter, currentMethod);
             else currentCharacter.Methods.Remove(currentMethod);
         }
@@ -104,7 +104,7 @@ public class MethodsManager : MonoBehaviour
             }
         }
         return currentAttribute;
-    }   
+    }
     public void CancelMethodReferences(Character character, Method method)
     {
         var referencedMethod = character.Methods.FirstOrDefault(item => item == method);

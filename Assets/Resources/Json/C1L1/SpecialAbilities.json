@@ -43,6 +43,12 @@
       "Description": "Base Speed",
       "Value": 1.0,
       "Type": 5
+    },
+    {
+      "Name": "Grappling Gun",
+      "Description": "Grappling Gun",
+      "Value": 10.0,
+      "Type": 10
     }
   ],
   "Manual": [
@@ -71,6 +77,12 @@
       "Description": "Double Jump",
       "Value": 2.0,
       "Type": 7
+    },
+    {
+      "Name": "Wall Jump",
+      "Description": "Wall Jump",
+      "Value": 1.0,
+      "Type": 12
     }
   ],
   "Gravity": [
@@ -85,6 +97,12 @@
       "Description": "Weak Gravity",
       "Value": 0.5,
       "Type": 8
+    },
+    {
+      "Name": "Inverse Gravity",
+      "Description": "Inverse Gravity",
+      "Value": -40.0,
+      "Type": 11
     }
   ],
   "Speed": [
@@ -131,6 +149,30 @@
       "Description": "Fast Speed",
       "Value": 2.0,
       "Type": 9
+    }
+  ],
+  "GrapplingGun": [
+    {
+      "Name": "Grappling Gun",
+      "Description": "Grappling Gun",
+      "Value": 10.0,
+      "Type": 10
+    }
+  ],
+  "InverseGravity": [
+    {
+      "Name": "Inverse Gravity",
+      "Description": "Inverse Gravity",
+      "Value": -40.0,
+      "Type": 11
+    }
+  ],
+  "WallJump": [
+    {
+      "Name": "Wall Jump",
+      "Description": "Wall Jump",
+      "Value": 1.0,
+      "Type": 12
     }
   ]
 }

@@ -31,7 +31,7 @@ public static class AttributesData
         {
             AttributeData attributeData = new()
             {
-                Owner = FindAttributeOwner(character, attribute),
+                Owner = attribute.Owner,
                 Name = attribute.Name,
                 
                 AccessModifier = attribute.AccessModifier
@@ -47,23 +47,15 @@ public static class AttributesData
         List<Attribute> attributesCollection = new();
         foreach (AttributeData attributeData in characterData.Attributes)
         {
-            Attribute attribute = (attributeData.Owner is null || attributeData.Owner == characterData.Name)
-               ? new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name))
+            Attribute attribute = (attributeData.Owner == characterData.Name)
+               ? new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name), characterData.Name)
                : CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name);
 
-            attribute.AccessModifier = attributeData.Owner != characterData.Name ? attribute.AccessModifier : attributeData.AccessModifier;
+            attribute.AccessModifier = attributeData.Owner == characterData.Name ? attributeData.AccessModifier: attribute.AccessModifier;
             attributesCollection.Add(attribute);
         }
 
         return attributesCollection;
-    }
-
-    public static string FindAttributeOwner(Character character, Attribute attribute)
-    {
-        if (character.Attributes.Contains(attribute)) return character.Name;
-        else foreach (Character parent in character.Parents) return FindAttributeOwner(parent, attribute);
-
-        return null;
     }
 }
 

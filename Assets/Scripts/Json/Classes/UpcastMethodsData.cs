@@ -7,7 +7,7 @@ public static class UpcastMethodsData
         var upcastMethod = character.UpcastMethod?.CharacterMethod;
         UpcastMethodData upcastMethodData = new()
         {
-            Owner = upcastMethod is null ? null : MethodsData.FindMethodOwner(character, upcastMethod),
+            Owner = upcastMethod?.Owner,
             Name = upcastMethod?.Name,
             Amount = upcastMethod is null ? 0 : character.UpcastMethod.Amount
         };
