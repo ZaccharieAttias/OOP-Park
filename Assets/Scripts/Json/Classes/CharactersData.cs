@@ -41,7 +41,7 @@ public static class CharactersData
         {
             CharacterData data = new()
             {
-                IsOriginal = character.IsOriginal,
+                IsOriginal = true,
                 IsAbstract = character.IsAbstract,
 
                 Name = character.Name,

@@ -24,6 +24,7 @@ public class CharactersCreationManager : MonoBehaviour
     public List<Button> NotAllowedButtons;
 
     public SpecialAbilitiesManager SpecialAbilitiesManager;
+    public Toggle CharacterToggleType;
 
 
     public void Start() { InitializeProperties(); }
@@ -62,6 +63,7 @@ public class CharactersCreationManager : MonoBehaviour
         };
 
         SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
+        CharacterToggleType = Popup.transform.Find("Buttons/CharacterType").gameObject.GetComponent<Toggle>();
 
         if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.AllowMultipleInheritance)
         {
@@ -80,10 +82,12 @@ public class CharactersCreationManager : MonoBehaviour
         ControlButtons[0].interactable = false;
         ControlButtons[2].interactable = false;
         ControlButtons[3].interactable = false;
+        CharacterToggleType.isOn = false;
 
         ControlButtons[1].gameObject.SetActive(true);
         ControlButtons[2].gameObject.SetActive(true);
         ControlButtons[3].gameObject.SetActive(true);
+        if (RestrictionManager.Instance.AllowAbstractClasses) CharacterToggleType.gameObject.SetActive(true);
 
         SelectedCharacterParents = new();
         CharacterGameObjects = new();
@@ -102,6 +106,7 @@ public class CharactersCreationManager : MonoBehaviour
         ControlButtons[1].gameObject.SetActive(false);
         ControlButtons[2].gameObject.SetActive(false);
         ControlButtons[3].gameObject.SetActive(false);
+        CharacterToggleType.gameObject.SetActive(false);
 
         DestroyGameObjects(DuplicateCharacterGameObjects);
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
@@ -116,6 +121,7 @@ public class CharactersCreationManager : MonoBehaviour
         ControlButtons[1].gameObject.SetActive(false);
         ControlButtons[2].gameObject.SetActive(false);
         ControlButtons[3].gameObject.SetActive(false);
+        CharacterToggleType.gameObject.SetActive(false);
 
         DestroyGameObjects(DuplicateCharacterGameObjects);
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
@@ -127,6 +133,7 @@ public class CharactersCreationManager : MonoBehaviour
     {
         ControlButtons[2].GetComponent<Button>().interactable = false;
         ControlButtons[3].GetComponent<Button>().interactable = false;
+        CharacterToggleType.isOn = false;
 
         SelectedCharacterParents = new();
         MarkCharacter();
@@ -228,6 +235,8 @@ public class CharactersCreationManager : MonoBehaviour
     {
         Character builtCharacter = new()
         {
+            IsAbstract = CharacterToggleType.isOn,
+
             Name = $"Character {CharacterGameObjects.Count + 1}",
             Description = $"I`m {CharacterGameObjects.Count + 1}",
             
