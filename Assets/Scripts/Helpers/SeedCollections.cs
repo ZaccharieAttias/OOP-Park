@@ -120,6 +120,18 @@ public class SeedCollections : MonoBehaviour
             AccessModifier = AccessModifier.Private
         };
         AttributesManager.AttributesCollection.Add(attribute); 
+
+        // Attribute 8
+        attribute = new()
+        {
+            Owner = null,
+            Name = "grabbing",
+            Description = "This is the grabbing attribute",
+            Value = 10000f,
+
+            AccessModifier = AccessModifier.Public
+        };
+        AttributesManager.AttributesCollection.Add(attribute);
     }
     private void InitializeMethodsCollection()
     {
@@ -208,6 +220,19 @@ public class SeedCollections : MonoBehaviour
             AccessModifier = AccessModifier.Private
         };
         MethodsManager.MethodsCollection.Add(method);
+
+        // Method 8
+        method = new()
+        {
+            Owner = null,
+            Name = "Grabbing",
+            Description = "This is the grabbing method",
+            Attribute = AttributesManager.AttributesCollection[7],
+
+            AccessModifier = AccessModifier.Public
+        };
+        MethodsManager.MethodsCollection.Add(method);
+        
     }
     private void InitializeSpecialAbilityCollection()
     {
@@ -358,6 +383,17 @@ public class SeedCollections : MonoBehaviour
         specialAbilities.Add(specialAbility);
         SpecialAbilitiesManager.SpecialAbilitiesCollection.Add(abilityType, specialAbilities);
         SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Jump].Add(specialAbility);
+
+        // Special Ability 14 (Grabbing)
+        specialAbilities = new();
+        abilityName = "Grabbing";
+        abilityDescription = "Grabbing";
+        abilityValue = 10000;
+        abilityType = SpecialAbilityType.Grabbing;
+        specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
+        specialAbilities.Add(specialAbility);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection.Add(abilityType, specialAbilities);
+        SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Manual].Add(specialAbility);
 
     }
     public void InitializeCharactersCollection()
