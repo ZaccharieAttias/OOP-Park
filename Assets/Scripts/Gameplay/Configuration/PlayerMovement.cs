@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     [Header("Ground Check:")]
-    public LayerMask CollisionLayers;
+    public List <LayerMask> CollisionLayers;
     public bool isGrounded = false;
     public float GroundCheckRadius = 0.25f;
     public float GroundCheckBoxLength = 0.07f;
@@ -57,7 +57,9 @@ public class PlayerMovement : MonoBehaviour
     public void Awake() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        CollisionLayers = LayerMask.GetMask("Ground");
+        CollisionLayers = new List<LayerMask>();
+        CollisionLayers.Add(LayerMask.GetMask("Ground"));
+        CollisionLayers.Add(LayerMask.GetMask("Grabbable"));
         Rigidbody2D = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
@@ -130,14 +132,19 @@ public class PlayerMovement : MonoBehaviour
     }
     private void CheckGround()
     {   
-        bool circleOverlap = Physics2D.OverlapCircle(GroundCheckCircle.position, GroundCheckRadius, CollisionLayers);
+        bool circleOverlap;
         bool boxOverlap;
-        if (transform.localScale.x > 0) 
-            boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), CollisionLayers);
-        else 
-            boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), CollisionLayers);
+        foreach (LayerMask layer in CollisionLayers)
+        {
+            circleOverlap = Physics2D.OverlapCircle(GroundCheckCircle.position, GroundCheckRadius, layer);
+            if (transform.localScale.x > 0) 
+                boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), layer);
+            else 
+                boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), layer);
 
-        isGrounded = circleOverlap || boxOverlap;
+            isGrounded = circleOverlap || boxOverlap;
+            if (isGrounded) break;
+        }
     }
     private void UpdateAnimator()
     {
