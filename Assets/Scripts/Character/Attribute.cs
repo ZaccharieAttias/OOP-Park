@@ -7,6 +7,9 @@ public class Attribute
 
     public AccessModifier AccessModifier;
 
+    public bool Getter;
+    public bool Setter;
+
     
     public Attribute()
     { 
@@ -16,6 +19,8 @@ public class Attribute
         Value = 0;
 
         AccessModifier = AccessModifier.Public;
+        Getter = false;
+        Setter = false;
     }
     public Attribute(Attribute attribute, string owner)
     {
@@ -25,5 +30,7 @@ public class Attribute
         Value = attribute.Value;
         
         AccessModifier = attribute.AccessModifier;
+        Getter = attribute.Getter;
+        Setter = attribute.Setter;
     }
 }
