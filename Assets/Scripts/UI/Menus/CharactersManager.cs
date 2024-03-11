@@ -25,6 +25,9 @@ public class CharactersManager : MonoBehaviour
 
     public CharactersTreeManager CharactersTreeManager;
 
+    public GameObject GetButton;
+    public GameObject SetButton;
+
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -47,6 +50,9 @@ public class CharactersManager : MonoBehaviour
         SpecialAbilityContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/SpecialAbility/Buttons/ScrollView/ViewPort/Content").transform;
 
         CharactersTreeManager = GameObject.Find("Canvas/Menus").GetComponent<CharactersTreeManager>();
+
+        GetButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/G");
+        SetButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/S");
     }
 
 
@@ -93,6 +99,9 @@ public class CharactersManager : MonoBehaviour
 
             Powerup powerUp = GetComponent<Powerup>();
             powerUp.ApplyPowerup(CurrentCharacter);
+
+            GetButton.SetActive(false);
+            SetButton.SetActive(false);
         }
     }
     private void DisplayName()
