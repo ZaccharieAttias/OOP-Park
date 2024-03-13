@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public class EncapsulationManager : MonoBehaviour
 {
@@ -20,17 +21,19 @@ public class EncapsulationManager : MonoBehaviour
     public GameObject GetterRow;
     public GameObject SetterRow;
     public List<(Attribute, List<Character>)> encapsulationGetters;
-    List<Attribute> encapsulationSetters;
+    public List<Attribute> encapsulationSetters;
 
+    public TMP_InputField inputField;
+    public GameObject SetButton;
 
+    public GameObject CurrentSetter;
+    public Powerup PowerUp;
 
     public void Start() { InitializeProperties(); }
-
     public void Update() 
     { 
         if (Input.GetKeyDown(KeyCode.K) && RestrictionManager.Instance.AllowEncapsulation is true && GameObject.Find("Canvas/Menus/Gameplay").activeSelf is true)
-            SetToggleOn();
-
+            SetToggle();
     }
     private void InitializeProperties()
     {
@@ -47,13 +50,17 @@ public class EncapsulationManager : MonoBehaviour
         ContentGetter = GameObject.Find("Canvas/Popups/GetterSetter/ALL/Background/Foreground/Buttons/ScrollViewGet/ViewPort/Content").GetComponent<Transform>();
         ContentSetter = GameObject.Find("Canvas/Popups/GetterSetter/ALL/Background/Foreground/Buttons/ScrollViewSet/ViewPort/Content").GetComponent<Transform>();
 
+        SetButton = GameObject.Find("Canvas/Popups/Set/Background/Foreground/SetValue/Button");
+        inputField = GameObject.Find("Canvas/Popups/Set/Background/Foreground/SetValue/InputField").GetComponent<TMP_InputField>();
+        PowerUp = GameObject.Find("Player").GetComponent<Powerup>();
+
         if (RestrictionManager.Instance.AllowEncapsulation is true)
         {
             AllButton.GetComponent<Button>().onClick.AddListener(AllToggleOn);
+            SetButton.GetComponent<Button>().onClick.AddListener(() => SetAttribute());
             AllButton.SetActive(true);
         }
     }
-
     private void AllLoadPopup()
     {
         ClearContentPanel();
@@ -81,10 +88,6 @@ public class EncapsulationManager : MonoBehaviour
             ButtonText.text = attribute.Name;            
         }
     }
-
-
-
-
     private void SetLoadPopup()
     {
         SetClearContentPanel();
@@ -115,6 +118,7 @@ public class EncapsulationManager : MonoBehaviour
     {
         foreach (Transform attributeTransform in ContentGet) Destroy(attributeTransform.gameObject);
         Character currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+        if (encapsulationGetters.Count == 0) return;
         var characters = encapsulationGetters.First(item => item.Item1.Name == attributeName).Item2;
 
         foreach(var character in characters)
@@ -137,9 +141,19 @@ public class EncapsulationManager : MonoBehaviour
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         var attribute = CharactersData.CharactersManager.CharactersCollection.First(item => item.Name == character.Name).Attributes.First(item => item.Name == attributeName);
         var tmp = currentCharacter.Attributes.First(item => item.Name == attributeName); 
-        tmp = attribute;
         
-        ContentSet.Find(attributeName + " Setter").Find("Value").GetComponent<TMP_Text>().text = attribute.Value.ToString();
+        CurrentSetter.transform.Find("Value").GetComponent<TMP_Text>().text = attribute.Value.ToString();
+
+
+        var updateMethod = new List<Method>();
+        UpdateMethods(currentCharacter, tmp, ref updateMethod);
+        foreach (var method in updateMethod)
+        {
+            method.Attribute = attribute;
+        }
+        PowerUp.ApplyPowerup(currentCharacter);
+
+
 
         UpdateGetters(attributeName);
     }
@@ -162,8 +176,71 @@ public class EncapsulationManager : MonoBehaviour
         foreach(var parent in currentCharacter.Parents)
             GetAllGetters(parent, ref encapsulationGetters);
     }
+    
+    
+    public void SetAttribute()
+    {
+        var input = inputField.text;
+        //if inputField.text is not a number and if its not a float number, return
+        string floatPattern = @"^[+-]?\d+(\.\d+)?$";
+        if (!Regex.IsMatch(input, floatPattern)) return;
 
+        var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+        var attributeSetter = encapsulationSetters.First(item => item.Name == CurrentSetter.name.Split(' ')[0]);
+        var modifyAttribute = currentCharacter.Attributes.First(item => item.Name == attributeSetter.Name);
 
+        //update the value of the attribute in the UI
+        CurrentSetter.transform.Find("Value").GetComponent<TMP_Text>().text = modifyAttribute.Value.ToString();
+
+        //previous attribute value
+        // find method and update the value of the attribute
+        var updateMethod = new List<Method>();
+        UpdateMethods(currentCharacter, modifyAttribute, ref updateMethod);
+        modifyAttribute.Value = ToFloat(input);
+        foreach (var method in updateMethod)
+        {
+            method.Attribute = modifyAttribute;
+        }
+        PowerUp.ApplyPowerup(currentCharacter);
+
+        //clear the input field
+        inputField.text = "";
+    }
+
+    public void UpdateMethods(Character character, Attribute modifyAttribute, ref List<Method> updateMethod)
+    {
+        foreach (var method in character.Methods)
+        {
+            if (method.Attribute == modifyAttribute)
+            {
+                updateMethod.Add(method);
+            }
+        }
+        foreach (var child in character.Childrens)
+        {
+            UpdateMethods(child, modifyAttribute, ref updateMethod);
+        }
+    }
+
+    public float ToFloat(string input)
+    {
+        float result =0;
+        int i=0,j=0,tmp=0;
+        for(i = 0; i < input.Length; i++)
+        {
+            if (input[i] == '.')
+                break;
+            result = result * 10 + (input[i] - '0');
+        }
+        for(i = i+1; i < input.Length; i++)
+        {
+            tmp = tmp * 10 + (input[i] - '0');
+            j++;
+        }
+        if (j>0)
+            result += (float)tmp / Mathf.Pow(10,j);
+        return result;
+    }
     public void AllToggleOn()
     {
         AllLoadPopup();
@@ -177,9 +254,18 @@ public class EncapsulationManager : MonoBehaviour
     {
         SetLoadPopup();
         SetPopup.SetActive(true);
+        SceneManagement.ScenePause();
     }
     public void SetToggleOff()
     {
         SetPopup.SetActive(false);
+        SceneManagement.SceneResume();
+    }
+    public void SetToggle()
+    {
+        if (SetPopup.activeSelf is true)
+            SetToggleOff();
+        else
+            SetToggleOn();
     }
 }
