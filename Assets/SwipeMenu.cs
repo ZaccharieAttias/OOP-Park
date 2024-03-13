@@ -7,7 +7,7 @@ using System;
 public class SwipeMenu : MonoBehaviour
 {
     public GameObject ScrollBar;
-    public float Scroll_pos = 1;
+    public float Scroll_pos = 0;
     public float[] pos;
     public EncapsulationManager EncapsulationManager;
     public float Scrollposition = 0;
@@ -52,6 +52,7 @@ public class SwipeMenu : MonoBehaviour
         if (Scrollposition != ScrollBar.GetComponent<Scrollbar>().value)
         {
             Scrollposition = ScrollBar.GetComponent<Scrollbar>().value;
+            EncapsulationManager.CurrentSetter = transform.GetChild(z).gameObject;
             EncapsulationManager.UpdateGetters(transform.GetChild(z).name.Split(' ')[0]);
         }
     }
