@@ -17933,6 +17933,7 @@ GameObject:
   - component: {fileID: 1567994919}
   - component: {fileID: 1567994917}
   - component: {fileID: 1567994920}
+  - component: {fileID: 1567994921}
   m_Layer: 5
   m_Name: Popups
   m_TagString: Untagged
@@ -18081,11 +18082,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05b78994bf8b7b4e9280a4548cc1059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllPopup: {fileID: 0}
-  AllButton: {fileID: 0}
-  Button: {fileID: 0}
-  ContentGetter: {fileID: 0}
-  ContentSetter: {fileID: 0}
   SetPopup: {fileID: 0}
   ContentSet: {fileID: 0}
   ContentGet: {fileID: 0}
@@ -18095,6 +18091,22 @@ MonoBehaviour:
   SetButton: {fileID: 0}
   CurrentSetter: {fileID: 0}
   PowerUp: {fileID: 0}
+--- !u!114 &1567994921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567994912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b17ec039e2fadf49826becff9ecb843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Popup: {fileID: 0}
+  Button: {fileID: 0}
+  ContentGetter: {fileID: 0}
+  ContentSetter: {fileID: 0}
 --- !u!1 &1571909973
 GameObject:
   m_ObjectHideFlags: 0
