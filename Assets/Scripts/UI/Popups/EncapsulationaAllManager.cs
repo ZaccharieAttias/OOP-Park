@@ -1,60 +1,76 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
-using System.Text.RegularExpressions;
+
 
 public class EncapsulationaAllManager : MonoBehaviour
 {
     public GameObject Popup;
-    public GameObject Button;
-    public Transform ContentGetter;
-    public Transform ContentSetter;
+    
+    public Transform SetContent;
+    public Transform GetContent;
+
+    public List<Attribute> SetCollection;
+    public List<Attribute> GetCollection;
+
+    public GameObject ButtonPrefab;
+
 
     public void Start() { InitializeProperties(); }
-
     private void InitializeProperties()
     {
-        Popup = GameObject.Find("Canvas/Popups/GetterSetter");
-        Button = Resources.Load<GameObject>("Buttons/Default");
-        ContentGetter = GameObject.Find("Canvas/Popups/GetterSetter/ALL/Background/Foreground/Buttons/ScrollViewGet/ViewPort/Content").GetComponent<Transform>();
-        ContentSetter = GameObject.Find("Canvas/Popups/GetterSetter/ALL/Background/Foreground/Buttons/ScrollViewSet/ViewPort/Content").GetComponent<Transform>();
+        Popup = GameObject.Find("Canvas/Popups/EncapsulationAll");
+        
+        SetCollection = new List<Attribute>();
+        GetCollection = new List<Attribute>();
 
-        if (RestrictionManager.Instance.AllowEncapsulation is true)
+        SetContent = Popup.transform.Find("Background/Foreground/Set/ScrollView/Viewport/Content").GetComponent<Transform>();
+        GetContent = Popup.transform.Find("Background/Foreground/Get/ScrollView/Viewport/Content").GetComponent<Transform>();
+
+        ButtonPrefab = Resources.Load<GameObject>("Buttons/Default");
+   
+        if (RestrictionManager.Instance.AllowEncapsulation)
         {
-            GameObject All =  GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/A");
-            All.GetComponent<Button>().onClick.AddListener(ToggleOn);
-            All.SetActive(true);
+            GameObject allButton =  GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/All");
+            allButton.GetComponent<Button>().onClick.AddListener(() => ToggleOn());
+            allButton.SetActive(true);
         }
     }
+    
+    
     private void LoadPopup()
     {
         ClearContentPanel();
-        var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
-        List<Attribute> encapsulationGetters = currentCharacter.Attributes.Where(item => item.Getter is true).ToList();
-        List<Attribute> encapsulationSetters = currentCharacter.Attributes.Where(item => item.Setter is true).ToList();
         
-        Load(encapsulationGetters, "Getter");
-        Load(encapsulationSetters, "Setter");
+        var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+        SetCollection = currentCharacter.Attributes.Where(item => item.Setter is true).ToList();
+        GetCollection = currentCharacter.Attributes.Where(item => item.Getter is true).ToList();
+        
+        Load("Set");
+        Load("Get");
     }
-    private void ClearContentPanel() 
-    { 
-        foreach (Transform attributeTransform in ContentGetter) Destroy(attributeTransform.gameObject); 
-        foreach (Transform attributeTransform in ContentSetter) Destroy(attributeTransform.gameObject); 
-    }
-    public void Load(List<Attribute> encapsulationList, string type)
+    private void ClearContentPanel()
     {
-        foreach (var attribute in encapsulationList)
+        SetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
+        GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));        
+    }
+    public void Load(string type)
+    {
+        var collection = (type == "Get") ? GetCollection : SetCollection;
+        var content = (type == "Get") ? GetContent : SetContent;
+
+        foreach (var attribute in collection)
         {
-            GameObject attributeGameObject = Instantiate(Button, type == "Getter" ? ContentGetter : ContentSetter);
-            attributeGameObject.name = attribute.Name + " " + type;
+            GameObject attributeGameObject = Instantiate(ButtonPrefab, content);
+            attributeGameObject.name = $"{attribute.Name} {type}";
             
             TMP_Text ButtonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             ButtonText.text = attribute.Name;            
         }
     }
+
     public void ToggleOn()
     {
         LoadPopup();
