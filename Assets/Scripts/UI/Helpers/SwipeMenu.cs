@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class SwipeMenu : MonoBehaviour
 {
@@ -14,8 +12,8 @@ public class SwipeMenu : MonoBehaviour
 
     public void Start()
     {
-        ScrollBar = GameObject.Find("Canvas/Popups/Set/Background/Foreground/ScrollViewSetters/ScrollbarVertical");
         EncapsulationManager = GameObject.Find("Canvas/Popups").GetComponent<EncapsulationManager>();
+        ScrollBar = EncapsulationManager.Popup.transform.Find("Background/Foreground/Set/ScrollView/ScrollbarVertical").gameObject;
     }
     public void Update()
     {
@@ -52,8 +50,8 @@ public class SwipeMenu : MonoBehaviour
         if (Scrollposition != ScrollBar.GetComponent<Scrollbar>().value)
         {
             Scrollposition = ScrollBar.GetComponent<Scrollbar>().value;
-            EncapsulationManager.CurrentSetter = transform.GetChild(z).gameObject;
-            EncapsulationManager.UpdateGetters(transform.GetChild(z).name.Split(' ')[0]);
+            EncapsulationManager.CurrentSet = transform.GetChild(z).gameObject;
+            EncapsulationManager.UpdateGetContent(transform.GetChild(z).name.Split(' ')[0]);
         }
     }
 }
