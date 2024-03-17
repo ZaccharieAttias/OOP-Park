@@ -67,7 +67,7 @@ public class EncapsulationaAllManager : MonoBehaviour
             attributeGameObject.name = $"{attribute.Name} {type}";
             
             TMP_Text ButtonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
-            ButtonText.text = attribute.Name;            
+            ButtonText.text = attribute.Name;
         }
     }
 
