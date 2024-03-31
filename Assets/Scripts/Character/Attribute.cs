@@ -29,8 +29,22 @@ public class Attribute
         Description = attribute.Description;
         Value = attribute.Value;
         
+        Getter = false;
+        Setter = false;
+
         AccessModifier = attribute.AccessModifier;
-        Getter = attribute.Getter;
-        Setter = attribute.Setter;
+    }
+
+    public Attribute(Attribute attribute, string owner, bool getter, bool setter)
+    {
+        Owner = owner;
+        Name = attribute.Name;
+        Description = attribute.Description;
+        Value = attribute.Value;
+
+        Getter = getter;
+        Setter = setter;
+
+        AccessModifier = attribute.AccessModifier;
     }
 }

@@ -58,14 +58,13 @@ public class EncapsulationManager : MonoBehaviour
         ClearContentPanel();
         
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
-        SetCollection = currentCharacter.Attributes.Where(item => item.Setter is true).ToList();
+        SetCollection = currentCharacter.Attributes.Where(item => item.Setter).ToList();
         GetCollection = currentCharacter.Attributes
             .Where(attribute => attribute.Setter && attribute.Getter)
             .Select(attribute => (attribute, new List<Character> { currentCharacter }))
             .ToList();
 
-        if (GetCollection.Count > 0) currentCharacter.Parents.ForEach(parent => FillGetCollection(parent));
-
+        currentCharacter.Parents.ForEach(parent => FillGetCollection(parent));
         
         foreach(var attribute in SetCollection)
         {
@@ -86,12 +85,16 @@ public class EncapsulationManager : MonoBehaviour
     }
     public void FillGetCollection(Character character)
     {
-        foreach (var attribute in character.Attributes.Where(attr => attr.Getter && GetCollection.Any(item => item.Item1.Name == attr.Name)))
+        foreach (var attribute in character.Attributes.Where(attr => attr.Getter && SetCollection.Any(item => item.Name == attr.Name)))
         {
             var attributeList = GetCollection.FirstOrDefault(item => item.Item1.Name == attribute.Name);
             if (attributeList.Item1 is not null && attributeList.Item2.Contains(character) is false)
             {
                 attributeList.Item2.Add(character);
+            }
+            else
+            {
+                GetCollection.Add((attribute, new List<Character> { character }));
             }
         }
         

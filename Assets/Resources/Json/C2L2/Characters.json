@@ -1,0 +1,134 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 1",
+    "Description": "This is the first character",
+    "Attributes": [
+      {
+        "Owner": "Character 1",
+        "Name": "gravity",
+        "Getter": true,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 1",
+        "Name": "fireballShoot",
+        "Getter": true,
+        "Setter": true,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 1",
+        "Name": "inverseGravity",
+        "Getter": true,
+        "Setter": true,
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "General",
+      "Type": 0
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [],
+    "Childrens": [
+      "Character 2",
+      "Character 3"
+    ]
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 2",
+    "Description": "This is the second character",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "Automatic",
+      "Type": 1
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": []
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 3",
+    "Description": "This is the third character",
+    "Attributes": [
+      {
+        "Owner": "Character 3",
+        "Name": "gravity",
+        "Getter": false,
+        "Setter": true,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "speed",
+        "Getter": true,
+        "Setter": true,
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "Manual",
+      "Type": 2
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": [
+      "Character 4"
+    ]
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 4",
+    "Description": "I`m 4",
+    "Attributes": [
+      {
+        "Owner": "Character 4",
+        "Name": "gravity",
+        "Getter": false,
+        "Setter": true,
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "Fireball Shoot",
+      "Type": 6
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [
+      "Character 3"
+    ],
+    "Childrens": []
+  }
+]
