@@ -4,14 +4,12 @@ using UnityEngine.EventSystems;
 
 public class DescriptionButton : MonoBehaviour, IPointerClickHandler
 {
-    public CharactersManager CharactersManager;
     public MarkButton MarkButton;
 
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>(); 
         MarkButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description").GetComponent<MarkButton>();
     }
     
@@ -21,15 +19,15 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
         {
             string gameObjectDescription = null;
             
-            gameObjectDescription ??= CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name)?.Description;
-            gameObjectDescription ??= CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name)?.Description;
-            gameObjectDescription ??= CharactersManager.CurrentCharacter.SpecialAbility.Name == gameObject.name ? CharactersManager.CurrentCharacter.SpecialAbility.Description : null;
+            gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name)?.Description;
+            gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name)?.Description;
+            gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.SpecialAbility.Name == gameObject.name ? CharactersData.CharactersManager.CurrentCharacter.SpecialAbility.Description : null;
 
-            CharactersManager.DescriptionText.text = gameObjectDescription;
+            CharactersData.CharactersManager.DescriptionText.text = gameObjectDescription;
             
 
-            var attribute = CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name);
-            if (attribute != null && RestrictionManager.Instance.AllowEncapsulation is true)
+            var attribute = CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name);
+            if (attribute != null && attribute.Owner == CharactersData.CharactersManager.CurrentCharacter.Name && RestrictionManager.Instance.AllowEncapsulation)
             {
                 MarkButton.ActivateButtons();
                 MarkButton.AttributeClicked(attribute);

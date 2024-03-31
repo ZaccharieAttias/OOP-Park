@@ -26,6 +26,10 @@ public class JsonUtilityManager : MonoBehaviour
 
     public void Save()
     {
+        if (!Directory.Exists(FolderPath))
+        {
+            Directory.CreateDirectory(FolderPath);
+        }
         AttributesData.Save();
         MethodsData.Save();
         SpecialAbilitiesData.Save();

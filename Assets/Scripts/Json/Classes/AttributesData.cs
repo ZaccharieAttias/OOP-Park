@@ -34,6 +34,9 @@ public static class AttributesData
                 Owner = attribute.Owner,
                 Name = attribute.Name,
                 
+                Getter = attribute.Getter,
+                Setter = attribute.Setter,
+
                 AccessModifier = attribute.AccessModifier
             };
 
@@ -48,7 +51,7 @@ public static class AttributesData
         foreach (AttributeData attributeData in characterData.Attributes)
         {
             Attribute attribute = (attributeData.Owner == characterData.Name)
-               ? new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name), characterData.Name)
+               ? new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name), characterData.Name, attributeData.Getter, attributeData.Setter)
                : CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name);
 
             attribute.AccessModifier = attributeData.Owner == characterData.Name ? attributeData.AccessModifier: attribute.AccessModifier;
@@ -64,6 +67,9 @@ public class AttributeData
 {
     public string Owner;
     public string Name;
-    
+
+    public bool Getter;
+    public bool Setter;
+
     public AccessModifier AccessModifier;
 }

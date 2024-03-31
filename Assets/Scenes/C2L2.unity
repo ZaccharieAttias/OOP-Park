@@ -6070,12 +6070,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllowSingleInheritance: 1
-  AllowMultipleInheritance: 0
+  AllowMultipleInheritance: 1
   AllowBeginnerInheritance: 1
   AllowAccessModifiers: 1
-  AllowOverride: 0
+  AllowOverride: 1
   AllowUpcasting: 1
-  AllowAbstractClasses: 0
+  AllowAbstractClasses: 1
   AllowEncapsulation: 1
 --- !u!4 &444932010
 Transform:
@@ -6443,7 +6443,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: -17}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &466750250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6486,7 +6486,7 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 743459191}
   m_HandleRect: {fileID: 743459190}
-  m_Direction: 3
+  m_Direction: 2
   m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
@@ -9679,7 +9679,7 @@ RectTransform:
   m_Father: {fileID: 1336849087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
