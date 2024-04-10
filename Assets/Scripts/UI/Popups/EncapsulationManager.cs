@@ -49,7 +49,7 @@ public class EncapsulationManager : MonoBehaviour
 
     public void Update()
     { 
-        if (Input.GetKeyDown(KeyCode.K) && RestrictionManager.Instance.AllowEncapsulation && GameObject.Find("Canvas/Menus/Gameplay").activeSelf)
+        if (Input.GetKeyDown(KeyCode.I) && RestrictionManager.Instance.AllowEncapsulation && GameObject.Find("Canvas/Menus/Gameplay").activeSelf)
             ToggleActivation();
     }
 
