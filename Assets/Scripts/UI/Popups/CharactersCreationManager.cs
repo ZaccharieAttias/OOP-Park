@@ -25,6 +25,7 @@ public class CharactersCreationManager : MonoBehaviour
 
     public SpecialAbilitiesManager SpecialAbilitiesManager;
     public Toggle CharacterToggleType;
+    public SpecialAbilityManager SpecialAbilityManager;
 
 
     public void Start() { InitializeProperties(); }
@@ -63,6 +64,7 @@ public class CharactersCreationManager : MonoBehaviour
         };
 
         SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
+        SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
         CharacterToggleType = Popup.transform.Find("Buttons/CharacterType").gameObject.GetComponent<Toggle>();
 
         if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.AllowMultipleInheritance)
@@ -75,8 +77,6 @@ public class CharactersCreationManager : MonoBehaviour
         }
         
     }
-
-
     private void StartFactory()
     {
         ControlButtons[0].interactable = false;
@@ -138,10 +138,8 @@ public class CharactersCreationManager : MonoBehaviour
         SelectedCharacterParents = new();
         MarkCharacter();
     }
-
     private void ToggleButtonsInteractability(List<Button> buttons) { foreach (Button button in buttons) button.interactable = !button.interactable; }
     private void DestroyGameObjects(List<GameObject> gameObjects) { foreach (GameObject gameObject in gameObjects) Destroy(gameObject); }
-
     private void BuildCharacterGameObjects()
     {
         CharacterGameObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
@@ -219,12 +217,15 @@ public class CharactersCreationManager : MonoBehaviour
         }
 
         return AncestorGameObjects;
-    }
-    
+    }   
     private IEnumerator CharacterBuildPipeline()
     {
-        SpecialAbilitiesManager.ToggleOn(SelectedCharacterParents);
-        yield return new WaitUntil(() => SpecialAbilitiesManager.Popup.activeSelf is false);
+        if (RestrictionManager.Instance.AllowSpecialAbilities)
+        {
+            SpecialAbilityManager.ToggleOn(SelectedCharacterParents);
+            // SpecialAbilitiesManager.ToggleOn(SelectedCharacterParents);
+            yield return new WaitUntil(() => SpecialAbilityManager.Popup.activeSelf is false);
+        }
 
         Character builtCharacter = BuildCharacter();
         BuildCharacterObject(builtCharacter);
@@ -233,6 +234,10 @@ public class CharactersCreationManager : MonoBehaviour
     }
     private Character BuildCharacter()
     {
+        SpecialAbility SpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.General].First();
+        if(RestrictionManager.Instance.AllowSpecialAbilities)
+            SpecialAbility = SpecialAbilitiesManager.SelectedSpecialAbility;
+
         Character builtCharacter = new()
         {
             IsAbstract = CharacterToggleType.isOn,
@@ -240,8 +245,8 @@ public class CharactersCreationManager : MonoBehaviour
             Name = $"Character {CharacterGameObjects.Count + 1}",
             Description = $"I`m {CharacterGameObjects.Count + 1}",
             
-            SpecialAbility = SpecialAbilitiesManager.SelectedSpecialAbility,
-    
+            SpecialAbility = SpecialAbility,
+
             Parents = SelectedCharacterParents
         };
         builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
@@ -264,7 +269,6 @@ public class CharactersCreationManager : MonoBehaviour
         Button button = characterGameObject.GetComponent<Button>();
         button.onClick.AddListener(() => CharactersData.CharactersManager.DisplayCharacter(character));
     }
-
     public void ToggleOn() { Popup.SetActive(true); }
     public void ToggleOff() { Popup.SetActive(false); }
 }
