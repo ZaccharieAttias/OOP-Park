@@ -9,6 +9,7 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowMultipleInheritance;
     public bool AllowBeginnerInheritance;
     
+    public bool AllowSpecialAbilities;
     public bool AllowAccessModifiers;
     public bool AllowOverride;
     public bool AllowUpcasting;
@@ -26,6 +27,11 @@ public class RestrictionManager : MonoBehaviour
 
     private void ApplyRestrictions()
     {
-        GameObject popupsGameObject = GameObject.Find("Canvas/Popups");      
+        GameObject popupsGameObject = GameObject.Find("Canvas/Popups");
+        GameObject SpecialAbilitiesContent = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/SpecialAbility");
+        if (!AllowSpecialAbilities)
+        {
+            SpecialAbilitiesContent.SetActive(false);
+        }
     }
 }
