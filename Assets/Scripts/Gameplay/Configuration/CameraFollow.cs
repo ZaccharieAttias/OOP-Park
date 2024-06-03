@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        Player = GameObject.Find("New character");
+        Player = GameObject.Find("Player");
         PositionOffset = new Vector3(0, 0, -10);
         Velocity = Vector3.zero;
 
