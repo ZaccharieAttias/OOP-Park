@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
@@ -106,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         if (AllowToWallJump) WallJump();
         if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
-            if (horizontalInput > 0.01f)
+            if (horizontalInput > 0.01f)//inverse gravity
                 transform.localScale = new Vector3(1, 1, 1);
             else if (horizontalInput < -0.01f)
                 transform.localScale = new Vector3(-1, 1, 1);
@@ -151,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         Animator.SetFloat("Speed", Mathf.Abs(Rigidbody2D.velocity.x));
         Animator.SetBool("isGrounded", isGrounded);
 
-        if (isGrounded == false) Animator.SetTrigger("Jump");
+        if (isGrounded == false) Animator.SetTrigger("Jump");///////////////////////////////
     }
     private void PerformJump()
     {   
@@ -162,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "MultipleJumps") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(1);
     }
-    private void PerformAttack()
+    private void PerformAttack()////////////////////
     {
         Animator.SetTrigger("Shoot");
         cooldownTimer = 0;
