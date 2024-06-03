@@ -45,10 +45,10 @@ public class AccessModifierButton : MonoBehaviour
 
         if (AccessModifierIndex == 2 && RestrictionManager.Instance.AllowAccessModifiers)
         {
-            Character currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+            CharacterB currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
 
-            if (Attribute is not null) foreach (Character child in currentCharacter.Childrens) AttributesData.AttributesManager.CancelAttributeReferences(child, Attribute);
-            else foreach (Character child in currentCharacter.Childrens) MethodsData.MethodsManager.CancelMethodReferences(child, Method);
+            if (Attribute is not null) foreach (CharacterB child in currentCharacter.Childrens) AttributesData.AttributesManager.CancelAttributeReferences(child, Attribute);
+            else foreach (CharacterB child in currentCharacter.Childrens) MethodsData.MethodsManager.CancelMethodReferences(child, Method);
         }
 
     }

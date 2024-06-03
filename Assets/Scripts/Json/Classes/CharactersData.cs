@@ -31,13 +31,13 @@ public static class CharactersData
     }
 
 
-    public static string Serialize(List<Character> characters) { return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented); }
+    public static string Serialize(List<CharacterB> characters) { return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented); }
     public static void Deserialize(string json) { UnpackData(JsonConvert.DeserializeObject<List<CharacterData>>(json)); }
 
-    public static List<CharacterData> PackData(List<Character> characters)
+    public static List<CharacterData> PackData(List<CharacterB> characters)
     {
         List<CharacterData> characterData = new();
-        foreach (Character character in characters)
+        foreach (CharacterB character in characters)
         {
             CharacterData data = new()
             {
@@ -66,7 +66,7 @@ public static class CharactersData
     {
         foreach (CharacterData characterData in characters)
         {
-            Character character = new()
+            CharacterB character = new()
             {
                 IsOriginal = characterData.IsOriginal,
                 IsAbstract = characterData.IsAbstract,

@@ -1,0 +1,66 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 1",
+    "Description": "This is the first character",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "General",
+      "Type": 0
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [],
+    "Childrens": [
+      "Character 2",
+      "Character 3"
+    ]
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 2",
+    "Description": "This is the second character",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "Automatic",
+      "Type": 1
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": []
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 3",
+    "Description": "This is the third character",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "Manual",
+      "Type": 2
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parents": [
+      "Character 1"
+    ],
+    "Childrens": []
+  }
+]

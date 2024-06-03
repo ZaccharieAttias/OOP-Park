@@ -24,7 +24,7 @@ public static class AttributesData
     public static string Serialize(List<Attribute> attributes) { return JsonConvert.SerializeObject(attributes, Formatting.Indented); }
     public static List<Attribute> Deserialize(string json) { return JsonConvert.DeserializeObject<List<Attribute>>(json); }
 
-    public static List<AttributeData> PackData(Character character)
+    public static List<AttributeData> PackData(CharacterB character)
     {
         List<AttributeData> attributesData = new();
         foreach (Attribute attribute in character.Attributes)

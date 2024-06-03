@@ -473,14 +473,14 @@ public class SeedCollections : MonoBehaviour
     {
         string characterName;
         string characterDescription;
-        List<Character> characterParents = new();
+        List<CharacterB> characterParents = new();
         SpecialAbility characterSpecialAbility;
 
         // Character 1 
         characterName = "Character 1";
         characterDescription = "This is the first character";
         characterSpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.General][0];
-        Character character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
+        CharacterB character1 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
         InitializeCharacterObject(character1);
         CharactersManager.AddCharacter(character1);
 
@@ -489,7 +489,7 @@ public class SeedCollections : MonoBehaviour
         characterDescription = "This is the second character";
         characterParents.Add(character1);
         characterSpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Automatic][0];
-        Character character2 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
+        CharacterB character2 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
         character2.Parents.ForEach(parent => parent.Childrens.Add(character2));
         InitializeCharacterObject(character2);
         CharactersManager.AddCharacter(character2);
@@ -500,13 +500,13 @@ public class SeedCollections : MonoBehaviour
         characterDescription = "This is the third character";
         characterParents.Add(character1);
         characterSpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.Manual][0];
-        Character character3 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
+        CharacterB character3 = new(characterName, characterDescription, characterParents, characterSpecialAbility, true, false);
         character3.Parents.ForEach(parent => parent.Childrens.Add(character3));
         InitializeCharacterObject(character3);
         CharactersManager.AddCharacter(character3);
         characterParents = new();
     }
-    private void InitializeCharacterObject(Character characterNode)
+    private void InitializeCharacterObject(CharacterB characterNode)
     {
         Transform parnetTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
         GameObject characterPrefab = Resources.Load<GameObject>("Buttons/Character");

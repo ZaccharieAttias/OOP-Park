@@ -107,14 +107,14 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
             if (horizontalInput > 0.01f)
-                transform.localScale = new Vector3(3, 3, 3);
+                transform.localScale = new Vector3(1, 1, 1);
             else if (horizontalInput < -0.01f)
-                transform.localScale = new Vector3(-3, 3, 3);
+                transform.localScale = new Vector3(-1, 1, 1);
             if (Rigidbody2D.gravityScale < 0)
                 if (horizontalInput > 0.01f)
-                    transform.localScale = new Vector3(3, -3, 3);
+                    transform.localScale = new Vector3(1, -1, 1);
                 else if (horizontalInput < -0.01f)
-                    transform.localScale = new Vector3(-3, -3, 3);
+                    transform.localScale = new Vector3(-1, -1, 1);
             
         }
         if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown) PerformAttack();
@@ -168,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
         cooldownTimer = 0;
 
         fireballs[FindFireball()].transform.position = firePoint.position;
-        fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x), MoveSpeed + 10);
+        fireballs[FindFireball()].GetComponent<ProjectileB>().SetDirection(Mathf.Sign(transform.localScale.x), MoveSpeed + 10);
 
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "FireballShoot") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(1);
 

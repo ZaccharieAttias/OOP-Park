@@ -20,10 +20,10 @@ public class AbstractClassCheck : MonoBehaviour
     public int maxStage;
     public string FolderPath;
 
-    public Dictionary<Character, List<string>> FinalCharacterAttributesMap;
-    public Dictionary<Character, List<string>> FinalCharacterMethodsMap;
-    public Dictionary<Character, List<string>> ErrorsMap;
-    public List<(Character, bool)> AbstractClasses;
+    public Dictionary<CharacterB, List<string>> FinalCharacterAttributesMap;
+    public Dictionary<CharacterB, List<string>> FinalCharacterMethodsMap;
+    public Dictionary<CharacterB, List<string>> ErrorsMap;
+    public List<(CharacterB, bool)> AbstractClasses;
 
     public GameObject ErrorObjectPrefab;
     public GameObject ErrorContentPanel;
@@ -82,9 +82,9 @@ public class AbstractClassCheck : MonoBehaviour
     }
     private void BuildFinalDataMap()
     {
-        List<Character> charactersCollection = CharactersData.CharactersManager.CharactersCollection;
+        List<CharacterB> charactersCollection = CharactersData.CharactersManager.CharactersCollection;
 
-        foreach (Character character in charactersCollection)
+        foreach (CharacterB character in charactersCollection)
         {
             FinalCharacterAttributesMap.Add(character, character.Attributes.Select(attribute => attribute.Name).ToList());
             FinalCharacterMethodsMap.Add(character, character.Methods.Select(method => method.Name).ToList());
@@ -95,12 +95,12 @@ public class AbstractClassCheck : MonoBehaviour
         // Call the AbstractMapModifier for each of the abstract classses in AbstractClasses only if their corresponds value is False, Please
         for (int i = 0; i < AbstractClasses.Count; i++)
         {
-            (Character, bool) item = AbstractClasses[i];
+            (CharacterB, bool) item = AbstractClasses[i];
             AbstractMapModifier(item.Item1);
         }
     }
     
-    private void AbstractMapModifier(Character character)
+    private void AbstractMapModifier(CharacterB character)
     {
         if (AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)].Item2)
         {
@@ -108,18 +108,18 @@ public class AbstractClassCheck : MonoBehaviour
         }
         AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)] = (character, true);
     
-        Dictionary<string, List<Character>> commonAttributes = new();
-        Dictionary<string, List<Character>> commonMethods = new();
+        Dictionary<string, List<CharacterB>> commonAttributes = new();
+        Dictionary<string, List<CharacterB>> commonMethods = new();
 
-        foreach (Character child in character.Childrens)
+        foreach (CharacterB child in character.Childrens)
         {
             if (child.IsAbstract) AbstractMapModifier(child);
             
             foreach (Attribute attribute in child.Attributes)
             {
-                if (commonAttributes.TryGetValue(attribute.Name, out List<Character> characters) == false)
+                if (commonAttributes.TryGetValue(attribute.Name, out List<CharacterB> characters) == false)
                 {
-                    characters = new List<Character>();
+                    characters = new List<CharacterB>();
                     commonAttributes.Add(attribute.Name, characters);
                 }
                 commonAttributes[attribute.Name].Add(child);
@@ -127,34 +127,34 @@ public class AbstractClassCheck : MonoBehaviour
 
             foreach (Method method in child.Methods)
             {
-                if (commonMethods.TryGetValue(method.Name, out List<Character> characters) == false)
+                if (commonMethods.TryGetValue(method.Name, out List<CharacterB> characters) == false)
                 {
-                    characters = new List<Character>();
+                    characters = new List<CharacterB>();
                     commonMethods.Add(method.Name, characters);
                 }
                 commonMethods[method.Name].Add(child);
             }
         }
 
-        foreach (KeyValuePair<string, List<Character>> entry in commonAttributes)
+        foreach (KeyValuePair<string, List<CharacterB>> entry in commonAttributes)
         {
             if (entry.Value.Count > 1)
             {
                 FinalCharacterAttributesMap[character].Add(entry.Key);
 
-                foreach (Character characterFix in entry.Value)
+                foreach (CharacterB characterFix in entry.Value)
                 {
                     FinalCharacterAttributesMap[characterFix].Remove(entry.Key);
                 }
             }
         }
-        foreach (KeyValuePair<string, List<Character>> entry in commonMethods)
+        foreach (KeyValuePair<string, List<CharacterB>> entry in commonMethods)
         {
             if (entry.Value.Count > 1)
             {
                 FinalCharacterMethodsMap[character].Add(entry.Key);
 
-                foreach (Character characterFix in entry.Value)
+                foreach (CharacterB characterFix in entry.Value)
                 {
                     FinalCharacterMethodsMap[characterFix].Remove(entry.Key);
                 }
@@ -164,8 +164,8 @@ public class AbstractClassCheck : MonoBehaviour
     public void ConfirmStage()
     {
         ErrorsMap = new();
-        List<Character> CharactersCollection = CharactersData.CharactersManager.CharactersCollection;
-        foreach (Character character in CharactersCollection)
+        List<CharacterB> CharactersCollection = CharactersData.CharactersManager.CharactersCollection;
+        foreach (CharacterB character in CharactersCollection)
         {
             List<string> characterAttributes = character.Attributes.Select(attribute => attribute.Name).ToList();
             List<string> finalAttributes = FinalCharacterAttributesMap[character];
@@ -229,7 +229,7 @@ public class AbstractClassCheck : MonoBehaviour
         {
             foreach (Transform child in ErrorContentPanel.transform) Destroy(child.gameObject);
 
-            foreach (KeyValuePair<Character, List<string>> entry in ErrorsMap)
+            foreach (KeyValuePair<CharacterB, List<string>> entry in ErrorsMap)
             {
                 foreach (string error in entry.Value)
                 {

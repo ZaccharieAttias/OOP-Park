@@ -28,7 +28,7 @@ public class CharactersTreeManager : MonoBehaviour
         AllGameObject = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All");
     }
 
-    public void BuildTree(Character root, Character latest)
+    public void BuildTree(CharacterB root, CharacterB latest)
     {
         ResetLines();
         CalculateNodePositions(root);
@@ -45,7 +45,7 @@ public class CharactersTreeManager : MonoBehaviour
             if (child.gameObject.name.Contains("Line"))
                 Destroy(child.gameObject);
     }
-    private void CalculateNodePositions(Character root)
+    private void CalculateNodePositions(CharacterB root)
     {
         InitializeNodes(root, 0);
         CalculateInitialX(root);
@@ -53,18 +53,18 @@ public class CharactersTreeManager : MonoBehaviour
         CalculateFinalPositions(root, 0);
         UpdateNodePositions(root);
     }
-    private void InitializeNodes(Character character, int depth)
+    private void InitializeNodes(CharacterB character, int depth)
     {
         character.CharacterButton.X = 0;
         character.CharacterButton.Y = depth * -DepthDistance;
         character.CharacterButton.Mod = 0;
         character.CharacterButton.Depth = depth;
 
-        foreach (Character child in character.Childrens) InitializeNodes(child, depth + 1);
+        foreach (CharacterB child in character.Childrens) InitializeNodes(child, depth + 1);
     }
-    private void CalculateInitialX(Character character)
+    private void CalculateInitialX(CharacterB character)
     {
-        foreach (Character child in character.Childrens) 
+        foreach (CharacterB child in character.Childrens) 
             CalculateInitialX(child);
  
         if (character.IsLeaf())
@@ -92,7 +92,7 @@ public class CharactersTreeManager : MonoBehaviour
         if (character.Childrens.Count > 0 && character.IsLeftMost() == false)
             CheckForConflicts(character);
     }
-    private void CheckAllChildrenOnScreen(Character character)
+    private void CheckAllChildrenOnScreen(CharacterB character)
     {
         Dictionary<int, float> nodeContour = new();
         GetLeftContour(character, 0, ref nodeContour);
@@ -104,24 +104,24 @@ public class CharactersTreeManager : MonoBehaviour
             character.CharacterButton.Mod += (int)Math.Abs(shiftAmount);
         }
     }
-    private void CalculateFinalPositions(Character character, int modSum)
+    private void CalculateFinalPositions(CharacterB character, int modSum)
     {
         character.CharacterButton.X += modSum;
         modSum += character.CharacterButton.Mod;
 
-        foreach (Character child in character.Childrens) CalculateFinalPositions(child, modSum);
+        foreach (CharacterB child in character.Childrens) CalculateFinalPositions(child, modSum);
 
         character.CharacterButton.Y = character.IsLeaf() ? character.CharacterButton.Depth * -DepthDistance : character.Childrens[0].CharacterButton.Y + DepthDistance;
     }
-    private void UpdateNodePositions(Character character)
+    private void UpdateNodePositions(CharacterB character)
     {
         character.SetTransformPositionX(character.CharacterButton.X - NodeSize / 2);
         character.SetTransformPositionY(character.CharacterButton.Y - NodeSize / 2);
 
-        foreach (Character child in character.Childrens) UpdateNodePositions(child);
+        foreach (CharacterB child in character.Childrens) UpdateNodePositions(child);
     }
 
-    private void CheckForConflicts(Character character)
+    private void CheckForConflicts(CharacterB character)
     {
         float minDistance = TreeDistance + NodeSize;
         float shiftValue = 0;
@@ -129,7 +129,7 @@ public class CharactersTreeManager : MonoBehaviour
         Dictionary<int, float> nodeContour = new();
         GetLeftContour(character, 0, ref nodeContour);
 
-        Character sibling = character.GetLeftMostSibling();
+        CharacterB sibling = character.GetLeftMostSibling();
         while (sibling != null && sibling != character)
         {
             Dictionary<int, float> siblingContour = new();
@@ -154,7 +154,7 @@ public class CharactersTreeManager : MonoBehaviour
             character.CharacterButton.Mod += (int)shiftValue;        
         }
     }
-    private void CenterNodesBetween(Character leftNode, Character rightNode, float shiftValue)
+    private void CenterNodesBetween(CharacterB leftNode, CharacterB rightNode, float shiftValue)
     {
         int leftIndex = leftNode.Parents[0].Childrens.IndexOf(leftNode);
         int rightIndex = leftNode.Parents[0].Childrens.IndexOf(rightNode);
@@ -168,7 +168,7 @@ public class CharactersTreeManager : MonoBehaviour
             int count = 1;
             for (int i = leftIndex + 1; i < rightIndex; i++)
             {
-                Character middleNode = leftNode.Parents[0].Childrens[i];
+                CharacterB middleNode = leftNode.Parents[0].Childrens[i];
 
                 int desiredXafter = leftNode.CharacterButton.X + (distanceBetweenNodesafter * count);
                 int desiredX = leftNode.CharacterButton.X + (distanceBetweenNodesbefore * count);
@@ -184,7 +184,7 @@ public class CharactersTreeManager : MonoBehaviour
         }
     }
 
-    private void GetLeftContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
+    private void GetLeftContour(CharacterB character, int modSum, ref Dictionary<int, float> nodeContour)
     {
         int characterY = character.CharacterButton.Y;
         float characterX = character.CharacterButton.X + modSum;
@@ -194,9 +194,9 @@ public class CharactersTreeManager : MonoBehaviour
 
         modSum += character.CharacterButton.Mod;
 
-        foreach (Character child in character.Childrens) GetLeftContour(child, modSum, ref nodeContour);
+        foreach (CharacterB child in character.Childrens) GetLeftContour(child, modSum, ref nodeContour);
     }
-    private void GetRightContour(Character character, int modSum, ref Dictionary<int, float> nodeContour)
+    private void GetRightContour(CharacterB character, int modSum, ref Dictionary<int, float> nodeContour)
     {
         int characterY = character.CharacterButton.Y;
         float characterX = character.CharacterButton.X + modSum;
@@ -206,10 +206,10 @@ public class CharactersTreeManager : MonoBehaviour
 
         modSum += character.CharacterButton.Mod;
 
-        foreach (Character child in character.Childrens) GetRightContour(child, modSum, ref nodeContour);
+        foreach (CharacterB child in character.Childrens) GetRightContour(child, modSum, ref nodeContour);
     }
     
-    private void DrawLines(Character character)
+    private void DrawLines(CharacterB character)
     {
         RectTransform rectTransform = character.CharacterButton.Button.GetComponent<RectTransform>();
 
@@ -243,7 +243,7 @@ public class CharactersTreeManager : MonoBehaviour
             }
         }
 
-        foreach (Character child in character.Childrens)
+        foreach (CharacterB child in character.Childrens)
             DrawLines(child);
     }
     private void CreateLine(Vector2 startPoint, Vector2 endPoint)
@@ -266,7 +266,7 @@ public class CharactersTreeManager : MonoBehaviour
         line.GetComponent<Image>().color = Color.red;
     }
 
-    private void CentrelizeTree(Character root)
+    private void CentrelizeTree(CharacterB root)
     {
         float shiftValue = -root.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x;
         foreach (Transform child in AllGameObject.transform)
@@ -275,22 +275,22 @@ public class CharactersTreeManager : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x + shiftValue, rectTransform.anchoredPosition.y);
         }
     }
-    private void UpdateContentsSizes(Character root)
+    private void UpdateContentsSizes(CharacterB root)
     {        
-        Character TopNode = root, BottomNode = root, LeftNode = root, RightNode = root;
-        Queue<Character> queue = new();
+        CharacterB TopNode = root, BottomNode = root, LeftNode = root, RightNode = root;
+        Queue<CharacterB> queue = new();
         queue.Enqueue(root);
         
         while (queue.Count > 0)
         {
-            Character currentCharacter = queue.Dequeue();
+            CharacterB currentCharacter = queue.Dequeue();
 
             if (currentCharacter.CharacterButton.Y > TopNode.CharacterButton.Y) TopNode = currentCharacter;
             if (currentCharacter.CharacterButton.Y < BottomNode.CharacterButton.Y) BottomNode = currentCharacter;
             if (currentCharacter.CharacterButton.X < LeftNode.CharacterButton.X) LeftNode = currentCharacter;
             if (currentCharacter.CharacterButton.X > RightNode.CharacterButton.X) RightNode = currentCharacter;
 
-            foreach (Character child in currentCharacter.Childrens) queue.Enqueue(child);
+            foreach (CharacterB child in currentCharacter.Childrens) queue.Enqueue(child);
         }
 
         float contentWidth = Math.Abs(RightNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + NodeSize;

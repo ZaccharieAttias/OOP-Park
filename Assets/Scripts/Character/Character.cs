@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 
-public class Character
+public class CharacterB
 {
     public bool IsOriginal;
     public bool IsAbstract;
@@ -17,13 +17,13 @@ public class Character
     public SpecialAbility SpecialAbility;
     public UpcastMethod UpcastMethod;
 
-    public List<Character> Parents;
-    public List<Character> Childrens;
+    public List<CharacterB> Parents;
+    public List<CharacterB> Childrens;
 
     public CharacterButton CharacterButton;
 
 
-    public Character()
+    public CharacterB()
     {
         IsOriginal = false;
         IsAbstract = false;
@@ -37,12 +37,12 @@ public class Character
         SpecialAbility = null;
         UpcastMethod = null;
 
-        Parents = new List<Character>();
-        Childrens = new List<Character>();
+        Parents = new List<CharacterB>();
+        Childrens = new List<CharacterB>();
 
         CharacterButton = new CharacterButton();
     }
-    public Character(string name, string description, List<Character> parents, SpecialAbility specialAbility, bool isOriginal, bool isAbstract)
+    public CharacterB(string name, string description, List<CharacterB> parents, SpecialAbility specialAbility, bool isOriginal, bool isAbstract)
     {
         IsOriginal = isOriginal;
         IsAbstract = isAbstract;
@@ -56,14 +56,14 @@ public class Character
         SpecialAbility = specialAbility;
         UpcastMethod = null;
 
-        Parents = new List<Character>(parents);
-        Childrens = new List<Character>();
+        Parents = new List<CharacterB>(parents);
+        Childrens = new List<CharacterB>();
 
         CharacterButton = new CharacterButton();
         
         if (RestrictionManager.Instance.AllowBeginnerInheritance) PreDetails();
     }
-    public void InitializeCharacter(Character character)
+    public void InitializeCharacter(CharacterB character)
     {
         IsOriginal = character.IsOriginal;
         IsAbstract = character.IsAbstract;
@@ -84,7 +84,7 @@ public class Character
     }
     public void PreDetails()
     {
-        foreach (Character parent in Parents)
+        foreach (CharacterB parent in Parents)
         {
             foreach (Attribute attribute in parent.Attributes)
                 if (!Attributes.Any(item => item.Name == attribute.Name))
@@ -104,14 +104,14 @@ public class Character
     public bool IsLeftMost() { return IsRoot() || Parents[0].Childrens[0] == this; }
     public bool IsRightMost() { return IsRoot() || Parents[0].Childrens[^1] == this; }
 
-    public Character GetLeftMostSibling() { return IsRoot() ? null : Parents[0].Childrens[0]; }
-    public Character GetLeftMostChild() { return IsLeaf() ? null : Childrens[0]; }
+    public CharacterB GetLeftMostSibling() { return IsRoot() ? null : Parents[0].Childrens[0]; }
+    public CharacterB GetLeftMostChild() { return IsLeaf() ? null : Childrens[0]; }
 
-    public Character GetRightMostSibling() { return IsRoot() ? null : Parents[0].Childrens[^1]; }
-    public Character GetRightMostChild() { return IsLeaf() ? null : Childrens[^1]; }
+    public CharacterB GetRightMostSibling() { return IsRoot() ? null : Parents[0].Childrens[^1]; }
+    public CharacterB GetRightMostChild() { return IsLeaf() ? null : Childrens[^1]; }
 
-    public Character GetPreviousSibling() { return IsLeftMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) - 1]; }
-    public Character GetNextSibling() { return IsRightMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) + 1]; }
+    public CharacterB GetPreviousSibling() { return IsLeftMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) - 1]; }
+    public CharacterB GetNextSibling() { return IsRightMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) + 1]; }
 
     public void SetTransformPositionX(float x)
     {

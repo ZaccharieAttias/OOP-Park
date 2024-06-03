@@ -24,7 +24,7 @@ public static class MethodsData
     public static string Serialize(List<Method> methods) { return JsonConvert.SerializeObject(methods, Formatting.Indented); }
     public static List<Method> Deserialize(string json) { return JsonConvert.DeserializeObject<List<Method>>(json); }
 
-    public static List<MethodData> PackData(Character character)
+    public static List<MethodData> PackData(CharacterB character)
     {
         List<MethodData> methodsData = new();
         foreach (Method method in character.Methods)

@@ -32,7 +32,7 @@ public class SpecialAbilitiesManager : MonoBehaviour
     }
 
 
-    private void LoadPopup(List<Character> selectedCharacterParents)
+    private void LoadPopup(List<CharacterB> selectedCharacterParents)
     {
         ClearContentPanel();
 
@@ -71,7 +71,7 @@ public class SpecialAbilitiesManager : MonoBehaviour
         ConfirmButton.interactable = isSelectedAlready is false && isSameAbility is false;
     }
 
-    public void ToggleOn(List<Character> selectedCharacterParents)
+    public void ToggleOn(List<CharacterB> selectedCharacterParents)
     {
         LoadPopup(selectedCharacterParents);
         Popup.SetActive(true); 

@@ -17,7 +17,7 @@ public class EncapsulationManager : MonoBehaviour
     public GameObject SetRowPrefab;
 
     public List<Attribute> SetCollection;
-    public List<(Attribute, List<Character>)> GetCollection;
+    public List<(Attribute, List<CharacterB>)> GetCollection;
     
     public TMP_InputField InputField;
     public GameObject SetButtonPrefab;
@@ -38,7 +38,7 @@ public class EncapsulationManager : MonoBehaviour
         GetRowPrefab = Resources.Load<GameObject>("Buttons/GetRow");
         
         SetCollection = new List<Attribute>();
-        GetCollection = new List<(Attribute, List<Character>)>();
+        GetCollection = new List<(Attribute, List<CharacterB>)>();
 
         InputField = Popup.transform.Find("Background/Foreground/Set/Input/InputField").GetComponent<TMP_InputField>();
         SetButtonPrefab = GameObject.Find("Canvas/Popups/Set/Background/Foreground/SetValue/Button");
@@ -61,7 +61,7 @@ public class EncapsulationManager : MonoBehaviour
         SetCollection = currentCharacter.Attributes.Where(item => item.Setter).ToList();
         GetCollection = currentCharacter.Attributes
             .Where(attribute => attribute.Setter && attribute.Getter)
-            .Select(attribute => (attribute, new List<Character> { currentCharacter }))
+            .Select(attribute => (attribute, new List<CharacterB> { currentCharacter }))
             .ToList();
 
         currentCharacter.Parents.ForEach(parent => FillGetCollection(parent));
@@ -83,7 +83,7 @@ public class EncapsulationManager : MonoBehaviour
         SetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
         GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
     }
-    public void FillGetCollection(Character character)
+    public void FillGetCollection(CharacterB character)
     {
         foreach (var attribute in character.Attributes.Where(attr => attr.Getter && SetCollection.Any(item => item.Name == attr.Name)))
         {
@@ -94,7 +94,7 @@ public class EncapsulationManager : MonoBehaviour
             }
             else
             {
-                GetCollection.Add((attribute, new List<Character> { character }));
+                GetCollection.Add((attribute, new List<CharacterB> { character }));
             }
         }
         
@@ -124,7 +124,7 @@ public class EncapsulationManager : MonoBehaviour
             getButton.onClick.AddListener(() => GetSelected(character, attributeName));
         }
     }
-    public void GetSelected(Character character, string attributeName)
+    public void GetSelected(CharacterB character, string attributeName)
     {
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         var oldAttribute = currentCharacter.Attributes.First(item => item.Name == attributeName); 
@@ -138,7 +138,7 @@ public class EncapsulationManager : MonoBehaviour
         UpdateGetContent(attributeName);
         PowerUp.ApplyPowerup(currentCharacter);
     }
-    public List<Method> UpdateMethods(Character character, Attribute modifyAttribute)
+    public List<Method> UpdateMethods(CharacterB character, Attribute modifyAttribute)
     {
         var dependentMethods = new List<Method>();
         dependentMethods.AddRange(character.Methods.Where(method => method.Attribute == modifyAttribute));

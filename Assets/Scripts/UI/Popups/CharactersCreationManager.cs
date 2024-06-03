@@ -16,7 +16,7 @@ public class CharactersCreationManager : MonoBehaviour
     public Transform CharactersContentPanel;
 
     public int CharacterParentsLimit;
-    public List<Character> SelectedCharacterParents;
+    public List<CharacterB> SelectedCharacterParents;
     public List<GameObject> CharacterGameObjects;
     public List<GameObject> DuplicateCharacterGameObjects;
 
@@ -39,7 +39,7 @@ public class CharactersCreationManager : MonoBehaviour
         CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
 
         CharacterParentsLimit = RestrictionManager.Instance.AllowMultipleInheritance ? 2 : 1;
-        SelectedCharacterParents = new List<Character>();
+        SelectedCharacterParents = new List<CharacterB>();
         CharacterGameObjects = new List<GameObject>();
         DuplicateCharacterGameObjects = new List<GameObject>();
         
@@ -167,7 +167,7 @@ public class CharactersCreationManager : MonoBehaviour
         var characterGameObject = EventSystem.current.currentSelectedGameObject;
         if (characterGameObject != null)
         {
-            Character character = characterGameObject.GetComponent<CharacterDetails>().Character;
+            CharacterB character = characterGameObject.GetComponent<CharacterDetails>().Character;
             bool isSelectedParentsAlready = SelectedCharacterParents.Contains(character);
 
             if (isSelectedParentsAlready) SelectedCharacterParents.Remove(character);
@@ -204,10 +204,10 @@ public class CharactersCreationManager : MonoBehaviour
             }
         }
     }
-    private List<GameObject> FindAncestorGameObjects(Character character)
+    private List<GameObject> FindAncestorGameObjects(CharacterB character)
     {
         List<GameObject> AncestorGameObjects = new();
-        foreach (Character parent in character.Parents)
+        foreach (CharacterB parent in character.Parents)
         {
             GameObject ancestorGameObject = DuplicateCharacterGameObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character == parent);
             AncestorGameObjects.Add(ancestorGameObject);
@@ -227,18 +227,18 @@ public class CharactersCreationManager : MonoBehaviour
             yield return new WaitUntil(() => SpecialAbilityManager.Popup.activeSelf is false);
         }
 
-        Character builtCharacter = BuildCharacter();
+        CharacterB builtCharacter = BuildCharacter();
         BuildCharacterObject(builtCharacter);
 
         CharactersData.CharactersManager.AddCharacter(builtCharacter);
     }
-    private Character BuildCharacter()
+    private CharacterB BuildCharacter()
     {
         SpecialAbility SpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.General].First();
         if(RestrictionManager.Instance.AllowSpecialAbilities)
             SpecialAbility = SpecialAbilitiesManager.SelectedSpecialAbility;
 
-        Character builtCharacter = new()
+        CharacterB builtCharacter = new()
         {
             IsAbstract = CharacterToggleType.isOn,
 
@@ -254,7 +254,7 @@ public class CharactersCreationManager : MonoBehaviour
         
         return builtCharacter;
     }
-    public void BuildCharacterObject(Character character)
+    public void BuildCharacterObject(CharacterB character)
     {
         GameObject characterGameObject = Instantiate(CharacterPrefab, CharactersContentPanel);
 

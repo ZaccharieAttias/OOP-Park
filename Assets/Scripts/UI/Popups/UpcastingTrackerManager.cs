@@ -26,7 +26,7 @@ public class UpcastingTrackerManager : MonoBehaviour
     public void UpdateUpcastingMethod(float amount)
     {
         CharactersManager charactersManager = CharactersData.CharactersManager;
-        Character currentCharacter = charactersManager.CurrentCharacter;
+        CharacterB currentCharacter = charactersManager.CurrentCharacter;
 
         currentCharacter.UpcastMethod.Amount -= amount;
         amount = (int)currentCharacter.UpcastMethod.Amount;

@@ -2,7 +2,7 @@ using System.Linq;
 
 public static class UpcastMethodsData
 {
-    public static UpcastMethodData PackData(Character character)
+    public static UpcastMethodData PackData(CharacterB character)
     {
         var upcastMethod = character.UpcastMethod?.CharacterMethod;
         UpcastMethodData upcastMethodData = new()

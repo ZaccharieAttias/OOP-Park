@@ -9,8 +9,8 @@ public class CharactersManager : MonoBehaviour
 {
     public GameObject Menu;
 
-    public List<Character> CharactersCollection;
-    public Character CurrentCharacter;
+    public List<CharacterB> CharactersCollection;
+    public CharacterB CurrentCharacter;
 
     public TMP_InputField NameText;
     public TMP_Text DescriptionText;
@@ -34,7 +34,7 @@ public class CharactersManager : MonoBehaviour
     {
         Menu = GameObject.Find("Canvas/Menus/CharacterCenter");
         
-        CharactersCollection = new List<Character>();
+        CharactersCollection = new List<CharacterB>();
         CurrentCharacter = null;
 
         NameText = Menu.transform.Find("Characters/Details/Name").GetComponent<TMP_InputField>();
@@ -56,7 +56,7 @@ public class CharactersManager : MonoBehaviour
     }
 
 
-    public void AddCharacter(Character builtCharacter)
+    public void AddCharacter(CharacterB builtCharacter)
     {
         CharactersCollection.Add(builtCharacter);
         CharactersTreeManager.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
@@ -73,7 +73,7 @@ public class CharactersManager : MonoBehaviour
         DisplayCharacter(CharactersCollection.Last());
     }
 
-    public void DisplayCharacter(Character displayCharacter)
+    public void DisplayCharacter(CharacterB displayCharacter)
     {
         if (CurrentCharacter is not null)
         {

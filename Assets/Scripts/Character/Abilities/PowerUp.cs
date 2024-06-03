@@ -19,7 +19,7 @@ public class Powerup : MonoBehaviour
         PreviousUpcastMethod = null;
     }
     
-    public void ApplyPowerup(Character character)
+    public void ApplyPowerup(CharacterB character)
     {
         if (PreviousUpcastMethod != null)
         {

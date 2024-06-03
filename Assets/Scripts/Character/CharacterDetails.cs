@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CharacterDetails : MonoBehaviour
 {
-    public Character Character;
+    public CharacterB Character;
 
-    public void InitializeCharacter(Character character) { Character = character; }
+    public void InitializeCharacter(CharacterB character) { Character = character; }
 }

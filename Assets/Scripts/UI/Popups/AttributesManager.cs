@@ -53,7 +53,7 @@ public class AttributesManager : MonoBehaviour
     private void ClearContentPanel() { foreach (Transform attributeTransform in AttributesContentPanel) Destroy(attributeTransform.gameObject); }
     private void MarkAttribute(GameObject attributeGameObject, Attribute attribute)
     {
-        Character currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+        CharacterB currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         var currentAttribute = currentCharacter.Attributes.FirstOrDefault(item => item.Name == attribute.Name);
     
         if (currentAttribute is null)
@@ -72,7 +72,7 @@ public class AttributesManager : MonoBehaviour
         Image image = attributeGameObject.GetComponent<Image>();
         image.color = currentAttribute is null ? Color.green : Color.white;
     }
-    public void CancelAttributeReferences(Character character, Attribute attribute)
+    public void CancelAttributeReferences(CharacterB character, Attribute attribute)
     {
         var referencedAttribute = character.Attributes.FirstOrDefault(item => item == attribute);
         if (referencedAttribute is not null) character.Attributes.Remove(referencedAttribute);
@@ -80,7 +80,7 @@ public class AttributesManager : MonoBehaviour
         var dependentMethod = character.Methods.FirstOrDefault(item => item.Attribute == attribute);
         if (dependentMethod is not null) character.Methods.Remove(dependentMethod);
 
-        foreach (Character child in character.Childrens) CancelAttributeReferences(child, attribute);
+        foreach (CharacterB child in character.Childrens) CancelAttributeReferences(child, attribute);
     }
 
     public void ToggleOn()

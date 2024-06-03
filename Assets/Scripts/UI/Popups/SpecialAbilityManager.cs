@@ -91,9 +91,9 @@ public class SpecialAbilityManager : MonoBehaviour
             SpecialAbilityGameObjects.Add(SpeAbilityGameObject);
         }
         
-        List <Character> selectedParents = CharacterCreationManager.SelectedCharacterParents;
+        List <CharacterB> selectedParents = CharacterCreationManager.SelectedCharacterParents;
         List <SpecialAbilityObject> parentSpeAbiObject = new();
-        foreach (Character selectedParent in selectedParents)
+        foreach (CharacterB selectedParent in selectedParents)
         {
             SpecialAbility specialAbility = selectedParent.SpecialAbility;
             parentSpeAbiObject.Add(SpecialAbilitiesCollection.Find(obj => obj.name == specialAbility.Name));
@@ -155,13 +155,13 @@ public class SpecialAbilityManager : MonoBehaviour
 
         return DescendantGameObjects;
     }
-    private void LoadPopup(List<Character> selectedCharacterParents)
+    private void LoadPopup(List<CharacterB> selectedCharacterParents)
     {
         SelectedSpecialAbility = null;
         ControlButtons[0].interactable = false;
         StartFactory();
     }
-    public void ToggleOn(List<Character> selectedCharacterParents) 
+    public void ToggleOn(List<CharacterB> selectedCharacterParents) 
     { 
         LoadPopup(CharacterCreationManager.SelectedCharacterParents); 
         Popup.SetActive(true);
