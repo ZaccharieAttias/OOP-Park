@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(time);
         
         transform.position = CheckpointPosition;
-        transform.localScale = new Vector3(3, 3, 1);
+        transform.localScale = new Vector3(1, 1, 1);
         Rigidbody2D.simulated = true;
     }
 }
