@@ -10,8 +10,8 @@ public class Gravity : PowerupEffect
     public override void ActivatePower(GameObject player, float value)
     {
         JumpForceIncrease = value;
-        player.GetComponent<PlayerMovement>().JumpForce += JumpForceIncrease;
+        player.GetComponent<Movement>().JumpForce += JumpForceIncrease;
     }
 
-    public override void DeactivatePower(GameObject player) { player.GetComponent<PlayerMovement>().JumpForce -= JumpForceIncrease; }
+    public override void DeactivatePower(GameObject player) { player.GetComponent<Movement>().JumpForce -= JumpForceIncrease; }
 }

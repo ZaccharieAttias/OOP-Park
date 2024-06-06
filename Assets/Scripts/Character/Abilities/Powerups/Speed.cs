@@ -10,8 +10,8 @@ public class Speed : PowerupEffect
     public override void ActivatePower(GameObject player, float value)
     {
         SpeedIncrease = value;
-        player.GetComponent<PlayerMovement>().MoveSpeed += SpeedIncrease;
+        player.GetComponent<Movement>().MoveSpeed += SpeedIncrease;
     }
 
-    public override void DeactivatePower(GameObject player) { player.GetComponent<PlayerMovement>().MoveSpeed -= SpeedIncrease; }
+    public override void DeactivatePower(GameObject player) { player.GetComponent<Movement>().MoveSpeed -= SpeedIncrease; }
 }

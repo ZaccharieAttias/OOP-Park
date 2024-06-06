@@ -6273,7 +6273,7 @@ MonoBehaviour:
   AllowSingleInheritance: 1
   AllowMultipleInheritance: 1
   AllowBeginnerInheritance: 0
-  AllowSpecialAbilities: 1
+  AllowSpecialAbilities: 0
   AllowAccessModifiers: 1
   AllowOverride: 0
   AllowUpcasting: 0
@@ -26800,6 +26800,14 @@ PrefabInstance:
     - target: {fileID: 5680189850665371135, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680189850665371135, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6369712327612360302, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
