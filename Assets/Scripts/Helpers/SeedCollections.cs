@@ -510,7 +510,6 @@ public class SeedCollections : MonoBehaviour
     {
         Transform parnetTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
         GameObject characterPrefab = Resources.Load<GameObject>("Buttons/Character");
-        List<Sprite> CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
 
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
         newPlayerButton.name = characterNode.Name;
@@ -521,6 +520,6 @@ public class SeedCollections : MonoBehaviour
         button.onClick.AddListener(() => CharactersManager.DisplayCharacter(characterNode));
 
         Image image = newPlayerButton.GetComponent<Image>();
-        image.sprite = CharacterSprites[CharactersManager.CharactersCollection.Count % CharacterSprites.Count];
+        image.sprite = Resources.Load<Sprite>("Sprites/Characters/" + characterNode.Name);
     }
 }

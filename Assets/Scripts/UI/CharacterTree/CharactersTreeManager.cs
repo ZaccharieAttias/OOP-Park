@@ -217,7 +217,7 @@ public class CharactersTreeManager : MonoBehaviour
         {
             RectTransform parentRectTransform = character.Parents[0].CharacterButton.Button.GetComponent<RectTransform>();
             
-            Vector2 nodeTopMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 50 - 8);
+            Vector2 nodeTopMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 50 - 2);
             Vector2 nodeAboveMiddle = new(nodeTopMiddle.x, (rectTransform.anchoredPosition.y + parentRectTransform.anchoredPosition.y) / 2);
             
             CreateLine(nodeAboveMiddle, nodeTopMiddle);
@@ -227,7 +227,7 @@ public class CharactersTreeManager : MonoBehaviour
         {
             RectTransform leftChildrenRectTransform = character.Childrens[0].CharacterButton.Button.GetComponent<RectTransform>();
             
-            Vector2 nodeBottomMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - 50 + 4);
+            Vector2 nodeBottomMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - 50 + 15);
             Vector2 nodeBelowMiddle = new(nodeBottomMiddle.x, (rectTransform.anchoredPosition.y + leftChildrenRectTransform.anchoredPosition.y) / 2);
 
             CreateLine(nodeBottomMiddle, nodeBelowMiddle);
@@ -265,7 +265,6 @@ public class CharactersTreeManager : MonoBehaviour
 
         line.GetComponent<Image>().color = Color.red;
     }
-
     private void CentrelizeTree(CharacterB root)
     {
         float shiftValue = -root.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x;

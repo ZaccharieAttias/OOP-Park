@@ -263,7 +263,7 @@ public class CharactersCreationManager : MonoBehaviour
         characterGameObject.GetComponent<CharacterDetails>().InitializeCharacter(character);
 
         Image image = characterGameObject.GetComponent<Image>();
-        image.sprite = CharacterSprites[SpriteIndex % CharacterSprites.Count];
+        image.sprite = Resources.Load<Sprite>("Sprites/Characters/" + character.Name);
         SpriteIndex++;
 
         Button button = characterGameObject.GetComponent<Button>();

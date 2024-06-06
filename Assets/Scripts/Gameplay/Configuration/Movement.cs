@@ -98,12 +98,10 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.W) && JumpsLeft > 0) { direction.y = 1; PerformJump(); }
         if (Input.GetKey(KeyCode.A)) direction.x = -1;
         if (Input.GetKey(KeyCode.D)) direction.x = 1;
-        if (isGrounded)
+
+        if (direction.x != 0)
         {
-            if (direction.x != 0)
-            {
-                Turn(direction.x);
-            }
+            Turn(direction.x);
         }
 
         Move(direction);
