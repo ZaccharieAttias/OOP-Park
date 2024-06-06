@@ -7,7 +7,7 @@ public class CharacterB
 {
     public bool IsOriginal;
     public bool IsAbstract;
-    
+
     public string Name;
     public string Description;
 
@@ -21,7 +21,6 @@ public class CharacterB
     public List<CharacterB> Childrens;
 
     public CharacterButton CharacterButton;
-
 
     public CharacterB()
     {
@@ -41,6 +40,7 @@ public class CharacterB
         Childrens = new List<CharacterB>();
 
         CharacterButton = new CharacterButton();
+
     }
     public CharacterB(string name, string description, List<CharacterB> parents, SpecialAbility specialAbility, bool isOriginal, bool isAbstract)
     {
@@ -60,7 +60,7 @@ public class CharacterB
         Childrens = new List<CharacterB>();
 
         CharacterButton = new CharacterButton();
-        
+
         if (RestrictionManager.Instance.AllowBeginnerInheritance) PreDetails();
     }
     public void InitializeCharacter(CharacterB character)
