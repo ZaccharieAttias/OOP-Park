@@ -10,8 +10,8 @@ public class MultipleJumps : PowerupEffect
     public override void ActivatePower(GameObject player, float value)
     {
         JumpIncrease = (int)value;
-        player.GetComponent<PlayerMovement>().MaxJumps += JumpIncrease;
+        player.GetComponent<Movement>().MaxJumps += JumpIncrease;
     }
 
-    public override void DeactivatePower(GameObject player) { player.GetComponent<PlayerMovement>().MaxJumps -= JumpIncrease; }
+    public override void DeactivatePower(GameObject player) { player.GetComponent<Movement>().MaxJumps -= JumpIncrease; }
 }

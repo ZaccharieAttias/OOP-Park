@@ -95,7 +95,22 @@ public class Movement : MonoBehaviour
 
         var direction = Vector2.zero;
         CheckGround();
-        if (Input.GetKey(KeyCode.W) && JumpsLeft > 0) { direction.y = 1; PerformJump(); }
+        CheckWallSliding();
+        PerformWallSlide();
+        if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            if (horizontalInput > 0.01f)//inverse gravity
+                transform.localScale = new Vector3(1, 1, 1);
+            else if (horizontalInput < -0.01f)
+                transform.localScale = new Vector3(-1, 1, 1);
+            if (Rigidbody2D.gravityScale < 0)
+                if (horizontalInput > 0.01f)
+                    transform.localScale = new Vector3(1, -1, 1);
+                else if (horizontalInput < -0.01f)
+                    transform.localScale = new Vector3(-1, -1, 1);
+
+        }
         if (Input.GetKey(KeyCode.A)) direction.x = -1;
         if (Input.GetKey(KeyCode.D)) direction.x = 1;
 
@@ -112,6 +127,11 @@ public class Movement : MonoBehaviour
         // {
         //     Character.SetState(CharacterState.DeathB);
         // }
+
+        if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown) PerformAttack();
+
+        if (AllowToWallJump) WallJump();
+        cooldownTimer += Time.deltaTime;
     }
 
     private void PerformJump()

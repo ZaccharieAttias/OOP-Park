@@ -9,8 +9,8 @@ public class FireballShoot : PowerupEffect
 
     public override void ActivatePower(GameObject player, float value)
     {
-        player.GetComponent<PlayerMovement>().attackCooldown = attackCooldown;
+        player.GetComponent<Movement>().attackCooldown = attackCooldown;
     }
 
-    public override void DeactivatePower(GameObject player) { player.GetComponent<PlayerMovement>().attackCooldown = Mathf.Infinity; player.GetComponent<PlayerMovement>().cooldownTimer = Mathf.Infinity;}
+    public override void DeactivatePower(GameObject player) { player.GetComponent<Movement>().attackCooldown = Mathf.Infinity; player.GetComponent<Movement>().cooldownTimer = Mathf.Infinity;}
 }
