@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class SeedCollections : MonoBehaviour
 {
-    AttributesManager AttributesManager;
-    MethodsManager MethodsManager;
-    SpecialAbilitiesManager SpecialAbilitiesManager;
-    CharactersManager CharactersManager;
-    SpecialAbilityManager SpecialAbilityManager;
+    public AttributesManager AttributesManager;
+    public MethodsManager MethodsManager;
+    public SpecialAbilitiesManager SpecialAbilitiesManager;
+    public CharactersManager CharactersManager;
+    public SpecialAbilityManager SpecialAbilityManager;
 
 
     public void Start()
