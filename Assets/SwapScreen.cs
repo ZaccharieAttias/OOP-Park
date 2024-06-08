@@ -13,5 +13,7 @@ public class SwapScreen : MonoBehaviour
         CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         SwapButton = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
         SwapButton.onClick.AddListener(() => CharacterEditor.LoadFromJson());
+
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "C2L4") SwapButton.gameObject.SetActive(false);
     }
 }
