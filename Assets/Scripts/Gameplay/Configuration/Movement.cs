@@ -87,7 +87,6 @@ public class Movement : MonoBehaviour
 
         Character.Animator.SetBool("Ready", true);
     }
-
     public void Update()
     {
         PowerupTimer = 0f;
@@ -98,19 +97,6 @@ public class Movement : MonoBehaviour
         CheckWallSliding();
         PerformWallSlide();
         if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
-        {
-            if (horizontalInput > 0.01f)//inverse gravity
-                transform.localScale = new Vector3(1, 1, 1);
-            else if (horizontalInput < -0.01f)
-                transform.localScale = new Vector3(-1, 1, 1);
-            if (Rigidbody2D.gravityScale < 0)
-                if (horizontalInput > 0.01f)
-                    transform.localScale = new Vector3(1, -1, 1);
-                else if (horizontalInput < -0.01f)
-                    transform.localScale = new Vector3(-1, -1, 1);
-
-        }
         if (Input.GetKey(KeyCode.A)) direction.x = -1;
         if (Input.GetKey(KeyCode.D)) direction.x = 1;
 
@@ -184,7 +170,10 @@ public class Movement : MonoBehaviour
 
     public void Turn(float direction)
     {
-        Character.transform.localScale = new Vector3(Mathf.Sign(direction), 1, 1);
+        if (Rigidbody2D.gravityScale < 0)
+            Character.transform.localScale = new Vector3(Mathf.Sign(direction), -1, 1);
+        else
+            Character.transform.localScale = new Vector3(Mathf.Sign(direction), 1, 1);
     }
 
     public void Move()
