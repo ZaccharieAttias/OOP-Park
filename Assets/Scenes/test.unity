@@ -6319,6 +6319,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3428a604d6f86c488118d99f7a7035d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttributesManager: {fileID: 0}
+  MethodsManager: {fileID: 0}
+  SpecialAbilitiesManager: {fileID: 0}
+  CharactersManager: {fileID: 0}
+  SpecialAbilityManager: {fileID: 0}
 --- !u!1 &456852488
 GameObject:
   m_ObjectHideFlags: 0
@@ -10214,19 +10219,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 795508090}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1067174016}
-        m_TargetAssemblyTypeName: CharacterEditor1, Assembly-CSharp
-        m_MethodName: LoadFromJson
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &795508090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12692,6 +12685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1067174015}
   - component: {fileID: 1067174016}
+  - component: {fileID: 1067174017}
   m_Layer: 0
   m_Name: CharacterEditor
   m_TagString: Untagged
@@ -12727,6 +12721,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Character: {fileID: 2617841776435288174}
+--- !u!114 &1067174017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067174014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 243d3b4ce4da6074594241fb5b34455d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SwapButton: {fileID: 0}
+  CharacterEditor: {fileID: 0}
 --- !u!1 &1069825699
 GameObject:
   m_ObjectHideFlags: 0
