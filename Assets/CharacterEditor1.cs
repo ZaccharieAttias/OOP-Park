@@ -9,6 +9,11 @@ public class CharacterEditor1 : MonoBehaviour
 {
     public CharacterBase Character;
 
+    public void Start()
+    {
+        Character = GameObject.Find("Player").GetComponent<CharacterBase>();
+    }
+
     public void LoadFromJson()
     {
         string path = Path.Combine(Application.dataPath, "Resources/CharactersData", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, $"{CharactersData.CharactersManager.CurrentCharacter.Name}.json");
