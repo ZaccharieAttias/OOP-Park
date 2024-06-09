@@ -23,6 +23,7 @@ public class SpecialAbilityManager : MonoBehaviour
     public List<Button> ControlButtons;
     public List<Button> NotAllowedButtons;
     public CharactersCreationManager CharacterCreationManager;
+    public GameObject ValidationButton;
 
 
     public void Start() { InitializeProperties(); }
@@ -35,6 +36,7 @@ public class SpecialAbilityManager : MonoBehaviour
         CharacterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
         SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
         SpecialAbilityTreeManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityTreeManager>();
+        ValidationButton = GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/Add");
 
         ControlButtons = new List<Button>
         {
@@ -58,6 +60,7 @@ public class SpecialAbilityManager : MonoBehaviour
         SelectedSpecialAbility = null;
         SpecialAbilityGameObjects = new();
 
+        ResetTree();
         BuildSpecialAbilityGameObjects();
         ToggleButtonsInteractability(NotAllowedButtons);
         SpecialAbilityTreeManager.BuildTree(SpecialAbilitiesCollection.First());
@@ -126,6 +129,26 @@ public class SpecialAbilityManager : MonoBehaviour
 
             Image image = speAbiGameObject.GetComponent<Image>();
             image.color = isSelectedParentsAlready ? Color.white : Color.green;
+
+            List <CharacterB> selectedParents = CharacterCreationManager.SelectedCharacterParents;
+            List <SpecialAbilityObject> parentSpeAbiObject = new();
+            foreach (CharacterB selectedParent in selectedParents)
+            {
+                SpecialAbility specialAbility = selectedParent.SpecialAbility;
+                parentSpeAbiObject.Add(SpecialAbilitiesCollection.Find(obj => obj.name == specialAbility.Name));
+            }
+            foreach (SpecialAbilityObject parentSpeAbi in parentSpeAbiObject)
+            {
+                List<GameObject> temp = FindDescendantGameObjects(parentSpeAbi);
+                foreach (GameObject gameObject in temp)
+                {
+                    if (gameObject.name != speAbiGameObject.name)
+                    {
+                        gameObject.GetComponent<Button>().interactable = isSelectedParentsAlready;
+                        gameObject.GetComponent<Image>().color = isSelectedParentsAlready ? Color.white : Color.black;
+                    }
+                }
+            }
         }
     }
     private List<GameObject> FindAncestorGameObjects(SpecialAbilityObject SpeAbility)
@@ -161,10 +184,20 @@ public class SpecialAbilityManager : MonoBehaviour
         ControlButtons[0].interactable = false;
         StartFactory();
     }
+    private void ResetTree()
+    {
+        foreach (Transform child in SpecialAbilityContentPanel.transform)
+                Destroy(child.gameObject);
+    }
     public void ToggleOn(List<CharacterB> selectedCharacterParents) 
     { 
-        LoadPopup(CharacterCreationManager.SelectedCharacterParents); 
+        LoadPopup(CharacterCreationManager.SelectedCharacterParents);
+        ValidationButton.SetActive(false);
         Popup.SetActive(true);
     }
-    public void ToggleOff() { Popup.SetActive(false); }
+    public void ToggleOff() 
+    { 
+        ValidationButton.SetActive(true);
+        Popup.SetActive(false); 
+    }
 }
