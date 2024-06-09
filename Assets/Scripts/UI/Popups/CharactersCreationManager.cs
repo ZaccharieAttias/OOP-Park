@@ -236,7 +236,7 @@ public class CharactersCreationManager : MonoBehaviour
     {
         SpecialAbility SpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.General].First();
         if(RestrictionManager.Instance.AllowSpecialAbilities)
-            SpecialAbility = SpecialAbilitiesManager.SelectedSpecialAbility;
+            SpecialAbility = SpecialAbilityManager.SelectedSpecialAbility;
 
         CharacterB builtCharacter = new()
         {
