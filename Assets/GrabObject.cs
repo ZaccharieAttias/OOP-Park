@@ -23,13 +23,13 @@ public class GrabObject : MonoBehaviour
 
     public void InitializeProperties()
     {
-        GrabPoint = GameObject.Find("Player/GrabPosition").transform;
-        RaycastPoint = GameObject.Find("Player/RayGrabPosition").transform;
+        GrabPoint = transform.Find("GrabPosition").transform;
+        RaycastPoint = transform.Find("RayGrabPosition").transform;
         RaycastDistance = 0.6f;
         IsHolding = false;
         CanHold = true;
         GrabMask = LayerMask.GetMask("Grabbable");
-        Powerup = GameObject.Find("Player").GetComponent<Powerup>();
+        Powerup = transform.GetComponent<Powerup>();
     }
 
     public void Update()
