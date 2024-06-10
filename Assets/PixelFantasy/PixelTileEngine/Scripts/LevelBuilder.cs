@@ -11,7 +11,7 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
     public class LevelBuilder : MonoBehaviour
     {
         public Transform Parent;
-        public SpriteCollection SpriteCollection;
+        public SpriteCollectionPF SpriteCollection;
         public SpriteRenderer Cursor;
 
         private int _type;

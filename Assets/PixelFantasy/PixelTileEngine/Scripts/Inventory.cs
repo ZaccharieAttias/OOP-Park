@@ -5,7 +5,7 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
 {
     public class Inventory : MonoBehaviour
     {
-        public SpriteCollection SpriteCollection;
+        public SpriteCollectionPF SpriteCollection;
         public LevelBuilder LevelBuilder;
         public Transform Grid;
         public GameObject InventoryItem;
