@@ -56,8 +56,8 @@ public class SwipeMenu : MonoBehaviour
         if (Scrollposition != ScrollBar.GetComponent<Scrollbar>().value)
         {
             Scrollposition = ScrollBar.GetComponent<Scrollbar>().value;
-            EncapsulationManager.CurrentSet = transform.GetChild(z).gameObject;
-            EncapsulationManager.UpdateGetContent(transform.GetChild(z).name.Split(' ')[0]);
+            EncapsulationManager.CurrentSet = transform.GetChild(childCount - z - 1).gameObject;
+            EncapsulationManager.UpdateGetContent(transform.GetChild(childCount - z - 1).name.Split(' ')[0]);
         }
     }
 }
