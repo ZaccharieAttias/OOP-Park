@@ -11719,7 +11719,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &793108051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17770,6 +17770,7 @@ MonoBehaviour:
   Parent: {fileID: 682083939}
   SpriteCollection: {fileID: 11400000, guid: 768b897ac4414966ba08d5c42f59fdcd, type: 2}
   Cursor: {fileID: 0}
+  PlayerPrefab: {fileID: 5680189850665371135, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
 --- !u!1001 &1275329698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17970,11 +17971,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3241310580374271334, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.98999023
+      value: -5.76
       objectReference: {fileID: 0}
     - target: {fileID: 3241310580374271334, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.6900024
+      value: -11.43
       objectReference: {fileID: 0}
     - target: {fileID: 3241310580374271334, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18010,11 +18011,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5680189850665371135, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: 0000
       objectReference: {fileID: 0}
     - target: {fileID: 5680189850665371135, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
