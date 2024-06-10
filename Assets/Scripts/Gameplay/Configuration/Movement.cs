@@ -66,12 +66,12 @@ public class Movement : MonoBehaviour
         CollisionLayers.Add(LayerMask.GetMask("Ground"));
         CollisionLayers.Add(LayerMask.GetMask("Grabbable"));
         Rigidbody2D = GetComponent<Rigidbody2D>();
-        GroundCheckCircle = GameObject.Find("Player/GroundCheckCircle").transform;
-        GroundCheckBox = GameObject.Find("Player/GroundCheckBox").transform;
-        firePoint = GameObject.Find("Player/FirePoint").transform;
+        GroundCheckCircle = transform.Find("GroundCheckCircle").transform;
+        GroundCheckBox = transform.Find("GroundCheckBox").transform;
+        firePoint = transform.Find("FirePoint").transform;
         Powerup = GetComponent<Powerup>();
         CharactersManager = GetComponent<CharactersManager>();
-        Gun = GameObject.Find("Player/GunPivot");
+        Gun = transform.Find("GunPivot").gameObject;
         WallLayer = LayerMask.GetMask("Wall");
         WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
         //WallCheck = GameObject.Find("Grid/Walls").transform;
