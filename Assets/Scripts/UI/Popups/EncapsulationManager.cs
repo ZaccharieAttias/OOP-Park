@@ -52,6 +52,7 @@ public class EncapsulationManager : MonoBehaviour
 
     public void Update()
     {
+        if (RestrictionManager.Instance.AllowEncapsulation is false) return;
         List<Attribute> SetList = CharactersData.CharactersManager.CurrentCharacter.Attributes.Where(item => item.Setter).ToList();
         if (SetList.Count>0)
             if (Input.GetKeyDown(KeyCode.I) && RestrictionManager.Instance.AllowEncapsulation && GameObject.Find("Canvas/Menus/Gameplay").activeSelf)
