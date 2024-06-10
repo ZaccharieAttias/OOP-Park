@@ -73,7 +73,8 @@ public class Movement : MonoBehaviour
         CharactersManager = GetComponent<CharactersManager>();
         Gun = GameObject.Find("Player/GunPivot");
         WallLayer = LayerMask.GetMask("Wall");
-        WallCheck = GameObject.Find("Grid/Walls").transform;
+        WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
+        //WallCheck = GameObject.Find("Grid/Walls").transform;
 
 
         Velocity = Vector3.zero;
