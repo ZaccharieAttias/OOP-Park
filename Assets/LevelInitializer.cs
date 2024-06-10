@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 using Assets.PixelFantasy.PixelTileEngine.Scripts;
 using System.IO;
-
+using HeroEditor.Common;
 public class LevelInitializer : MonoBehaviour
 {
     public Transform Parent;
-    public SpriteCollection SpriteCollection;
+    public SpriteCollectionPF SpriteCollection;
     public SpriteRenderer Cursor;
 
     private int _type;
@@ -25,8 +25,11 @@ public class LevelInitializer : MonoBehaviour
 
     private Transform Terrain;
     private Transform Walls;
-    private GameObject Player;
+    public GameObject PlayerPrefab;
     private CharacterEditor1 CharacterEditor1;
+    private GameObject MainCamera;
+    private float x_position = -4;
+    private float y_position = -1;
     
     public void Awake()
     {
@@ -37,7 +40,8 @@ public class LevelInitializer : MonoBehaviour
         Terrain = Parent.Find("Terrain");
         Walls = Parent.Find("Walls");
         CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
-        // x=-4 y=-1
+        MainCamera = GameObject.Find("Main Camera");
+        //Player = GameObject.Find("Player");
         LoadLevel();
     }
 
@@ -321,9 +325,13 @@ public class LevelInitializer : MonoBehaviour
     }
     private void SetPlayers()
     {
-        Player = Instantiate(Resources.Load<GameObject>("CharacterData/Player"));
-        Player.transform.position = new Vector3(-4, -1, 0);
-        //CharacterEditor1.Character = Player.GetComponent<Character>();
-        //CharacterEditor1.LoadFromJson();
+        //create player instance with the Player
+        GameObject Player = Instantiate(PlayerPrefab, new Vector3(x_position, y_position, 0), Quaternion.identity);
+        Player.name = "Player";
+        //Player.transform.position = new Vector3(x_position, y_position, 0);
+        CharacterEditor1.Character = Player.GetComponent<CharacterBase>();
+        CharacterEditor1.OnlineLoadFromJson();
+        Player.SetActive(true);
+        MainCamera.GetComponent<CameraFollow>().Player = Player;
     }
 }
