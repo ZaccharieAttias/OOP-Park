@@ -17081,6 +17081,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1796146097}
+        m_TargetAssemblyTypeName: LevelDownload, Assembly-CSharp
+        m_MethodName: DownloadLevelData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1222325695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17239,8 +17251,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1796146093}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+      - m_Target: {fileID: 1796146096}
+        m_TargetAssemblyTypeName: LevelUpload, Assembly-CSharp
         m_MethodName: CreateLevel
         m_Mode: 1
         m_Arguments:
@@ -17762,15 +17774,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271448927}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35fca6caf31c0224eae1d7349b8c4452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Parent: {fileID: 682083939}
   SpriteCollection: {fileID: 11400000, guid: 768b897ac4414966ba08d5c42f59fdcd, type: 2}
-  Cursor: {fileID: 0}
   PlayerPrefab: {fileID: 5680189850665371135, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
+  NameText: {fileID: 0}
+  LevelIcon: {fileID: 0}
+  TextFileURL: 
 --- !u!1001 &1275329698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19801,8 +19814,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1796146093}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+      - m_Target: {fileID: 733373043}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1796146096}
+        m_TargetAssemblyTypeName: LevelUpload, Assembly-CSharp
         m_MethodName: OpenUploadLevelUI
         m_Mode: 1
         m_Arguments:
@@ -19811,7 +19836,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1400383517
 MonoBehaviour:
@@ -24170,7 +24195,7 @@ GameObject:
   - component: {fileID: 1716387705}
   - component: {fileID: 1716387703}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: InputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24982,8 +25007,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1796146095}
-  - component: {fileID: 1796146093}
-  - component: {fileID: 1796146094}
+  - component: {fileID: 1796146096}
+  - component: {fileID: 1796146097}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -24991,39 +25016,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1796146093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796146092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a83544076fbf845b0d680177598a1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LevelNameInputField: {fileID: 1716387703}
-  LevelName: 
-  LevelUploadUi: {fileID: 733373043}
-  LevelEntryDisplayItem: {fileID: 2108646132297640228, guid: 4e4d0239e8f48864a9eee33c91edd831, type: 3}
-  LevelDataEntryContent: {fileID: 61077367}
---- !u!114 &1796146094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796146092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c82b369db21b143911f8d3bd10c89b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bounds:
-    m_Position: {x: -250, y: -15, z: 0}
-    m_Size: {x: 500, y: 30, z: 0}
-  Filename: 
 --- !u!4 &1796146095
 Transform:
   m_ObjectHideFlags: 0
@@ -25039,6 +25031,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1796146096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796146092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6449739de807e5f4da8a34e36e612d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1796146097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796146092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd51e6128f7063f41bf2cc068a6bae20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelEntryDisplayItem: {fileID: 2108646132297640228, guid: 4e4d0239e8f48864a9eee33c91edd831, type: 3}
 --- !u!1 &1799808671
 GameObject:
   m_ObjectHideFlags: 0
@@ -26942,8 +26959,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1796146093}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+      - m_Target: {fileID: 1796146097}
+        m_TargetAssemblyTypeName: LevelDownload, Assembly-CSharp
         m_MethodName: DownloadLevelData
         m_Mode: 1
         m_Arguments:
@@ -27233,7 +27250,7 @@ GameObject:
   - component: {fileID: 2001329098}
   - component: {fileID: 2001329097}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: ScrollView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
