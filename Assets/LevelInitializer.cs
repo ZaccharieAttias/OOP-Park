@@ -1,15 +1,21 @@
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
+using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 using Assets.PixelFantasy.PixelTileEngine.Scripts;
-using System.IO;
 using HeroEditor.Common;
+using LootLocker.Requests;
+using TMPro;
+using UnityEngine.Networking;
+using UnityEngine.UI;
+using UnityEditor;
+
 public class LevelInitializer : MonoBehaviour
 {
-    public Transform Parent;
+    private Transform Parent;
     public SpriteCollectionPF SpriteCollection;
-    public SpriteRenderer Cursor;
+    //public SpriteRenderer Cursor;
 
     private int _type;
     private int _index;
@@ -21,8 +27,6 @@ public class LevelInitializer : MonoBehaviour
     private TileMap _coverMap;
     private TileMap _propsMap;
 
-
-
     private Transform Terrain;
     private Transform Walls;
     public GameObject PlayerPrefab;
@@ -30,27 +34,68 @@ public class LevelInitializer : MonoBehaviour
     private GameObject MainCamera;
     private float x_position = -4;
     private float y_position = -1;
+
+    string path;
+    private LevelUpload LevelUpload;
+    string MapPath;
+
+    private int ID;
+    private string LevelName;
+    public TMP_Text NameText;
+    public Image LevelIcon;
+    public string TextFileURL;
     
-    public void Awake()
+    public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
         _coverMap = new TileMap(1, 1, 4);
         _propsMap = new TileMap(1, 1, 4);
-
+        
+        Parent = GameObject.Find("Grid/LevelBuilder").transform;
         Terrain = Parent.Find("Terrain");
         Walls = Parent.Find("Walls");
         CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         MainCamera = GameObject.Find("Main Camera");
-        //Player = GameObject.Find("Player");
-        LoadLevel();
-    }
+        LevelUpload = GameObject.Find("LevelManager").GetComponent<LevelUpload>();
+        
+        transform.position = Vector3.zero;
+        transform.localScale = Vector3.one;
 
-    public void LoadLevel()
+        NameText.text = LevelName;
+        LevelIcon.sprite = LevelIcon.sprite;
+    }
+//temporarily load the level for testing
+    public void LoadLevelForTesting()
     {
-        string path = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
-        BuildLevel(path);
+        MapPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
+        BuildLevel(MapPath);
         SetLayers(Terrain, "Ground");
         SetPlayers();
+    }
+    public void LoadLevel()
+    {
+        StartCoroutine(DownloadTextFile(TextFileURL));
+    }
+    private IEnumerator DownloadTextFile(string textfileURL)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(textfileURL);
+        yield return www.SendWebRequest();
+
+        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Level_" + LevelName + "_Data.json";
+        File.WriteAllText(filePath, www.downloadHandler.text);
+
+        AssetDatabase.Refresh();
+        yield return new WaitForSeconds(1f);
+        BuildLevel(filePath);
+        SetLayers(Terrain, "Ground");
+        SetPlayers();
+        yield return new WaitForSeconds(2f);
+        GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
+    }
+    public void SetInformations(int id, string name)
+    {
+        ID = id;
+        LevelName = name;
     }
     private void BuildLevel(string json)
     {   
@@ -138,7 +183,6 @@ public class LevelInitializer : MonoBehaviour
 
         _index = index;
     }
-
     private void CreateGround(int x, int y, int z)
     {
         if (x < 0 || x >= _groundMap.Width || y < 0 || y >= _groundMap.Height) return;
@@ -237,7 +281,6 @@ public class LevelInitializer : MonoBehaviour
 
         _propsMap[x, y, z] = block;
     }
-
     private void SetGround(int x, int y, int z)
     {
         if (x < 0 || x >= _groundMap.Width || y < 0 || y >= _groundMap.Height) return;
@@ -258,8 +301,7 @@ public class LevelInitializer : MonoBehaviour
             _groundMap[x, y, z].SpriteRenderer.flipX = flipX;
             _groundMap[x, y, z].SpriteRenderer.sortingOrder = 100 * z + 10;
         }
-    }
-        
+    }  
     private void SetCover(int x, int y, int z)
     {
         if (x < 0 || x >= _groundMap.Width || y < 0 || y >= _groundMap.Height) return;
@@ -325,10 +367,8 @@ public class LevelInitializer : MonoBehaviour
     }
     private void SetPlayers()
     {
-        //create player instance with the Player
         GameObject Player = Instantiate(PlayerPrefab, new Vector3(x_position, y_position, 0), Quaternion.identity);
         Player.name = "Player";
-        //Player.transform.position = new Vector3(x_position, y_position, 0);
         CharacterEditor1.Character = Player.GetComponent<CharacterBase>();
         CharacterEditor1.OnlineLoadFromJson();
         Player.SetActive(true);
