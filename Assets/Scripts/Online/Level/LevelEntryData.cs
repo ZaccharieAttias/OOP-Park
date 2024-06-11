@@ -15,7 +15,7 @@ public class LevelEntryData : MonoBehaviour
     public Image LevelIcon;
     public string TextFileURL;
 
-    public void Start()
+    public void Start()//TELECHARGER UN NIVEAU
     {
         transform.position = Vector3.zero;
         transform.localScale = Vector3.one;
