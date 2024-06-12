@@ -23,6 +23,13 @@ public class CharacterEditor1 : MonoBehaviour
 
         Character.FromJson(json);
     }
+    public void LoadFromJson(string name)
+    {
+        string path = Path.Combine(Application.dataPath, "Resources/CharactersData", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, $"{name}.json");
+        var json = File.ReadAllText(path);
+
+        Character.FromJson(json);
+    }
     public void OnlineLoadFromJson()
     {
         string path = Path.Combine(Application.dataPath, "Resources/CharactersData", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Character 1.json");
