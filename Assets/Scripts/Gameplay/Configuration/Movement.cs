@@ -1,6 +1,7 @@
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Character move and jump example. Built-in component CharacterController (3D) is used. It can be replaced by 2D colliders.
@@ -73,8 +74,9 @@ public class Movement : MonoBehaviour
         CharactersManager = GetComponent<CharactersManager>();
         Gun = transform.Find("GunPivot").gameObject;
         WallLayer = LayerMask.GetMask("Wall");
-        WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
-        //WallCheck = GameObject.Find("Grid/Walls").transform;
+        // si la scene se nomme LevelBuilder
+        if (SceneManager.GetActiveScene().name == "onlinetest") WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
+        else WallCheck = GameObject.Find("Grid/Walls").transform;
 
 
         Velocity = Vector3.zero;
