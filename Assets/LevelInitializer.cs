@@ -15,7 +15,6 @@ public class LevelInitializer : MonoBehaviour
 {
     private Transform Parent;
     public SpriteCollectionPF SpriteCollection;
-    //public SpriteRenderer Cursor;
 
     private int _type;
     private int _index;
