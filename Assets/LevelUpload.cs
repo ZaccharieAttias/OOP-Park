@@ -18,16 +18,19 @@ public class LevelUpload : MonoBehaviour
     private TileMap _groundMap;
     private TileMap _coverMap;
     private TileMap _propsMap;
+    private LevelBuilderB LevelBuilder;
 
     public void Start()
     {
         LevelUploadUi = GameObject.Find("Canvas/Menus/Gameplay/UploadScreen");
         LevelNameInputField = LevelUploadUi.transform.Find("InputField").GetComponent<TMP_InputField>();
-        LevelUploadUi.SetActive(false);
+        LevelBuilder = GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>();
 
-        _groundMap = new TileMap(1, 1, 4);
-        _coverMap = new TileMap(1, 1, 4);
-        _propsMap = new TileMap(1, 1, 4);
+        _groundMap = LevelBuilder.GetGroundMap();
+        _coverMap = LevelBuilder.GetCoverMap();
+        _propsMap = LevelBuilder.GetPropsMap();
+
+        LevelUploadUi.SetActive(false);
     }
     public void CreateLevel()
     {
@@ -139,8 +142,6 @@ public class LevelUpload : MonoBehaviour
         }
 
         var json = JsonConvert.SerializeObject(level);
-        Debug.Log(json);
-        Debug.Log(path);
         File.WriteAllText(path, json);
     }
 }
