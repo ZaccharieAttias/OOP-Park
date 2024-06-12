@@ -17,6 +17,7 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
         public List<Tileset> CoverTilesets;
         public List<Sprite> PropsSprites;
         public List<Sprite> OtherSprites;
+        public List<Sprite> PlayerSprite;
         public Sprite DeleteSprite;
 
         #if UNITY_EDITOR
@@ -27,6 +28,7 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
             CoverTilesets = LoadTextures(TilesFolder, "Cover").Select(i => new Tileset(i)).ToList();
             PropsSprites = LoadSprites(TilesFolder, "Props");
             OtherSprites = LoadSprites(TilesFolder, "Ladder").Union(LoadSprites(TilesFolder, "Bridge")).ToList();
+            PlayerSprite = LoadSprites(TilesFolder, "Player");
             UnityEditor.EditorUtility.SetDirty(this);
             Debug.Log("Refresh done!");
         }
