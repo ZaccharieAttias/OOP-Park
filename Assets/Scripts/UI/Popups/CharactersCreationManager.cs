@@ -8,53 +8,47 @@ using UnityEngine.UI;
 
 public class CharactersCreationManager : MonoBehaviour
 {
+    [Header("UI Elements")]
     public GameObject Popup;
-
-    public int SpriteIndex;
-    public List<Sprite> CharacterSprites;
     public GameObject CharacterPrefab;
     public Transform CharactersContentPanel;
 
-    public int CharacterParentsLimit;
-    public List<CharacterB> SelectedCharacterParents;
+    [Header("Character Data")]
+    public CharacterB SelectedParent;
     public List<GameObject> CharacterGameObjects;
     public List<GameObject> DuplicateCharacterGameObjects;
 
-    public List<Button> ControlButtons;
+    [Header("Buttons")]
+    public Button AddButton;
+    public Button CancelButton;
+    public Button ConfirmButton;
     public List<Button> NotAllowedButtons;
 
-    public SpecialAbilitiesManager SpecialAbilitiesManager;
+    [Header("Managers")]
     public Toggle CharacterToggleType;
-    public SpecialAbilityManager SpecialAbilityManager;
 
 
-    public void Start() { InitializeProperties(); }
-    private void InitializeProperties()
+    public void Start()
+    {
+        InitializeProperties();
+    }
+    public void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/CharacterCreation");
-
-        SpriteIndex = 0;
-        CharacterSprites = Resources.LoadAll<Sprite>("Sprites/Characters/").ToList();
         CharacterPrefab = Resources.Load<GameObject>("Buttons/Character");
         CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
 
-        CharacterParentsLimit = RestrictionManager.Instance.AllowMultipleInheritance ? 2 : 1;
-        SelectedCharacterParents = new List<CharacterB>();
+        SelectedParent = null;
         CharacterGameObjects = new List<GameObject>();
         DuplicateCharacterGameObjects = new List<GameObject>();
-        
-        ControlButtons = new List<Button>
-        {
-            Popup.transform.Find("Buttons/Add").gameObject.GetComponent<Button>(),
-            Popup.transform.Find("Buttons/Cancel").gameObject.GetComponent<Button>(),
-            Popup.transform.Find("Buttons/Confirm").gameObject.GetComponent<Button>(),
-            Popup.transform.Find("Buttons/Reset").gameObject.GetComponent<Button>()
-        };
-        ControlButtons[0].GetComponent<Button>().onClick.AddListener(() => StartFactory());
-        ControlButtons[1].GetComponent<Button>().onClick.AddListener(() => CancelFactory());
-        ControlButtons[2].GetComponent<Button>().onClick.AddListener(() => ConfirmFactory());
-        ControlButtons[3].GetComponent<Button>().onClick.AddListener(() => ResetFactory());
-        
+
+        AddButton = Popup.transform.Find("Buttons/Add").GetComponent<Button>();
+        AddButton.onClick.AddListener(() => StartFactory());
+        CancelButton = Popup.transform.Find("Buttons/Cancel").GetComponent<Button>();
+        CancelButton.onClick.AddListener(() => CancelFactory());
+        ConfirmButton = Popup.transform.Find("Buttons/Confirm").GetComponent<Button>();
+        ConfirmButton.onClick.AddListener(() => ConfirmFactory());
+
         NotAllowedButtons = new List<Button>
         {
             GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>(),
@@ -63,11 +57,9 @@ public class CharactersCreationManager : MonoBehaviour
             GameObject.Find("Player").GetComponent<CharactersManager>().DeleteButton.GetComponent<Button>()
         };
 
-        SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
-        SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
-        CharacterToggleType = Popup.transform.Find("Buttons/CharacterType").gameObject.GetComponent<Toggle>();
+        CharacterToggleType = Popup.transform.Find("Buttons/CharacterType").GetComponent<Toggle>();
 
-        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.AllowMultipleInheritance)
+        if (RestrictionManager.Instance.AllowSingleInheritance)
         {
             Button popupToggleOn = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
             popupToggleOn.onClick.AddListener(() => ToggleOn());
@@ -75,21 +67,16 @@ public class CharactersCreationManager : MonoBehaviour
             Button popupToggleOff = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
             popupToggleOff.onClick.AddListener(() => ToggleOff());
         }
-        
     }
-    private void StartFactory()
+
+    public void StartFactory()
     {
-        ControlButtons[0].interactable = false;
-        ControlButtons[2].interactable = false;
-        ControlButtons[3].interactable = false;
+        SetControlButtonsState(false, true, false);
+        SetActiveControlButtons(true, true, true, RestrictionManager.Instance.AllowAbstractClass);
+
         CharacterToggleType.isOn = false;
 
-        ControlButtons[1].gameObject.SetActive(true);
-        ControlButtons[2].gameObject.SetActive(true);
-        ControlButtons[3].gameObject.SetActive(true);
-        if (RestrictionManager.Instance.AllowAbstractClasses) CharacterToggleType.gameObject.SetActive(true);
-
-        SelectedCharacterParents = new();
+        SelectedParent = null;
         CharacterGameObjects = new();
         DuplicateCharacterGameObjects = new();
 
@@ -97,31 +84,17 @@ public class CharactersCreationManager : MonoBehaviour
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
         ToggleButtonsInteractability(NotAllowedButtons);
     }
-    private void CancelFactory()
+    public void CancelFactory()
     {
-        ControlButtons[0].interactable = true;
-        ControlButtons[2].interactable = false;
-        ControlButtons[3].interactable = false;
-
-        ControlButtons[1].gameObject.SetActive(false);
-        ControlButtons[2].gameObject.SetActive(false);
-        ControlButtons[3].gameObject.SetActive(false);
-        CharacterToggleType.gameObject.SetActive(false);
+        SetActiveControlButtons(true, false, false, false);
 
         DestroyGameObjects(DuplicateCharacterGameObjects);
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
         ToggleButtonsInteractability(NotAllowedButtons);
     }
-    private void ConfirmFactory()
+    public void ConfirmFactory()
     {
-        ControlButtons[0].interactable = true;
-        ControlButtons[2].interactable = false;
-        ControlButtons[3].interactable = false;
-
-        ControlButtons[1].gameObject.SetActive(false);
-        ControlButtons[2].gameObject.SetActive(false);
-        ControlButtons[3].gameObject.SetActive(false);
-        CharacterToggleType.gameObject.SetActive(false);
+        SetActiveControlButtons(true, false, false, false);
 
         DestroyGameObjects(DuplicateCharacterGameObjects);
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
@@ -129,18 +102,45 @@ public class CharactersCreationManager : MonoBehaviour
 
         StartCoroutine(CharacterBuildPipeline());
     }
-    private void ResetFactory()
-    {
-        ControlButtons[2].GetComponent<Button>().interactable = false;
-        ControlButtons[3].GetComponent<Button>().interactable = false;
-        CharacterToggleType.isOn = false;
 
-        SelectedCharacterParents = new();
-        MarkCharacter();
+    public void MarkCharacter()
+    {
+        var selectedGameObject = EventSystem.current.currentSelectedGameObject;
+        bool isSelectedParent = SelectedParent is null;
+        SelectedParent = isSelectedParent ? selectedGameObject.GetComponent<CharacterDetails>().Character : null;
+
+        selectedGameObject.GetComponent<Image>().color = isSelectedParent ? Color.green : Color.white;
+        selectedGameObject.GetComponent<Button>().interactable = true;
+
+        ConfirmButton.GetComponent<Button>().interactable = isSelectedParent;
+
+        foreach (GameObject gameObject in DuplicateCharacterGameObjects.Where(item => item != selectedGameObject))
+        {
+            gameObject.GetComponent<Image>().color = isSelectedParent ? Color.black : Color.white;
+            gameObject.GetComponent<Button>().interactable = !isSelectedParent;
+        }
     }
-    private void ToggleButtonsInteractability(List<Button> buttons) { foreach (Button button in buttons) button.interactable = !button.interactable; }
-    private void DestroyGameObjects(List<GameObject> gameObjects) { foreach (GameObject gameObject in gameObjects) Destroy(gameObject); }
-    private void BuildCharacterGameObjects()
+    public void SetControlButtonsState(bool addInteractable, bool cancelInteractable, bool confirmInteractable)
+    {
+        AddButton.interactable = addInteractable;
+        CancelButton.interactable = cancelInteractable;
+        ConfirmButton.interactable = confirmInteractable;
+    }
+    public void SetActiveControlButtons(bool addActive, bool cancelActive, bool confirmActive, bool toggleActive)
+    {
+        AddButton.gameObject.SetActive(addActive);
+        CancelButton.gameObject.SetActive(cancelActive);
+        ConfirmButton.gameObject.SetActive(confirmActive);
+        CharacterToggleType.gameObject.SetActive(toggleActive);
+    }
+    public void ToggleButtonsInteractability(List<Button> buttons)
+    {
+        foreach (Button button in buttons)
+        {
+            button.interactable = !button.interactable;
+        }
+    }
+    public void BuildCharacterGameObjects()
     {
         CharacterGameObjects = GameObject.FindGameObjectsWithTag("CharacterButton").ToList();
         foreach (GameObject characterGameObject in CharacterGameObjects)
@@ -162,113 +162,79 @@ public class CharactersCreationManager : MonoBehaviour
             DuplicateCharacterGameObjects.Add(duplicateCharacterGameObject);
         }
     }
-    private void MarkCharacter()
+    public void DestroyGameObjects(List<GameObject> gameObjects)
     {
-        var characterGameObject = EventSystem.current.currentSelectedGameObject;
-        if (characterGameObject != null)
+        foreach (GameObject gameObject in gameObjects)
         {
-            CharacterB character = characterGameObject.GetComponent<CharacterDetails>().Character;
-            bool isSelectedParentsAlready = SelectedCharacterParents.Contains(character);
-
-            if (isSelectedParentsAlready) SelectedCharacterParents.Remove(character);
-            else SelectedCharacterParents.Add(character);
-
-            ControlButtons[2].GetComponent<Button>().interactable = SelectedCharacterParents.Count > 0;
-            ControlButtons[3].GetComponent<Button>().interactable = SelectedCharacterParents.Count > 0;
-
-            Image image = characterGameObject.GetComponent<Image>();
-            image.color = isSelectedParentsAlready ? Color.white : Color.green;
-
-            List<GameObject> currentGameObjectsFilter = DuplicateCharacterGameObjects.FindAll(obj => obj.GetComponent<Button>().interactable == (isSelectedParentsAlready is false));
-            List<GameObject> ancestorGameObjectsFilter = SelectedCharacterParents is not null && SelectedCharacterParents.Any() ? FindAncestorGameObjects(SelectedCharacterParents.Last()) : new List<GameObject>();
-            List<GameObject> nextGameObjectsFilter = isSelectedParentsAlready is false && SelectedCharacterParents.Count == CharacterParentsLimit ? currentGameObjectsFilter : ancestorGameObjectsFilter;
-            List<GameObject> finalGameObjects = isSelectedParentsAlready ? currentGameObjectsFilter.Except(nextGameObjectsFilter).ToList() : nextGameObjectsFilter.Except(DuplicateCharacterGameObjects.FindAll(obj => SelectedCharacterParents.Contains(obj.GetComponent<CharacterDetails>().Character))).ToList();                  
-            foreach (GameObject gameObject in finalGameObjects)
-            {
-                Image gameObjectImage = gameObject.GetComponent<Image>();
-                gameObjectImage.color = isSelectedParentsAlready ? Color.white : Color.black;
-
-                Button gameObjectButton = gameObject.GetComponent<Button>();
-                gameObjectButton.interactable = isSelectedParentsAlready;
-            }
-        }
-
-        else 
-        {
-            SelectedCharacterParents = new();
-
-            foreach(GameObject duplicateCharacterGameObject in DuplicateCharacterGameObjects)
-            {
-                duplicateCharacterGameObject.GetComponent<Button>().interactable = true;
-                duplicateCharacterGameObject.GetComponent<Image>().color = Color.white;
-            }
+            Destroy(gameObject);
         }
     }
-    private List<GameObject> FindAncestorGameObjects(CharacterB character)
+
+    public IEnumerator CharacterBuildPipeline()
     {
-        List<GameObject> AncestorGameObjects = new();
-        foreach (CharacterB parent in character.Parents)
+        if (RestrictionManager.Instance.AllowSpecialAbility)
         {
-            GameObject ancestorGameObject = DuplicateCharacterGameObjects.Find(obj => obj.GetComponent<CharacterDetails>().Character == parent);
-            AncestorGameObjects.Add(ancestorGameObject);
-            
-            List<GameObject> parentAncestors = FindAncestorGameObjects(parent);
-            AncestorGameObjects.AddRange(parentAncestors);
+            AddButton.gameObject.SetActive(false);
+            SpecialAbilitiesData.SpecialAbilityManager.ToggleOn();
+
+            yield return new WaitUntil(() => !SpecialAbilitiesData.SpecialAbilityManager.Popup.activeSelf);
+            AddButton.gameObject.SetActive(true);
         }
 
-        return AncestorGameObjects;
-    }   
-    private IEnumerator CharacterBuildPipeline()
-    {
-        if (RestrictionManager.Instance.AllowSpecialAbilities)
-        {
-            SpecialAbilityManager.ToggleOn(SelectedCharacterParents);
-            // SpecialAbilitiesManager.ToggleOn(SelectedCharacterParents);
-            yield return new WaitUntil(() => SpecialAbilityManager.Popup.activeSelf is false);
-        }
+        var builtCharacter = BuildCharacter();
+        if (builtCharacter == null) yield break;
 
-        CharacterB builtCharacter = BuildCharacter();
         BuildCharacterObject(builtCharacter);
-
         CharactersData.CharactersManager.AddCharacter(builtCharacter);
     }
-    private CharacterB BuildCharacter()
+    public CharacterB BuildCharacter()
     {
-        SpecialAbility SpecialAbility = SpecialAbilitiesManager.SpecialAbilitiesCollection[SpecialAbilityType.General].First();
-        if(RestrictionManager.Instance.AllowSpecialAbilities)
-            SpecialAbility = SpecialAbilityManager.SelectedSpecialAbility;
+        if (RestrictionManager.Instance.AllowSpecialAbility && SpecialAbilitiesData.SpecialAbilityManager.SelectedSpecialAbility == null)
+        {
+            return null;
+        }
 
-        CharacterB builtCharacter = new()
+        var builtCharacter = new CharacterB
         {
             IsAbstract = CharacterToggleType.isOn,
-
             Name = $"Character {CharacterGameObjects.Count + 1}",
-            Description = $"I`m {CharacterGameObjects.Count + 1}",
-            
-            SpecialAbility = SpecialAbility,
-
-            Parents = SelectedCharacterParents
+            Description = $"I'm {CharacterGameObjects.Count + 1}",
+            SpecialAbility = RestrictionManager.Instance.AllowSpecialAbility ? SpecialAbilitiesData.SpecialAbilityManager.SelectedSpecialAbility : null,
+            Parent = SelectedParent
         };
-        builtCharacter.Parents.ForEach(parent => parent.Childrens.Add(builtCharacter));
-        if (RestrictionManager.Instance.AllowBeginnerInheritance) builtCharacter.PreDetails();
-        
+
+        if (builtCharacter.Parent != null)
+        {
+            builtCharacter.Parent.Childrens.Add(builtCharacter);
+        }
+
+        if (RestrictionManager.Instance.AllowBeginnerInheritance)
+        {
+            builtCharacter.PreDetails();
+        }
+
         return builtCharacter;
     }
     public void BuildCharacterObject(CharacterB character)
     {
-        GameObject characterGameObject = Instantiate(CharacterPrefab, CharactersContentPanel);
-
+        var characterGameObject = Instantiate(CharacterPrefab, CharactersContentPanel);
         characterGameObject.name = character.Name;
         character.CharacterButton.Button = characterGameObject;
         characterGameObject.GetComponent<CharacterDetails>().InitializeCharacter(character);
 
-        Image image = characterGameObject.GetComponent<Image>();
-        image.sprite = Resources.Load<Sprite>("Sprites/Characters/" + character.Name);
-        SpriteIndex++;
+        var image = characterGameObject.GetComponent<Image>();
+        image.sprite = Resources.Load<Sprite>($"Sprites/Characters/{character.Name}");
 
-        Button button = characterGameObject.GetComponent<Button>();
+        var button = characterGameObject.GetComponent<Button>();
         button.onClick.AddListener(() => CharactersData.CharactersManager.DisplayCharacter(character));
     }
-    public void ToggleOn() { Popup.SetActive(true); }
-    public void ToggleOff() { Popup.SetActive(false); }
+
+    public void ToggleOn()
+    {
+        Popup.SetActive(true);
+    }
+    public void ToggleOff()
+    {
+        Popup.SetActive(false);
+    }
 }
