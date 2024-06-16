@@ -37,14 +37,12 @@ public class LevelInitializer : MonoBehaviour
     string path;
     private LevelUpload LevelUpload;
     string MapPath;
-    string PositionPath;
 
     private int ID;
     private string LevelName;
     public TMP_Text NameText;
     public Image LevelIcon;
-    public string TextFileURL; 
-    public LootLockerFile[] LLFiles;      
+    public string TextFileURL;    
     public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
@@ -74,35 +72,21 @@ public class LevelInitializer : MonoBehaviour
     }
     public void LoadLevel()
     {
-        StartCoroutine(DownloadTextFile(LLFiles));
+        StartCoroutine(DownloadTextFile(TextFileURL));
     }
-    private IEnumerator DownloadTextFile(LootLockerFile[] files)
+    private IEnumerator DownloadTextFile(string url)
     {
-        for (int i = 0; i < files.Length; i++)
-        {
-            if (files[i] == null) continue;
-            string textfileURL = files[i].url.ToString();
-            UnityWebRequest www = UnityWebRequest.Get(textfileURL);
-            yield return www.SendWebRequest();
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        yield return www.SendWebRequest();
 
-            // switch cas si le url conitent "Data" ou "Position"
-            if (textfileURL.Contains("Data"))
-            {
-                MapPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
-                File.WriteAllText(MapPath, www.downloadHandler.text);
-            }
-            else if (textfileURL.Contains("Position"))
-            {
-                PositionPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Position.json");
-                File.WriteAllText(PositionPath, www.downloadHandler.text);
-            }
-        }
+        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Level_" + LevelName + "_Data.json";
+        File.WriteAllText(filePath, www.downloadHandler.text);
 
         AssetDatabase.Refresh();
         yield return new WaitForSeconds(1f);
-        BuildLevel(MapPath);
+        BuildLevel(filePath);
         SetLayers(Terrain, "Ground");
-        SetPlayers(PositionPath);
+        SetPlayers();
         yield return new WaitForSeconds(2f);
         GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
@@ -114,7 +98,7 @@ public class LevelInitializer : MonoBehaviour
     private void BuildLevel(string json)
     {   
         var file = File.ReadAllText(json);
-        var level = JsonConvert.DeserializeObject<Level>(file);
+        var level = JsonConvert.DeserializeObject<LevelB>(file);
 
         if (_groundMap != null)
         {
@@ -135,6 +119,8 @@ public class LevelInitializer : MonoBehaviour
         var width = level.GroundMap.GetLength(0);
         var height = level.GroundMap.GetLength(1);
         var depth = level.GroundMap.GetLength(2);
+        x_position = level.characterX;
+        y_position = level.characterY;
 
         _groundMap = new TileMap(width, height, depth);
         _coverMap = new TileMap(width, height, depth);
@@ -194,7 +180,7 @@ public class LevelInitializer : MonoBehaviour
                 }
             }
         }
-
+        Debug.Log("Player position: " + x_position + ", " + y_position);
         _index = index;
     }
     private void CreateGround(int x, int y, int z)
@@ -379,13 +365,8 @@ public class LevelInitializer : MonoBehaviour
                 SetLayers(child, name);
         }
     }
-    private void SetPlayers(string json)
+    private void SetPlayers()
     {
-        var file = File.ReadAllText(json);
-        var position = JsonConvert.DeserializeObject<Position>(file);
-
-        x_position = position.X;
-        y_position = position.Y;
         GameObject Player = Instantiate(PlayerPrefab, new Vector3(x_position, y_position, 0), Quaternion.identity);
         Player.name = "Player";
         CharacterEditor1.Character = Player.GetComponent<CharacterBase>();
