@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,195 +8,156 @@ using TMPro;
 
 public class SpecialAbilityManager : MonoBehaviour
 {
+    [Header("UI Elements")]
     public GameObject Popup;
-    public GameObject ButtonPrefab;
+    public GameObject SpecialAbilityButton;
     public Transform SpecialAbilityContentPanel;
+    public Button CancelButton;
+    public Button ConfirmButton;
 
-    public SpecialAbility SelectedSpecialAbility;
-    public List<GameObject> SpecialAbilityGameObjects;
-    public List<SpecialAbilityObject> SpecialAbilitiesCollection;
-    public SpecialAbilityTreeManager SpecialAbilityTreeManager;
-    public SpecialAbilitiesManager SpecialAbilitiesManager;
-
-
-    public List<Button> ControlButtons;
-    public List<Button> NotAllowedButtons;
+    [Header("Managers")]
     public CharactersCreationManager CharacterCreationManager;
-    public GameObject ValidationButton;
+    public SpecialAbilityTreeManager SpecialAbilityTreeManager;
+
+    [Header("Special Abilities")]
+    public SpecialAbility SelectedSpecialAbility;
+    public List<SpecialAbilityObject> SpecialAbilitiesCollection;
+
+    [Header("Game Objects")]
+    public List<GameObject> SpecialAbilityGameObjects;
 
 
-    public void Start() { InitializeProperties(); }
+    public void Start()
+    {
+        InitializeProperties();
+    }
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/SpecialAbilityTree");
-
-        ButtonPrefab = Resources.Load<GameObject>("Buttons/Ability");
+        SpecialAbilityButton = Resources.Load<GameObject>("Buttons/Ability");
         SpecialAbilityContentPanel = GameObject.Find("Canvas/Popups/SpecialAbilityTree/Buttons/ScrollView/ViewPort/All").transform;
-        CharacterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
-        SpecialAbilitiesManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilitiesManager>();
-        SpecialAbilityTreeManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityTreeManager>();
-        ValidationButton = GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/Add");
+        CancelButton = Popup.transform.Find("Buttons/Cancel").gameObject.GetComponent<Button>();
+        CancelButton.onClick.AddListener(() => CancelFactory());
+        ConfirmButton = Popup.transform.Find("Buttons/Confirm").gameObject.GetComponent<Button>();
+        ConfirmButton.onClick.AddListener(() => ConfirmFactory());
 
-        ControlButtons = new List<Button>
-        {
-            Popup.transform.Find("Buttons/Confirm").gameObject.GetComponent<Button>()
-        };
-        ControlButtons[0].GetComponent<Button>().onClick.AddListener(() => ConfirmFactory());
-        
-        NotAllowedButtons = new List<Button>
-        {
-            GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Attributes/Buttons/Edit").GetComponent<Button>(),
-            GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Methods/Buttons/Edit").GetComponent<Button>(),
-            GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>(),
-            GameObject.Find("Player").GetComponent<CharactersManager>().DeleteButton.GetComponent<Button>()
-        };        
+        CharacterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
+        SpecialAbilityTreeManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityTreeManager>();
+
+        SelectedSpecialAbility = null;
+        SpecialAbilitiesCollection = new();
+
+        SpecialAbilityGameObjects = new();
     }
     private void StartFactory()
     {
-        ControlButtons[0].interactable = false;
-        ControlButtons[0].gameObject.SetActive(true);
+        CancelButton.interactable = true;
+        ConfirmButton.interactable = false;
 
         SelectedSpecialAbility = null;
-        SpecialAbilityGameObjects = new();
+        if (SpecialAbilityGameObjects.Count == 0)
+        {
+            BuildSpecialAbilityGameObjects(); // Instead of destory and build every single time.
+        }
 
-        ResetTree();
-        BuildSpecialAbilityGameObjects();
-        ToggleButtonsInteractability(NotAllowedButtons);
+        ResetAbilitySelection();
         SpecialAbilityTreeManager.BuildTree(SpecialAbilitiesCollection.First());
+    }
+    private void CancelFactory()
+    {
+        SelectedSpecialAbility = null;
+
+        ToggleOff();
     }
     private void ConfirmFactory()
     {
-        ControlButtons[0].interactable = false;
-
-        ControlButtons[0].gameObject.SetActive(false);
-
-        ToggleButtonsInteractability(SpecialAbilityGameObjects.Select(item => item.GetComponent<Button>()).ToList());
-        ToggleButtonsInteractability(NotAllowedButtons);
         ToggleOff();
     }
-    private void ToggleButtonsInteractability(List<Button> buttons) { foreach (Button button in buttons) button.interactable = !button.interactable; }
     private void BuildSpecialAbilityGameObjects()
     {
-        foreach (SpecialAbilityObject SpeAbiGameObject in SpecialAbilitiesCollection)
+        foreach (var specialAbility in SpecialAbilitiesCollection)
         {
-            GameObject SpeAbilityGameObject = Instantiate(ButtonPrefab, SpecialAbilityContentPanel);
-            SpeAbilityGameObject.name = SpeAbiGameObject.name;
-            SpeAbilityGameObject.GetComponentInChildren<TMP_Text>().text = SpeAbiGameObject.name;
-            SpeAbiGameObject.Button = SpeAbilityGameObject;
+            var specialAbilityGameObject = Instantiate(SpecialAbilityButton, SpecialAbilityContentPanel);
+            specialAbilityGameObject.name = specialAbility.name;
 
-            Button SpeAbiGameObjectButton = SpeAbilityGameObject.GetComponent<Button>();
-            SpeAbiGameObjectButton.onClick.AddListener(() => MarkAbility());
+            var specialAbilityText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
+            specialAbilityText.text = specialAbility.name;
 
-            SpeAbiGameObjectButton.interactable = false;
-            SpeAbiGameObjectButton.GetComponent<Image>().color = Color.black;
+            var specialAbilityButton = specialAbilityGameObject.GetComponent<Button>();
+            specialAbilityButton.onClick.AddListener(() => MarkAbility(specialAbilityGameObject));
 
-            SpecialAbilityGameObjects.Add(SpeAbilityGameObject);
+            specialAbility.Button = specialAbilityGameObject;
+
+            SpecialAbilityGameObjects.Add(specialAbilityGameObject);
         }
-        
-        List <CharacterB> selectedParents = CharacterCreationManager.SelectedCharacterParents;
-        List <SpecialAbilityObject> parentSpeAbiObject = new();
-        foreach (CharacterB selectedParent in selectedParents)
+    }
+    private void MarkAbility(GameObject specialAbilityGameObject)
+    {
+        var specialAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.name == specialAbilityGameObject.name);
+        bool isSelectedAbility = SelectedSpecialAbility is null;
+        SelectedSpecialAbility = isSelectedAbility ? specialAbilityObject.SpecialAbility : null;
+
+        ConfirmButton.interactable = isSelectedAbility;
+        specialAbilityGameObject.GetComponent<Image>().color = isSelectedAbility ? Color.green : Color.white;
+
+        UpdateDescendantButtons(specialAbilityGameObject, isSelectedAbility);
+    }
+
+    private void UpdateDescendantButtons(GameObject selectedGameObject, bool isSelectedAbility)
+    {
+        var selectedParent = CharacterCreationManager.SelectedParent;
+        var parentAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.name == selectedParent.SpecialAbility.Name);
+        var descendantGameObjects = FindDescendantGameObjects(parentAbilityObject);
+
+        foreach (var gameObject in descendantGameObjects.Where(obj => obj.name != selectedGameObject.name))
         {
-            SpecialAbility specialAbility = selectedParent.SpecialAbility;
-            parentSpeAbiObject.Add(SpecialAbilitiesCollection.Find(obj => obj.name == specialAbility.Name));
+            var button = gameObject.GetComponent<Button>();
+            button.interactable = !isSelectedAbility;
+            gameObject.GetComponent<Image>().color = isSelectedAbility ? Color.black : Color.white;
+        }
+    }
+    private void ResetAbilitySelection()
+    {
+        var selectedParent = CharacterCreationManager.SelectedParent;
+        var parentAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.name == selectedParent.SpecialAbility.Name);
+        var descendantGameObjects = FindDescendantGameObjects(parentAbilityObject);
+
+        foreach (var gameObject in descendantGameObjects)
+        {
+            gameObject.GetComponent<Button>().interactable = true;
+            gameObject.GetComponent<Image>().color = Color.white;
         }
 
-        foreach (SpecialAbilityObject parentSpeAbi in parentSpeAbiObject)
+        var nonDescendantGameObjects = SpecialAbilityGameObjects.Except(descendantGameObjects).ToList();
+        foreach (var gameObject in nonDescendantGameObjects)
         {
-            List<GameObject> temp = FindDescendantGameObjects(parentSpeAbi);
-            foreach (GameObject gameObject in temp)
+            gameObject.GetComponent<Button>().interactable = false;
+            gameObject.GetComponent<Image>().color = Color.black;
+        }
+    }
+    private List<GameObject> FindDescendantGameObjects(SpecialAbilityObject specialAbility)
+    {
+        var descendantGameObjects = new List<GameObject>();
+
+        foreach (var child in specialAbility.Childrens)
+        {
+            var descendantGameObject = SpecialAbilityGameObjects.Find(obj => obj.name == child.name);
+            if (descendantGameObject is not null)
             {
-                gameObject.GetComponent<Button>().interactable = true;
-                gameObject.GetComponent<Image>().color = Color.white;
+                descendantGameObjects.Add(descendantGameObject);
+                descendantGameObjects.AddRange(FindDescendantGameObjects(child));
             }
         }
 
+        return descendantGameObjects;
     }
-    private void MarkAbility()
+    public void ToggleOn()
     {
-        var speAbiGameObject = EventSystem.current.currentSelectedGameObject;
-        if (speAbiGameObject != null)
-        {
-            Debug.Log(speAbiGameObject.GetComponent<Button>().interactable);
-            SpecialAbilityObject specialAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.name == speAbiGameObject.name);
-            bool isSelectedParentsAlready = SelectedSpecialAbility is not null && SelectedSpecialAbility.Name == specialAbilityObject.name;
-
-            if (isSelectedParentsAlready) SelectedSpecialAbility = null;
-            else SelectedSpecialAbility = specialAbilityObject.SpecialAbility;
-
-            ControlButtons[0].GetComponent<Button>().interactable = SelectedSpecialAbility is not null;
-
-            Image image = speAbiGameObject.GetComponent<Image>();
-            image.color = isSelectedParentsAlready ? Color.white : Color.green;
-
-            List <CharacterB> selectedParents = CharacterCreationManager.SelectedCharacterParents;
-            List <SpecialAbilityObject> parentSpeAbiObject = new();
-            foreach (CharacterB selectedParent in selectedParents)
-            {
-                SpecialAbility specialAbility = selectedParent.SpecialAbility;
-                parentSpeAbiObject.Add(SpecialAbilitiesCollection.Find(obj => obj.name == specialAbility.Name));
-            }
-            foreach (SpecialAbilityObject parentSpeAbi in parentSpeAbiObject)
-            {
-                List<GameObject> temp = FindDescendantGameObjects(parentSpeAbi);
-                foreach (GameObject gameObject in temp)
-                {
-                    if (gameObject.name != speAbiGameObject.name)
-                    {
-                        gameObject.GetComponent<Button>().interactable = isSelectedParentsAlready;
-                        gameObject.GetComponent<Image>().color = isSelectedParentsAlready ? Color.white : Color.black;
-                    }
-                }
-            }
-        }
-    }
-    private List<GameObject> FindAncestorGameObjects(SpecialAbilityObject SpeAbility)
-    {
-        List<GameObject> AncestorGameObjects = new();
-        SpecialAbilityObject parent  = SpeAbility.Parent;
-
-        GameObject ancestorGameObject = SpecialAbilityGameObjects.Find(obj => obj.GetComponent<SpecialAbilityObject>().name == parent.name);
-        AncestorGameObjects.Add(ancestorGameObject);
-            
-        List<GameObject> parentAncestors = FindAncestorGameObjects(parent);
-        return AncestorGameObjects;
-    }
-    private List<GameObject> FindDescendantGameObjects(SpecialAbilityObject SpeAbility)
-    {
-        List<GameObject> DescendantGameObjects = new();
-        List<SpecialAbilityObject> children = SpeAbility.Childrens;
-
-        foreach (SpecialAbilityObject child in children)
-        {
-            GameObject descendantGameObject = SpecialAbilityGameObjects.Find(obj => obj.name == child.name);
-            DescendantGameObjects.Add(descendantGameObject);
-
-            List<GameObject> childDescendants = FindDescendantGameObjects(child);
-            DescendantGameObjects.AddRange(childDescendants);
-        }
-
-        return DescendantGameObjects;
-    }
-    private void LoadPopup(List<CharacterB> selectedCharacterParents)
-    {
-        SelectedSpecialAbility = null;
-        ControlButtons[0].interactable = false;
         StartFactory();
-    }
-    private void ResetTree()
-    {
-        foreach (Transform child in SpecialAbilityContentPanel.transform)
-                Destroy(child.gameObject);
-    }
-    public void ToggleOn(List<CharacterB> selectedCharacterParents) 
-    { 
-        LoadPopup(CharacterCreationManager.SelectedCharacterParents);
-        ValidationButton.SetActive(false);
         Popup.SetActive(true);
     }
-    public void ToggleOff() 
-    { 
-        ValidationButton.SetActive(true);
-        Popup.SetActive(false); 
+    public void ToggleOff()
+    {
+        Popup.SetActive(false);
     }
 }
