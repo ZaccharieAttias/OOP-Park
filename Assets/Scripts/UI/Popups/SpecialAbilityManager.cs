@@ -49,6 +49,7 @@ public class SpecialAbilityManager : MonoBehaviour
 
         SpecialAbilityGameObjects = new();
     }
+
     private void StartFactory()
     {
         CancelButton.interactable = true;
@@ -73,24 +74,7 @@ public class SpecialAbilityManager : MonoBehaviour
     {
         ToggleOff();
     }
-    private void BuildSpecialAbilityGameObjects()
-    {
-        foreach (var specialAbility in SpecialAbilitiesCollection)
-        {
-            var specialAbilityGameObject = Instantiate(SpecialAbilityButton, SpecialAbilityContentPanel);
-            specialAbilityGameObject.name = specialAbility.name;
 
-            var specialAbilityText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
-            specialAbilityText.text = specialAbility.name;
-
-            var specialAbilityButton = specialAbilityGameObject.GetComponent<Button>();
-            specialAbilityButton.onClick.AddListener(() => MarkAbility(specialAbilityGameObject));
-
-            specialAbility.Button = specialAbilityGameObject;
-
-            SpecialAbilityGameObjects.Add(specialAbilityGameObject);
-        }
-    }
     private void MarkAbility(GameObject specialAbilityGameObject)
     {
         var specialAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.name == specialAbilityGameObject.name);
@@ -102,7 +86,6 @@ public class SpecialAbilityManager : MonoBehaviour
 
         UpdateDescendantButtons(specialAbilityGameObject, isSelectedAbility);
     }
-
     private void UpdateDescendantButtons(GameObject selectedGameObject, bool isSelectedAbility)
     {
         var selectedParent = CharacterCreationManager.SelectedParent;
@@ -151,6 +134,26 @@ public class SpecialAbilityManager : MonoBehaviour
 
         return descendantGameObjects;
     }
+
+    private void BuildSpecialAbilityGameObjects()
+    {
+        foreach (var specialAbility in SpecialAbilitiesCollection)
+        {
+            var specialAbilityGameObject = Instantiate(SpecialAbilityButton, SpecialAbilityContentPanel);
+            specialAbilityGameObject.name = specialAbility.name;
+
+            var specialAbilityText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
+            specialAbilityText.text = specialAbility.name;
+
+            var specialAbilityButton = specialAbilityGameObject.GetComponent<Button>();
+            specialAbilityButton.onClick.AddListener(() => MarkAbility(specialAbilityGameObject));
+
+            specialAbility.Button = specialAbilityGameObject;
+
+            SpecialAbilityGameObjects.Add(specialAbilityGameObject);
+        }
+    }
+
     public void ToggleOn()
     {
         StartFactory();
