@@ -280,6 +280,7 @@ public class LevelBuilderB : MonoBehaviour
         Player.GetComponent<GameController>().enabled = false;
         Player.GetComponent<CharactersManager>().enabled = false;
         Player.GetComponent<GrabObject>().enabled = false;
+        Player.GetComponent<Powerup>().enabled = false;
     }
     private void SetGround(int x, int y, int z)
     {

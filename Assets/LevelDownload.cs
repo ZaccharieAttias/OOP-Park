@@ -33,15 +33,31 @@ public class LevelDownload : MonoBehaviour
                 displayItem.transform.SetParent(LevelDataEntryContent);
                 displayItem.GetComponent<LevelInitializer>().SetInformations(i, response.assets[i].name);
 
-                LootLockerFile[] levelImageFiles = response.assets[i].files;
-                StartCoroutine(LoadLevelIcon(levelImageFiles[0].url.ToString(), displayItem.GetComponent<LevelInitializer>().LevelIcon));
-                displayItem.GetComponent<LevelInitializer>().TextFileURL = levelImageFiles[1].url.ToString();
-
+                LootLockerFile[] levelFiles = response.assets[i].files;
+                int j = FindImageIndex(levelFiles, "PRIMARY_THUMBNAIL");
+                if (j == -1)
+                {
+                    Debug.Log("No primary thumbnail found");
+                    return;
+                }
+                StartCoroutine(LoadLevelIcon(levelFiles[j].url.ToString(), displayItem.GetComponent<LevelInitializer>().LevelIcon));
+                levelFiles[j] = null;
+                displayItem.GetComponent<LevelInitializer>().LLFiles = levelFiles;
             }
 
         }, null, true);
     }
-
+    public int FindImageIndex(LootLockerFile[] files, string purpose)
+    {
+        for (int i = 0; i < files.Length; i++)
+        {
+            if (files[i].tags[0].Contains(purpose))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
     IEnumerator LoadLevelIcon(string imageURL, Image levelImage)
     {
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(imageURL);
@@ -49,6 +65,5 @@ public class LevelDownload : MonoBehaviour
 
         Texture2D loadedImage = DownloadHandlerTexture.GetContent(www);
         levelImage.sprite = Sprite.Create(loadedImage, new Rect(0f, 0f, loadedImage.width, loadedImage.height), Vector2.zero);
-
     }
 }

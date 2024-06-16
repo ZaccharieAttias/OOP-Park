@@ -31,19 +31,20 @@ public class LevelInitializer : MonoBehaviour
     public GameObject PlayerPrefab;
     private CharacterEditor1 CharacterEditor1;
     private GameObject MainCamera;
-    private float x_position = -4;
-    private float y_position = -1;
+    private float x_position;
+    private float y_position;
 
     string path;
     private LevelUpload LevelUpload;
     string MapPath;
+    string PositionPath;
 
     private int ID;
     private string LevelName;
     public TMP_Text NameText;
     public Image LevelIcon;
-    public string TextFileURL;
-    
+    public string TextFileURL; 
+    public LootLockerFile[] LLFiles;      
     public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
@@ -69,25 +70,39 @@ public class LevelInitializer : MonoBehaviour
         MapPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
         BuildLevel(MapPath);
         SetLayers(Terrain, "Ground");
-        SetPlayers();
+        //SetPlayers();
     }
     public void LoadLevel()
     {
-        StartCoroutine(DownloadTextFile(TextFileURL));
+        StartCoroutine(DownloadTextFile(LLFiles));
     }
-    private IEnumerator DownloadTextFile(string textfileURL)
+    private IEnumerator DownloadTextFile(LootLockerFile[] files)
     {
-        UnityWebRequest www = UnityWebRequest.Get(textfileURL);
-        yield return www.SendWebRequest();
+        for (int i = 0; i < files.Length; i++)
+        {
+            if (files[i] == null) continue;
+            string textfileURL = files[i].url.ToString();
+            UnityWebRequest www = UnityWebRequest.Get(textfileURL);
+            yield return www.SendWebRequest();
 
-        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Level_" + LevelName + "_Data.json";
-        File.WriteAllText(filePath, www.downloadHandler.text);
+            // switch cas si le url conitent "Data" ou "Position"
+            if (textfileURL.Contains("Data"))
+            {
+                MapPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
+                File.WriteAllText(MapPath, www.downloadHandler.text);
+            }
+            else if (textfileURL.Contains("Position"))
+            {
+                PositionPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Position.json");
+                File.WriteAllText(PositionPath, www.downloadHandler.text);
+            }
+        }
 
         AssetDatabase.Refresh();
         yield return new WaitForSeconds(1f);
-        BuildLevel(filePath);
+        BuildLevel(MapPath);
         SetLayers(Terrain, "Ground");
-        SetPlayers();
+        SetPlayers(PositionPath);
         yield return new WaitForSeconds(2f);
         GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
@@ -364,8 +379,13 @@ public class LevelInitializer : MonoBehaviour
                 SetLayers(child, name);
         }
     }
-    private void SetPlayers()
+    private void SetPlayers(string json)
     {
+        var file = File.ReadAllText(json);
+        var position = JsonConvert.DeserializeObject<Position>(file);
+
+        x_position = position.X;
+        y_position = position.Y;
         GameObject Player = Instantiate(PlayerPrefab, new Vector3(x_position, y_position, 0), Quaternion.identity);
         Player.name = "Player";
         CharacterEditor1.Character = Player.GetComponent<CharacterBase>();

@@ -35,6 +35,7 @@ public class LevelUpload : MonoBehaviour
     public void CreateLevel()
     {
         LevelName = LevelNameInputField.text;
+        LevelUploadUi.SetActive(false);
         OpenUploadLevelUI();
         LootLockerSDKManager.CreatingAnAssetCandidate(LevelName, (response) =>
         {
@@ -57,7 +58,7 @@ public class LevelUpload : MonoBehaviour
         {
             if (screenshotResponse.success)
             {
-                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + "Level_" + LevelName + ".json";
+                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + "Level_" + LevelName + "_Data.json";
                 SaveLevel(textFilePath);
 
                 //coverting json file to txt file
@@ -81,6 +82,26 @@ public class LevelUpload : MonoBehaviour
             else
             {
                 Debug.Log("Screenshot Upload Failed");
+            }
+        });
+
+        string positionFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + "Level_" + LevelName + "_Position.json";
+        SavePosition(positionFilePath);
+
+        //coverting json file to txt file
+        string jsonPosition = File.ReadAllText(positionFilePath);
+        File.WriteAllText(positionFilePath, jsonPosition);
+
+        LootLocker.LootLockerEnums.FilePurpose positionFileType = LootLocker.LootLockerEnums.FilePurpose.file;
+        LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, positionFilePath, "Level_" + LevelName + "_Position.txt", positionFileType, (positionResponse) =>
+        {
+            if (positionResponse.success)
+            {
+                LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>{});
+            }
+            else
+            {
+                Debug.Log("Position Upload Failed");
             }
         });
     }
@@ -142,6 +163,16 @@ public class LevelUpload : MonoBehaviour
         }
 
         var json = JsonConvert.SerializeObject(level);
+        File.WriteAllText(path, json);
+    }
+    public void SavePosition(string path)
+    {
+        var player = GameObject.Find("Player");
+        Transform playerTransform = player.transform;
+
+        Position playerPosition = new Position(playerTransform.localPosition.x, playerTransform.localPosition.y);
+
+        var json = JsonConvert.SerializeObject(playerPosition);
         File.WriteAllText(path, json);
     }
 }
