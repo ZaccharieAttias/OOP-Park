@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 using LootLocker.Requests;
 using Newtonsoft.Json;
 using Assets.PixelFantasy.PixelTileEngine.Scripts;
+using UnityEngine.Tilemaps;
 
 public class LevelUpload : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class LevelUpload : MonoBehaviour
     private TileMap _coverMap;
     private TileMap _propsMap;
     private LevelBuilderB LevelBuilder;
+    private int TileMapContextID;
 
     public void Start()
     {
@@ -29,6 +31,8 @@ public class LevelUpload : MonoBehaviour
         _groundMap = LevelBuilder.GetGroundMap();
         _coverMap = LevelBuilder.GetCoverMap();
         _propsMap = LevelBuilder.GetPropsMap();
+
+        TileMapContextID = 235247;
 
         LevelUploadUi.SetActive(false);
     }
@@ -47,7 +51,7 @@ public class LevelUpload : MonoBehaviour
             {
                 Debug.Log("Level Creation Failed");
             }
-        });
+        }, filters: new Dictionary<string, string>() { { "Context", "TileMap" } } , context_id: TileMapContextID);
     }
     public void UploadLevelData(int levelID)
     {

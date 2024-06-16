@@ -1,15 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.IO;
 using UnityEngine.Networking;
 using LootLocker.Requests;
+using System.Collections.Generic;
 
 public class LevelDownload : MonoBehaviour
 {
-    private string LevelName;
     private Transform LevelDataEntryContent;
     public GameObject LevelEntryDisplayItem;
 
@@ -20,9 +17,11 @@ public class LevelDownload : MonoBehaviour
 
     public void DownloadLevelData()
     {
+        //filtrez les assets pour obtenir uniquement les Tilemaps
+        
+
         LootLockerSDKManager.GetAssetListWithCount(10, (response) =>
         {
-            //supprimez les anciens éléments de la liste
             foreach (Transform child in LevelDataEntryContent)
             {
                 Destroy(child.gameObject);
@@ -52,7 +51,7 @@ public class LevelDownload : MonoBehaviour
                 displayItem.GetComponent<LevelInitializer>().TextFileURL = levelFiles[j].url.ToString();
             }
 
-        }, null, true);
+        }, null, true, new Dictionary<string, string>() { { "Context", "TileMap" } });
     }
     public int FindIndex(LootLockerFile[] files, string purpose)
     {
