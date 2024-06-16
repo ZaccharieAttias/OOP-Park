@@ -87,7 +87,7 @@ public class LevelInitializer : MonoBehaviour
         BuildLevel(filePath);
         SetLayers(Terrain, "Ground");
         SetPlayers();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
     public void SetInformations(int id, string name)
