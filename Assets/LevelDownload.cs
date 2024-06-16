@@ -34,20 +34,27 @@ public class LevelDownload : MonoBehaviour
                 displayItem.GetComponent<LevelInitializer>().SetInformations(i, response.assets[i].name);
 
                 LootLockerFile[] levelFiles = response.assets[i].files;
-                int j = FindImageIndex(levelFiles, "PRIMARY_THUMBNAIL");
+                //image index
+                int j = FindIndex(levelFiles, "PRIMARY_THUMBNAIL");
                 if (j == -1)
                 {
                     Debug.Log("No primary thumbnail found");
                     return;
                 }
                 StartCoroutine(LoadLevelIcon(levelFiles[j].url.ToString(), displayItem.GetComponent<LevelInitializer>().LevelIcon));
-                levelFiles[j] = null;
-                displayItem.GetComponent<LevelInitializer>().LLFiles = levelFiles;
+                //other files index
+                j = FindIndex(levelFiles,"FILE");
+                if (j == -1)
+                {
+                    Debug.Log("No primary thumbnail found");
+                    return;
+                }
+                displayItem.GetComponent<LevelInitializer>().TextFileURL = levelFiles[j].url.ToString();
             }
 
         }, null, true);
     }
-    public int FindImageIndex(LootLockerFile[] files, string purpose)
+    public int FindIndex(LootLockerFile[] files, string purpose)
     {
         for (int i = 0; i < files.Length; i++)
         {
