@@ -84,26 +84,6 @@ public class LevelUpload : MonoBehaviour
                 Debug.Log("Screenshot Upload Failed");
             }
         });
-
-        string positionFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + "Level_" + LevelName + "_Position.json";
-        SavePosition(positionFilePath);
-
-        //coverting json file to txt file
-        string jsonPosition = File.ReadAllText(positionFilePath);
-        File.WriteAllText(positionFilePath, jsonPosition);
-
-        LootLocker.LootLockerEnums.FilePurpose positionFileType = LootLocker.LootLockerEnums.FilePurpose.file;
-        LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, positionFilePath, "Level_" + LevelName + "_Position.txt", positionFileType, (positionResponse) =>
-        {
-            if (positionResponse.success)
-            {
-                LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>{});
-            }
-            else
-            {
-                Debug.Log("Position Upload Failed");
-            }
-        });
     }
     public void OpenUploadLevelUI()
     {
@@ -126,7 +106,7 @@ public class LevelUpload : MonoBehaviour
         var width = _groundMap.Width;
         var height = _groundMap.Height;
         var depth = _groundMap.Depth;
-        var level = new Level(width, height, depth);
+        var level = new LevelB(width, height, depth, 0, 0);
 
         for (var x = 0; x < width; x++)
         {
@@ -162,17 +142,13 @@ public class LevelUpload : MonoBehaviour
             }
         }
 
-        var json = JsonConvert.SerializeObject(level);
-        File.WriteAllText(path, json);
-    }
-    public void SavePosition(string path)
-    {
         var player = GameObject.Find("Player");
         Transform playerTransform = player.transform;
 
-        Position playerPosition = new Position(playerTransform.localPosition.x, playerTransform.localPosition.y);
+        level.characterX = playerTransform.localPosition.x;
+        level.characterY = playerTransform.localPosition.y;
 
-        var json = JsonConvert.SerializeObject(playerPosition);
+        var json = JsonConvert.SerializeObject(level);
         File.WriteAllText(path, json);
     }
 }
