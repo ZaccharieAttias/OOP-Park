@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpecialAbilityObject
 {
     public GameObject Button;
-    public string name;
+    public string Name;
     public SpecialAbility SpecialAbility;
     public int X;
     public int Y;
@@ -16,17 +16,17 @@ public class SpecialAbilityObject
     public SpecialAbilityObject Parent;
 
 
-    public SpecialAbilityObject(SpecialAbility SpecialAbility)
+    public SpecialAbilityObject(SpecialAbility specialAbility)
     {
         Button = null;
-        name = "";
+        Name = "";
         X = 0;
         Y = 0;
         Mod = 0;
         Depth = 0;
         Childrens = new List<SpecialAbilityObject>();
         Parent = null;
-        this.SpecialAbility = SpecialAbility;
+        SpecialAbility = specialAbility;
     }
 
     public bool IsRoot() { return Parent == null; }

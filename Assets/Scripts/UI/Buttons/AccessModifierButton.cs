@@ -43,7 +43,7 @@ public class AccessModifierButton : MonoBehaviour
 
         ButtonImage.color = AccessModifierColors[AccessModifierIndex];
 
-        if (AccessModifierIndex == 2 && RestrictionManager.Instance.AllowAccessModifiers)
+        if (AccessModifierIndex == 2 && RestrictionManager.Instance.AllowAccessModifier)
         {
             CharacterB currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
 

@@ -22,7 +22,7 @@ public class JsonUtilityManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S)) Save();
         if (Input.GetKeyDown(KeyCode.L)) Load();
     }
-    
+
 
     public void Save()
     {
@@ -32,14 +32,14 @@ public class JsonUtilityManager : MonoBehaviour
         }
         AttributesData.Save();
         MethodsData.Save();
-        SpecialAbilitiesData.Save();
+        // SpecialAbilitiesData.Save();
         CharactersData.Save();
     }
     public void Load()
     {
         AttributesData.Load();
         MethodsData.Load();
-        SpecialAbilitiesData.Load();
+        // SpecialAbilitiesData.Load();
         CharactersData.Load();
         CharactersGameObjectData.Load();
     }

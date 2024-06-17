@@ -17,7 +17,7 @@ public class CharacterB
     public SpecialAbility SpecialAbility;
     public UpcastMethod UpcastMethod;
 
-    public List<CharacterB> Parents;
+    public CharacterB Parent;
     public List<CharacterB> Childrens;
 
     public CharacterButton CharacterButton;
@@ -36,13 +36,13 @@ public class CharacterB
         SpecialAbility = null;
         UpcastMethod = null;
 
-        Parents = new List<CharacterB>();
+        Parent = null;
         Childrens = new List<CharacterB>();
 
         CharacterButton = new CharacterButton();
 
     }
-    public CharacterB(string name, string description, List<CharacterB> parents, SpecialAbility specialAbility, bool isOriginal, bool isAbstract)
+    public CharacterB(string name, string description, CharacterB parent, SpecialAbility specialAbility, bool isOriginal, bool isAbstract)
     {
         IsOriginal = isOriginal;
         IsAbstract = isAbstract;
@@ -56,7 +56,7 @@ public class CharacterB
         SpecialAbility = specialAbility;
         UpcastMethod = null;
 
-        Parents = new List<CharacterB>(parents);
+        Parent = parent;
         Childrens = new List<CharacterB>();
 
         CharacterButton = new CharacterButton();
@@ -77,41 +77,38 @@ public class CharacterB
         SpecialAbility = character.SpecialAbility;
         UpcastMethod = character.UpcastMethod;
 
-        Parents = character.Parents;
+        Parent = character.Parent;
         Childrens = character.Childrens;
 
         CharacterButton = character.CharacterButton;
     }
     public void PreDetails()
     {
-        foreach (CharacterB parent in Parents)
-        {
-            foreach (Attribute attribute in parent.Attributes)
-                if (!Attributes.Any(item => item.Name == attribute.Name))
-                    if (RestrictionManager.Instance.AllowAccessModifiers is false || attribute.AccessModifier is not AccessModifier.Private)
-                        Attributes.Add(attribute);
+        foreach (Attribute attribute in Parent.Attributes)
+            if (!Attributes.Any(item => item.Name == attribute.Name))
+                if (RestrictionManager.Instance.AllowAccessModifier is false || attribute.AccessModifier is not AccessModifier.Private)
+                    Attributes.Add(attribute);
 
-            foreach (Method method in parent.Methods)
-                if (!Methods.Any(item => item.Name == method.Name))
-                    if (RestrictionManager.Instance.AllowAccessModifiers is false || method.AccessModifier is not AccessModifier.Private)
-                        Methods.Add(method);
-        }
+        foreach (Method method in Parent.Methods)
+            if (!Methods.Any(item => item.Name == method.Name))
+                if (RestrictionManager.Instance.AllowAccessModifier is false || method.AccessModifier is not AccessModifier.Private)
+                    Methods.Add(method);
     }
 
-    public bool IsRoot() { return Parents.Count == 0; }
+    public bool IsRoot() { return Parent is null; }
     public bool IsLeaf() { return Childrens.Count == 0; }
 
-    public bool IsLeftMost() { return IsRoot() || Parents[0].Childrens[0] == this; }
-    public bool IsRightMost() { return IsRoot() || Parents[0].Childrens[^1] == this; }
+    public bool IsLeftMost() { return IsRoot() || Parent.Childrens[0] == this; }
+    public bool IsRightMost() { return IsRoot() || Parent.Childrens[^1] == this; }
 
-    public CharacterB GetLeftMostSibling() { return IsRoot() ? null : Parents[0].Childrens[0]; }
+    public CharacterB GetLeftMostSibling() { return IsRoot() ? null : Parent.Childrens[0]; }
     public CharacterB GetLeftMostChild() { return IsLeaf() ? null : Childrens[0]; }
 
-    public CharacterB GetRightMostSibling() { return IsRoot() ? null : Parents[0].Childrens[^1]; }
+    public CharacterB GetRightMostSibling() { return IsRoot() ? null : Parent.Childrens[^1]; }
     public CharacterB GetRightMostChild() { return IsLeaf() ? null : Childrens[^1]; }
 
-    public CharacterB GetPreviousSibling() { return IsLeftMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) - 1]; }
-    public CharacterB GetNextSibling() { return IsRightMost() ? null : Parents[0].Childrens[Parents[0].Childrens.IndexOf(this) + 1]; }
+    public CharacterB GetPreviousSibling() { return IsLeftMost() ? null : Parent.Childrens[Parent.Childrens.IndexOf(this) - 1]; }
+    public CharacterB GetNextSibling() { return IsRightMost() ? null : Parent.Childrens[Parent.Childrens.IndexOf(this) + 1]; }
 
     public void SetTransformPositionX(float x)
     {

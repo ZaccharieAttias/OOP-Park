@@ -59,7 +59,7 @@ public class AbstractClassCheck : MonoBehaviour
         {
             AttributesData.Load($"{FolderPath}/{stage}/Attributes.json");
             MethodsData.Load($"{FolderPath}/{stage}/Methods.json");
-            SpecialAbilitiesData.Load($"{FolderPath}/{stage}/SpecialAbilities.json");
+            // SpecialAbilitiesData.Load($"{FolderPath}/{stage}/SpecialAbilities.json");
             CharactersData.Load($"{FolderPath}/{stage}/Characters.json");
             CharactersGameObjectData.Load();
 

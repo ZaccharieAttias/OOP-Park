@@ -6,14 +6,13 @@ public class RestrictionManager : MonoBehaviour
     public static RestrictionManager Instance;
 
     public bool AllowSingleInheritance;
-    public bool AllowMultipleInheritance;
     public bool AllowBeginnerInheritance;
     
-    public bool AllowSpecialAbilities;
-    public bool AllowAccessModifiers;
+    public bool AllowSpecialAbility;
+    public bool AllowAccessModifier;
     public bool AllowOverride;
     public bool AllowUpcasting;
-    public bool AllowAbstractClasses;
+    public bool AllowAbstractClass;
     public bool AllowEncapsulation;
 
 
@@ -27,11 +26,11 @@ public class RestrictionManager : MonoBehaviour
 
     private void ApplyRestrictions()
     {
-        GameObject popupsGameObject = GameObject.Find("Canvas/Popups");
-        GameObject SpecialAbilitiesContent = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/SpecialAbility");
-        if (!AllowSpecialAbilities)
-        {
-            SpecialAbilitiesContent.SetActive(false);
-        }
+        // GameObject popupsGameObject = GameObject.Find("Canvas/Popups");
+        // GameObject SpecialAbilitiesContent = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/SpecialAbility");
+        // if (!AllowSpecialAbilities)
+        // {
+        //     SpecialAbilitiesContent.SetActive(false);
+        // }
     }
 }
