@@ -32,6 +32,7 @@ public class LevelBuilderB : MonoBehaviour
     private Transform Walls;
     private CharacterEditor1 CharacterEditor;
     public GameObject PlayerPrefab;
+    public GameObject Player;
 
 
     public void Start()
@@ -255,7 +256,7 @@ public class LevelBuilderB : MonoBehaviour
         //Create un object player dans la scene sil n'existe pas
         if (GameObject.Find("Player") == null)
         {
-            GameObject Player = Instantiate(PlayerPrefab, new Vector3(_positionMin.X + x, _positionMin.Y + y), Quaternion.identity);
+            Player = Instantiate(PlayerPrefab, new Vector3(_positionMin.X + x, _positionMin.Y + y), Quaternion.identity);
             Player.name = "Player";
             Player.transform.localScale = Vector3.one;
             Player.transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
@@ -266,7 +267,6 @@ public class LevelBuilderB : MonoBehaviour
         else
         {
             //load the new player
-            GameObject Player = GameObject.Find("Player");
             CharacterEditor.LoadFromJson(CharacterName);
             Player.transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         }
@@ -278,7 +278,6 @@ public class LevelBuilderB : MonoBehaviour
         Player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         Player.GetComponent<Movement>().enabled = false;
         Player.GetComponent<GameController>().enabled = false;
-        Player.GetComponent<CharactersManager>().enabled = false;
         Player.GetComponent<GrabObject>().enabled = false;
     }
     private void SetGround(int x, int y, int z)

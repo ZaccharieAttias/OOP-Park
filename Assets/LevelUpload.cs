@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 using LootLocker.Requests;
 using Newtonsoft.Json;
 using Assets.PixelFantasy.PixelTileEngine.Scripts;
+using UnityEngine.Tilemaps;
 
 public class LevelUpload : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class LevelUpload : MonoBehaviour
     private TileMap _coverMap;
     private TileMap _propsMap;
     private LevelBuilderB LevelBuilder;
+    private int TileMapContextID;
 
     public void Start()
     {
@@ -30,11 +32,14 @@ public class LevelUpload : MonoBehaviour
         _coverMap = LevelBuilder.GetCoverMap();
         _propsMap = LevelBuilder.GetPropsMap();
 
+        TileMapContextID = 235247;
+
         LevelUploadUi.SetActive(false);
     }
     public void CreateLevel()
     {
         LevelName = LevelNameInputField.text;
+        LevelUploadUi.SetActive(false);
         OpenUploadLevelUI();
         LootLockerSDKManager.CreatingAnAssetCandidate(LevelName, (response) =>
         {
@@ -46,7 +51,7 @@ public class LevelUpload : MonoBehaviour
             {
                 Debug.Log("Level Creation Failed");
             }
-        });
+        }, filters: new Dictionary<string, string>() { { "Context", "TileMap" } } , context_id: TileMapContextID);
     }
     public void UploadLevelData(int levelID)
     {
@@ -57,7 +62,7 @@ public class LevelUpload : MonoBehaviour
         {
             if (screenshotResponse.success)
             {
-                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + "Level_" + LevelName + ".json";
+                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + "Level_" + LevelName + "_Data.json";
                 SaveLevel(textFilePath);
 
                 //coverting json file to txt file
@@ -105,7 +110,7 @@ public class LevelUpload : MonoBehaviour
         var width = _groundMap.Width;
         var height = _groundMap.Height;
         var depth = _groundMap.Depth;
-        var level = new Level(width, height, depth);
+        var level = new LevelB(width, height, depth, 0, 0);
 
         for (var x = 0; x < width; x++)
         {
@@ -140,6 +145,12 @@ public class LevelUpload : MonoBehaviour
                 }
             }
         }
+
+        var player = GameObject.Find("Player");
+        Transform playerTransform = player.transform;
+
+        level.characterX = playerTransform.localPosition.x;
+        level.characterY = playerTransform.localPosition.y;
 
         var json = JsonConvert.SerializeObject(level);
         File.WriteAllText(path, json);

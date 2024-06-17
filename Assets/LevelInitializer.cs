@@ -31,8 +31,8 @@ public class LevelInitializer : MonoBehaviour
     public GameObject PlayerPrefab;
     private CharacterEditor1 CharacterEditor1;
     private GameObject MainCamera;
-    private float x_position = -4;
-    private float y_position = -1;
+    private float x_position;
+    private float y_position;
 
     string path;
     private LevelUpload LevelUpload;
@@ -42,8 +42,7 @@ public class LevelInitializer : MonoBehaviour
     private string LevelName;
     public TMP_Text NameText;
     public Image LevelIcon;
-    public string TextFileURL;
-    
+    public string TextFileURL;    
     public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
@@ -69,15 +68,15 @@ public class LevelInitializer : MonoBehaviour
         MapPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
         BuildLevel(MapPath);
         SetLayers(Terrain, "Ground");
-        SetPlayers();
+        //SetPlayers();
     }
     public void LoadLevel()
     {
         StartCoroutine(DownloadTextFile(TextFileURL));
     }
-    private IEnumerator DownloadTextFile(string textfileURL)
+    private IEnumerator DownloadTextFile(string url)
     {
-        UnityWebRequest www = UnityWebRequest.Get(textfileURL);
+        UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
         string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Level_" + LevelName + "_Data.json";
@@ -88,7 +87,7 @@ public class LevelInitializer : MonoBehaviour
         BuildLevel(filePath);
         SetLayers(Terrain, "Ground");
         SetPlayers();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
     public void SetInformations(int id, string name)
@@ -99,7 +98,7 @@ public class LevelInitializer : MonoBehaviour
     private void BuildLevel(string json)
     {   
         var file = File.ReadAllText(json);
-        var level = JsonConvert.DeserializeObject<Level>(file);
+        var level = JsonConvert.DeserializeObject<LevelB>(file);
 
         if (_groundMap != null)
         {
@@ -120,6 +119,8 @@ public class LevelInitializer : MonoBehaviour
         var width = level.GroundMap.GetLength(0);
         var height = level.GroundMap.GetLength(1);
         var depth = level.GroundMap.GetLength(2);
+        x_position = level.characterX;
+        y_position = level.characterY;
 
         _groundMap = new TileMap(width, height, depth);
         _coverMap = new TileMap(width, height, depth);
@@ -179,7 +180,7 @@ public class LevelInitializer : MonoBehaviour
                 }
             }
         }
-
+        Debug.Log("Player position: " + x_position + ", " + y_position);
         _index = index;
     }
     private void CreateGround(int x, int y, int z)
