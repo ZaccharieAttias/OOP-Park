@@ -21,7 +21,7 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
             
             gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name)?.Description;
             gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name)?.Description;
-            gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.SpecialAbility.Name == gameObject.name ? CharactersData.CharactersManager.CurrentCharacter.SpecialAbility.Description : null;
+            gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Name == gameObject.name ? CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Description : null;
 
             CharactersData.CharactersManager.DescriptionText.text = gameObjectDescription;
             

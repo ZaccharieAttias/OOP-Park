@@ -18,10 +18,10 @@ public class EncapsulationManager : MonoBehaviour
 
     public List<Attribute> SetCollection;
     public List<(Attribute, List<CharacterB>)> GetCollection;
-    
+
     public TMP_InputField InputField;
     public GameObject SetButtonPrefab;
-    
+
     public GameObject CurrentSet;
     public Powerup PowerUp;
     public string SelectedGetClick;
@@ -31,20 +31,20 @@ public class EncapsulationManager : MonoBehaviour
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/Encapsulation");
-        
+
         SetContent = Popup.transform.Find("Background/Foreground/Set/ScrollView/Viewport/Content").GetComponent<Transform>();
         GetContent = Popup.transform.Find("Background/Foreground/Get/ScrollView/Viewport/Content").GetComponent<Transform>();
-        
+
         SetRowPrefab = Resources.Load<GameObject>("Buttons/SetRow");
         GetRowPrefab = Resources.Load<GameObject>("Buttons/GetRow");
-        
+
         SetCollection = new List<Attribute>();
         GetCollection = new List<(Attribute, List<CharacterB>)>();
 
         InputField = Popup.transform.Find("Background/Foreground/Set/Input/InputField").GetComponent<TMP_InputField>();
         SetButtonPrefab = Popup.transform.Find("Background/Foreground/Set/Input/Button").gameObject;
         SetButtonPrefab.GetComponent<Button>().onClick.AddListener(SetAttribute);
-        
+
         CurrentSet = null;
         SelectedGetClick = "";
         PowerUp = GameObject.Find("Player").GetComponent<Powerup>();
@@ -54,14 +54,14 @@ public class EncapsulationManager : MonoBehaviour
     {
         if (RestrictionManager.Instance.AllowEncapsulation is false) return;
         List<Attribute> SetList = CharactersData.CharactersManager.CurrentCharacter.Attributes.Where(item => item.Setter).ToList();
-        if (SetList.Count>0)
+        if (SetList.Count > 0)
             if (Input.GetKeyDown(KeyCode.I) && RestrictionManager.Instance.AllowEncapsulation && GameObject.Find("Canvas/Menus/Gameplay").activeSelf)
                 ToggleActivation();
     }
     private void LoadPopup()
     {
         ClearContentPanel();
-        
+
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         SetCollection = currentCharacter.Attributes.Where(item => item.Setter).ToList();
         GetCollection = currentCharacter.Attributes
@@ -69,9 +69,9 @@ public class EncapsulationManager : MonoBehaviour
             .Select(attribute => (attribute, new List<CharacterB> { currentCharacter }))
             .ToList();
 
-        currentCharacter.Parents.ForEach(parent => FillGetCollection(parent));
-        
-        foreach(var attribute in SetCollection)
+        FillGetCollection(currentCharacter.Parent);
+
+        foreach (var attribute in SetCollection)
         {
             GameObject attributeGameObject = Instantiate(SetRowPrefab, SetContent);
             attributeGameObject.name = attribute.Name + " Set";
@@ -88,7 +88,7 @@ public class EncapsulationManager : MonoBehaviour
         SelectedGetClick = currentCharacter.Name;
     }
     private void ClearContentPanel()
-    { 
+    {
         SetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
         GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
         SetContent.GetComponent<SwipeMenu>().Scroll_pos = 1;
@@ -108,22 +108,22 @@ public class EncapsulationManager : MonoBehaviour
                 GetCollection.Add((attribute, new List<CharacterB> { character }));
             }
         }
-        
-        character.Parents.ForEach(parent => FillGetCollection(parent));
+
+        FillGetCollection(character.Parent);
     }
     public void UpdateGetContent(string attributeName)
     {
         GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
-        
+
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         if (GetCollection.Count == 0 || GetCollection.Any(item => item.Item1.Name == attributeName) is false) return;
-        
+
         var characters = GetCollection.FirstOrDefault(item => item.Item1.Name == attributeName).Item2;
-        foreach(var character in characters)
+        foreach (var character in characters)
         {
             GameObject attributeGameObject = Instantiate(GetRowPrefab, GetContent);
             attributeGameObject.name = character.Name + " Get";
-            
+
             TMP_Text ButtonText = attributeGameObject.transform.Find("Name").GetComponent<TMP_Text>();
             ButtonText.text = character.Name;
 
@@ -143,14 +143,14 @@ public class EncapsulationManager : MonoBehaviour
     public void GetSelected(CharacterB character, string attributeName, GameObject SelectedGet)
     {
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
-        var oldAttribute = currentCharacter.Attributes.First(item => item.Name == attributeName); 
+        var oldAttribute = currentCharacter.Attributes.First(item => item.Name == attributeName);
         var newAttribute = CharactersData.CharactersManager.CharactersCollection.First(item => item.Name == character.Name).Attributes.First(item => item.Name == attributeName);
-        
+
         CurrentSet.transform.Find("Value").GetComponent<TMP_Text>().text = newAttribute.Value.ToString();
 
         var dependentMethods = UpdateMethods(currentCharacter, oldAttribute);
         dependentMethods.ForEach(method => method.Attribute = newAttribute);
-        
+
         SelectedGetClick = character.Name;
         UpdateGetContent(attributeName);
         PowerUp.ApplyPowerup(currentCharacter);
@@ -160,7 +160,7 @@ public class EncapsulationManager : MonoBehaviour
         var dependentMethods = new List<Method>();
         dependentMethods.AddRange(character.Methods.Where(method => method.Attribute == modifyAttribute));
         dependentMethods.AddRange(character.Childrens.SelectMany(child => UpdateMethods(child, modifyAttribute)));
-        
+
         return dependentMethods;
     }
     public void SetAttribute()
@@ -178,28 +178,28 @@ public class EncapsulationManager : MonoBehaviour
         var dependentMethods = UpdateMethods(currentCharacter, modifyAttribute);
         modifyAttribute.Value = ToFloat(input);
         dependentMethods.ForEach(method => method.Attribute = modifyAttribute);
-        
+
         PowerUp.ApplyPowerup(currentCharacter);
         InputField.text = "";
         LoadPopup();
     }
     public float ToFloat(string input)
     {
-        float result =0;
-        int i=0,j=0,tmp=0;
-        for(i = 0; i < input.Length; i++)
+        float result = 0;
+        int i = 0, j = 0, tmp = 0;
+        for (i = 0; i < input.Length; i++)
         {
             if (input[i] == '.')
                 break;
             result = result * 10 + (input[i] - '0');
         }
-        for(i = i+1; i < input.Length; i++)
+        for (i = i + 1; i < input.Length; i++)
         {
             tmp = tmp * 10 + (input[i] - '0');
             j++;
         }
-        if (j>0)
-            result += (float)tmp / Mathf.Pow(10,j);
+        if (j > 0)
+            result += (float)tmp / Mathf.Pow(10, j);
         return result;
     }
     public void ToggleOn()

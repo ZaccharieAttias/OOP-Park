@@ -86,6 +86,7 @@ public class CharactersCreationManager : MonoBehaviour
     }
     public void CancelFactory()
     {
+        SetControlButtonsState(true, false, false);
         SetActiveControlButtons(true, false, false, false);
 
         DestroyGameObjects(DuplicateCharacterGameObjects);
@@ -94,6 +95,7 @@ public class CharactersCreationManager : MonoBehaviour
     }
     public void ConfirmFactory()
     {
+        SetControlButtonsState(true, false, false);
         SetActiveControlButtons(true, false, false, false);
 
         DestroyGameObjects(DuplicateCharacterGameObjects);

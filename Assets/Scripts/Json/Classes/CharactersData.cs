@@ -19,15 +19,15 @@ public static class CharactersData
 
 
     public static void Save() { File.WriteAllText(FilePath, Serialize(CharactersManager.CharactersCollection)); }
-    public static void Load() 
-    { 
+    public static void Load()
+    {
         CharactersManager.CharactersCollection = new();
-        Deserialize(File.ReadAllText(FilePath)); 
+        Deserialize(File.ReadAllText(FilePath));
     }
-    public static void Load(string filename) 
-    { 
+    public static void Load(string filename)
+    {
         CharactersManager.CharactersCollection = new();
-        Deserialize(File.ReadAllText(filename)); 
+        Deserialize(File.ReadAllText(filename));
     }
 
 
@@ -50,10 +50,10 @@ public static class CharactersData
                 Attributes = AttributesData.PackData(character),
                 Methods = MethodsData.PackData(character),
 
-                SpecialAbility = SpecialAbilitiesData.PackData(character),
+                // SpecialAbility = SpecialAbilitiesData.PackData(character),
                 UpcastMethod = UpcastMethodsData.PackData(character),
 
-                Parents = character.Parents.Select(parent => parent.Name).ToList(),
+                Parent = character.Parent.Name,
                 Childrens = character.Childrens.Select(child => child.Name).ToList(),
             };
 
@@ -74,17 +74,17 @@ public static class CharactersData
                 Name = characterData.Name,
                 Description = characterData.Description,
 
-                SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
+                // SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
                 UpcastMethod = UpcastMethodsData.UnpackData(characterData)
             };
 
             CharactersManager.CharactersCollection.Add(character);
-            
+
             character.Attributes = AttributesData.UnpackData(characterData);
             character.Methods = MethodsData.UnpackData(characterData);
 
-            character.Parents.AddRange(CharactersManager.CharactersCollection.Where(character => characterData.Parents.Contains(character.Name)).ToList());
-            character.Parents.ForEach(parent => parent.Childrens.Add(character));
+            character.Parent = CharactersManager.CharactersCollection.FirstOrDefault(characterB => characterData.Parent == characterB.Name) as CharacterB;
+            character.Parent.Childrens.Add(character);
         }
     }
 }
@@ -101,9 +101,9 @@ public class CharacterData
     public List<AttributeData> Attributes;
     public List<MethodData> Methods;
 
-    public SpecialAbilityData SpecialAbility;
+    // public SpecialAbilityData SpecialAbility;
     public UpcastMethodData UpcastMethod;
 
-    public List<string> Parents;
+    public string Parent;
     public List<string> Childrens;
 }

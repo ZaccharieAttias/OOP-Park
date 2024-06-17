@@ -156,8 +156,8 @@ public class CharactersTreeManager : MonoBehaviour
     }
     private void CenterNodesBetween(CharacterB leftNode, CharacterB rightNode, float shiftValue)
     {
-        int leftIndex = leftNode.Parents[0].Childrens.IndexOf(leftNode);
-        int rightIndex = leftNode.Parents[0].Childrens.IndexOf(rightNode);
+        int leftIndex = leftNode.Parent.Childrens.IndexOf(leftNode);
+        int rightIndex = leftNode.Parent.Childrens.IndexOf(rightNode);
 
         int numNodesBetween = rightIndex - leftIndex - 1;
         if (numNodesBetween > 0)
@@ -168,7 +168,7 @@ public class CharactersTreeManager : MonoBehaviour
             int count = 1;
             for (int i = leftIndex + 1; i < rightIndex; i++)
             {
-                CharacterB middleNode = leftNode.Parents[0].Childrens[i];
+                CharacterB middleNode = leftNode.Parent.Childrens[i];
 
                 int desiredXafter = leftNode.CharacterButton.X + (distanceBetweenNodesafter * count);
                 int desiredX = leftNode.CharacterButton.X + (distanceBetweenNodesbefore * count);
@@ -213,9 +213,9 @@ public class CharactersTreeManager : MonoBehaviour
     {
         RectTransform rectTransform = character.CharacterButton.Button.GetComponent<RectTransform>();
 
-        if (character.Parents.Count != 0)
+        if (character.Parent is not null)
         {
-            RectTransform parentRectTransform = character.Parents[0].CharacterButton.Button.GetComponent<RectTransform>();
+            RectTransform parentRectTransform = character.Parent.CharacterButton.Button.GetComponent<RectTransform>();
             
             Vector2 nodeTopMiddle = new(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 50 - 2);
             Vector2 nodeAboveMiddle = new(nodeTopMiddle.x, (rectTransform.anchoredPosition.y + parentRectTransform.anchoredPosition.y) / 2);

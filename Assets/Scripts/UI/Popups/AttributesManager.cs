@@ -13,8 +13,8 @@ public class AttributesManager : MonoBehaviour
     public Transform AttributesContentPanel;
 
     [Header("Attribute Data")]
-    public List<Attribute> AttributesCollection = new();
-    public List<GameObject> AttributeGameObjects = new();
+    public List<Attribute> AttributesCollection;
+    public List<GameObject> AttributeGameObjects;
 
 
     public void Start()
@@ -60,7 +60,7 @@ public class AttributesManager : MonoBehaviour
             Attribute newAttribute = new(attribute, currentCharacter.Name);
             currentCharacter.Attributes.Add(newAttribute);
         }
-        
+
         else
         {
             bool isAttributeOwner = currentCharacter.Name == currentAttribute.Owner;
@@ -68,7 +68,7 @@ public class AttributesManager : MonoBehaviour
             {
                 CancelAttributeReferences(currentCharacter, currentAttribute);
             }
-            
+
             else
             {
                 currentCharacter.Attributes.Remove(currentAttribute);
@@ -78,7 +78,7 @@ public class AttributesManager : MonoBehaviour
         Image image = attributeGameObject.GetComponent<Image>();
         image.color = currentAttribute is null ? Color.green : Color.white;
     }
-    
+
     public void CancelAttributeReferences(CharacterB character, Attribute attribute)
     {
         var referencedAttribute = character.Attributes.FirstOrDefault(item => item == attribute);

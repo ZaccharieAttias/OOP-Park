@@ -33,7 +33,7 @@ public class CharactersManager : MonoBehaviour
     private void InitializeProperties()
     {
         Menu = GameObject.Find("Canvas/Menus/CharacterCenter");
-        
+
         CharactersCollection = new List<CharacterB>();
         CurrentCharacter = null;
 
@@ -65,7 +65,7 @@ public class CharactersManager : MonoBehaviour
     }
     public void DeleteCharacter()
     {
-        CurrentCharacter.Parents.ForEach(parent => parent.Childrens.Remove(CurrentCharacter));
+        CurrentCharacter.Parent.Childrens.Remove(CurrentCharacter);
         CharactersCollection.Remove(CurrentCharacter);
         Destroy(CurrentCharacter.CharacterButton.Button);
 
@@ -136,7 +136,7 @@ public class CharactersManager : MonoBehaviour
             buttonText.text = attribute.Name;
 
             bool isAttributeOwner = CurrentCharacter.Name == attribute.Owner;
-            if (RestrictionManager.Instance.AllowAccessModifiers && isAttributeOwner) { attributeGameObject.AddComponent<AccessModifierButton>().Attribute = attribute; }
+            if (RestrictionManager.Instance.AllowAccessModifier && isAttributeOwner) { attributeGameObject.AddComponent<AccessModifierButton>().Attribute = attribute; }
         }
     }
     private void DisplayMethods()
@@ -151,7 +151,7 @@ public class CharactersManager : MonoBehaviour
             buttonText.text = method.Name;
 
             bool isMethodOwner = CurrentCharacter.Name == method.Owner;
-            if (RestrictionManager.Instance.AllowAccessModifiers && isMethodOwner) { methodGameObject.AddComponent<AccessModifierButton>().Method = method; }
+            if (RestrictionManager.Instance.AllowAccessModifier && isMethodOwner) { methodGameObject.AddComponent<AccessModifierButton>().Method = method; }
         }
     }
     public void DisplayUpcastMethod()
@@ -183,13 +183,13 @@ public class CharactersManager : MonoBehaviour
     {
         GameObject specialAbilityGameObject = Instantiate(DefaultButton, SpecialAbilityContentPanel);
         specialAbilityGameObject.AddComponent<DescriptionButton>();
-        specialAbilityGameObject.name = CurrentCharacter.SpecialAbility.Name;
+        specialAbilityGameObject.name = CurrentCharacter.SpecialAbility?.Name;
 
         Image specialAbilityGameObjectImage = specialAbilityGameObject.GetComponent<Image>();
         specialAbilityGameObjectImage.color = new Color32(0, 128, 128, 255);
 
         TMP_Text buttonText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
-        buttonText.text = CurrentCharacter.SpecialAbility.Name;
+        buttonText.text = CurrentCharacter.SpecialAbility?.Name;
     }
     private void DisplayDelete() { DeleteButton.SetActive(CurrentCharacter.IsOriginal == false && CurrentCharacter.IsLeaf()); }
     private void ClearContentPanels()
