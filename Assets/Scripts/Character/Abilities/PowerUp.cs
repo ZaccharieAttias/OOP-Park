@@ -18,7 +18,7 @@ public class Powerup : MonoBehaviour
         PreviousMethods = new List<Method>();
         PreviousUpcastMethod = null;
     }
-    
+
     public void ApplyPowerup(CharacterB character)
     {
         if (PreviousUpcastMethod != null)
@@ -29,10 +29,12 @@ public class Powerup : MonoBehaviour
 
         if (PreviousMethods?.Count > 0)
         {
-            for (int i = 0; i < PreviousMethods.Count; i++)
+            Debug.Log("PreviousMethods.Count: " + PreviousMethods.Count);
+            for (int i = PreviousMethods.Count - 1; i >= 0; i--)
             {
                 PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(PreviousMethods[i].Name)).DeactivatePower(gameObject);
-                PreviousMethods.Remove(PreviousMethods[i]);
+                PreviousMethods.RemoveAt(i);
+                Debug.Log(i);
             }
         }
 
