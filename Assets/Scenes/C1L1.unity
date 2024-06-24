@@ -1155,8 +1155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 243d3b4ce4da6074594241fb5b34455d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SwapButton: {fileID: 0}
+  SwapButtonToGameplay: {fileID: 0}
+  SwapButtonToCharacterCenter: {fileID: 0}
   CharacterEditor: {fileID: 0}
+  firstTime: 1
 --- !u!114 &80908871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,6 +1172,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
+  AssetStoreLink: 
+  SpriteCollection: {fileID: 0}
+  IconCollection: {fileID: 0}
+  Tabs: {fileID: 0}
+  Inventory: {fileID: 0}
+  ItemName: {fileID: 0}
+  EditionToggles: []
+  EditionFilter: 
+  PaintParts: []
+  PaintButton: {fileID: 0}
+  ColorPicker: {fileID: 0}
+  CollectionSorting: []
+  CollectionBackgrounds: []
+  FilePickerPath: 
 --- !u!1 &95241157
 GameObject:
   m_ObjectHideFlags: 0
@@ -5921,6 +5937,7 @@ MonoBehaviour:
   AllowUpcasting: 0
   AllowAbstractClass: 0
   AllowEncapsulation: 0
+  OnlineGame: 0
 --- !u!4 &444932010
 Transform:
   m_ObjectHideFlags: 0
@@ -5965,6 +5982,7 @@ MonoBehaviour:
   MethodsManager: {fileID: 0}
   CharactersManager: {fileID: 0}
   SpecialAbilityManager: {fileID: 0}
+  CharacterEditor: {fileID: 0}
 --- !u!4 &467385950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1506026877241066945, guid: 7d37543687c397142b9898b566f25b3f, type: 3}
@@ -12036,6 +12054,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
   CharacterPrefab: {fileID: 0}
+  SelectionMenu: {fileID: 0}
   CharactersContentPanel: {fileID: 0}
   CharacterGameObjects: []
   DuplicateCharacterGameObjects: []
@@ -20961,6 +20980,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884266822}
   m_CullTransparentMesh: 1
+--- !u!1 &1890200914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1890200915}
+  - component: {fileID: 1890200916}
+  m_Layer: 0
+  m_Name: CharactersManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1890200915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890200914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129497190}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1890200916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890200914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7b519f030b6db488211cf6abba4584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Menu: {fileID: 0}
+  NameText: {fileID: 0}
+  DescriptionText: {fileID: 0}
+  DefaultButton: {fileID: 0}
+  DeleteButton: {fileID: 0}
+  GameplayButton: {fileID: 0}
+  AttributesContentPanel: {fileID: 0}
+  MethodsContentPanel: {fileID: 0}
+  SpecialAbilityContentPanel: {fileID: 0}
+  CharactersTreeManager: {fileID: 0}
+  GetButton: {fileID: 0}
+  SetButton: {fileID: 0}
 --- !u!1 &1892250063
 GameObject:
   m_ObjectHideFlags: 0
@@ -24133,6 +24208,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 80908869}
+  - {fileID: 1890200915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2129764356
