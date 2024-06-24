@@ -64,6 +64,7 @@ public static class MethodsData
 
         return methodsCollection;
     }
+    public static void SetPath(string path) { FilePath = path; }
 }
 
 
