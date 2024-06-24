@@ -10,6 +10,7 @@ public class SeedCollections : MonoBehaviour
     public MethodsManager MethodsManager;
     public CharactersManager CharactersManager;
     public SpecialAbilityManager SpecialAbilityManager;
+    public CharacterEditor1 CharacterEditor;
 
 
     public void Start()
@@ -22,7 +23,8 @@ public class SeedCollections : MonoBehaviour
         AttributesManager = GameObject.Find("Canvas/Popups").GetComponent<AttributesManager>();
         MethodsManager = GameObject.Find("Canvas/Popups").GetComponent<MethodsManager>();
         SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
-        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
+        CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
+        CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
     }
     private void InitializeCollections()
     {
@@ -244,6 +246,7 @@ public class SeedCollections : MonoBehaviour
         List<SpecialAbility> specialAbilities = new();
         List<SpecialAbilityObject> specialAbilityObjects = new();
 
+
         // Special Ability 1 (General)
         abilityName = "General";
         abilityDescription = "Nothing Special";
@@ -251,9 +254,12 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.General;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
         SpecialAbilityObject sp1 = new(specialAbility);
         sp1.Name = abilityName;
         specialAbilityObjects.Add(sp1);
+
+
 
 
         // Special Ability 2 (Automatic)
@@ -264,11 +270,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.Automatic;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.General].Add(specialAbility);
         SpecialAbilityObject sp2 = new(specialAbility);
         sp2.Name = abilityName;
         sp1.Childrens.Add(sp2);
         sp2.Parent = sp1;
         specialAbilityObjects.Add(sp2);
+
 
         // Special Ability 3 (Manual)
         specialAbilities = new();
@@ -278,11 +287,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.Manual;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.General].Add(specialAbility);
         SpecialAbilityObject sp3 = new(specialAbility);
         sp3.Name = abilityName;
         sp1.Childrens.Add(sp3);
         sp3.Parent = sp1;
         specialAbilityObjects.Add(sp3);
+
 
         // Special Ability 4 (Jump)
         specialAbilities = new();
@@ -292,11 +304,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.Jump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Automatic].Add(specialAbility);
         SpecialAbilityObject sp4 = new(specialAbility);
         sp4.Name = abilityName;
         sp2.Childrens.Add(sp4);
         sp4.Parent = sp2;
         specialAbilityObjects.Add(sp4);
+
 
         // Special Ability 5 (Gravity)
         specialAbilities = new();
@@ -306,11 +321,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.Gravity;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Automatic].Add(specialAbility);
         SpecialAbilityObject sp5 = new(specialAbility);
         sp5.Name = abilityName;
         sp2.Childrens.Add(sp5);
         sp5.Parent = sp2;
         specialAbilityObjects.Add(sp5);
+
 
         // Special Ability 6 (Speed)
         specialAbilities = new();
@@ -320,11 +338,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.Speed;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Automatic].Add(specialAbility);
         SpecialAbilityObject sp6 = new(specialAbility);
         sp6.Name = abilityName;
         sp2.Childrens.Add(sp6);
         sp6.Parent = sp2;
         specialAbilityObjects.Add(sp6);
+
 
         // Special Ability 7 (FireballShoot)
         specialAbilities = new();
@@ -334,11 +355,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.FireballShoot;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Manual].Add(specialAbility);
         SpecialAbilityObject sp7 = new(specialAbility);
         sp7.Name = abilityName;
         sp3.Childrens.Add(sp7);
         sp7.Parent = sp3;
         specialAbilityObjects.Add(sp7);
+
 
         // Special Ability 8 (DoubleJump)
         specialAbilities = new();
@@ -348,11 +372,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.DoubleJump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Jump].Add(specialAbility);
         SpecialAbilityObject sp8 = new(specialAbility);
         sp8.Name = abilityName;
         sp4.Childrens.Add(sp8);
         sp8.Parent = sp4;
         specialAbilityObjects.Add(sp8);
+
 
         // Special Ability 9 (WeakGravity)
         specialAbilities = new();
@@ -362,11 +389,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.WeakGravity;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Gravity].Add(specialAbility);
         SpecialAbilityObject sp9 = new(specialAbility);
         sp9.Name = abilityName;
         sp5.Childrens.Add(sp9);
         sp9.Parent = sp5;
         specialAbilityObjects.Add(sp9);
+
 
         // Special Ability 10 (FastSpeed)
         specialAbilities = new();
@@ -376,11 +406,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.FastSpeed;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Speed].Add(specialAbility);
         SpecialAbilityObject sp10 = new(specialAbility);
         sp10.Name = abilityName;
         sp6.Childrens.Add(sp10);
         sp10.Parent = sp6;
         specialAbilityObjects.Add(sp10);
+
 
         // Special Ability 11 (GrapplingGun)
         specialAbilities = new();
@@ -390,11 +423,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.GrapplingGun;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Manual].Add(specialAbility);
         SpecialAbilityObject sp11 = new(specialAbility);
         sp11.Name = abilityName;
         sp3.Childrens.Add(sp11);
         sp11.Parent = sp3;
         specialAbilityObjects.Add(sp11);
+
 
         // Special Ability 12 (InverseGravity)
         specialAbilities = new();
@@ -404,11 +440,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.InverseGravity;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Gravity].Add(specialAbility);
         SpecialAbilityObject sp12 = new(specialAbility);
         sp12.Name = abilityName;
         sp5.Childrens.Add(sp12);
         sp12.Parent = sp5;
         specialAbilityObjects.Add(sp12);
+
 
         // Special Ability 13 (WallJump)
         specialAbilities = new();
@@ -418,11 +457,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.WallJump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Jump].Add(specialAbility);
         SpecialAbilityObject sp13 = new(specialAbility);
         sp13.Name = abilityName;
         sp4.Childrens.Add(sp13);
         sp13.Parent = sp4;
         specialAbilityObjects.Add(sp13);
+
 
         // Special Ability 14 (Grabbing)
         specialAbilities = new();
@@ -432,11 +474,14 @@ public class SeedCollections : MonoBehaviour
         abilityType = SpecialAbilityType.Grabbing;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
+        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
+        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Manual].Add(specialAbility);
         SpecialAbilityObject sp14 = new(specialAbility);
         sp14.Name = abilityName;
         sp3.Childrens.Add(sp14);
         sp14.Parent = sp3;
         specialAbilityObjects.Add(sp14);
+
 
         SpecialAbilityManager.SpecialAbilitiesCollection = specialAbilityObjects;
     }
@@ -447,35 +492,37 @@ public class SeedCollections : MonoBehaviour
         CharacterB characterParent = null;
         SpecialAbility characterSpecialAbility;
 
-        // Character 1 
+        // Character 1
         characterName = "Character 1";
         characterDescription = "This is the first character";
-        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection.Find(ability => ability.Name == "General").SpecialAbility;
+        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.General].First();
         CharacterB character1 = new(characterName, characterDescription, characterParent, characterSpecialAbility, true, false);
         InitializeCharacterObject(character1);
         CharactersManager.AddCharacter(character1);
 
-        // Character 2 
+        // Character 2
         characterName = "Character 2";
         characterDescription = "This is the second character";
         characterParent = character1;
-        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection.Find(ability => ability.Name == "Automatic").SpecialAbility;
+        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Automatic].First();
         CharacterB character2 = new(characterName, characterDescription, characterParent, characterSpecialAbility, true, false);
         character2.Parent.Childrens.Add(character2);
         InitializeCharacterObject(character2);
         CharactersManager.AddCharacter(character2);
         characterParent = null;
 
-        // Character 3 
+        // Character 3
         characterName = "Character 3";
         characterDescription = "This is the third character";
         characterParent = character1;
-        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesCollection.Find(ability => ability.Name == "Manual").SpecialAbility;
+        characterSpecialAbility = SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Manual].First();
         CharacterB character3 = new(characterName, characterDescription, characterParent, characterSpecialAbility, true, false);
         character3.Parent.Childrens.Add(character3);
         InitializeCharacterObject(character3);
         CharactersManager.AddCharacter(character3);
         characterParent = null;
+
+        CharacterEditor.LoadFromJson();
     }
     private void InitializeCharacterObject(CharacterB characterNode)
     {
