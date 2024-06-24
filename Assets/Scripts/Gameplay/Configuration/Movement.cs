@@ -71,7 +71,7 @@ public class Movement : MonoBehaviour
         GroundCheckBox = transform.Find("GroundCheckBox").transform;
         firePoint = transform.Find("FirePoint").transform;
         Powerup = GetComponent<Powerup>();
-        CharactersManager = GetComponent<CharactersManager>();
+        CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
         Gun = transform.Find("GunPivot").gameObject;
         WallLayer = LayerMask.GetMask("Wall");
         // si la scene se nomme LevelBuilder
