@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Powerup = GetComponent<Powerup>();
-        CharactersManager = GetComponent<CharactersManager>();
+        CharactersManager = GameObject.Find("Scripts/CharactersManagers").GetComponent<CharactersManager>();
 
         Gun = GameObject.Find("Player/GunPivot");
 
