@@ -14,7 +14,7 @@ public static class CharactersData
     public static void Initialize(string folderPath)
     {
         FilePath = Path.Combine(folderPath, "Characters.json");
-        CharactersManager = GameObject.Find("Player").GetComponent<CharactersManager>();
+        CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
     }
 
 
@@ -41,7 +41,7 @@ public static class CharactersData
         {
             CharacterData data = new()
             {
-                IsOriginal = true,
+                IsOriginal = character.IsOriginal,
                 IsAbstract = character.IsAbstract,
 
                 Name = character.Name,
@@ -50,16 +50,16 @@ public static class CharactersData
                 Attributes = AttributesData.PackData(character),
                 Methods = MethodsData.PackData(character),
 
-                // SpecialAbility = SpecialAbilitiesData.PackData(character),
+                SpecialAbility = SpecialAbilitiesData.PackData(character),
                 UpcastMethod = UpcastMethodsData.PackData(character),
-
-                Parent = character.Parent.Name,
+                
+                Parent = character.Parent?.Name,
                 Childrens = character.Childrens.Select(child => child.Name).ToList(),
             };
 
             characterData.Add(data);
         }
-
+        string name = characterData.Count > 0 ? characterData[0].Name : null;
         return characterData;
     }
     public static void UnpackData(List<CharacterData> characters)
@@ -74,7 +74,7 @@ public static class CharactersData
                 Name = characterData.Name,
                 Description = characterData.Description,
 
-                // SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
+                SpecialAbility = SpecialAbilitiesData.UnpackData(characterData),
                 UpcastMethod = UpcastMethodsData.UnpackData(characterData)
             };
 
@@ -84,9 +84,10 @@ public static class CharactersData
             character.Methods = MethodsData.UnpackData(characterData);
 
             character.Parent = CharactersManager.CharactersCollection.FirstOrDefault(characterB => characterData.Parent == characterB.Name) as CharacterB;
-            character.Parent.Childrens.Add(character);
+            character.Parent?.Childrens.Add(character);
         }
     }
+    public static void SetPath(string path) { FilePath = path; }
 }
 
 
@@ -101,7 +102,7 @@ public class CharacterData
     public List<AttributeData> Attributes;
     public List<MethodData> Methods;
 
-    // public SpecialAbilityData SpecialAbility;
+    public SpecialAbilityData SpecialAbility;
     public UpcastMethodData UpcastMethod;
 
     public string Parent;
