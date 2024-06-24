@@ -14,6 +14,7 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowUpcasting;
     public bool AllowAbstractClass;
     public bool AllowEncapsulation;
+    public bool OnlineGame;
 
 
     public void Start() { InitializeProperties(); }
@@ -26,7 +27,7 @@ public class RestrictionManager : MonoBehaviour
 
     private void ApplyRestrictions()
     {
-        // GameObject popupsGameObject = GameObject.Find("Canvas/Popups");
+        GameObject popupsGameObject = GameObject.Find("Canvas/Popups");
         // GameObject SpecialAbilitiesContent = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/SpecialAbility");
         // if (!AllowSpecialAbilities)
         // {
