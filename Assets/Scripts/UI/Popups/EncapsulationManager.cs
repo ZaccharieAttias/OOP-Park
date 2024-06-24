@@ -47,12 +47,13 @@ public class EncapsulationManager : MonoBehaviour
 
         CurrentSet = null;
         SelectedGetClick = "";
-        PowerUp = GameObject.Find("Player").GetComponent<Powerup>();
     }
 
     public void Update()
     {
         if (RestrictionManager.Instance.AllowEncapsulation is false) return;
+        if (GameObject.Find("Player").GetComponent<Powerup>() is null) return;
+        else PowerUp = GameObject.Find("Player").GetComponent<Powerup>();
         List<Attribute> SetList = CharactersData.CharactersManager.CurrentCharacter.Attributes.Where(item => item.Setter).ToList();
         if (SetList.Count > 0)
             if (Input.GetKeyDown(KeyCode.I) && RestrictionManager.Instance.AllowEncapsulation && GameObject.Find("Canvas/Menus/Gameplay").activeSelf)
