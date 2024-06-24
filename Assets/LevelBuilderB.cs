@@ -8,6 +8,7 @@ using HeroEditor.Common;
 using TMPro;
 using UnityEngine.UI;
 using UnityEditor;
+using LootLocker.Extension.DataTypes;
 
 
 public class LevelBuilderB : MonoBehaviour
@@ -33,6 +34,8 @@ public class LevelBuilderB : MonoBehaviour
     private CharacterEditor1 CharacterEditor;
     public GameObject PlayerPrefab;
     public GameObject Player;
+    public SwapScreen swapScreen;
+    public int check = 0;
 
 
     public void Start()
@@ -45,6 +48,7 @@ public class LevelBuilderB : MonoBehaviour
         Terrain = Parent.Find("Terrain");
         Walls = Parent.Find("Walls");
         CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
+        swapScreen = GameObject.Find("Scripts/CharacterEditor").GetComponent<SwapScreen>();
     }
     public void SwitchTile(int type, int index)
     {
@@ -271,6 +275,13 @@ public class LevelBuilderB : MonoBehaviour
             Player.transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         }
         SetPlayer();
+        if (swapScreen.firstTime && check == 0) 
+        {
+            CharactersCreationManager CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
+            swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => CharactersCreationManager.RootCreation());
+            swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => swapScreen.FisrtSwap());
+            check = 1;
+        }
     }
     public void SetPlayer()
     {
