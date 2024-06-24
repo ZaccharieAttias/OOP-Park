@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LootLocker.Extension.DataTypes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -97,7 +98,7 @@ public class CharactersManager : MonoBehaviour
             DisplaySpecialAbility();
             DisplayDelete();
 
-            Powerup powerUp = GetComponent<Powerup>();
+            Powerup powerUp = GameObject.Find("Player").GetComponent<Powerup>();
             powerUp.ApplyPowerup(CurrentCharacter);
 
             GetButton.SetActive(false);
