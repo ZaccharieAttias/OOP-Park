@@ -60,6 +60,7 @@ public static class AttributesData
 
         return attributesCollection;
     }
+    public static void SetPath(string path) { FilePath = path; }
 }
 
 
