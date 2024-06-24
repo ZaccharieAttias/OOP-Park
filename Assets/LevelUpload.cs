@@ -9,6 +9,9 @@ using LootLocker.Requests;
 using Newtonsoft.Json;
 using Assets.PixelFantasy.PixelTileEngine.Scripts;
 using UnityEngine.Tilemaps;
+using LLlibs.ZeroDepJson;
+using Unity.VisualScripting;
+using System;
 
 public class LevelUpload : MonoBehaviour
 {
@@ -21,18 +24,22 @@ public class LevelUpload : MonoBehaviour
     private TileMap _propsMap;
     private LevelBuilderB LevelBuilder;
     private int TileMapContextID;
+    private int CharacterTreeContextID;
+    public JsonUtilityManager JsonUtilityManager;
 
     public void Start()
     {
         LevelUploadUi = GameObject.Find("Canvas/Menus/Gameplay/UploadScreen");
         LevelNameInputField = LevelUploadUi.transform.Find("InputField").GetComponent<TMP_InputField>();
         LevelBuilder = GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>();
+        JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
 
         _groundMap = LevelBuilder.GetGroundMap();
         _coverMap = LevelBuilder.GetCoverMap();
         _propsMap = LevelBuilder.GetPropsMap();
 
         TileMapContextID = 235247;
+        CharacterTreeContextID = 235353;
 
         LevelUploadUi.SetActive(false);
     }
@@ -40,7 +47,13 @@ public class LevelUpload : MonoBehaviour
     {
         LevelName = LevelNameInputField.text;
         LevelUploadUi.SetActive(false);
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", LevelName); 
+        if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+
         OpenUploadLevelUI();
+
+        // Upload Level Data (the gameplay)
         LootLockerSDKManager.CreatingAnAssetCandidate(LevelName, (response) =>
         {
             if (response.success)
@@ -52,17 +65,30 @@ public class LevelUpload : MonoBehaviour
                 Debug.Log("Level Creation Failed");
             }
         }, filters: new Dictionary<string, string>() { { "Context", "TileMap" } } , context_id: TileMapContextID);
+
+        // Upload Level Data (character center)
+        LootLockerSDKManager.CreatingAnAssetCandidate(LevelName , (response) =>
+        {
+            if (response.success)
+            {
+                UploadLevelTreeData((int)response.asset_candidate.id);
+            }
+            else
+            {
+                Debug.Log("Character Center Creation Failed");
+            }
+        }, filters: new Dictionary<string, string>() { { "Context", "CharacterTree" } } , context_id: CharacterTreeContextID);
     }
     public void UploadLevelData(int levelID)
     {
-        string screenshotFilePath = "Assets/Resources/Screenshots/Level_" + LevelName + ".png";
+        string screenshotFilePath = "Assets/Resources/Screenshots/" + LevelName + "/Level_" + LevelName + ".png";
         LootLocker.LootLockerEnums.FilePurpose screenshotFileType = LootLocker.LootLockerEnums.FilePurpose.primary_thumbnail;
 
         LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, screenshotFilePath, "Level_" + LevelName + ".png", screenshotFileType, (screenshotResponse) =>
         {
             if (screenshotResponse.success)
             {
-                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + "Level_" + LevelName + "_Data.json";
+                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/Level_" + LevelName + "_Data.json";
                 SaveLevel(textFilePath);
 
                 //coverting json file to txt file
@@ -89,6 +115,42 @@ public class LevelUpload : MonoBehaviour
             }
         });
     }
+    public void UploadLevelTreeData(int levelID)
+    {
+        string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName;
+        SaveCharacter(textFilePath);
+
+        // string json;
+        LootLocker.LootLockerEnums.FilePurpose textFileType = LootLocker.LootLockerEnums.FilePurpose.file;
+
+        string[] files = Directory.GetFiles(textFilePath);
+
+        AddingFilesToAsset(levelID, files, 0, textFileType);
+
+        //coverting all json file to txt file
+        // foreach (string file in files)
+        // {
+        //     if (file.Contains(".json") && !file.Contains("_Data"))
+        //     {
+        //         json = File.ReadAllText(file);
+        //         File.WriteAllText(file.Replace(".json", ".txt"), json);
+
+        //         LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, file.Replace(".json", ".txt"), Path.GetFileName(file.Replace(".json", ".txt")), textFileType, (textResponse) =>
+        //         {
+        //             if (textResponse.success)
+        //             {
+        //                 LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>{});
+        //             }
+        //             else
+        //             {
+        //                 Debug.Log("Level Data Upload Failed");
+        //             }
+        //         });
+        //     }
+        // }
+        // string json = File.ReadAllText(textFilePath);
+        // File.WriteAllText(textFilePath, json);
+    }
     public void OpenUploadLevelUI()
     {
         StartCoroutine(WaitSreenShot());
@@ -100,7 +162,7 @@ public class LevelUpload : MonoBehaviour
     }
     public void TakeScreenshot()
     {
-        string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/";
+        string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/";
         ScreenCapture.CaptureScreenshot(Path.Combine(filepath, "Level_" + LevelName + ".png"));
     }
     public void SaveLevel(string path)
@@ -154,5 +216,46 @@ public class LevelUpload : MonoBehaviour
 
         var json = JsonConvert.SerializeObject(level);
         File.WriteAllText(path, json);
+    }
+    public void SaveCharacter(string path)
+    {
+        JsonUtilityManager.SetPath(path);
+        JsonUtilityManager.Save();
+    }
+    private bool AddingFilesToAsset(int levelID, string[] files, int i, LootLocker.LootLockerEnums.FilePurpose filePurpose)
+    {
+        if (i >= files.Length)
+        {
+            LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>{});
+            return true;
+        }
+        while (!files[i].Contains(".json") || files[i].Contains("_Data"))
+        {
+            i++;
+            if (i >= files.Length)
+            {
+            LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>{});
+            return true;
+            }
+        }
+        
+
+        string json;
+        json = File.ReadAllText(files[i]);
+        File.WriteAllText(files[i].Replace(".json", ".txt"), json);
+
+        LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, files[i].Replace(".json", ".txt"), Path.GetFileName(files[i].Replace(".json", ".txt")), filePurpose, (textResponse) =>
+        {
+            if (textResponse.success)
+            {
+                i++;
+                AddingFilesToAsset(levelID, files, i, filePurpose);
+            }
+            else
+            {
+                Debug.Log("Level Data Upload Failed");
+            }
+        });
+        return false;
     }
 }
