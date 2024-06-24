@@ -83,13 +83,13 @@ public class CharacterB
         CharacterButton = character.CharacterButton;
     }
     public void PreDetails()
-    {
-        foreach (Attribute attribute in Parent.Attributes)
+    {   
+        foreach (var attribute in Parent?.Attributes)
             if (!Attributes.Any(item => item.Name == attribute.Name))
                 if (RestrictionManager.Instance.AllowAccessModifier is false || attribute.AccessModifier is not AccessModifier.Private)
                     Attributes.Add(attribute);
 
-        foreach (Method method in Parent.Methods)
+        foreach (var method in Parent?.Methods)
             if (!Methods.Any(item => item.Name == method.Name))
                 if (RestrictionManager.Instance.AllowAccessModifier is false || method.AccessModifier is not AccessModifier.Private)
                     Methods.Add(method);
