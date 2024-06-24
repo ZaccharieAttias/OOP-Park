@@ -35,14 +35,19 @@ public class LevelInitializer : MonoBehaviour
     private float y_position;
 
     string path;
-    private LevelUpload LevelUpload;
+    private LevelDownload LevelDownload;
     string MapPath;
 
     private int ID;
     private string LevelName;
     public TMP_Text NameText;
     public Image LevelIcon;
-    public string TextFileURL;    
+    public string DataFileURL;    
+    public string CharactersPath;
+    public string AttributesPath;
+    public string MethodssPath;
+    public string SpecialAbilitiesPath;
+    public JsonUtilityManager JsonUtilityManager;
     public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
@@ -54,7 +59,8 @@ public class LevelInitializer : MonoBehaviour
         Walls = Parent.Find("Walls");
         CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         MainCamera = GameObject.Find("Main Camera");
-        LevelUpload = GameObject.Find("LevelManager").GetComponent<LevelUpload>();
+        LevelDownload = GameObject.Find("LevelManager").GetComponent<LevelDownload>();
+        JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
         
         transform.position = Vector3.zero;
         transform.localScale = Vector3.one;
@@ -72,21 +78,29 @@ public class LevelInitializer : MonoBehaviour
     }
     public void LoadLevel()
     {
-        StartCoroutine(DownloadTextFile(TextFileURL));
+        StartCoroutine(DownloadTextFile(DataFileURL));
     }
     private IEnumerator DownloadTextFile(string url)
     {
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
-        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Level_" + LevelName + "_Data.json";
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", LevelName); 
+        if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/Level_" + LevelName + "_Data.json";
         File.WriteAllText(filePath, www.downloadHandler.text);
+
+        LevelDownload.DownloadLevelTreeData(LevelName);
 
         AssetDatabase.Refresh();
         yield return new WaitForSeconds(1f);
         BuildLevel(filePath);
         SetLayers(Terrain, "Ground");
         SetPlayers();
+        JsonUtilityManager.SetPath(path);
+        JsonUtilityManager.Load();
+        CharacterEditor1.LoadFromJson();
         yield return new WaitForSeconds(1f);
         GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
@@ -180,7 +194,6 @@ public class LevelInitializer : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Player position: " + x_position + ", " + y_position);
         _index = index;
     }
     private void CreateGround(int x, int y, int z)
@@ -370,8 +383,8 @@ public class LevelInitializer : MonoBehaviour
         GameObject Player = Instantiate(PlayerPrefab, new Vector3(x_position, y_position, 0), Quaternion.identity);
         Player.name = "Player";
         CharacterEditor1.Character = Player.GetComponent<CharacterBase>();
-        CharacterEditor1.OnlineLoadFromJson();
         Player.SetActive(true);
         MainCamera.GetComponent<CameraFollow>().Player = Player;
+        Player.GetComponent<Powerup>().Start();
     }
 }
