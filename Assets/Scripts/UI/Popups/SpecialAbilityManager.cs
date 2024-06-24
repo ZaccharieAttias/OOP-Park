@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 
 
+
+
 public class SpecialAbilityManager : MonoBehaviour
 {
     [Header("UI Elements")]
@@ -15,16 +17,24 @@ public class SpecialAbilityManager : MonoBehaviour
     public Button CancelButton;
     public Button ConfirmButton;
 
+
     [Header("Managers")]
     public CharactersCreationManager CharacterCreationManager;
     public SpecialAbilityTreeManager SpecialAbilityTreeManager;
+
 
     [Header("Special Abilities")]
     public SpecialAbility SelectedSpecialAbility;
     public List<SpecialAbilityObject> SpecialAbilitiesCollection;
 
+
     [Header("Game Objects")]
     public List<GameObject> SpecialAbilityGameObjects;
+
+
+    public Dictionary<SpecialAbilityType, List<SpecialAbility>> SpecialAbilitiesDictionary;
+
+
 
 
     public void Start()
@@ -41,25 +51,34 @@ public class SpecialAbilityManager : MonoBehaviour
         ConfirmButton = Popup.transform.Find("Buttons/Confirm").gameObject.GetComponent<Button>();
         ConfirmButton.onClick.AddListener(() => ConfirmFactory());
 
+
         CharacterCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
         SpecialAbilityTreeManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityTreeManager>();
+
 
         SelectedSpecialAbility = null;
         SpecialAbilitiesCollection = new();
 
+
         SpecialAbilityGameObjects = new();
+
+
+        SpecialAbilitiesDictionary = new();
     }
+
 
     public void StartFactory()
     {
         CancelButton.interactable = true;
         ConfirmButton.interactable = false;
 
+
         SelectedSpecialAbility = null;
         if (SpecialAbilityGameObjects.Count == 0)
         {
             BuildSpecialAbilityGameObjects();
         }
+
 
         ResetAbilitySelection();
         SpecialAbilityTreeManager.BuildTree(SpecialAbilitiesCollection.First());
@@ -68,6 +87,7 @@ public class SpecialAbilityManager : MonoBehaviour
     {
         SelectedSpecialAbility = null;
 
+
         ToggleOff();
     }
     public void ConfirmFactory()
@@ -75,14 +95,17 @@ public class SpecialAbilityManager : MonoBehaviour
         ToggleOff();
     }
 
+
     public void MarkAbility(GameObject specialAbilityGameObject)
     {
         var specialAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.Name == specialAbilityGameObject.name);
         bool isSelectedAbility = SelectedSpecialAbility is null;
         SelectedSpecialAbility = isSelectedAbility ? specialAbilityObject.SpecialAbility : null;
 
+
         ConfirmButton.interactable = isSelectedAbility;
         specialAbilityGameObject.GetComponent<Image>().color = isSelectedAbility ? Color.green : Color.white;
+
 
         UpdateDescendantButtons(specialAbilityGameObject, isSelectedAbility);
     }
@@ -91,6 +114,7 @@ public class SpecialAbilityManager : MonoBehaviour
         var selectedParent = CharacterCreationManager.SelectedParent;
         var parentAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.Name == selectedParent.SpecialAbility.Name);
         var descendantGameObjects = FindDescendantGameObjects(parentAbilityObject);
+
 
         foreach (var gameObject in descendantGameObjects.Where(obj => obj.name != selectedGameObject.name))
         {
@@ -105,11 +129,13 @@ public class SpecialAbilityManager : MonoBehaviour
         var parentAbilityObject = SpecialAbilitiesCollection.Find(obj => obj.Name == selectedParent.SpecialAbility.Name);
         var descendantGameObjects = FindDescendantGameObjects(parentAbilityObject);
 
+
         foreach (var gameObject in descendantGameObjects)
         {
             gameObject.GetComponent<Button>().interactable = true;
             gameObject.GetComponent<Image>().color = Color.white;
         }
+
 
         var nonDescendantGameObjects = SpecialAbilityGameObjects.Except(descendantGameObjects).ToList();
         foreach (var gameObject in nonDescendantGameObjects)
@@ -121,7 +147,7 @@ public class SpecialAbilityManager : MonoBehaviour
     public List<GameObject> FindDescendantGameObjects(SpecialAbilityObject specialAbility)
     {
         var descendantGameObjects = new List<GameObject>();
-
+   
         foreach (var child in specialAbility.Childrens)
         {
             var descendantGameObject = SpecialAbilityGameObjects.Find(obj => obj.name == child.Name);
@@ -132,8 +158,10 @@ public class SpecialAbilityManager : MonoBehaviour
             }
         }
 
+
         return descendantGameObjects;
     }
+
 
     public void BuildSpecialAbilityGameObjects()
     {
@@ -142,17 +170,22 @@ public class SpecialAbilityManager : MonoBehaviour
             var specialAbilityGameObject = Instantiate(SpecialAbilityButton, SpecialAbilityContentPanel);
             specialAbilityGameObject.name = specialAbility.Name;
 
+
             var specialAbilityText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
             specialAbilityText.text = specialAbility.Name;
+
 
             var specialAbilityButton = specialAbilityGameObject.GetComponent<Button>();
             specialAbilityButton.onClick.AddListener(() => MarkAbility(specialAbilityGameObject));
 
+
             specialAbility.Button = specialAbilityGameObject;
+
 
             SpecialAbilityGameObjects.Add(specialAbilityGameObject);
         }
     }
+
 
     public void ToggleOn()
     {
