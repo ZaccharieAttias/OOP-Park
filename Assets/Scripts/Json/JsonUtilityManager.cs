@@ -32,15 +32,23 @@ public class JsonUtilityManager : MonoBehaviour
         }
         AttributesData.Save();
         MethodsData.Save();
-        // SpecialAbilitiesData.Save();
+        SpecialAbilitiesData.Save();
         CharactersData.Save();
     }
     public void Load()
     {
         AttributesData.Load();
         MethodsData.Load();
-        // SpecialAbilitiesData.Load();
+        SpecialAbilitiesData.Load();
         CharactersData.Load();
         CharactersGameObjectData.Load();
+    }
+    public void SetPath(string path)
+    {
+        FolderPath = path;
+        AttributesData.SetPath(Path.Combine(FolderPath, "Attributes.json"));
+        MethodsData.SetPath(Path.Combine(FolderPath, "Methods.json"));
+        SpecialAbilitiesData.SetPath(Path.Combine(FolderPath, "SpecialAbilities.json"));
+        CharactersData.SetPath(Path.Combine(FolderPath, "Characters.json"));
     }
 }
