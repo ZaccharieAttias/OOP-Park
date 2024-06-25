@@ -84,6 +84,7 @@ public class CharacterB
     }
     public void PreDetails()
     {   
+        if (Parent is null) return;
         foreach (var attribute in Parent?.Attributes)
             if (!Attributes.Any(item => item.Name == attribute.Name))
                 if (RestrictionManager.Instance.AllowAccessModifier is false || attribute.AccessModifier is not AccessModifier.Private)
