@@ -29,12 +29,10 @@ public class Powerup : MonoBehaviour
 
         if (PreviousMethods?.Count > 0)
         {
-            Debug.Log("PreviousMethods.Count: " + PreviousMethods.Count);
             for (int i = PreviousMethods.Count - 1; i >= 0; i--)
             {
                 PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(PreviousMethods[i].Name)).DeactivatePower(gameObject);
                 PreviousMethods.RemoveAt(i);
-                Debug.Log(i);
             }
         }
 
