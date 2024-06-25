@@ -13,7 +13,7 @@ public class CharactersManager : MonoBehaviour
     public List<CharacterB> CharactersCollection;
     public CharacterB CurrentCharacter;
 
-    public TMP_InputField NameText;
+    public TMP_Text NameText;
     public TMP_Text DescriptionText;
 
     public GameObject DefaultButton;
@@ -38,7 +38,7 @@ public class CharactersManager : MonoBehaviour
         CharactersCollection = new List<CharacterB>();
         CurrentCharacter = null;
 
-        NameText = Menu.transform.Find("Characters/Details/Name").GetComponent<TMP_InputField>();
+        NameText = Menu.transform.Find("Characters/Details/Name").GetComponent<TMP_Text>();
         DescriptionText = Menu.transform.Find("Characters/Details/Description/Text").GetComponent<TMP_Text>();
 
         DefaultButton = Resources.Load<GameObject>("Buttons/Default");
@@ -107,22 +107,8 @@ public class CharactersManager : MonoBehaviour
     }
     private void DisplayName()
     {
-        NameText.interactable = CurrentCharacter.IsOriginal is false;
-
-        string prefix = CurrentCharacter.IsAbstract ? "[Abs] " : "";
-        NameText.text = prefix + CurrentCharacter.Name;
+        NameText.text = CurrentCharacter.Name;
         DescriptionText.text = CurrentCharacter.Description;
-
-        NameText.onEndEdit.AddListener(text =>
-        {
-            foreach (Attribute attribute in CurrentCharacter.Attributes) { if (attribute.Owner == CurrentCharacter.Name) { attribute.Owner = text; } }
-            foreach (Method method in CurrentCharacter.Methods) { if (method.Owner == CurrentCharacter.Name) { method.Owner = text; } }
-
-            CurrentCharacter.Name = text;
-            CurrentCharacter.CharacterButton.Button.name = text;
-
-            DisplayCharacter(CurrentCharacter);
-        });
     }
     private void DisplayAttributes()
     {
