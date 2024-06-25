@@ -47,7 +47,7 @@ public class AbstractClassCheck : MonoBehaviour
         ErrorObjectPrefab = Resources.Load<GameObject>("ErrorObject");
         ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Message/ScrollView/ViewPort/Content");
 
-        if (RestrictionManager.Instance.AllowAbstractClass)
+        if (RestrictionManager.Instance.AllowAbstractClass && !RestrictionManager.Instance.OnlineGame)
         {
             SetStage();
         }
