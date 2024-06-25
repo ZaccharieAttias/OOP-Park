@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Assets.HeroEditor4D.SimpleColorPicker.Scripts;
 using static Assets.HeroEditor.Common.Scripts.EditorScripts.CharacterEditor;
+using LootLocker.Extension.DataTypes;
 
 public class CharacterEditor1 : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class CharacterEditor1 : MonoBehaviour
     }
     public void LoadFromJson()
     {
+        if (GameObject.Find("Player") == null)
+            return;
         string path = Path.Combine(Application.dataPath, $"Resources/CharactersData/All/{CharactersData.CharactersManager.CurrentCharacter.Name}.json");
         var json = File.ReadAllText(path);
 
