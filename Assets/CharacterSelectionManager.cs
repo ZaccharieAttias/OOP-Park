@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class CharacterSelectionManager : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class CharacterSelectionManager : MonoBehaviour
         ButtonPrefab = Resources.Load<GameObject>("Buttons/Character");
         ConfirmButton = SelectionMenu.transform.Find("Background/Foreground/Buttons/Confirm").gameObject;
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmRootCharacter());
+        ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmButton.GetComponent<Button>().interactable = false);
+        
         CharacterName = "";
     }
     public void DisplayCharacters()
