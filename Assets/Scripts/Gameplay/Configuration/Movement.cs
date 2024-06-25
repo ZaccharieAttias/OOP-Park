@@ -75,7 +75,7 @@ public class Movement : MonoBehaviour
         Gun = transform.Find("GunPivot").gameObject;
         WallLayer = LayerMask.GetMask("Wall");
         // si la scene se nomme LevelBuilder
-        if (SceneManager.GetActiveScene().name == "onlinetest") WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
+        if (SceneManager.GetActiveScene().name.Contains("Online") ) WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
         else WallCheck = GameObject.Find("Grid/Walls").transform;
 
 
