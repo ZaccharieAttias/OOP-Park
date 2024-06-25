@@ -76,6 +76,7 @@ public class UpcastingManager : MonoBehaviour
     }
     public void CollectUpcastableData(CharacterB character)
     {
+        if (character is null || character.Parent is null) return;
         CollectUpcastableData(character.Parent);
 
         List<Method> parentMethods = character.Parent.Methods
