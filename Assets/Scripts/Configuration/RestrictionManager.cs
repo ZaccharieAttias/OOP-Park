@@ -22,6 +22,21 @@ public class RestrictionManager : MonoBehaviour
     { 
         Instance = this;
 
+        if (RestrictionMenu.Instance != null)
+        {
+            AllowSingleInheritance = RestrictionMenu.Instance.AllowSingleInheritance;
+            AllowBeginnerInheritance = RestrictionMenu.Instance.AllowBeginnerInheritance;
+            AllowSpecialAbility = RestrictionMenu.Instance.AllowSpecialAbility;
+            AllowAccessModifier = RestrictionMenu.Instance.AllowAccessModifier;
+            AllowOverride = RestrictionMenu.Instance.AllowOverride;
+            AllowUpcasting = RestrictionMenu.Instance.AllowUpcasting;
+            AllowAbstractClass = RestrictionMenu.Instance.AllowAbstractClass;
+            AllowEncapsulation = RestrictionMenu.Instance.AllowEncapsulation;
+            OnlineGame = true;
+        }
+
+
+
         ApplyRestrictions(); 
     }
 
