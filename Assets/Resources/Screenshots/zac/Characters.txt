@@ -1,0 +1,116 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 6",
+    "Description": "This is Character 6.",
+    "Attributes": [
+      {
+        "Owner": "Character 6",
+        "Name": "wallJump",
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 6",
+        "Name": "WallJump",
+        "Attribute": {
+          "Owner": "Character 6",
+          "Name": "wallJump",
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": null,
+    "Childrens": [
+      "Character 7"
+    ]
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 7",
+    "Description": "I'm Character 7",
+    "Attributes": [
+      {
+        "Owner": "Character 7",
+        "Name": "speed",
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 7",
+        "Name": "gravity",
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 7",
+        "Name": "multipleJumps",
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 7",
+        "Name": "Speed",
+        "Attribute": {
+          "Owner": "Character 7",
+          "Name": "speed",
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 7",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Character 7",
+          "Name": "gravity",
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 7",
+        "Name": "MultipleJumps",
+        "Attribute": {
+          "Owner": "Character 7",
+          "Name": "multipleJumps",
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Character 6",
+    "Childrens": []
+  }
+]
