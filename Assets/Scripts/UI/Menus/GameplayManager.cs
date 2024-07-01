@@ -24,6 +24,8 @@ public class GameplayManager : MonoBehaviour
 
     public void ToggleOn()
     {
+        if(CharactersData.CharactersManager.CurrentCharacter != null && CharactersData.CharactersManager.CurrentCharacter.IsAbstract)
+            return;
         SceneManagement.SceneResume();
 
         Gameplay.SetActive(true);
