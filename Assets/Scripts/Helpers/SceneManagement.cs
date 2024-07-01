@@ -17,6 +17,7 @@ public static class SceneManagement
     public void Hierarchy() { SceneManager.LoadScene("Hierarchy"); }
     public void Polymorphism() { SceneManager.LoadScene("Polymorphism"); }
     */
+    public static void RestrictionMenu() { UnityEngine.SceneManagement.SceneManager.LoadScene("RestrictionMenu"); }
     
     public static void Quit() { Application.Quit(); }
 }
