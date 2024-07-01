@@ -17,6 +17,7 @@ public class JsonUtilityManager : MonoBehaviour
         CharactersData.Initialize(FolderPath);
         CharactersGameObjectData.Initialize();
         RestrictionsData.Initialize(FolderPath);
+        GameplayData.Initialize();
     }
     public void Update()
     {
@@ -35,8 +36,9 @@ public class JsonUtilityManager : MonoBehaviour
         MethodsData.Save();
         SpecialAbilitiesData.Save();
         CharactersData.Save();
-        if (RestrictionManager.Instance.OnlineGame)
-            RestrictionsData.Save();
+        if (RestrictionManager.Instance.OnlineGame) RestrictionsData.Save();
+
+        GameplayData.Save();
     }
     public void Load()
     {
@@ -45,8 +47,9 @@ public class JsonUtilityManager : MonoBehaviour
         SpecialAbilitiesData.Load();
         CharactersData.Load();
         CharactersGameObjectData.Load();
-        if (RestrictionManager.Instance.OnlineGame)
-            RestrictionsData.Load();
+        if (RestrictionManager.Instance.OnlineGame) RestrictionsData.Load();
+
+        GameplayData.Load();
     }
     public void SetPath(string path)
     {
