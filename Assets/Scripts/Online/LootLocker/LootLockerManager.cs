@@ -11,13 +11,7 @@ public class LootLockerManager : MonoBehaviour
         LootLockerSDKManager.StartGuestSession((response) =>
         {
             if (response.success)
-            {
-                Debug.Log("Login Success");
-                //SceneManager.LoadScene("OnlineLoadLevel");
-                
-                //set the object to active
-                GameObject.Find("Canvas/Menus/Gameplay/Login").SetActive(false);
-                
+            {   
             }
             else
             {
