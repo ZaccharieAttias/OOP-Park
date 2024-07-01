@@ -87,6 +87,9 @@ public class LevelDownload : MonoBehaviour
                 type = "Methods";
                 break;
             case 3:
+                type = "Restrictions";
+                break;
+            case 4:
                 type = "SpecialAbilities";
                 break;
         }
