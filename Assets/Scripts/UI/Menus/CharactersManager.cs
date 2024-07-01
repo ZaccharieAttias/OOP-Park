@@ -107,7 +107,7 @@ public class CharactersManager : MonoBehaviour
     }
     private void DisplayName()
     {
-        NameText.text = CurrentCharacter.Name;
+        NameText.text = (CurrentCharacter.IsAbstract ? " {ABST} " : "") + CurrentCharacter.Name;
         DescriptionText.text = CurrentCharacter.Description;
     }
     private void DisplayAttributes()
