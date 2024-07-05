@@ -36,6 +36,7 @@ public class LevelBuilderB : MonoBehaviour
     public GameObject Player;
     public SwapScreen swapScreen;
     public int check = 0;
+    public GameObject CheckPointPrefab;
 
 
     public void Start()
@@ -74,7 +75,7 @@ public class LevelBuilderB : MonoBehaviour
                 Cursor.sprite = SpriteCollection.OtherSprites[index];
                 break;
             case 4:
-                Cursor.sprite = SpriteCollection.PlayerSprite[index];
+                Cursor.sprite = SpriteCollection.GamePlaySprite[index];
                 break;
         }
     }
@@ -124,7 +125,17 @@ public class LevelBuilderB : MonoBehaviour
             case 1: CreateCover(p.X, p.Y, _layer); break;
             case 2:
             case 3: CreateProps(p.X, p.Y, _layer); break;
-            case 4: CreatePlayer(p.X, p.Y, _layer); break;
+            case 4: 
+                switch (_index)
+                {
+                    case 0: CreatePlayer(p.X, p.Y, _layer); break;
+                    case 1: CreateCheckPoint(p.X, p.Y, _layer); break;
+                    case 2: CreateCheckPoint(p.X, p.Y, _layer); break;
+                    case 3: CreateCheckPoint(p.X, p.Y, _layer); break;
+                    case 4: CreacteDeathObject(p.X, p.Y, _layer); break;
+                    case 5: CreateDeathZone(p.X, p.Y, _layer); break;
+                }
+                break;
         }
         Cursor.enabled = false;
     }
@@ -244,6 +255,113 @@ public class LevelBuilderB : MonoBehaviour
 
         _propsMap[x, y, z] = block;
     }
+    public void CreateCheckPoint(int x, int y, int z)
+    {
+        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
+        {
+            Debug.LogWarning("Checkpoints can be placed on the ground only.");
+            return;
+        }
+
+        _propsMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+
+        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.AddComponent<Checkpoint>();
+        block.GameObject.GetComponent<Checkpoint>().spriteRenderer = block.SpriteRenderer;
+        block.GameObject.GetComponent<Checkpoint>().passive = SpriteCollection.GamePlaySprite[_index];
+        block.GameObject.GetComponent<Checkpoint>().active = SpriteCollection.GamePlaySprite[3];
+        //create the respawn point as a child of the checkpoint
+        GameObject RespawnPoint = new GameObject("RespawnPoint");
+        RespawnPoint.transform.SetParent(block.Transform);
+        RespawnPoint.transform.localPosition = new Vector3(0, 3f);
+        block.GameObject.GetComponent<Checkpoint>().respawnPoint = RespawnPoint.transform;
+        block.GameObject.GetComponent<Checkpoint>().col = block.GameObject.GetComponent<BoxCollider2D>();
+        block.GameObject.tag = "Checkpoint";
+
+        if (_type == 4 && _index != -1)
+        {
+            block.OffsetY = -1;
+            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
+        }
+
+        _propsMap[x, y, z] = block;
+    }
+    public void CreacteDeathObject(int x, int y, int z)
+    {
+        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
+        {
+            Debug.LogWarning("Object can be placed on the ground only.");
+            return;
+        }
+
+        _propsMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+
+        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<EdgeCollider2D>();
+        block.GameObject.GetComponent<EdgeCollider2D>().offset = new Vector2(0, 0.5f);
+        block.GameObject.GetComponent<EdgeCollider2D>().isTrigger = true;
+        block.GameObject.tag = "Obstacle";
+
+        if (_type == 4 && _index != -1)
+        {
+            block.OffsetY = -1;
+            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
+        }
+
+        _propsMap[x, y, z] = block;
+    }
+    public void CreateDeathZone(int x, int y, int z)
+    {
+        if (x < 0 || x >= _groundMap.Width || y < 0 || y >= _groundMap.Height) return;
+
+        _groundMap.Destroy(x, y, z);
+
+        _propsMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+
+        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.tag = "DeathZone";
+
+        if (_type == 4 && _index != -1)
+        {
+            block.OffsetY = -1;
+            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
+        }
+
+        _propsMap[x, y, z] = block;
+    }
+
     public void CreatePlayer(int x, int y, int z)
     {
         if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
@@ -256,7 +374,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index == -1) return;
 
-        string CharacterName = SpriteCollection.PlayerSprite[_index].name;
+        string CharacterName = SpriteCollection.GamePlaySprite[_index].name;
         //Create un object player dans la scene sil n'existe pas
         if (GameObject.Find("Player") == null)
         {
@@ -290,6 +408,13 @@ public class LevelBuilderB : MonoBehaviour
         Player.GetComponent<Movement>().enabled = false;
         Player.GetComponent<GameController>().enabled = false;
         Player.GetComponent<GrabObject>().enabled = false;
+
+        //foreach object that have the tag "Checkpoint" in the scene set player
+        GameObject[] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+        foreach (GameObject Checkpoint in Checkpoints)
+        {
+            Checkpoint.GetComponent<Checkpoint>().gameController = Player.GetComponent<GameController>();
+        }
     }
     private void SetGround(int x, int y, int z)
     {
