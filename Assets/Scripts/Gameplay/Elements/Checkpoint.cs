@@ -25,4 +25,9 @@ public class Checkpoint : MonoBehaviour
             col.enabled = false;
         }
     }
+    public void ResetCheckpoint()
+    {
+        spriteRenderer.sprite = passive;
+        col.enabled = true;
+    }
 }
