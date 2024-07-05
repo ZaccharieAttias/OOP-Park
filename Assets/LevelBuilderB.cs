@@ -172,6 +172,7 @@ public class LevelBuilderB : MonoBehaviour
             block.Transform.localScale = Vector3.one;
             block.SpriteRenderer.sprite = SpriteCollection.GroundTilesets[_index].Sprites[0];
             block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+            block.GameObject.layer = 7;
 
             _groundMap[x, y, z] = block;
         }
@@ -277,7 +278,7 @@ public class LevelBuilderB : MonoBehaviour
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
-        block.GameObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         block.GameObject.AddComponent<Checkpoint>();
         block.GameObject.GetComponent<Checkpoint>().spriteRenderer = block.SpriteRenderer;
         block.GameObject.GetComponent<Checkpoint>().passive = SpriteCollection.GamePlaySprite[_index];
@@ -350,7 +351,7 @@ public class LevelBuilderB : MonoBehaviour
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
-        block.GameObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         block.GameObject.tag = "DeathZone";
 
         if (_type == 4 && _index != -1)
