@@ -14,8 +14,6 @@ public class Checkpoint : MonoBehaviour
     private void InitializeProperties()
     {
         gameController = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<GameController>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
     }
     
     private void OnTriggerEnter2D(Collider2D collision)
