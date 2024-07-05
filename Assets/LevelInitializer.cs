@@ -96,7 +96,7 @@ public class LevelInitializer : MonoBehaviour
         AssetDatabase.Refresh();
         yield return new WaitForSeconds(1f);
         BuildLevel(filePath);
-        SetLayers(Terrain, "Ground");
+        SetLayers(Terrain.Find("Ground"), "Ground");
         SetPlayers();
         JsonUtilityManager.SetPath(path);
         JsonUtilityManager.Load();
@@ -191,17 +191,15 @@ public class LevelInitializer : MonoBehaviour
                                 _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
                             }
                         }
-                        if (_type != 2 && _type != 3)
-                            Debug.Log(_index);
                         if (_index != -1)
                         {
                             if (_type == 4)
                             {
-                                if (index == 1|| index == 2 || index==3)
+                                if (_index == 1|| _index == 2 || _index==3)
                                     CreateCheckPoint(x, y, z);
-                                else if (index == 4)
+                                else if (_index == 4)
                                     CreacteDeathObject(x, y, z);
-                                else if (index == 5)
+                                else if (_index == 5)
                                     CreateDeathZone(x, y, z);
                                 
                             }
@@ -334,7 +332,7 @@ public class LevelInitializer : MonoBehaviour
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
-        block.GameObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         block.GameObject.AddComponent<Checkpoint>();
         block.GameObject.GetComponent<Checkpoint>().spriteRenderer = block.SpriteRenderer;
         block.GameObject.GetComponent<Checkpoint>().passive = SpriteCollection.GamePlaySprite[_index];
@@ -404,10 +402,11 @@ public class LevelInitializer : MonoBehaviour
         block.Transform.SetParent(Terrain.Find("Props").transform);
         block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         block.Transform.localScale = Vector3.one;
-        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
-        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.GetComponent<SpriteRenderer>().sprite = SpriteCollection.GamePlaySprite[_index];
+        block.GameObject.GetComponent<SpriteRenderer>().sortingOrder = 100 * z + 30;
+        block.GameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
-        block.GameObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         block.GameObject.tag = "DeathZone";
 
         if (_type == 4 && _index != -1)
