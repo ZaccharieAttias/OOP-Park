@@ -2229,6 +2229,7 @@ GameObject:
   - component: {fileID: 124451637}
   - component: {fileID: 124451636}
   - component: {fileID: 124451635}
+  - component: {fileID: 124451639}
   m_Layer: 5
   m_Name: Popups
   m_TagString: Untagged
@@ -2467,6 +2468,22 @@ MonoBehaviour:
   AttributeButton: {fileID: 0}
   AttributesContentPanel: {fileID: 0}
   AttributeGameObjects: []
+--- !u!114 &124451639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124451624}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab516027f19ba2a4eaac2d20690fa35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Popup: {fileID: 0}
+  FeedbackScore: {fileID: 0}
+  FeedbackText: {fileID: 0}
+  DeathsCount: 0
 --- !u!1 &125554640
 GameObject:
   m_ObjectHideFlags: 0
