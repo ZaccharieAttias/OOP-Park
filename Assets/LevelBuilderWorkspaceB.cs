@@ -11,41 +11,39 @@ public class LevelBuilderWorkspaceB : MonoBehaviour, IPointerEnterHandler, IPoin
 
     public void Update()
     {
-        if (!canDraw)
-            return;
-        LevelBuilder.MoveCursor(Input.mousePosition);
+        if (canDraw)
+            LevelBuilder.MoveCursor(Input.mousePosition);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!canDraw)
-            return;
-        LevelBuilder.EnableCursor(true);
+        if (canDraw)
+            LevelBuilder.EnableCursor(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!canDraw)
-            return;
-        LevelBuilder.EnableCursor(false);
+        if (canDraw)
+            LevelBuilder.EnableCursor(false);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!canDraw)
-            return;
-        if (Input.GetMouseButton(0))
+        if (canDraw)
         {
-            LevelBuilder.Draw(eventData.position);
-        }
-        else if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl))
-        {
-            SetCanDraw();
-        }
-        else if (Input.GetMouseButton(1))
-        {
-            _pointerDown = eventData.position;
-            _camPosition = Camera.main.transform.position;
+            if (Input.GetMouseButton(0))
+            {
+                LevelBuilder.Draw(eventData.position);
+            }
+            else if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl))
+            {
+                SetCanDraw();
+            }
+            else if (Input.GetMouseButton(1))
+            {
+                _pointerDown = eventData.position;
+                _camPosition = Camera.main.transform.position;
+            }
         }
     }
 
@@ -55,15 +53,16 @@ public class LevelBuilderWorkspaceB : MonoBehaviour, IPointerEnterHandler, IPoin
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!canDraw)
-            return;
-        if (Input.GetMouseButton(0))
+        if (canDraw)
         {
-            LevelBuilder.Draw(eventData.position);
-        }
-        else if (Input.GetMouseButton(1))
-        {
-            Camera.main.transform.position = _camPosition + Camera.main.ScreenToWorldPoint(_pointerDown) - Camera.main.ScreenToWorldPoint(eventData.position);
+            if (Input.GetMouseButton(0))
+            {
+                LevelBuilder.Draw(eventData.position);
+            }
+            else if (Input.GetMouseButton(1))
+            {
+                Camera.main.transform.position = _camPosition + Camera.main.ScreenToWorldPoint(_pointerDown) - Camera.main.ScreenToWorldPoint(eventData.position);
+            }
         }
     }
     public void SetCanDraw()
