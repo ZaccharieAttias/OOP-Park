@@ -45,11 +45,11 @@ public class InventoryB : MonoBehaviour
                 }
                 break;
             case 4:
-                var playerSprites = SpriteCollection.PlayerSprite;
+                var gameplayObjects = SpriteCollection.GamePlaySprite;
 
-                for (var i = 0; i < playerSprites.Count; i++)
+                for (var i = 0; i < gameplayObjects.Count; i++)
                 {
-                    CreateInventoryItem(playerSprites[i].name, playerSprites[i], tab, i);
+                    CreateInventoryItem(gameplayObjects[i].name, gameplayObjects[i], tab, i);
                 }
                 break;
         }
