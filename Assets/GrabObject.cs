@@ -72,4 +72,11 @@ public class GrabObject : MonoBehaviour
         IsHolding = false;
         CanHold = true;
     }
+    public void ResetGrab()
+    {
+        PowerupTimer = 0f;
+        CanGrabMass = 10f;
+        IsHolding = false;
+        CanHold = true;
+    }
 }
