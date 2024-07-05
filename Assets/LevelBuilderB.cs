@@ -9,6 +9,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEditor;
 using LootLocker.Extension.DataTypes;
+using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 
 
 public class LevelBuilderB : MonoBehaviour
@@ -128,6 +129,10 @@ public class LevelBuilderB : MonoBehaviour
             case 4: 
                 switch (_index)
                 {
+                    case -1: 
+                        if (p.X < 0 || p.X >= _propsMap.Width || p.Y <= 0 || p.Y >= _propsMap.Height) return;
+                        _propsMap.Destroy(p.X, p.Y, _layer);
+                        break;
                     case 0: CreatePlayer(p.X, p.Y, _layer); break;
                     case 1: CreateCheckPoint(p.X, p.Y, _layer); break;
                     case 2: CreateCheckPoint(p.X, p.Y, _layer); break;
@@ -137,7 +142,6 @@ public class LevelBuilderB : MonoBehaviour
                 }
                 break;
         }
-        Cursor.enabled = false;
     }
     public void SwitchLayer(int layer)
     {
@@ -337,8 +341,6 @@ public class LevelBuilderB : MonoBehaviour
     {
         if (x < 0 || x >= _groundMap.Width || y < 0 || y >= _groundMap.Height) return;
 
-        _groundMap.Destroy(x, y, z);
-
         _propsMap.Destroy(x, y, z);
 
         if (_index == -1) return;
@@ -389,8 +391,10 @@ public class LevelBuilderB : MonoBehaviour
         }
         else
         {
-            //load the new player
-            CharacterEditor.LoadFromJson(CharacterName);
+            if (CharactersData.CharactersManager.CurrentCharacter == null)
+                CharacterEditor.LoadFromJson(CharacterName);
+            else
+                CharacterEditor.LoadFromJson(CharactersData.CharactersManager.CurrentCharacter.Name);
             Player.transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         }
         SetPlayer();
@@ -412,10 +416,16 @@ public class LevelBuilderB : MonoBehaviour
 
         //foreach object that have the tag "Checkpoint" in the scene set player
         GameObject[] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+        PlayTestManager playTestManager = GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>();
+
         foreach (GameObject Checkpoint in Checkpoints)
         {
             Checkpoint.GetComponent<Checkpoint>().gameController = Player.GetComponent<GameController>();
         }
+
+        playTestManager.Player = Player;
+        playTestManager.x_start_pos = Player.transform.position.x;
+        playTestManager.y_start_pos = Player.transform.position.y;
     }
     private void SetGround(int x, int y, int z)
     {
