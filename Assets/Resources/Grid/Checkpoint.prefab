@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1506026877241066945}
   - component: {fileID: 6516673439857468970}
-  - component: {fileID: 6662961178226231969}
+  - component: {fileID: 8111214670973363581}
   - component: {fileID: 6976187689248527291}
   m_Layer: 0
   m_Name: Checkpoint
@@ -107,7 +107,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7e2233423f674e141ab2157d67b40aba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c332669f72ad3945b90ad722fc0f299, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &6662961178226231969
+--- !u!61 &8111214670973363581
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,18 +150,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0063323975, y: 0.107543945}
+  m_Offset: {x: 0, y: 0.75}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1, y: 1.5}
     newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7343445, y: 1.240387}
+  m_Size: {x: 1, y: 1.5}
   m_EdgeRadius: 0
 --- !u!114 &6976187689248527291
 MonoBehaviour:
@@ -175,6 +175,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d4fa4573181144db53bafcf934f054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 0}
   respawnPoint: {fileID: 1439768544931667282}
+  spriteRenderer: {fileID: 6516673439857468970}
   passive: {fileID: 21300000, guid: 7e2233423f674e141ab2157d67b40aba, type: 3}
-  active: {fileID: 21300000, guid: 50981203de7274146b3dbd3e01b7501a, type: 3}
+  active: {fileID: 21300000, guid: 386c83e30ee3f1447a538e6737544b95, type: 3}
+  col: {fileID: 8111214670973363581}
