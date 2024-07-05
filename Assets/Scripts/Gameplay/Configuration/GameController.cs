@@ -47,4 +47,9 @@ public class GameController : MonoBehaviour
         transform.localScale = new Vector3(1, 1, 1);
         Rigidbody2D.simulated = true;
     }
+    public void ResetGame()
+    {
+        FeedbackManager.DeathsCount = 0;
+        CheckpointPosition = transform.position;
+    }
 }
