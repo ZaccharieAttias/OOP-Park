@@ -11947,6 +11947,7 @@ Transform:
   m_Children:
   - {fileID: 1800533763}
   - {fileID: 1404008986}
+  - {fileID: 1838509412}
   - {fileID: 30804958}
   m_Father: {fileID: 1246068771}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11968,6 +11969,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   swapScreen: {fileID: 0}
   check: 0
+  CheckPointPrefab: {fileID: 0}
 --- !u!1 &685502282
 GameObject:
   m_ObjectHideFlags: 0
@@ -19888,7 +19890,6 @@ Transform:
   - {fileID: 682083939}
   - {fileID: 1771088939}
   - {fileID: 590554848}
-  - {fileID: 1838509412}
   - {fileID: 636802438}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -29649,13 +29650,13 @@ Transform:
   m_GameObject: {fileID: 1838509411}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 343.13525, y: 189.93062, z: 0.028762817}
+  m_LocalPosition: {x: 17.215271, y: -12.509384, z: 0.028762817}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1464088288}
   - {fileID: 58607703}
-  m_Father: {fileID: 1246068771}
+  m_Father: {fileID: 682083939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1850745302
 GameObject:
