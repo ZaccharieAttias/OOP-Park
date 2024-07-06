@@ -14653,7 +14653,6 @@ GameObject:
   - component: {fileID: 3078554238839468612}
   - component: {fileID: 6892170699329562528}
   - component: {fileID: 8897005514050785497}
-  - component: {fileID: 2098877379140552760}
   - component: {fileID: 7698125727170096805}
   m_Layer: 0
   m_Name: Player
@@ -15124,19 +15123,6 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   CheckpointPosition: {x: 0, y: 0}
   FeedbackManager: {fileID: 0}
---- !u!114 &2098877379140552760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680189850665371135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be46ce2dd85d29545be4df0cf1bb02d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PowerUpEffects: []
 --- !u!114 &7698125727170096805
 MonoBehaviour:
   m_ObjectHideFlags: 0
