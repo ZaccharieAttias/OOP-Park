@@ -508,7 +508,6 @@ public class LevelInitializer : MonoBehaviour
         CharacterEditor1.Character = Player.GetComponent<CharacterBase>();
         Player.SetActive(true);
         MainCamera.GetComponent<CameraFollow>().Player = Player;
-        Player.GetComponent<Powerup>().Start();
 
         //foreach object that have the tag "Checkpoint" in the scene set player
         GameObject[] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
