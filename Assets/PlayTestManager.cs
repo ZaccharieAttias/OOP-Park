@@ -13,6 +13,7 @@ public class PlayTestManager : MonoBehaviour
     public float x_start_pos, y_start_pos;
     public GameObject TestButton;
     public bool IsTestGameplay = false;
+    public GameObject MainCamera;
 
     public void RunTestGameplay()
     {
@@ -34,6 +35,7 @@ public class PlayTestManager : MonoBehaviour
             foreach (GameObject deathzone in DeathZone)
                 deathzone.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         }
+        MainCamera.GetComponent<CameraFollow>().Player = Player;
     }
 
     public void ResetTestGameplay()
@@ -52,6 +54,7 @@ public class PlayTestManager : MonoBehaviour
             checkpoint.GetComponent<Checkpoint>().ResetCheckpoint();
         foreach (GameObject deathzone in DeathZone)
             deathzone.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        MainCamera.GetComponent<CameraFollow>().Player = null;
     }
 
     public void SetOnlickButton()
