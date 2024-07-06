@@ -98,6 +98,7 @@ public class EncapsulationManager : MonoBehaviour
     }
     public void FillGetCollection(CharacterB character)
     {
+        if (character is null) return;
         foreach (var attribute in character.Attributes.Where(attr => attr.Getter && SetCollection.Any(item => item.Name == attr.Name)))
         {
             var attributeList = GetCollection.FirstOrDefault(item => item.Item1.Name == attribute.Name);
