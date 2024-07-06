@@ -22,6 +22,12 @@ public class CameraFollow : MonoBehaviour
     public void Update() 
     { 
         if (Player) 
-            transform.position = Vector3.SmoothDamp(transform.position, Player.transform.position + PositionOffset, ref Velocity, TimeOffset); 
+            {
+                //Restrict the camera in the y-axis to -2 and 2 and SmoothDamp the camera to the player's position
+                transform.position = new Vector3(Mathf.Clamp(transform.position.x, -53, 53), Mathf.Clamp(transform.position.y, -2, 2), transform.position.z);
+                transform.position = Vector3.SmoothDamp(transform.position, Player.transform.position + PositionOffset, ref Velocity, TimeOffset);
+                
+            } 
+
     }
 }
