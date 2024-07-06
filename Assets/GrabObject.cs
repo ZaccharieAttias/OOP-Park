@@ -29,7 +29,7 @@ public class GrabObject : MonoBehaviour
         IsHolding = false;
         CanHold = true;
         GrabMask = LayerMask.GetMask("Grabbable");
-        Powerup = transform.GetComponent<Powerup>();
+        Powerup = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
     }
 
     public void Update()
