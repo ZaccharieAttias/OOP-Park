@@ -8856,6 +8856,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 337948476}
   m_CullTransparentMesh: 1
+--- !u!1 &342040691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 342040692}
+  - component: {fileID: 342040693}
+  m_Layer: 0
+  m_Name: PowerUp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &342040692
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342040691}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 798934907}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &342040693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342040691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be46ce2dd85d29545be4df0cf1bb02d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PowerUpEffects: []
+  Player: {fileID: 0}
 --- !u!1 &383934418
 GameObject:
   m_ObjectHideFlags: 0
@@ -11658,6 +11704,7 @@ MonoBehaviour:
   SetContent: {fileID: 0}
   GetContent: {fileID: 0}
   ButtonPrefab: {fileID: 0}
+  allButton: {fileID: 0}
 --- !u!114 &568243045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16098,6 +16145,7 @@ Transform:
   - {fileID: 1699602239}
   - {fileID: 1559010074}
   - {fileID: 750776484}
+  - {fileID: 342040692}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &813701774
