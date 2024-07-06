@@ -98,7 +98,7 @@ public class CharactersManager : MonoBehaviour
             DisplaySpecialAbility();
             DisplayDelete();
 
-            Powerup powerUp = GameObject.Find("Player").GetComponent<Powerup>();
+            Powerup powerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
             powerUp.ApplyPowerup(CurrentCharacter);
 
             GetButton.SetActive(false);
