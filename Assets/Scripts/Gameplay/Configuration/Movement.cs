@@ -70,7 +70,7 @@ public class Movement : MonoBehaviour
         GroundCheckCircle = transform.Find("GroundCheckCircle").transform;
         GroundCheckBox = transform.Find("GroundCheckBox").transform;
         firePoint = transform.Find("FirePoint").transform;
-        Powerup = GetComponent<Powerup>();
+        Powerup = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
         CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
         Gun = transform.Find("GunPivot").gameObject;
         WallLayer = LayerMask.GetMask("Wall");
