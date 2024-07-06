@@ -6,7 +6,7 @@ using LootLocker.Requests;
 
 public class LootLockerManager : MonoBehaviour
 {
-    public void Login()
+    public void Start()
     {
         LootLockerSDKManager.StartGuestSession((response) =>
         {
