@@ -55,14 +55,6 @@ public class UpcastingManager : MonoBehaviour
         var closeButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         closeButton.onClick.AddListener(() => ToggleOff());
     }
-    public void Update()
-    {
-        if (RestrictionManager.Instance.AllowUpcasting && Input.GetKeyDown(KeyCode.U))
-        {
-            ToggleActivation();
-        }
-    }
-
     public void LoadPopup()
     {
         ClearContentPanel();
