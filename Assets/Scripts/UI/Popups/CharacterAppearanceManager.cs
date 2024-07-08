@@ -56,15 +56,9 @@ public class CharacterAppearanceManager : MonoBehaviour
         CancelButton.onClick.AddListener(() => CancelFactory());
         ResetButton = Popup.transform.Find("Character/Buttons/Reset").gameObject.GetComponent<Button>();
         ResetButton.onClick.AddListener(() => ResetFactory());
+        var closeButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
+        closeButton.onClick.AddListener(() => ToggleOff());
     }
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            ToggleActivation();
-        }
-    }
-
     public void CancelFactory()
     {
         ToggleOff();
