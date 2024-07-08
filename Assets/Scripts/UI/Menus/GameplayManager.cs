@@ -24,16 +24,17 @@ public class GameplayManager : MonoBehaviour
 
     public void ToggleOn()
     {
-        if(CharactersData.CharactersManager.CurrentCharacter != null && CharactersData.CharactersManager.CurrentCharacter.IsAbstract)
+        if (CharactersData.CharactersManager.CurrentCharacter != null && CharactersData.CharactersManager.CurrentCharacter.IsAbstract)
             return;
-        SceneManagement.SceneResume();
+
+        SceneManagement.SceneResume("GameplayManager");
 
         Gameplay.SetActive(true);
         CharacterCenter.SetActive(false);
     }
     public void ToggleOff()
     {
-        SceneManagement.ScenePause();
+        SceneManagement.ScenePause("GameplayManager");
 
         Gameplay.SetActive(false);
         CharacterCenter.SetActive(true);

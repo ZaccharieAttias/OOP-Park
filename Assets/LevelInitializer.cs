@@ -42,7 +42,7 @@ public class LevelInitializer : MonoBehaviour
     private string LevelName;
     public TMP_Text NameText;
     public Image LevelIcon;
-    public string DataFileURL;    
+    public string DataFileURL;
     public string CharactersPath;
     public string AttributesPath;
     public string MethodssPath;
@@ -53,7 +53,7 @@ public class LevelInitializer : MonoBehaviour
         _groundMap = new TileMap(1, 1, 4);
         _coverMap = new TileMap(1, 1, 4);
         _propsMap = new TileMap(1, 1, 4);
-        
+
         Parent = GameObject.Find("Grid/LevelBuilder").transform;
         Terrain = Parent.Find("Terrain");
         Walls = Parent.Find("Walls");
@@ -61,14 +61,14 @@ public class LevelInitializer : MonoBehaviour
         MainCamera = GameObject.Find("Main Camera");
         LevelDownload = GameObject.Find("LevelManager").GetComponent<LevelDownload>();
         JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
-        
+
         transform.position = Vector3.zero;
         transform.localScale = Vector3.one;
 
         NameText.text = LevelName;
         LevelIcon.sprite = LevelIcon.sprite;
     }
-//temporarily load the level for testing
+    //temporarily load the level for testing
     public void LoadLevelForTesting()
     {
         MapPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
@@ -85,7 +85,7 @@ public class LevelInitializer : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", LevelName); 
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
         string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/Level_" + LevelName + "_Data.json";
@@ -101,6 +101,28 @@ public class LevelInitializer : MonoBehaviour
         JsonUtilityManager.SetPath(path);
         JsonUtilityManager.Load();
         CharacterEditor1.LoadFromJson();
+
+        var chapterInfo = new ChapterInfo()
+        {
+            ChapterNumber = 0,
+            Name = LevelName,
+            LevelsInfo = new System.Collections.Generic.List<LevelInfo>()
+            {
+                new LevelInfo()
+                {
+                    LevelNumber = 1,
+                    Status = 0
+                }
+            }
+        };
+
+        bool chapterExists = SceneManagement.GameplayInfo[1].ChapterInfos.Exists(c => c.Name == LevelName);
+        if (!chapterExists)
+        {
+            SceneManagement.GameplayInfo[1].ChapterInfos.Add(chapterInfo);
+        }
+
+
         yield return new WaitForSeconds(1f);
         GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
@@ -110,7 +132,7 @@ public class LevelInitializer : MonoBehaviour
         LevelName = name;
     }
     private void BuildLevel(string json)
-    {   
+    {
         var file = File.ReadAllText(json);
         var level = JsonConvert.DeserializeObject<LevelB>(file);
 
@@ -185,7 +207,7 @@ public class LevelInitializer : MonoBehaviour
                             _type = 3;
                             _index = SpriteCollection.OtherSprites.FindIndex(i => i.name == props);
 
-                            if(_index == -1)
+                            if (_index == -1)
                             {
                                 _type = 4;
                                 _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
@@ -195,13 +217,13 @@ public class LevelInitializer : MonoBehaviour
                         {
                             if (_type == 4)
                             {
-                                if (_index == 1|| _index == 2 || _index==3)
+                                if (_index == 1 || _index == 2 || _index == 3)
                                     CreateCheckPoint(x, y, z);
                                 else if (_index == 4)
                                     CreacteDeathObject(x, y, z);
                                 else if (_index == 5)
                                     CreateDeathZone(x, y, z);
-                                
+
                             }
                             else
                                 CreateProps(x, y, z);
@@ -270,7 +292,7 @@ public class LevelInitializer : MonoBehaviour
 
             _coverMap[x, y, z] = block;
         }
-        
+
         for (var i = -1; i <= 1; i++)
         {
             for (var j = -1; j <= 1; j++)
@@ -437,7 +459,7 @@ public class LevelInitializer : MonoBehaviour
             _groundMap[x, y, z].SpriteRenderer.flipX = flipX;
             _groundMap[x, y, z].SpriteRenderer.sortingOrder = 100 * z + 10;
         }
-    }  
+    }
     private void SetCover(int x, int y, int z)
     {
         if (x < 0 || x >= _groundMap.Width || y < 0 || y >= _groundMap.Height) return;

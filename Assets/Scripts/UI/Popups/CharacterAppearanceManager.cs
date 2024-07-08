@@ -96,7 +96,7 @@ public class CharacterAppearanceManager : MonoBehaviour
 
     public void ToggleOn()
     {
-        SceneManagement.ScenePause();
+        SceneManagement.ScenePause("CharacterAppearanceManager");
 
 
         oldPosition = playerTransform.position;
@@ -117,7 +117,7 @@ public class CharacterAppearanceManager : MonoBehaviour
     }
     public void ToggleOff()
     {
-        SceneManagement.SceneResume();
+        SceneManagement.SceneResume("CharacterAppearanceManager");
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
 
 

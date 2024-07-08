@@ -16,9 +16,9 @@ public static class GameplayData
     }
 
 
-    public static void Save() { File.WriteAllText(FilePath, Serialize(SceneManagement.ChapterInfos)); }
-    public static void Load() { SceneManagement.ChapterInfos = Deserialize(File.ReadAllText(FilePath)); }
+    public static void Save() { File.WriteAllText(FilePath, Serialize(SceneManagement.GameplayInfo)); }
+    public static void Load() { SceneManagement.GameplayInfo = Deserialize(File.ReadAllText(FilePath)); }
 
-    public static string Serialize(List<ChapterInfo> chapterInfos) { return JsonConvert.SerializeObject(chapterInfos, Formatting.Indented); }
-    public static List<ChapterInfo> Deserialize(string json) { return JsonConvert.DeserializeObject<List<ChapterInfo>>(json); }
+    public static string Serialize(List<GameplayInfo> gameplayInfos) { return JsonConvert.SerializeObject(gameplayInfos, Formatting.Indented); }
+    public static List<GameplayInfo> Deserialize(string json) { return JsonConvert.DeserializeObject<List<GameplayInfo>>(json); }
 }

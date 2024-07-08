@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class EncapsulationaAllManager : MonoBehaviour
 {
     public GameObject Popup;
-    
+
     public Transform SetContent;
     public Transform GetContent;
 
@@ -23,7 +23,7 @@ public class EncapsulationaAllManager : MonoBehaviour
     private void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/EncapsulationAll");
-        
+
         SetCollection = new List<Attribute>();
         GetCollection = new List<Attribute>();
 
@@ -31,34 +31,30 @@ public class EncapsulationaAllManager : MonoBehaviour
         GetContent = Popup.transform.Find("Background/Foreground/Get/ScrollView/Viewport/Content").GetComponent<Transform>();
 
         ButtonPrefab = Resources.Load<GameObject>("Buttons/Default");
-        allButton =  GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/All");
-    }
+        allButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/All");
 
-    public void Update()
-    {
         if (RestrictionManager.Instance.AllowEncapsulation)
         {
             allButton.GetComponent<Button>().onClick.AddListener(() => ToggleOn());
             allButton.SetActive(true);
         }
     }
-    
-    
+
     private void LoadPopup()
     {
         ClearContentPanel();
-        
+
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         SetCollection = currentCharacter.Attributes.Where(item => item.Setter is true).ToList();
         GetCollection = currentCharacter.Attributes.Where(item => item.Getter is true).ToList();
-        
+
         Load("Set");
         Load("Get");
     }
     private void ClearContentPanel()
     {
         SetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
-        GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));        
+        GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
     }
     public void Load(string type)
     {
@@ -69,7 +65,7 @@ public class EncapsulationaAllManager : MonoBehaviour
         {
             GameObject attributeGameObject = Instantiate(ButtonPrefab, content);
             attributeGameObject.name = $"{attribute.Name} {type}";
-            
+
             TMP_Text ButtonText = attributeGameObject.GetComponentInChildren<TMP_Text>();
             ButtonText.text = attribute.Name;
         }
@@ -77,11 +73,13 @@ public class EncapsulationaAllManager : MonoBehaviour
 
     public void ToggleOn()
     {
+        SceneManagement.ScenePause("EncapsulationAllManager");
         LoadPopup();
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
+        SceneManagement.SceneResume("EncapsulationAllManager");
         Popup.SetActive(false);
     }
 }

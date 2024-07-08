@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,10 @@ public class FeedbackManager : MonoBehaviour
     public GameObject Popup;
     public TMP_Text FeedbackScore;
     public TMP_Text FeedbackText;
+
+    public Button ExitButton;
+    public Button RetryButton;
+    public Button NextLevelButton;
 
 
     [Header("Score Data")]
@@ -28,31 +33,75 @@ public class FeedbackManager : MonoBehaviour
         FeedbackText = Popup.transform.Find("Background/Foreground/Text").GetComponent<TMP_Text>();
 
         DeathsCount = 0;
+
+        ExitButton = Popup.transform.Find("Background/Foreground/Buttons/Exit").GetComponent<Button>();
+        ExitButton.onClick.AddListener(() => ExitFactory());
+
+        RetryButton = Popup.transform.Find("Background/Foreground/Buttons/Retry").GetComponent<Button>();
+        RetryButton.onClick.AddListener(() => RetryFactory());
+
+        NextLevelButton = Popup.transform.Find("Background/Foreground/Buttons/NextLevel").GetComponent<Button>();
+        NextLevelButton.onClick.AddListener(() => NextLevelFactory());
     }
 
-
-    public void Update()
+    public void ExitFactory()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-            ToggleOn();
+        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        var chapterNumber = int.Parse(currentSceneName[1].ToString());
+
+        string chapterName = SceneManagement.GameplayInfo[0].ChapterInfos[chapterNumber].Name;
+
+        SceneManagement.LoadScene(chapterName);
     }
 
+    public void RetryFactory()
+    {
+        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        SceneManagement.LoadScene(currentSceneName);
+    }
 
-    // This will be linked using add listener when we hit the door/last checkpoint
+    public void NextLevelFactory()
+    {
+        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        var ChapterInfos = SceneManagement.GameplayInfo[0].ChapterInfos;
+
+        int chapterNumber = int.Parse(currentSceneName[1].ToString());
+        int levelNumber = int.Parse(currentSceneName[3].ToString());
+
+        if (levelNumber + 1 <= ChapterInfos[chapterNumber].LevelsInfo.Count)
+        {
+            SceneManagement.LoadScene($"C{chapterNumber}L{levelNumber + 1}");
+        }
+
+        else if (chapterNumber + 1 < ChapterInfos.Count)
+        {
+            SceneManagement.LoadScene($"C{chapterNumber + 1}L0");
+        }
+
+        else
+        {
+            SceneManagement.LoadScene("Playground");
+        }
+    }
+
     public void LoadPopup()
     {
+        GameObject.Find("Player").SetActive(false);
+
+        string SceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
         var timePass = (int)Time.timeSinceLevelLoad;
 
-        FeedbackScore.text = $"100% - {DeathsCount * 7} - TimeFactor";
+        int score = 100 - DeathsCount * 7 - timePass;
+        if (SceneName == "C2L4")
+        {
+            int temp = GameObject.Find("Canvas/Popups").GetComponent<AbstractClassCheck>().TriesCounter;
+            score = 100 - temp * 7;
+        }
+        FeedbackScore.text = $"{score}%";
         FeedbackText.text = DeathsCount == 0 ? "Congratulations! You have completed the level without dying!" : "You have died. Try again!";
 
-        // Maybe based on the score, unlock the next level/chapter (button and current level/chapter)
-        SceneManagement.UnlockNextLevel();
-
-
-        // Add here logic to unlock the next level/chapter,
-
-        // Might need to store the current level/chapter in a folder for player tracking    
+        if (score >= 70) SceneManagement.UnlockNextLevel();
     }
 
     public void ToggleOn()

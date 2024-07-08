@@ -162,13 +162,13 @@ public class UpcastingManager : MonoBehaviour
 
     public void ToggleOn()
     {
-        SceneManagement.ScenePause();
+        SceneManagement.ScenePause("UpcastingManager");
         LoadPopup();
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
-        SceneManagement.SceneResume();
+        SceneManagement.SceneResume("UpcastingManager");
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
     }

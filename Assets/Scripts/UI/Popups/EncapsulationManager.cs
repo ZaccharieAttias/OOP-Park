@@ -209,12 +209,12 @@ public class EncapsulationManager : MonoBehaviour
     {
         LoadPopup();
         Popup.SetActive(true);
-        SceneManagement.ScenePause();
+        SceneManagement.ScenePause("EncapsulationManager");
     }
     public void ToggleOff()
     {
         Popup.SetActive(false);
-        SceneManagement.SceneResume();
+        SceneManagement.SceneResume("EncapsulationManager");
     }
     public void ToggleActivation()
     {

@@ -27,7 +27,8 @@ public class AbstractClassCheck : MonoBehaviour
 
     public GameObject ErrorObjectPrefab;
     public GameObject ErrorContentPanel;
-
+    public int TriesCounter;
+    public FeedbackManager FeedbackManager;
 
     public void Start()
     {
@@ -47,6 +48,10 @@ public class AbstractClassCheck : MonoBehaviour
         ErrorObjectPrefab = Resources.Load<GameObject>("ErrorObject");
         ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Message/ScrollView/ViewPort/Content");
 
+        TriesCounter = 0;
+        FeedbackManager = GameObject.Find("Canvas/Popups").GetComponent<FeedbackManager>();
+
+        GameplayData.Load();
         if (RestrictionManager.Instance.AllowAbstractClass && !RestrictionManager.Instance.OnlineGame)
         {
             SetStage();
@@ -77,9 +82,7 @@ public class AbstractClassCheck : MonoBehaviour
 
         else
         {
-            string text = "Well Done Bitch, I`m Batman";
-            MessagePopup.GetComponentInChildren<TMP_Text>().text = text;
-            MessagePopup.SetActive(true);
+            FeedbackManager.ToggleOn();
         }
     }
     private void BuildFinalDataMap()
@@ -101,7 +104,7 @@ public class AbstractClassCheck : MonoBehaviour
             AbstractMapModifier(item.Item1);
         }
     }
-    
+
     private void AbstractMapModifier(CharacterB character)
     {
         if (AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)].Item2)
@@ -109,14 +112,14 @@ public class AbstractClassCheck : MonoBehaviour
             return;
         }
         AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)] = (character, true);
-    
+
         Dictionary<string, List<CharacterB>> commonAttributes = new();
         Dictionary<string, List<CharacterB>> commonMethods = new();
 
         foreach (CharacterB child in character.Childrens)
         {
             if (child.IsAbstract) AbstractMapModifier(child);
-            
+
             foreach (Attribute attribute in child.Attributes)
             {
                 if (commonAttributes.TryGetValue(attribute.Name, out List<CharacterB> characters) == false)
@@ -224,11 +227,12 @@ public class AbstractClassCheck : MonoBehaviour
                     ErrorsMap[character].Add($"{method} is missing.");
                 }
             }
-            
+
         }
-    
+
         if (ErrorsMap.Count > 0)
         {
+            TriesCounter++;
             foreach (Transform child in ErrorContentPanel.transform) Destroy(child.gameObject);
 
             foreach (KeyValuePair<CharacterB, List<string>> entry in ErrorsMap)
@@ -249,7 +253,7 @@ public class AbstractClassCheck : MonoBehaviour
 
             MessagePopup.SetActive(true);
         }
-        
+
         else
         {
             SetStage();

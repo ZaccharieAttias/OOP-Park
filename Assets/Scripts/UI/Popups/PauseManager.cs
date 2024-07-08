@@ -50,12 +50,12 @@ public class PauseManager : MonoBehaviour
 
     public void ToggleOn()
     {
-        SceneManagement.ScenePause();
+        SceneManagement.ScenePause("PauseManager");
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
-        SceneManagement.SceneResume();
+        SceneManagement.SceneResume("PauseManager");
         Popup.SetActive(false);
     }
     public void ToggleActivation()

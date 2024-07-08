@@ -31,7 +31,64 @@ public class SeedCollections : MonoBehaviour
         InitializeAttributesCollection();
         InitializeMethodsCollection();
         InitializeSpecialAbilityCollection();
-        //InitializeCharactersCollection();
+        InitializeCharactersCollection();
+
+        SceneManagement.GameplayInfo = BuildGameplayInfo();
+    }
+
+    public List<GameplayInfo> BuildGameplayInfo()
+    {
+        var chapterInfos = new List<ChapterInfo>();
+        var chapter0 = new ChapterInfo
+        {
+            ChapterNumber = 0,
+            Name = "Tutorial",
+            LevelsInfo = new List<LevelInfo>
+            {
+                new LevelInfo { LevelNumber = 1, Status = 1 },
+                new LevelInfo { LevelNumber = 2, Status = 1 },
+                new LevelInfo { LevelNumber = 3, Status = 1 },
+                new LevelInfo { LevelNumber = 4, Status = 1 },
+                new LevelInfo { LevelNumber = 5, Status = 1 },
+            }
+        };
+        var chapter1 = new ChapterInfo
+        {
+            ChapterNumber = 1,
+            Name = "Inheritance",
+            LevelsInfo = new List<LevelInfo>
+            {
+                new LevelInfo { LevelNumber = 1, Status = 1 },
+                new LevelInfo { LevelNumber = 2, Status = 1 },
+                new LevelInfo { LevelNumber = 3, Status = 0 },
+                new LevelInfo { LevelNumber = 4, Status = -1 },
+                new LevelInfo { LevelNumber = 5, Status = -1 },
+            }
+        };
+        var chapter2 = new ChapterInfo
+        {
+            ChapterNumber = 2,
+            Name = "Polymorphishm",
+            LevelsInfo = new List<LevelInfo>
+            {
+                new LevelInfo { LevelNumber = 1, Status = -1 },
+                new LevelInfo { LevelNumber = 2, Status = -1 },
+                new LevelInfo { LevelNumber = 3, Status = -1 },
+                new LevelInfo { LevelNumber = 4, Status = -1 },
+                new LevelInfo { LevelNumber = 5, Status = -1 },
+            }
+        };
+
+        chapterInfos.Add(chapter0);
+        chapterInfos.Add(chapter1);
+        chapterInfos.Add(chapter2);
+
+        List<GameplayInfo> gameplayInfo = new()
+        {
+            new GameplayInfo { ChapterInfos = chapterInfos },
+            new GameplayInfo { ChapterInfos = new List<ChapterInfo>() }
+        };
+        return gameplayInfo;
     }
 
 

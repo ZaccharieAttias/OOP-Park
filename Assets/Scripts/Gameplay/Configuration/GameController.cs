@@ -22,6 +22,9 @@ public class GameController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("DeathZone"))
             Die();
+
+        if (collision.gameObject.CompareTag("Finish"))
+            FeedbackManager.ToggleOn();
     }
 
     public void UpdateCheckpoint(Vector2 newCheckpointPos)

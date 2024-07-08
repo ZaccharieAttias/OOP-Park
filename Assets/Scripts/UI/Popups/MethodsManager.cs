@@ -126,11 +126,13 @@ public class MethodsManager : MonoBehaviour
 
     public void ToggleOn()
     {
+        SceneManagement.ScenePause("MethodsManager");
         LoadPopup();
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
+        SceneManagement.SceneResume("MethodsManager");
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
     }

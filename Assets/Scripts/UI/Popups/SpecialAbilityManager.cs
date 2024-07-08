@@ -189,11 +189,13 @@ public class SpecialAbilityManager : MonoBehaviour
 
     public void ToggleOn()
     {
+        SceneManagement.ScenePause("SpecialAbilityManager");
         StartFactory();
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
+        SceneManagement.SceneResume("SpecialAbilityManager");
         Popup.SetActive(false);
     }
 }

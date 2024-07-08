@@ -11,6 +11,7 @@ public class LevelDownload : MonoBehaviour
 {
     private Transform LevelDataEntryContent;
     public GameObject LevelEntryDisplayItem;
+    public string LevelName1;
 
     public void Start()
     {
@@ -25,7 +26,7 @@ public class LevelDownload : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
-            for(int i =0; i < response.assets.Length; i++)
+            for (int i = 0; i < response.assets.Length; i++)
             {
                 GameObject displayItem = Instantiate(LevelEntryDisplayItem, transform.position, Quaternion.identity);
                 displayItem.transform.SetParent(LevelDataEntryContent);
@@ -41,7 +42,7 @@ public class LevelDownload : MonoBehaviour
                 }
                 StartCoroutine(LoadLevelIcon(levelFiles[j].url.ToString(), displayItem.GetComponent<LevelInitializer>().LevelIcon));
                 //other files index
-                j = FindIndex(levelFiles,"FILE");
+                j = FindIndex(levelFiles, "FILE");
                 if (j == -1)
                 {
                     Debug.Log("No file type found");
@@ -71,6 +72,7 @@ public class LevelDownload : MonoBehaviour
     }
     private IEnumerator DownloadTextFile(string url, string LevelName, int index)
     {
+        LevelName1 = LevelName;
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 

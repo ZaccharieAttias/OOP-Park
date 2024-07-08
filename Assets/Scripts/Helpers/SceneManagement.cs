@@ -1,12 +1,25 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using LLlibs.ZeroDepJson;
+using LootLocker.Extension.DataTypes;
 
 
 public static class SceneManagement
 {
-    public static void SceneResume() { Time.timeScale = 1f; }
-    public static void ScenePause() { Time.timeScale = 0f; }
+    public static List<string> ActivePopups = new List<string>();
+    public static void SceneResume(string popupName)
+    {
+        ActivePopups.Remove(popupName);
+
+        if (ActivePopups.Count == 0) Time.timeScale = 1f;
+    }
+    public static void ScenePause(string popupName)
+    {
+        ActivePopups.Add(popupName);
+
+        Time.timeScale = 0f;
+    }
 
     /* Implement Scenes & Levels
     public void Presentation() { SceneManager.LoadScene("Presentation"); }
@@ -15,36 +28,46 @@ public static class SceneManagement
     public void OnlinePark() { SceneManager.LoadScene("OnlinePark"); }
     public void Progression() { SceneManager.LoadScene("Progression"); }
     public void Credits() { SceneManager.LoadScene("Credits"); }
-    public void Tutorial() { SceneManager.LoadScene("Tutorial"); }
-    public void Hierarchy() { SceneManager.LoadScene("Hierarchy"); }
-    public void Polymorphism() { SceneManager.LoadScene("Polymorphism"); }
     */
+    public static void Tutorial() { SceneManager.LoadScene("Tutorial"); }
+    public static void Hierarchy() { SceneManager.LoadScene("Hierarchy"); }
+    public static void Polymorphism() { SceneManager.LoadScene("Polymorphism"); }
     public static void RestrictionMenu() { UnityEngine.SceneManagement.SceneManager.LoadScene("RestrictionMenu"); }
 
     public static void Quit() { Application.Quit(); }
 
-    public static List<ChapterInfo> ChapterInfos;
+    public static void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 
+
+
+
+    public static List<GameplayInfo> GameplayInfo;
 
     public static void UnlockNextLevel()
     {
-        var currentSceneName = SceneManager.GetActiveScene().name;
-        int chapterNumber = currentSceneName[1];
-        int levelNumber = int.Parse(currentSceneName.Substring(3));
 
-        if (levelNumber + 1 <= ChapterInfos[chapterNumber - 1].LevelsInfo.Count)
+        var ChapterInfos = GameplayInfo[0].ChapterInfos;
+        var currentSceneName = SceneManager.GetActiveScene().name;
+
+        int chapterNumber = int.Parse(currentSceneName[1].ToString());
+        int levelNumber = int.Parse(currentSceneName[3].ToString());
+
+        if (levelNumber + 1 <= ChapterInfos[chapterNumber].LevelsInfo.Count)
         {
-            var currentLevel = ChapterInfos[chapterNumber - 1].LevelsInfo[levelNumber - 1];
-            var nextLevel = ChapterInfos[chapterNumber - 1].LevelsInfo[levelNumber];
+            var currentLevel = ChapterInfos[chapterNumber].LevelsInfo[levelNumber - 1];
+            var nextLevel = ChapterInfos[chapterNumber].LevelsInfo[levelNumber];
 
             currentLevel.Status = 1;
             nextLevel.Status = 0;
         }
 
-        else if (chapterNumber + 1 <= ChapterInfos.Count)
+        else if (chapterNumber + 1 < ChapterInfos.Count)
         {
-            var currentLevel = ChapterInfos[chapterNumber - 1].LevelsInfo[levelNumber - 1];
-            var nextLevel = ChapterInfos[chapterNumber].LevelsInfo[0];
+            var currentLevel = ChapterInfos[chapterNumber].LevelsInfo[levelNumber - 1];
+            var nextLevel = ChapterInfos[chapterNumber + 1].LevelsInfo[0];
 
             currentLevel.Status = 1;
             nextLevel.Status = 0;
@@ -52,21 +75,33 @@ public static class SceneManagement
 
         else
         {
-            var currentLevel = ChapterInfos[chapterNumber - 1].LevelsInfo[levelNumber - 1];
+            var currentLevel = ChapterInfos[chapterNumber].LevelsInfo[levelNumber - 1];
             currentLevel.Status = 1;
-
-            Debug.Log("Congrats! You have completed the game!");
         }
 
+        GameplayData.Save();
+    }
+
+    public static void CompleteOnline()
+    {
+        string LevelName = GameObject.Find("LevelManager").GetComponent<LevelDownload>().LevelName1;
+        var ChapterInfos = GameplayInfo[1].ChapterInfos;
+        var currentChapter = ChapterInfos.Find(chapter => chapter.Name == LevelName);
+
+        currentChapter.LevelsInfo[0].Status = 1;
         GameplayData.Save();
     }
 }
 
 
-
+public class GameplayInfo
+{
+    public List<ChapterInfo> ChapterInfos;
+}
 public class ChapterInfo
 {
     public int ChapterNumber;
+    public string Name;
     public List<LevelInfo> LevelsInfo;
 }
 

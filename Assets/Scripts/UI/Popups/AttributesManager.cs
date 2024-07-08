@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -117,11 +118,13 @@ public class AttributesManager : MonoBehaviour
 
     public void ToggleOn()
     {
+        SceneManagement.ScenePause("AttributesManager");
         LoadPopup();
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
+        SceneManagement.SceneResume("AttributesManager");
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
     }
