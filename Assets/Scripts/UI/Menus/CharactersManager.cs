@@ -173,8 +173,8 @@ public class CharactersManager : MonoBehaviour
         specialAbilityGameObject.name = CurrentCharacter.SpecialAbility?.Name;
 
         Image specialAbilityGameObjectImage = specialAbilityGameObject.GetComponent<Image>();
-        specialAbilityGameObjectImage.color = new Color32(0, 128, 128, 255);
-
+        specialAbilityGameObjectImage.color = new Color32(0, 255, 255, 255);
+        
         TMP_Text buttonText = specialAbilityGameObject.GetComponentInChildren<TMP_Text>();
         buttonText.text = CurrentCharacter.SpecialAbility?.Name;
     }
