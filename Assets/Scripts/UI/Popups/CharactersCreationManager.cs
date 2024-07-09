@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -38,7 +39,7 @@ public class CharactersCreationManager : MonoBehaviour
     {
         Popup = GameObject.Find("Canvas/Popups/CharacterCreation");
         CharacterPrefab = Resources.Load<GameObject>("Buttons/Character");
-        CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
+        CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
         SelectionMenu = GameObject.Find("Canvas/Popups/Selection");
 
         SelectedParent = null;
@@ -60,7 +61,7 @@ public class CharactersCreationManager : MonoBehaviour
             GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>().DeleteButton.GetComponent<Button>()
         };
 
-        CharacterToggleType = Popup.transform.Find("Buttons/CharacterType").GetComponent<Toggle>();
+        CharacterToggleType = Popup.transform.Find("Buttons/CharacterType/Button").GetComponent<Toggle>();
 
         if (RestrictionManager.Instance.AllowSingleInheritance)
         {
@@ -140,7 +141,7 @@ public class CharactersCreationManager : MonoBehaviour
         AddButton.gameObject.SetActive(addActive);
         CancelButton.gameObject.SetActive(cancelActive);
         ConfirmButton.gameObject.SetActive(confirmActive);
-        CharacterToggleType.gameObject.SetActive(toggleActive);
+        CharacterToggleType.gameObject.transform.parent.gameObject.SetActive(toggleActive);
     }
     public void ToggleButtonsInteractability(List<Button> buttons)
     {
