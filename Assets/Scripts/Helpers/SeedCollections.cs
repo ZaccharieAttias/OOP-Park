@@ -505,7 +505,7 @@ public class SeedCollections : MonoBehaviour
     }
     private void InitializeCharacterObject(CharacterB characterNode)
     {
-        Transform parnetTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
+        Transform parnetTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
         GameObject characterPrefab = Resources.Load<GameObject>("Buttons/Character");
 
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
