@@ -33,7 +33,7 @@ public static class AttributesData
             {
                 Owner = attribute.Owner,
                 Name = attribute.Name,
-                
+                Value = attribute.Value,
                 Getter = attribute.Getter,
                 Setter = attribute.Setter,
 
@@ -51,7 +51,7 @@ public static class AttributesData
         foreach (AttributeData attributeData in characterData.Attributes)
         {
             Attribute attribute = (attributeData.Owner == characterData.Name)
-               ? new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name), characterData.Name, attributeData.Getter, attributeData.Setter)
+               ? new(AttributesManager.AttributesCollection.Find(attribute => attribute.Name == attributeData.Name), characterData.Name, attributeData.Value, attributeData.Getter, attributeData.Setter)
                : CharactersData.CharactersManager.CharactersCollection.Find(character => character.Name == attributeData.Owner).Attributes.Find(attribute => attribute.Name == attributeData.Name);
 
             attribute.AccessModifier = attributeData.Owner == characterData.Name ? attributeData.AccessModifier: attribute.AccessModifier;
@@ -68,6 +68,7 @@ public class AttributeData
 {
     public string Owner;
     public string Name;
+    public float Value;
 
     public bool Getter;
     public bool Setter;

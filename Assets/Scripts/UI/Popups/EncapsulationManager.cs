@@ -48,7 +48,7 @@ public class EncapsulationManager : MonoBehaviour
 
         CurrentSet = null;
         SelectedGetClick = "";
-        
+
         closeButton = GameObject.Find("Canvas/Popups/Encapsulation/Background/Foreground/Close");
         closeButton.GetComponent<Button>().onClick.AddListener(ToggleOff);
     }
@@ -56,12 +56,11 @@ public class EncapsulationManager : MonoBehaviour
     {
         if (RestrictionManager.Instance.AllowEncapsulation is false) return false;
         if (!GameObject.Find("Player")) return false;
-        else PowerUp = GameObject.Find("Player").GetComponent<Powerup>();
+        else PowerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
         if (CharactersData.CharactersManager.CurrentCharacter is null) return false;
         List<Attribute> SetList = CharactersData.CharactersManager.CurrentCharacter.Attributes.Where(item => item.Setter).ToList();
         if (SetList.Count > 0)
-            if (Input.GetKeyDown(KeyCode.I) && RestrictionManager.Instance.AllowEncapsulation && GameObject.Find("Canvas/Menus/Gameplay").activeSelf)
-                return true;
+            return true;
         return false;
     }
     private void LoadPopup()

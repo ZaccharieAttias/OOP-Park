@@ -102,7 +102,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "speed",
             Description = "This is the MoveSpeed attribute",
-            Value = 5f,
+            Value = 2f,
 
             AccessModifier = AccessModifier.Public
         };
@@ -114,7 +114,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "gravity",
             Description = "This is the GravityForce attribute",
-            Value = 20f,
+            Value = 4f,
 
             AccessModifier = AccessModifier.Protected
         };
@@ -126,7 +126,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "multipleJumps",
             Description = "This is the DoubleJump attribute",
-            Value = 2f,
+            Value = 1f,
 
             AccessModifier = AccessModifier.Private
         };
@@ -144,25 +144,13 @@ public class SeedCollections : MonoBehaviour
         };
         AttributesManager.AttributesCollection.Add(attribute);
 
-        // Attribute 5
-        attribute = new()
-        {
-            Owner = null,
-            Name = "grapplingGun",
-            Description = "This is the GrapplingGun attribute",
-            Value = 10f,
-
-            AccessModifier = AccessModifier.Public
-        };
-        AttributesManager.AttributesCollection.Add(attribute);
-
         // Attribute 6
         attribute = new()
         {
             Owner = null,
             Name = "inverseGravity",
             Description = "This is the InverseGravity attribute",
-            Value = -40f,
+            Value = -30f,
 
             AccessModifier = AccessModifier.Protected
         };
@@ -186,7 +174,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "grabbing",
             Description = "This is the grabbing attribute",
-            Value = 10000f,
+            Value = 20f,
 
             AccessModifier = AccessModifier.Public
         };
@@ -244,17 +232,6 @@ public class SeedCollections : MonoBehaviour
         };
         MethodsManager.MethodsCollection.Add(method);
 
-        // Method 5
-        method = new()
-        {
-            Owner = null,
-            Name = "GrapplingGun",
-            Description = "This is the GrapplingGun method",
-            Attribute = AttributesManager.AttributesCollection[4],
-
-            AccessModifier = AccessModifier.Public
-        };
-        MethodsManager.MethodsCollection.Add(method);
 
         // Method 6
         method = new()
@@ -262,7 +239,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "InverseGravity",
             Description = "This is the InverseGravity method",
-            Attribute = AttributesManager.AttributesCollection[5],
+            Attribute = AttributesManager.AttributesCollection[4],
 
             AccessModifier = AccessModifier.Protected
         };
@@ -274,7 +251,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "WallJump",
             Description = "This is the WallJump method",
-            Attribute = AttributesManager.AttributesCollection[6],
+            Attribute = AttributesManager.AttributesCollection[5],
 
             AccessModifier = AccessModifier.Private
         };
@@ -286,7 +263,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "Grabbing",
             Description = "This is the grabbing method",
-            Attribute = AttributesManager.AttributesCollection[7],
+            Attribute = AttributesManager.AttributesCollection[6],
 
             AccessModifier = AccessModifier.Public
         };
@@ -315,9 +292,6 @@ public class SeedCollections : MonoBehaviour
         SpecialAbilityObject sp1 = new(specialAbility);
         sp1.Name = abilityName;
         specialAbilityObjects.Add(sp1);
-
-
-
 
         // Special Ability 2 (Automatic)
         specialAbilities = new();
@@ -423,8 +397,8 @@ public class SeedCollections : MonoBehaviour
 
         // Special Ability 8 (DoubleJump)
         specialAbilities = new();
-        abilityName = "Double Jump";
-        abilityDescription = "Double Jump";
+        abilityName = "Multiple Jumps";
+        abilityDescription = "Multiple Jump";
         abilityValue = 2;
         abilityType = SpecialAbilityType.DoubleJump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -436,58 +410,6 @@ public class SeedCollections : MonoBehaviour
         sp4.Childrens.Add(sp8);
         sp8.Parent = sp4;
         specialAbilityObjects.Add(sp8);
-
-
-        // Special Ability 9 (WeakGravity)
-        specialAbilities = new();
-        abilityName = "Weak Gravity";
-        abilityDescription = "Weak Gravity";
-        abilityValue = 0.5f;
-        abilityType = SpecialAbilityType.WeakGravity;
-        specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
-        specialAbilities.Add(specialAbility);
-        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
-        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Gravity].Add(specialAbility);
-        SpecialAbilityObject sp9 = new(specialAbility);
-        sp9.Name = abilityName;
-        sp5.Childrens.Add(sp9);
-        sp9.Parent = sp5;
-        specialAbilityObjects.Add(sp9);
-
-
-        // Special Ability 10 (FastSpeed)
-        specialAbilities = new();
-        abilityName = "Fast Speed";
-        abilityDescription = "Fast Speed";
-        abilityValue = 2;
-        abilityType = SpecialAbilityType.FastSpeed;
-        specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
-        specialAbilities.Add(specialAbility);
-        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
-        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Speed].Add(specialAbility);
-        SpecialAbilityObject sp10 = new(specialAbility);
-        sp10.Name = abilityName;
-        sp6.Childrens.Add(sp10);
-        sp10.Parent = sp6;
-        specialAbilityObjects.Add(sp10);
-
-
-        // Special Ability 11 (GrapplingGun)
-        specialAbilities = new();
-        abilityName = "Grappling Gun";
-        abilityDescription = "Grappling Gun";
-        abilityValue = 10;
-        abilityType = SpecialAbilityType.GrapplingGun;
-        specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
-        specialAbilities.Add(specialAbility);
-        SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
-        SpecialAbilityManager.SpecialAbilitiesDictionary[SpecialAbilityType.Manual].Add(specialAbility);
-        SpecialAbilityObject sp11 = new(specialAbility);
-        sp11.Name = abilityName;
-        sp3.Childrens.Add(sp11);
-        sp11.Parent = sp3;
-        specialAbilityObjects.Add(sp11);
-
 
         // Special Ability 12 (InverseGravity)
         specialAbilities = new();

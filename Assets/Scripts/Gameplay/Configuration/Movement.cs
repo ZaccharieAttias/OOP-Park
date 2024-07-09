@@ -20,7 +20,6 @@ public class Movement : MonoBehaviour
     public Transform firePoint;
     [SerializeField] public List<GameObject> fireballs;
     public Transform WallCheck;
-    public GameObject Gun;
 
     [Header("Movement:")]
     private float horizontalInput;
@@ -72,10 +71,9 @@ public class Movement : MonoBehaviour
         firePoint = transform.Find("FirePoint").transform;
         Powerup = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
         CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
-        Gun = transform.Find("GunPivot").gameObject;
         WallLayer = LayerMask.GetMask("Wall");
         // si la scene se nomme LevelBuilder
-        if (SceneManager.GetActiveScene().name.Contains("Online") ) WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
+        if (SceneManager.GetActiveScene().name.Contains("Online")) WallCheck = GameObject.Find("Grid/LevelBuilder/Walls").transform;
         else WallCheck = GameObject.Find("Grid/Walls").transform;
 
 

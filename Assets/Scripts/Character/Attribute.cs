@@ -35,12 +35,12 @@ public class Attribute
         AccessModifier = attribute.AccessModifier;
     }
 
-    public Attribute(Attribute attribute, string owner, bool getter, bool setter)
+    public Attribute(Attribute attribute, string owner, float value, bool getter, bool setter)
     {
         Owner = owner;
         Name = attribute.Name;
         Description = attribute.Description;
-        Value = attribute.Value;
+        Value = value;
 
         Getter = getter;
         Setter = setter;
