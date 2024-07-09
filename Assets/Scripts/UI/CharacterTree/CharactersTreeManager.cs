@@ -24,8 +24,8 @@ public class CharactersTreeManager : MonoBehaviour
         TreeDistance = 5;
         DepthDistance = 150;
 
-        ScrollView = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView").GetComponent<ScrollRect>();
-        AllGameObject = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All");
+        ScrollView = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView").GetComponent<ScrollRect>();
+        AllGameObject = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All");
     }
 
     public void BuildTree(CharacterB root, CharacterB latest)
@@ -263,7 +263,7 @@ public class CharactersTreeManager : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(distance, 5);
         rectTransform.rotation = Quaternion.Euler(0, 0, angle);
 
-        line.GetComponent<Image>().color = Color.red;
+        line.GetComponent<Image>().color = new Color32(129, 176, 60, 255);
     }
     private void CentrelizeTree(CharacterB root)
     {
@@ -294,8 +294,8 @@ public class CharactersTreeManager : MonoBehaviour
 
         float contentWidth = Math.Abs(RightNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.x) + NodeSize;
         float contentHeight = Math.Abs(TopNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + Math.Abs(BottomNode.CharacterButton.Button.GetComponent<RectTransform>().anchoredPosition.y) + NodeSize;
-        float defaultWidth = 1180;
-        float defaultHeight = 674;
+        float defaultWidth = 1083;
+        float defaultHeight = 542;
         
         contentWidth = Mathf.Max(contentWidth, defaultWidth);
         contentHeight = Mathf.Max(contentHeight, defaultHeight);
