@@ -29,8 +29,8 @@ public class FeedbackManager : MonoBehaviour
     public void InitializeProperties()
     {
         Popup = GameObject.Find("Canvas/Popups/Feedback");
-        FeedbackScore = Popup.transform.Find("Background/Foreground/Percentage").GetComponent<TMP_Text>();
-        FeedbackText = Popup.transform.Find("Background/Foreground/Text").GetComponent<TMP_Text>();
+        FeedbackScore = Popup.transform.Find("Background/Foreground/Contour/Percentage").GetComponent<TMP_Text>();
+        FeedbackText = Popup.transform.Find("Background/Foreground/Contour/Text").GetComponent<TMP_Text>();
 
         DeathsCount = 0;
 
