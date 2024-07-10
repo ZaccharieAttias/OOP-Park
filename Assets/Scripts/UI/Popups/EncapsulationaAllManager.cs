@@ -27,8 +27,8 @@ public class EncapsulationaAllManager : MonoBehaviour
         SetCollection = new List<Attribute>();
         GetCollection = new List<Attribute>();
 
-        SetContent = Popup.transform.Find("Background/Foreground/Set/ScrollView/Viewport/Content").GetComponent<Transform>();
-        GetContent = Popup.transform.Find("Background/Foreground/Get/ScrollView/Viewport/Content").GetComponent<Transform>();
+        SetContent = Popup.transform.Find("Background/Foreground/Set/Back/ScrollView/Viewport/Content").GetComponent<Transform>();
+        GetContent = Popup.transform.Find("Background/Foreground/Get/Back/ScrollView/Viewport/Content").GetComponent<Transform>();
 
         ButtonPrefab = Resources.Load<GameObject>("Buttons/Default");
         allButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/All");
