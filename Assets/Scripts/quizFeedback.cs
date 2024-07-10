@@ -67,7 +67,7 @@ public class quizFeedback : MonoBehaviour
 
         if (chapterNumber + 1 < ChapterInfos.Count)
         {
-            SceneManagement.LoadScene($"C{chapterNumber + 1}L0");
+            SceneManagement.LoadScene($"C{chapterNumber + 1}L1");
         }
 
         else
@@ -76,17 +76,17 @@ public class quizFeedback : MonoBehaviour
         }
     }
 
-    public void LoadPopup(int score)
+    public void LoadPopup()
     {
-        FeedbackScore.text = $"{score}%";
+        FeedbackScore.text = $"{100}%";
         FeedbackText.text = "Congratulations! You have completed the quiz and the chapter!";
 
         SceneManagement.UnlockNextLevel();
     }
 
-    public void ToggleOn(int score)
+    public void ToggleOn()
     {
-        LoadPopup(score);
+        LoadPopup();
         Popup.SetActive(true);
     }
     public void ToggleOff()
