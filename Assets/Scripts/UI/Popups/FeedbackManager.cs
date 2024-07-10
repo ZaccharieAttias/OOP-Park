@@ -75,7 +75,7 @@ public class FeedbackManager : MonoBehaviour
 
         else if (chapterNumber + 1 < ChapterInfos.Count)
         {
-            SceneManagement.LoadScene($"C{chapterNumber + 1}L0");
+            SceneManagement.LoadScene($"C{chapterNumber + 1}L1");
         }
 
         else
