@@ -33,6 +33,13 @@ public class PopupKeyMenu : MonoBehaviour
     public void ToggleOn()
     {
         SceneManagement.ScenePause("KeyMenu");
+        if (RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowEncapsulation && !RestrictionManager.Instance.AllowOverride)
+            {upcastingManager.ToggleActivation(); return;}
+        else if (!RestrictionManager.Instance.AllowUpcasting && RestrictionManager.Instance.AllowEncapsulation && !RestrictionManager.Instance.AllowOverride)
+            {encapsulationManager.ToggleActivation(); return;}
+        else if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowEncapsulation && RestrictionManager.Instance.AllowOverride)
+            {characterAppearanceManager.ToggleActivation(); return;}
+        
         PopupMenu.SetActive(true);
         LoadPopupButtons();
     }
@@ -63,6 +70,8 @@ public class PopupKeyMenu : MonoBehaviour
         {
             GameObject button = Instantiate(ButtonPrefab, Content);
             button.GetComponentInChildren<TMP_Text>().text = "Upcasting";
+            button.GetComponentInChildren<TMP_Text>().fontSize = 40;
+            button.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
             button.GetComponent<Button>().onClick.AddListener(() => upcastingManager.ToggleActivation());
             button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
         }
@@ -70,6 +79,8 @@ public class PopupKeyMenu : MonoBehaviour
         {
             GameObject button = Instantiate(ButtonPrefab, Content);
             button.GetComponentInChildren<TMP_Text>().text = "Encapsulation";
+            button.GetComponentInChildren<TMP_Text>().fontSize = 40;
+            button.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
             button.GetComponent<Button>().onClick.AddListener(() => encapsulationManager.ToggleActivation());
             button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
         }
@@ -77,6 +88,8 @@ public class PopupKeyMenu : MonoBehaviour
         {
             GameObject button = Instantiate(ButtonPrefab, Content);
             button.GetComponentInChildren<TMP_Text>().text = "Override";
+            button.GetComponentInChildren<TMP_Text>().fontSize = 40;
+            button.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
             button.GetComponent<Button>().onClick.AddListener(() => characterAppearanceManager.ToggleActivation());
             button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
         }
