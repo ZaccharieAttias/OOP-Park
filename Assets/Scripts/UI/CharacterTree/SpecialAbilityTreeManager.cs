@@ -26,8 +26,8 @@ public class SpecialAbilityTreeManager : MonoBehaviour
         TreeDistance = 80;
         DepthDistance = 150;
 
-        ScrollView = GameObject.Find("Canvas/Popups/SpecialAbilityTree/Buttons/ScrollView").GetComponent<ScrollRect>();
-        AllGameObject = GameObject.Find("Canvas/Popups/SpecialAbilityTree/Buttons/ScrollView/ViewPort/All");
+        ScrollView = GameObject.Find("Canvas/Popups/SpecialAbilityTree/Background/Foreground/Buttons/ScrollView").GetComponent<ScrollRect>();
+        AllGameObject = GameObject.Find("Canvas/Popups/SpecialAbilityTree/Background/Foreground/Buttons/ScrollView/ViewPort/All");
     }
 
     public void BuildTree(SpecialAbilityObject root)
@@ -297,8 +297,8 @@ public class SpecialAbilityTreeManager : MonoBehaviour
 
         float contentWidth = Math.Abs(RightNode.Button.GetComponent<RectTransform>().anchoredPosition.x) + Math.Abs(LeftNode.Button.GetComponent<RectTransform>().anchoredPosition.x) + X_NodeSize;
         float contentHeight = Math.Abs(TopNode.Button.GetComponent<RectTransform>().anchoredPosition.y) + Math.Abs(BottomNode.Button.GetComponent<RectTransform>().anchoredPosition.y) + Y_NodeSize;
-        float defaultWidth = 1867;
-        float defaultHeight = 840;
+        float defaultWidth = 1754;
+        float defaultHeight = 714;
         
         contentWidth = Mathf.Max(contentWidth, defaultWidth);
         contentHeight = Mathf.Max(contentHeight, defaultHeight);
