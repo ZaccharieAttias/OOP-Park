@@ -33,8 +33,8 @@ public class EncapsulationManager : MonoBehaviour
     {
         Popup = GameObject.Find("Canvas/Popups/Encapsulation");
 
-        SetContent = Popup.transform.Find("Background/Foreground/Set/ScrollView/Viewport/Content").GetComponent<Transform>();
-        GetContent = Popup.transform.Find("Background/Foreground/Get/ScrollView/Viewport/Content").GetComponent<Transform>();
+        SetContent = Popup.transform.Find("Background/Foreground/Set/Back/ScrollView/Viewport/Content").GetComponent<Transform>();
+        GetContent = Popup.transform.Find("Background/Foreground/Get/Back/ScrollView/Viewport/Content").GetComponent<Transform>();
 
         SetRowPrefab = Resources.Load<GameObject>("Buttons/SetRow");
         GetRowPrefab = Resources.Load<GameObject>("Buttons/GetRow");
@@ -51,12 +51,13 @@ public class EncapsulationManager : MonoBehaviour
 
         closeButton = GameObject.Find("Canvas/Popups/Encapsulation/Background/Foreground/Close");
         closeButton.GetComponent<Button>().onClick.AddListener(ToggleOff);
+
+        PowerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
     }
     public bool Checker()
     {
         if (RestrictionManager.Instance.AllowEncapsulation is false) return false;
         if (!GameObject.Find("Player")) return false;
-        else PowerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
         if (CharactersData.CharactersManager.CurrentCharacter is null) return false;
         List<Attribute> SetList = CharactersData.CharactersManager.CurrentCharacter.Attributes.Where(item => item.Setter).ToList();
         if (SetList.Count > 0)
@@ -81,16 +82,18 @@ public class EncapsulationManager : MonoBehaviour
             GameObject attributeGameObject = Instantiate(SetRowPrefab, SetContent);
             attributeGameObject.name = attribute.Name + " Set";
 
-            TMP_Text ButtonText = attributeGameObject.transform.Find("Name").GetComponent<TMP_Text>();
+            TMP_Text ButtonText = attributeGameObject.transform.Find("BackName").transform.Find("Name").GetComponent<TMP_Text>();
             ButtonText.text = attribute.Name;
 
-            TMP_Text ButtonText2 = attributeGameObject.transform.Find("Value").GetComponent<TMP_Text>();
+            TMP_Text ButtonText2 = attributeGameObject.transform.Find("BackValue").transform.Find("Value").GetComponent<TMP_Text>();
             ButtonText2.text = attribute.Value.ToString();
         }
 
         CurrentSet = SetContent.GetChild(0).gameObject;
+        Debug.Log(CurrentSet.name);
         UpdateGetContent(CurrentSet.name.Split(' ')[0]);
         SelectedGetClick = currentCharacter.Name;
+        GetContent.GetChild(0).transform.Find("Selection").GetComponent<Image>().color = new Color(0.5f, 1, 0.5f, 1);
     }
     private void ClearContentPanel()
     {
@@ -130,10 +133,10 @@ public class EncapsulationManager : MonoBehaviour
             GameObject attributeGameObject = Instantiate(GetRowPrefab, GetContent);
             attributeGameObject.name = character.Name + " Get";
 
-            TMP_Text ButtonText = attributeGameObject.transform.Find("Name").GetComponent<TMP_Text>();
+            TMP_Text ButtonText = attributeGameObject.transform.Find("BackName").transform.Find("Name").GetComponent<TMP_Text>();
             ButtonText.text = character.Name;
 
-            TMP_Text ButtonText2 = attributeGameObject.transform.Find("Value").GetComponent<TMP_Text>();
+            TMP_Text ButtonText2 = attributeGameObject.transform.Find("BackValue").transform.Find("Value").GetComponent<TMP_Text>();
             ButtonText2.text = character.Attributes.First(item => item.Name == attributeName).Value.ToString();
 
             Button getButton = attributeGameObject.transform.Find("Selection").GetComponent<Button>();
@@ -152,7 +155,7 @@ public class EncapsulationManager : MonoBehaviour
         var oldAttribute = currentCharacter.Attributes.First(item => item.Name == attributeName);
         var newAttribute = CharactersData.CharactersManager.CharactersCollection.First(item => item.Name == character.Name).Attributes.First(item => item.Name == attributeName);
 
-        CurrentSet.transform.Find("Value").GetComponent<TMP_Text>().text = newAttribute.Value.ToString();
+        CurrentSet.transform.Find("BackValue").transform.Find("Value").GetComponent<TMP_Text>().text = newAttribute.Value.ToString();
 
         var dependentMethods = UpdateMethods(currentCharacter, oldAttribute);
         dependentMethods.ForEach(method => method.Attribute = newAttribute);
@@ -179,7 +182,7 @@ public class EncapsulationManager : MonoBehaviour
         var attributeSetter = SetCollection.First(item => item.Name == CurrentSet.name.Split(' ')[0]);
         var modifyAttribute = currentCharacter.Attributes.First(item => item.Name == attributeSetter.Name);
 
-        CurrentSet.transform.Find("Value").GetComponent<TMP_Text>().text = modifyAttribute.Value.ToString();
+        CurrentSet.transform.Find("BackValue").transform.Find("Value").GetComponent<TMP_Text>().text = modifyAttribute.Value.ToString();
 
         var dependentMethods = UpdateMethods(currentCharacter, modifyAttribute);
         modifyAttribute.Value = ToFloat(input);
