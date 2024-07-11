@@ -13,7 +13,7 @@ public class SwipeMenu : MonoBehaviour
     public void Start()
     {
         EncapsulationManager = GameObject.Find("Canvas/Popups").GetComponent<EncapsulationManager>();
-        ScrollBar = EncapsulationManager.Popup.transform.Find("Background/Foreground/Set/ScrollView/ScrollbarVertical").gameObject;
+        ScrollBar = EncapsulationManager.Popup.transform.Find("Background/Foreground/Set/Back/ScrollView/ScrollbarVertical").gameObject;
         Scroll_pos = 1;
         Scrollposition = 1;
     }
