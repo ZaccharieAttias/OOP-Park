@@ -45,10 +45,10 @@ public class SpecialAbilityManager : MonoBehaviour
     {
         Popup = GameObject.Find("Canvas/Popups/SpecialAbilityTree");
         SpecialAbilityButton = Resources.Load<GameObject>("Buttons/Ability");
-        SpecialAbilityContentPanel = GameObject.Find("Canvas/Popups/SpecialAbilityTree/Buttons/ScrollView/ViewPort/All").transform;
-        CancelButton = Popup.transform.Find("Buttons/Cancel").gameObject.GetComponent<Button>();
+        SpecialAbilityContentPanel = GameObject.Find("Canvas/Popups/SpecialAbilityTree/Background/Foreground/Buttons/ScrollView/ViewPort/All").transform;
+        CancelButton = Popup.transform.Find("Background/Foreground/Buttons/Cancel").gameObject.GetComponent<Button>();
         CancelButton.onClick.AddListener(() => CancelFactory());
-        ConfirmButton = Popup.transform.Find("Buttons/Confirm").gameObject.GetComponent<Button>();
+        ConfirmButton = Popup.transform.Find("Background/Foreground/Buttons/Confirm").gameObject.GetComponent<Button>();
         ConfirmButton.onClick.AddListener(() => ConfirmFactory());
 
 
