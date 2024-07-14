@@ -6,9 +6,7 @@ public class CameraFollow : MonoBehaviour
     public GameObject Player;
     public Vector3 PositionOffset;
     public Vector3 Velocity;
-
     public float TimeOffset;
-    
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -29,5 +27,9 @@ public class CameraFollow : MonoBehaviour
                 
             } 
 
+    }
+    public void ResetPosition()
+    {
+        transform.position = new Vector3(0, 0, -0.3f);
     }
 }
