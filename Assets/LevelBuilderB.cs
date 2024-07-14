@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using LootLocker.Extension.DataTypes;
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
+using System.Collections.Generic;
 
 
 public class LevelBuilderB : MonoBehaviour
@@ -38,6 +39,7 @@ public class LevelBuilderB : MonoBehaviour
     public SwapScreen swapScreen;
     public int check = 0;
     public GameObject CheckPointPrefab;
+    public Dictionary<string, bool> MinimumObjectsCreated = new Dictionary<string, bool>();
 
 
     public void Start()
@@ -51,6 +53,9 @@ public class LevelBuilderB : MonoBehaviour
         Walls = Parent.Find("Walls");
         CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         swapScreen = GameObject.Find("Scripts/CharacterEditor").GetComponent<SwapScreen>();
+
+        MinimumObjectsCreated.Add("Player", false);
+        MinimumObjectsCreated.Add("Ground", false);
     }
     public void SwitchTile(int type, int index)
     {
@@ -61,23 +66,27 @@ public class LevelBuilderB : MonoBehaviour
         {
             Cursor.sprite = SpriteCollection.DeleteSprite;
         }
-        else switch (type)
-        {
-            case 0:
-                Cursor.sprite = SpriteCollection.GroundTilesets[index].Sprites[20];
-                break;
-            case 1:
-                Cursor.sprite = SpriteCollection.CoverTilesets[index].Sprites[0];
-                break;
-            case 2:
-                Cursor.sprite = SpriteCollection.PropsSprites[index];
-                break;
-            case 3:
-                Cursor.sprite = SpriteCollection.OtherSprites[index];
-                break;
-            case 4:
-                Cursor.sprite = SpriteCollection.GamePlaySprite[index];
-                break;
+        else {
+            switch (type)
+            {
+                case 0:
+                    Cursor.sprite = SpriteCollection.GroundTilesets[index].Sprites[20];
+                    break;
+                case 1:
+                    Cursor.sprite = SpriteCollection.CoverTilesets[index].Sprites[0];
+                    break;
+                case 2:
+                    Cursor.sprite = SpriteCollection.PropsSprites[index];
+                    break;
+                case 3:
+                    Cursor.sprite = SpriteCollection.OtherSprites[index];
+                    break;
+                case 4:
+                    Cursor.sprite = SpriteCollection.GamePlaySprite[index];
+                    break;
+            }
+            if (Cursor.sprite.name == "skeleton") Cursor.transform.localScale = new Vector3(0.85f, 0.85f, 1);
+            else Cursor.transform.localScale = Vector3.one;
         }
     }
     public void EnableCursor(bool value)
@@ -179,6 +188,7 @@ public class LevelBuilderB : MonoBehaviour
             block.GameObject.layer = 7;
 
             _groundMap[x, y, z] = block;
+            MinimumObjectsCreated["Ground"] = true;
         }
 
         for (var dx = -1; dx <= 1; dx++)
@@ -349,7 +359,7 @@ public class LevelBuilderB : MonoBehaviour
 
         block.Transform.SetParent(Terrain.Find("Props").transform);
         block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
-        block.Transform.localScale = Vector3.one;
+        block.Transform.localScale = new Vector3(0.85f, 0.85f, 1);
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
@@ -364,7 +374,6 @@ public class LevelBuilderB : MonoBehaviour
 
         _propsMap[x, y, z] = block;
     }
-
     public void CreatePlayer(int x, int y, int z)
     {
         if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
@@ -388,6 +397,7 @@ public class LevelBuilderB : MonoBehaviour
 
             CharacterEditor.Character = Player.GetComponent<CharacterBase>();
             CharacterEditor.LoadFromJson(CharacterName);
+            MinimumObjectsCreated["Player"] = true;
         }
         else
         {
@@ -404,6 +414,7 @@ public class LevelBuilderB : MonoBehaviour
             swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => CharactersCreationManager.RootCreation());
             swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => swapScreen.FisrtSwap());
             check = 1;
+            GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(false);
         }
     }
     public void SetPlayer()
@@ -525,5 +536,19 @@ public class LevelBuilderB : MonoBehaviour
     public TileMap GetPropsMap()
     {
         return _propsMap;
+    }
+    public void SetUI()
+    {
+        if (Terrain.Find("Ground").childCount == 0) MinimumObjectsCreated["Ground"] = false;
+        if (!MinimumObjectsCreated["Player"] || !MinimumObjectsCreated["Ground"])
+        {
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(false);
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(false);
+        }
+        else
+        {
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true);
+        }
     }
 }
