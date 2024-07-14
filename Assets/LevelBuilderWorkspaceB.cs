@@ -35,10 +35,6 @@ public class LevelBuilderWorkspaceB : MonoBehaviour, IPointerEnterHandler, IPoin
             {
                 LevelBuilder.Draw(eventData.position);
             }
-            else if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.LeftControl))
-            {
-                SetCanDraw();
-            }
             else if (Input.GetMouseButton(1))
             {
                 _pointerDown = eventData.position;
@@ -77,5 +73,9 @@ public class LevelBuilderWorkspaceB : MonoBehaviour, IPointerEnterHandler, IPoin
             BuildingHUD.SetActive(false);
             LevelBuilder.EnableCursor(false);
         }
+    }
+    public void SetUI()
+    {
+        LevelBuilder.SetUI();
     }
 }
