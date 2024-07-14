@@ -15,7 +15,7 @@ public class LevelDownload : MonoBehaviour
 
     public void Start()
     {
-        LevelDataEntryContent = GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen/ScrollView/Viewport/Content").transform;
+        LevelDataEntryContent = GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen/Background/Foreground/ScrollView/Viewport/Content").transform;
     }
 
     public void DownloadLevelData()

@@ -17,6 +17,7 @@ public class EncapsulationaAllManager : MonoBehaviour
 
     public GameObject ButtonPrefab;
     public GameObject allButton;
+    public Button CloseButton;
 
 
     public void Start() { InitializeProperties(); }
@@ -32,11 +33,13 @@ public class EncapsulationaAllManager : MonoBehaviour
 
         ButtonPrefab = Resources.Load<GameObject>("Buttons/Default");
         allButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/All");
+        CloseButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
 
         if (RestrictionManager.Instance.AllowEncapsulation)
         {
             allButton.GetComponent<Button>().onClick.AddListener(() => ToggleOn());
             allButton.SetActive(true);
+            CloseButton.onClick.AddListener(() => ToggleOff());
         }
     }
 

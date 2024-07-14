@@ -25,7 +25,7 @@ public class CharacterSelectionManager : MonoBehaviour
         SelectionMenu = GameObject.Find("Canvas/Popups/Selection");
         CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
         CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
-        Content = SelectionMenu.transform.Find("Background/Foreground/Buttons/ScrollView/ViewPort/Content");
+        Content = SelectionMenu.transform.Find("Background/Foreground/Buttons/Background/ScrollView/ViewPort/Content");
         ButtonPrefab = Resources.Load<GameObject>("Buttons/Character");
         ConfirmButton = SelectionMenu.transform.Find("Background/Foreground/Buttons/Confirm").gameObject;
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmRootCharacter());
@@ -110,7 +110,7 @@ public class CharacterSelectionManager : MonoBehaviour
     }
     private void InitializeCharacterObject(CharacterB characterNode)
     {
-        Transform parnetTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/ScrollView/ViewPort/All").transform;
+        Transform parnetTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
         GameObject characterPrefab = Resources.Load<GameObject>("Buttons/Character");
 
         GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);

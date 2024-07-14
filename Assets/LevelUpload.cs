@@ -30,7 +30,7 @@ public class LevelUpload : MonoBehaviour
     public void Start()
     {
         LevelUploadUi = GameObject.Find("Canvas/Menus/Gameplay/UploadScreen");
-        LevelNameInputField = LevelUploadUi.transform.Find("InputField").GetComponent<TMP_InputField>();
+        LevelNameInputField = LevelUploadUi.transform.Find("Background/Foreground/InputField").GetComponent<TMP_InputField>();
         LevelBuilder = GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>();
         JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
 
