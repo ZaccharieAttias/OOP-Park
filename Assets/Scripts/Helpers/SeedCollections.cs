@@ -400,7 +400,7 @@ public class SeedCollections : MonoBehaviour
         abilityName = "Multiple Jumps";
         abilityDescription = "Multiple Jump";
         abilityValue = 2;
-        abilityType = SpecialAbilityType.DoubleJump;
+        abilityType = SpecialAbilityType.MultipleJumps;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
         SpecialAbilityManager.SpecialAbilitiesDictionary.Add(abilityType, specialAbilities);
