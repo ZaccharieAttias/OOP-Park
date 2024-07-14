@@ -1,0 +1,86 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 3",
+    "Description": "This is Character 3.",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": {
+      "Name": "General",
+      "Type": 0
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": null,
+    "Childrens": [
+      "Character 7"
+    ]
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 7",
+    "Description": "I'm Character 7",
+    "Attributes": [
+      {
+        "Owner": "Character 7",
+        "Name": "gravity",
+        "Value": 4.0,
+        "Getter": true,
+        "Setter": true,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 7",
+        "Name": "fireballShoot",
+        "Value": 0.25,
+        "Getter": false,
+        "Setter": true,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 7",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Character 7",
+          "Name": "gravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 7",
+        "Name": "FireballShoot",
+        "Attribute": {
+          "Owner": "Character 7",
+          "Name": "fireballShoot",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": {
+      "Name": "Inverse Gravity",
+      "Type": 11
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Character 3",
+    "Childrens": []
+  }
+]
