@@ -55,6 +55,7 @@ public class PlayTestManager : MonoBehaviour
         foreach (GameObject deathzone in DeathZone)
             deathzone.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         MainCamera.GetComponent<CameraFollow>().Player = null;
+        MainCamera.GetComponent<CameraFollow>().ResetPosition();
     }
 
     public void SetOnlickButton()
