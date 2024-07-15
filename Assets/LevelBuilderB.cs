@@ -414,7 +414,6 @@ public class LevelBuilderB : MonoBehaviour
             swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => CharactersCreationManager.RootCreation());
             swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => swapScreen.FisrtSwap());
             check = 1;
-            GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(false);
         }
     }
     public void SetPlayer()
@@ -540,15 +539,20 @@ public class LevelBuilderB : MonoBehaviour
     public void SetUI()
     {
         if (Terrain.Find("Ground").childCount == 0) MinimumObjectsCreated["Ground"] = false;
-        if (!MinimumObjectsCreated["Player"] || !MinimumObjectsCreated["Ground"])
+        if (MinimumObjectsCreated["Player"])
         {
-            GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(false);
-            GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(false);
+            GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(true);
+            if(MinimumObjectsCreated["Ground"])
+            {
+                GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
+                GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true); 
+            }
         }
         else
         {
-            GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
-            GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true);
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(false);
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(false);
+            GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(false);
         }
     }
 }
