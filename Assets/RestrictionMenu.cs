@@ -72,4 +72,8 @@ public class RestrictionMenu : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("OnlineBuilder");
     }
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
 }

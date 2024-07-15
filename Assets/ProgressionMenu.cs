@@ -13,9 +13,6 @@ public class ProgressionMenu : MonoBehaviour
     public Transform OnlineProgressionContent;
     void Start()
     {
-        ProgressionPrefab = Resources.Load<GameObject>("Test/ProgressionPrefab");
-        LocalProgressionContent = GameObject.Find("Canvas/Menus/Menu/Local/ScrollView/ViewPort/Content").transform;
-        OnlineProgressionContent = GameObject.Find("Canvas/Menus/Menu/Online/ScrollView/ViewPort/Content").transform;
         GameplayData.Initialize();
         GameplayData.Load();
         InitializePopup();
