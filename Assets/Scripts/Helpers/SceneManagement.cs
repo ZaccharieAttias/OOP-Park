@@ -21,7 +21,6 @@ public static class SceneManagement
         Time.timeScale = 0f;
     }
 
-    public static void Tutorial() { SceneManager.LoadScene("Tutorial"); }
     public static void Hierarchy() { SceneManager.LoadScene("Hierarchy"); }
     public static void Polymorphism() { SceneManager.LoadScene("Polymorphism"); }
     public static void RestrictionMenu() { UnityEngine.SceneManagement.SceneManager.LoadScene("RestrictionMenu"); }
@@ -36,7 +35,7 @@ public static class SceneManagement
 
 
 
-    public static List<GameplayInfo> GameplayInfo;
+    public static List<GameplayInfo> GameplayInfo = GameplayData.LoadForMenu();
 
     public static void UnlockNextLevel()
     {
