@@ -11,6 +11,7 @@ using UnityEditor;
 using LootLocker.Extension.DataTypes;
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using System.Collections.Generic;
+using Assets.HeroEditor.Common.Scripts.Common;
 
 
 public class LevelBuilderB : MonoBehaviour
@@ -387,7 +388,6 @@ public class LevelBuilderB : MonoBehaviour
         if (_index == -1) return;
 
         string CharacterName = SpriteCollection.GamePlaySprite[_index].name;
-        //Create un object player dans la scene sil n'existe pas
         if (GameObject.Find("Player") == null)
         {
             Player = Instantiate(PlayerPrefab, new Vector3(_positionMin.X + x, _positionMin.Y + y), Quaternion.identity);
@@ -397,6 +397,8 @@ public class LevelBuilderB : MonoBehaviour
 
             CharacterEditor.Character = Player.GetComponent<CharacterBase>();
             CharacterEditor.LoadFromJson(CharacterName);
+            GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
+            GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
             MinimumObjectsCreated["Player"] = true;
         }
         else
