@@ -94,6 +94,7 @@ public class CharactersCreationManager : MonoBehaviour
     }
     public void CancelFactory()
     {
+        Debug.Log("Cancel Factory");
         SetControlButtonsState(true, false, false);
         SetActiveControlButtons(true, false, false, false);
 
