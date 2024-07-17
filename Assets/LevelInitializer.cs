@@ -10,6 +10,8 @@ using TMPro;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEditor;
+using Assets.HeroEditor.Common.Scripts.CharacterScripts;
+using Assets.HeroEditor.Common.Scripts.Common;
 
 public class LevelInitializer : MonoBehaviour
 {
@@ -537,5 +539,7 @@ public class LevelInitializer : MonoBehaviour
         {
             Checkpoint.GetComponent<Checkpoint>().gameController = Player.GetComponent<GameController>();
         }
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
     }
 }
