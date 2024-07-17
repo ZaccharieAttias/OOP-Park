@@ -31,10 +31,12 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
             {
                 MarkButton.ActivateButtons();
                 MarkButton.AttributeClicked(attribute);
+                GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(attribute);
             }
             else
             {
                 MarkButton.DeactivateButtons();
+                GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(null);
             }
         }
     }
