@@ -18,7 +18,6 @@ public class ChapterLoaderManager : MonoBehaviour
 
         for (int i = 0; i < LevelButtons.Count; i++)
         {
-            Debug.Log(i);
             var levelStatus = levelsInfo[i].Status;
             LevelButtons[i].interactable = levelStatus != -1;
 
