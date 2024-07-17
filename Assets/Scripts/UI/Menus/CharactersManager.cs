@@ -103,6 +103,8 @@ public class CharactersManager : MonoBehaviour
 
             GetButton.SetActive(false);
             SetButton.SetActive(false);
+
+            GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(null);
         }
     }
     private void DisplayName()
