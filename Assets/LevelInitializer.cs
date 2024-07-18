@@ -70,14 +70,6 @@ public class LevelInitializer : MonoBehaviour
         NameText.text = LevelName;
         LevelIcon.sprite = LevelIcon.sprite;
     }
-    //temporarily load the level for testing
-    public void LoadLevelForTesting()
-    {
-        MapPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, "Level.json");
-        BuildLevel(MapPath);
-        SetLayers(Terrain, "Ground");
-        //SetPlayers();
-    }
     public void LoadLevel()
     {
         StartCoroutine(DownloadTextFile(DataFileURL));
@@ -87,16 +79,16 @@ public class LevelInitializer : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", LevelName);
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Download", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
-        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/Level_" + LevelName + "_Data.json";
+        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Download/" + LevelName + "/Level_" + LevelName + "_Data.json";
         File.WriteAllText(filePath, www.downloadHandler.text);
 
         LevelDownload.DownloadLevelTreeData(LevelName);
 
         AssetDatabase.Refresh();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         BuildLevel(filePath);
         SetLayers(Terrain.Find("Ground"), "Ground");
         SetPlayers();
@@ -124,8 +116,6 @@ public class LevelInitializer : MonoBehaviour
             SceneManagement.GameplayInfo[1].ChapterInfos.Add(chapterInfo);
         }
 
-
-        yield return new WaitForSeconds(1f);
         GameObject.Find("Canvas/Menus/Gameplay/DownloadScreen").SetActive(false);
     }
     public void SetInformations(int id, string name)
