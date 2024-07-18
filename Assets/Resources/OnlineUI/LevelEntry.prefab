@@ -143,7 +143,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1112527940379445659}
-  - component: {fileID: -4000954976582337088}
   - component: {fileID: 4699618208314290026}
   m_Layer: 5
   m_Name: LevelEntry
@@ -175,23 +174,6 @@ RectTransform:
   m_AnchoredPosition: {x: 140.28168, y: 0}
   m_SizeDelta: {x: 1000, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &-4000954976582337088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108646132297640228}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc777875b96f70c448593a4262dff58f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: 0
-  LevelName: 
-  NameText: {fileID: 1348902709823605212}
-  LevelIcon: {fileID: 7039443427740045236}
-  TextFileURL: 
 --- !u!114 &4699618208314290026
 MonoBehaviour:
   m_ObjectHideFlags: 0
