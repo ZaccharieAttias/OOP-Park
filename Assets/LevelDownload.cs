@@ -96,7 +96,7 @@ public class LevelDownload : MonoBehaviour
                 break;
         }
 
-        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/" + type + ".json";
+        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Download/" + LevelName + "/" + type + ".json";
         File.WriteAllText(filePath, www.downloadHandler.text);
     }
     public int FindIndex(LootLockerFile[] files, string purpose)
