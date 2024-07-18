@@ -29,6 +29,8 @@ public class SwapScreen : MonoBehaviour
             if (RestrictionManager.Instance.AllowSingleInheritance)
                 SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
             SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Menus").GetComponent<GameplayManager>().ToggleOff());
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true);
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
         }
     }
 }
