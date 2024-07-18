@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class PauseManager : MonoBehaviour
@@ -40,12 +41,28 @@ public class PauseManager : MonoBehaviour
 
     public void RestartFactory()
     {
-        // Reload level or clean the flags or something?
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ExitFactory()
     {
-        // SceneManagement.Chapter...
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (sceneName.Contains("C0"))
+        {
+            SceneManagement.LoadScene("ChapterTutorial");
+        }
+        else if (sceneName.Contains("C1"))
+        {
+            SceneManagement.LoadScene("ChapterIneritance");
+        }
+        else if (sceneName.Contains("C2"))
+        {
+            SceneManagement.LoadScene("ChapterPolymorphism");
+        }
+        else
+        {
+            SceneManagement.LoadScene("Playground");
+        }
     }
 
     public void ToggleOn()
