@@ -12,6 +12,9 @@ using UnityEngine.Tilemaps;
 using LLlibs.ZeroDepJson;
 using Unity.VisualScripting;
 using System;
+using System.Linq;
+using System.Text;
+using UnityEditor;
 
 public class LevelUpload : MonoBehaviour
 {
@@ -47,9 +50,20 @@ public class LevelUpload : MonoBehaviour
     {
         LevelName = LevelNameInputField.text;
         LevelUploadUi.SetActive(false);
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", LevelName); 
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
+        else
+        {
+            string[] filesDic = Directory.GetFiles(path);
+            foreach (string file in filesDic)
+            {
+                if (file.Contains(".png") || file.Contains(".txt"))
+                {
+                    File.Delete(file);
+                }
+            }
+        }
 
         OpenUploadLevelUI();
 
@@ -63,6 +77,7 @@ public class LevelUpload : MonoBehaviour
             else
             {
                 Debug.Log("Level Creation Failed");
+                return;
             }
         }, filters: new Dictionary<string, string>() { { "Context", "TileMap" } } , context_id: TileMapContextID);
 
@@ -76,19 +91,20 @@ public class LevelUpload : MonoBehaviour
             else
             {
                 Debug.Log("Character Center Creation Failed");
+                return;
             }
         }, filters: new Dictionary<string, string>() { { "Context", "CharacterTree" } } , context_id: CharacterTreeContextID);
     }
     public void UploadLevelData(int levelID)
     {
-        string screenshotFilePath = "Assets/Resources/Screenshots/" + LevelName + "/Level_" + LevelName + ".png";
+        string screenshotFilePath = "Assets/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + ".png";
         LootLocker.LootLockerEnums.FilePurpose screenshotFileType = LootLocker.LootLockerEnums.FilePurpose.primary_thumbnail;
 
         LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, screenshotFilePath, "Level_" + LevelName + ".png", screenshotFileType, (screenshotResponse) =>
         {
             if (screenshotResponse.success)
             {
-                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/Level_" + LevelName + "_Data.json";
+                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + "_Data.json";
                 SaveLevel(textFilePath);
 
                 //coverting json file to txt file
@@ -114,10 +130,21 @@ public class LevelUpload : MonoBehaviour
                 Debug.Log("Screenshot Upload Failed");
             }
         });
+
+        AssetDatabase.Refresh();
+        string[] files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName));
+        foreach (string file in files)
+        {
+            if (file.Contains(".txt"))
+            {
+                File.Delete(file);
+            }
+        }
+        AssetDatabase.Refresh();
     }
     public void UploadLevelTreeData(int levelID)
     {
-        string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName;
+        string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName;
         SaveCharacter(textFilePath);
 
         // string json;
@@ -127,29 +154,16 @@ public class LevelUpload : MonoBehaviour
 
         AddingFilesToAsset(levelID, files, 0, textFileType);
 
-        //coverting all json file to txt file
-        // foreach (string file in files)
-        // {
-        //     if (file.Contains(".json") && !file.Contains("_Data"))
-        //     {
-        //         json = File.ReadAllText(file);
-        //         File.WriteAllText(file.Replace(".json", ".txt"), json);
-
-        //         LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, file.Replace(".json", ".txt"), Path.GetFileName(file.Replace(".json", ".txt")), textFileType, (textResponse) =>
-        //         {
-        //             if (textResponse.success)
-        //             {
-        //                 LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>{});
-        //             }
-        //             else
-        //             {
-        //                 Debug.Log("Level Data Upload Failed");
-        //             }
-        //         });
-        //     }
-        // }
-        // string json = File.ReadAllText(textFilePath);
-        // File.WriteAllText(textFilePath, json);
+        AssetDatabase.Refresh();
+        string[] filess = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName));
+        foreach (string file in filess)
+        {
+            if (file.Contains(".txt"))
+            {
+                File.Delete(file);
+            }
+        }
+        AssetDatabase.Refresh();
     }
     public void OpenUploadLevelUI()
     {
@@ -162,7 +176,7 @@ public class LevelUpload : MonoBehaviour
     }
     public void TakeScreenshot()
     {
-        string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/" + LevelName + "/";
+        string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/";
         ScreenCapture.CaptureScreenshot(Path.Combine(filepath, "Level_" + LevelName + ".png"));
     }
     public void SaveLevel(string path)
