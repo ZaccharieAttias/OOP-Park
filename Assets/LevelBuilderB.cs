@@ -25,10 +25,12 @@ public class LevelBuilderB : MonoBehaviour
     private int _layer;
     private readonly bool[] _layersEnabled = { true, true, true, true };
     private Position _positionMin;
+    private float x_position;
+    private float y_position;
 
-    private TileMap _groundMap;
-    private TileMap _coverMap;
-    private TileMap _propsMap;
+    public TileMap _groundMap;
+    public TileMap _coverMap;
+    public TileMap _propsMap;
 
     private string _hash;
 
@@ -41,6 +43,7 @@ public class LevelBuilderB : MonoBehaviour
     public int check = 0;
     public GameObject CheckPointPrefab;
     public Dictionary<string, bool> MinimumObjectsCreated = new Dictionary<string, bool>();
+    public PlayTestManager playTestManager;
 
 
     public void Start()
@@ -426,9 +429,8 @@ public class LevelBuilderB : MonoBehaviour
         Player.GetComponent<GameController>().enabled = false;
         Player.GetComponent<GrabObject>().enabled = false;
 
-        //foreach object that have the tag "Checkpoint" in the scene set player
         GameObject[] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
-        PlayTestManager playTestManager = GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>();
+        playTestManager = GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>();
 
         foreach (GameObject Checkpoint in Checkpoints)
         {
@@ -541,6 +543,8 @@ public class LevelBuilderB : MonoBehaviour
     public void SetUI()
     {
         if (Terrain.Find("Ground").childCount == 0) MinimumObjectsCreated["Ground"] = false;
+        if (MinimumObjectsCreated["Ground"] || MinimumObjectsCreated["Player"]) GameObject.Find("Canvas/Menus/Gameplay/LoadALevel").SetActive(false);
+        else GameObject.Find("Canvas/Menus/Gameplay/LoadALevel").SetActive(true);
         if (MinimumObjectsCreated["Player"])
         {
             GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(true);
@@ -548,12 +552,14 @@ public class LevelBuilderB : MonoBehaviour
             {
                 if (!swapScreen.firstTime){
                     GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true);
+                    GameObject.Find("Canvas/Menus/Gameplay/Buttons/SaveForLater").SetActive(true);
                     GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
                 }
             }
             else
             {
                 GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(false);
+                GameObject.Find("Canvas/Menus/Gameplay/Buttons/SaveForLater").SetActive(false);
                 GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(false);
             }
         }
@@ -561,7 +567,156 @@ public class LevelBuilderB : MonoBehaviour
         {
             GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(false);
             GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(false);
+            GameObject.Find("Canvas/Menus/Gameplay/Buttons/SaveForLater").SetActive(false);
             GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(false);
         }
+    }
+    public void Load(string path, string LevelName)
+    {
+        BuildLevel(path + "/Level_" + LevelName + "_Data.json");
+        SetLayers(Terrain.Find("Ground"), "Ground");
+        SetUpPlayer();
+        JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
+        JsonUtilityManager.SetPath(path);
+        JsonUtilityManager.Load();
+        CharacterEditor.LoadFromJson();
+        SetUI();
+    }
+    private void BuildLevel(string json)
+    {
+        var file = File.ReadAllText(json);
+        var level = JsonConvert.DeserializeObject<LevelB>(file);
+
+        if (_groundMap != null)
+        {
+            for (var x = 0; x < _groundMap.Width; x++)
+            {
+                for (var y = 0; y < _groundMap.Height; y++)
+                {
+                    for (var z = 0; z < _groundMap.Depth; z++)
+                    {
+                        _groundMap.Destroy(x, y, z);
+                        _coverMap.Destroy(x, y, z);
+                        _propsMap.Destroy(x, y, z);
+                    }
+                }
+            }
+        }
+
+        var width = level.GroundMap.GetLength(0);
+        var height = level.GroundMap.GetLength(1);
+        var depth = level.GroundMap.GetLength(2);
+        x_position = level.characterX;
+        y_position = level.characterY;
+
+        _groundMap = new TileMap(width, height, depth);
+        _coverMap = new TileMap(width, height, depth);
+        _propsMap = new TileMap(width, height, depth);
+        _positionMin = new Position(-width / 2, -height / 2);
+
+        var index = _index;
+
+        for (var x = 0; x < width; x++)
+        {
+            for (var y = 0; y < height; y++)
+            {
+                for (var z = 0; z < depth; z++)
+                {
+                    var ground = level.GroundMap[x, y, z] == 0 ? null : level.TileTable[level.GroundMap[x, y, z] - 1];
+                    var cover = level.CoverMap[x, y, z] == 0 ? null : level.TileTable[level.CoverMap[x, y, z] - 1];
+                    var props = level.PropsMap[x, y, z] == 0 ? null : level.TileTable[level.PropsMap[x, y, z] - 1];
+
+                    if (ground != null)
+                    {
+                        _type = 0;
+                        _index = SpriteCollection.GroundTilesets.FindIndex(i => i.Name == ground);
+
+                        if (_index != -1)
+                        {
+                            CreateGround(x, y, z);
+                        }
+                    }
+
+                    if (cover != null)
+                    {
+                        _type = 1;
+                        _index = SpriteCollection.CoverTilesets.FindIndex(i => i.Name == cover);
+
+                        if (_index != -1)
+                        {
+                            CreateCover(x, y, z);
+                        }
+                    }
+
+                    if (props != null)
+                    {
+                        _type = 2;
+                        _index = SpriteCollection.PropsSprites.FindIndex(i => i.name == props);
+
+                        if (_index == -1)
+                        {
+                            _type = 3;
+                            _index = SpriteCollection.OtherSprites.FindIndex(i => i.name == props);
+
+                            if (_index == -1)
+                            {
+                                _type = 4;
+                                _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
+                            }
+                        }
+                        if (_index != -1)
+                        {
+                            if (_type == 4)
+                            {
+                                if (_index == 1 || _index == 2 || _index == 3)
+                                    CreateCheckPoint(x, y, z);
+                                else if (_index == 4)
+                                    CreacteDeathObject(x, y, z);
+                                else if (_index == 5)
+                                    CreateDeathZone(x, y, z);
+
+                            }
+                            else
+                                CreateProps(x, y, z);
+                        }
+                    }
+                }
+            }
+        }
+        _index = index;
+    }
+    private void SetLayers(Transform LocalParent, string name)
+    {
+        foreach (Transform child in LocalParent)
+        {
+            if (child.gameObject.layer != LayerMask.NameToLayer(name))
+                child.gameObject.layer = LayerMask.NameToLayer(name);
+            else
+                SetLayers(child, name);
+        }
+    }
+    private void SetUpPlayer()
+    {
+        Player = Instantiate(PlayerPrefab, new Vector3(x_position, y_position), Quaternion.identity);
+        Player.name = "Player";
+        Player.transform.localScale = Vector3.one;
+        Player.transform.localPosition = new Vector3(x_position, y_position);
+
+        CharacterEditor.Character = Player.GetComponent<CharacterBase>();
+
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
+        MinimumObjectsCreated["Player"] = true;
+
+        SetPlayer();
+        CharacterSelectionManager charactersSelectionManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterSelectionManager>();
+        charactersSelectionManager.RootCreated = true;
+
+        if (RestrictionManager.Instance.AllowSingleInheritance)
+        {
+            GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().AddButton.gameObject.SetActive(true);
+        }
+        check = 1;
+        swapScreen.firstTime = false;
     }
 }
