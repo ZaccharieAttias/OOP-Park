@@ -31,12 +31,14 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
             {
                 MarkButton.ActivateButtons();
                 MarkButton.AttributeClicked(attribute);
-                GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(attribute);
+                if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")
+                    GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(attribute);
             }
             else
             {
                 MarkButton.DeactivateButtons();
-                GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(null);
+                if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")
+                    if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(null);
             }
         }
     }
