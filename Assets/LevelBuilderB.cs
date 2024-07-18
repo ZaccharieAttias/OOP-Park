@@ -546,8 +546,15 @@ public class LevelBuilderB : MonoBehaviour
             GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(true);
             if(MinimumObjectsCreated["Ground"])
             {
-                GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
-                GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true); 
+                if (!swapScreen.firstTime){
+                    GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true);
+                    GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
+                }
+            }
+            else
+            {
+                GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(false);
+                GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(false);
             }
         }
         else
