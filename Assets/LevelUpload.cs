@@ -167,9 +167,9 @@ public class LevelUpload : MonoBehaviour
     }
     public void OpenUploadLevelUI()
     {
-        StartCoroutine(WaitSreenShot());
+        StartCoroutine(WaitScreenShot());
     }
-    IEnumerator WaitSreenShot()
+    IEnumerator WaitScreenShot()
     {
         TakeScreenshot();
         yield return new WaitForSeconds(1.0f);
