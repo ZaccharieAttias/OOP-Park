@@ -128,11 +128,15 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         SelectionMenu.SetActive(true);
         charactersCreationManager.AddButton.gameObject.SetActive(false);
+        if (!RootCreated)
+            GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>().interactable = false;
     }
     public void ToggleOff()
     {
         SelectionMenu.SetActive(false);
         charactersCreationManager.AddButton.gameObject.SetActive(true);
+        if (!RootCreated)
+            GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>().interactable = true;
         RootCreated = true;
     }
 }
