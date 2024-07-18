@@ -1,0 +1,65 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 4",
+    "Description": "This is Character 4.",
+    "Attributes": [
+      {
+        "Owner": "Character 4",
+        "Name": "gravity",
+        "Value": 4.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 4",
+        "Name": "fireballShoot",
+        "Value": 0.25,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 4",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Character 4",
+          "Name": "gravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 4",
+        "Name": "FireballShoot",
+        "Attribute": {
+          "Owner": "Character 4",
+          "Name": "fireballShoot",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": {
+      "Name": "General",
+      "Type": 0
+    },
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": null,
+    "Childrens": []
+  }
+]
