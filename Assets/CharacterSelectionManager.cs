@@ -14,7 +14,7 @@ public class CharacterSelectionManager : MonoBehaviour
     public GameObject ConfirmButton;
     public CharactersManager CharactersManager;
     public string CharacterName;
-    private bool RootCreated = false;
+    public bool RootCreated = false;
 
 
     public void Start()
