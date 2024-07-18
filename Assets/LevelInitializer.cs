@@ -38,6 +38,7 @@ public class LevelInitializer : MonoBehaviour
 
     string path;
     private LevelDownload LevelDownload;
+    private LevelLoad LevelLoad;
     string MapPath;
 
     private int ID;
@@ -62,6 +63,8 @@ public class LevelInitializer : MonoBehaviour
         CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         MainCamera = GameObject.Find("Main Camera");
         LevelDownload = GameObject.Find("LevelManager").GetComponent<LevelDownload>();
+        if (GameObject.Find("LevelManager").GetComponent<LevelLoad>() != null)
+            LevelLoad = GameObject.Find("LevelManager").GetComponent<LevelLoad>().GetComponent<LevelLoad>();
         JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
 
         transform.position = Vector3.zero;
@@ -70,9 +73,14 @@ public class LevelInitializer : MonoBehaviour
         NameText.text = LevelName;
         LevelIcon.sprite = LevelIcon.sprite;
     }
-    public void LoadLevel()
+    public void DownloadLevel()
     {
         StartCoroutine(DownloadTextFile(DataFileURL));
+    }
+    public void LoadLevel()
+    {
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
+        GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Load(path, LevelName);
     }
     private IEnumerator DownloadTextFile(string url)
     {
