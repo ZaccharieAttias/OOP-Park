@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.IO;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class CharacterSelectionManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class CharacterSelectionManager : MonoBehaviour
     public CharactersManager CharactersManager;
     public string CharacterName;
     public bool RootCreated = false;
-
+    public GameObject TreeContent;
 
     public void Start()
     {
@@ -28,6 +29,7 @@ public class CharacterSelectionManager : MonoBehaviour
         Content = SelectionMenu.transform.Find("Background/Foreground/Buttons/Background/ScrollView/ViewPort/Content");
         ButtonPrefab = Resources.Load<GameObject>("Buttons/Character");
         ConfirmButton = SelectionMenu.transform.Find("Background/Foreground/Buttons/Confirm").gameObject;
+        TreeContent = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All");
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmRootCharacter());
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmButton.GetComponent<Button>().interactable = false);
         
@@ -46,12 +48,16 @@ public class CharacterSelectionManager : MonoBehaviour
             if (file.EndsWith(".png"))
             {
                 string name = Path.GetFileNameWithoutExtension(file);
+                if (TreeContent.transform.Find(name) != null)
+                    continue;
                 GameObject button = Instantiate(ButtonPrefab, Content);
                 button.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Sprites/Characters/{name}");
                 button.name = name;
                 button.GetComponent<Button>().onClick.AddListener(() => MarkCharacter());
             }
         }
+        if (CharactersData.CharactersManager.CurrentCharacter != null)
+            RootCreated = true;
     }
     public void MarkCharacter()
     {
@@ -110,10 +116,10 @@ public class CharacterSelectionManager : MonoBehaviour
     }
     private void InitializeCharacterObject(CharacterB characterNode)
     {
-        Transform parnetTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
+        Transform parentTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
         GameObject characterPrefab = Resources.Load<GameObject>("Buttons/Character");
 
-        GameObject newPlayerButton = Instantiate(characterPrefab, parnetTransform);
+        GameObject newPlayerButton = Instantiate(characterPrefab, parentTransform);
         newPlayerButton.name = characterNode.Name;
         characterNode.CharacterButton.Button = newPlayerButton;
         newPlayerButton.GetComponent<CharacterDetails>().InitializeCharacter(characterNode);
@@ -123,6 +129,11 @@ public class CharacterSelectionManager : MonoBehaviour
 
         Image image = newPlayerButton.GetComponent<Image>();
         image.sprite = Resources.Load<Sprite>("Sprites/Characters/" + characterNode.Name);
+    }
+    public void CleanContent()
+    {
+        foreach (Transform button in Content)
+            Destroy(button.gameObject);
     }
     public void ToggleOn()
     {
