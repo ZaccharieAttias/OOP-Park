@@ -165,6 +165,13 @@ public class SpecialAbilityManager : MonoBehaviour
 
     public void BuildSpecialAbilityGameObjects()
     {
+        if (SpecialAbilityContentPanel.childCount > 0)
+        {
+            foreach (Transform child in SpecialAbilityContentPanel)
+                Destroy(child.gameObject);
+            SpecialAbilityGameObjects = new ();
+        }
+        
         foreach (var specialAbility in SpecialAbilitiesCollection)
         {
             var specialAbilityGameObject = Instantiate(SpecialAbilityButton, SpecialAbilityContentPanel);
