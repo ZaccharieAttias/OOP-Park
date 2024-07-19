@@ -71,6 +71,8 @@ public class CharactersManager : MonoBehaviour
         Destroy(CurrentCharacter.CharacterButton.Button);
 
         CharactersTreeManager.BuildTree(CharactersCollection.First(), CharactersCollection.Last());
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")
+            GameObject.Find("Canvas/Popups").GetComponent<CharacterSelectionManager>().CleanContent();
         DisplayCharacter(CharactersCollection.Last());
     }
 
