@@ -184,6 +184,8 @@ public class CharactersCreationManager : MonoBehaviour
     {
         if (RestrictionManager.Instance.OnlineGame)
         {
+            if (GetComponent<CharacterSelectionManager>().Content.childCount == 0)
+                GetComponent<CharacterSelectionManager>().MenuInitialization();
             yield return new WaitUntil(() => SelectionMenu.activeSelf);
             yield return new WaitUntil(() => !SelectionMenu.activeSelf);
         }
