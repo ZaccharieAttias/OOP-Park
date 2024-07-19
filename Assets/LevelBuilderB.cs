@@ -709,8 +709,6 @@ public class LevelBuilderB : MonoBehaviour
         MinimumObjectsCreated["Player"] = true;
 
         SetPlayer();
-        CharacterSelectionManager charactersSelectionManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterSelectionManager>();
-        charactersSelectionManager.RootCreated = true;
 
         if (RestrictionManager.Instance.AllowSingleInheritance)
         {
@@ -718,5 +716,10 @@ public class LevelBuilderB : MonoBehaviour
         }
         check = 1;
         swapScreen.firstTime = false;
+
+        swapScreen.SwapButtonToCharacterCenter.onClick.RemoveAllListeners();
+        if (RestrictionManager.Instance.AllowSingleInheritance)
+            swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
+        swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Menus").GetComponent<GameplayManager>().ToggleOff());
     }
 }
