@@ -4,6 +4,8 @@ using LootLocker.Extension.DataTypes;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+using UnityEditor;
 
 public class PlayTestManager : MonoBehaviour
 {
@@ -14,6 +16,10 @@ public class PlayTestManager : MonoBehaviour
     public GameObject TestButton;
     public bool IsTestGameplay = false;
     public GameObject MainCamera;
+    public JsonUtilityManager JsonUtilityManager;
+    private string PreviousPath;
+    public GameObject TreeContent;
+    public GameObject SpecialAbilityTreeContent;
 
     public void RunTestGameplay()
     {
@@ -36,6 +42,10 @@ public class PlayTestManager : MonoBehaviour
                 deathzone.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         }
         MainCamera.GetComponent<CameraFollow>().Player = Player;
+
+        PreviousPath = JsonUtilityManager.FolderPath;
+        JsonUtilityManager.SetPath(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp");
+        JsonUtilityManager.Save();
     }
 
     public void ResetTestGameplay()
@@ -56,6 +66,21 @@ public class PlayTestManager : MonoBehaviour
             deathzone.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         MainCamera.GetComponent<CameraFollow>().Player = null;
         MainCamera.GetComponent<CameraFollow>().ResetPosition();
+
+        foreach (Transform child in TreeContent.transform)
+            Destroy(child.gameObject);
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterSelectionManager>().CleanContent();
+        GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>().SpecialAbilityGameObjects.Clear();
+
+        JsonUtilityManager.SetPath(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp");
+        JsonUtilityManager.Load();
+        JsonUtilityManager.SetPath(PreviousPath);
+
+        foreach (string file in Directory.GetFiles(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp"))
+            File.Delete(file);
+        AssetDatabase.Refresh();
+
+        GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
     }
 
     public void SetOnlickButton()
