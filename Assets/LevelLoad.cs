@@ -31,7 +31,7 @@ public class LevelLoad : MonoBehaviour
             GameObject displayItem = Instantiate(LevelEntryDisplayItem, transform.position, Quaternion.identity);
             displayItem.transform.SetParent(LevelDataEntryContent);
             displayItem.GetComponent<LevelInitializer>().SetInformations(i, fileName);
-            //find the child of the displayItem and set the image
+
             displayItem.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => ToggleOff());
         }
     }
