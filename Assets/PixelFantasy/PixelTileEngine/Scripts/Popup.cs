@@ -2,37 +2,31 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.PixelFantasy.PixelTileEngine.Scripts
+public class Popup : MonoBehaviour
 {
-    public class Popup : MonoBehaviour
+    public CanvasGroup CanvasGroup;
+    public Text Message;
+    public TutorialManager TutorialManager;
+
+    public void Show(string message, int duration)
     {
-        public CanvasGroup CanvasGroup;
-        public Text Message;
+        CanvasGroup.alpha = 1;
+        Message.text = message;
+        StartCoroutine(Hide(duration));
+    }
 
-        public static Popup Instance;
-
-        public void Awake()
+    private IEnumerator Hide(int duration)
+    {
+        yield return new WaitForSeconds(duration);
+        // attendre que hasMoved et hasJumped soit vrai
+        yield return new WaitUntil(() => TutorialManager.hasMoved && TutorialManager.hasJumped);
+        
+        while (CanvasGroup.alpha > 0)
         {
-            Instance = this;
+            CanvasGroup.alpha -= Time.deltaTime;
+
+            yield return null;
         }
-
-        public void Show(string message)
-        {
-            CanvasGroup.alpha = 1;
-            Message.text = message;
-            StartCoroutine(Hide());
-        }
-
-        private IEnumerator Hide()
-        {
-            yield return new WaitForSeconds(2);
-
-            while (CanvasGroup.alpha > 0)
-            {
-                CanvasGroup.alpha -= Time.deltaTime;
-
-                yield return null;
-            }
-        }
+        TutorialManager.check++;
     }
 }

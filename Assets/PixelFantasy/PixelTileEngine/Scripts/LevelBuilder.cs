@@ -35,7 +35,7 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
             _groundMap[0, 0, 0] = new Block(transform.Find("Humus"));
             _coverMap[0, 0, 0] = new Block(transform.Find("GrassA"));
 
-            Popup.Instance.Show("<color=\"yellow\">[RMB]</color> Move camera");
+            //Popup.Instance.Show("<color=\"yellow\">[RMB]</color> Move camera");
         }
 
         public void SwitchTile(int type, int index)
