@@ -7,6 +7,7 @@ public class CameraFollow : MonoBehaviour
     public Vector3 PositionOffset;
     public Vector3 Velocity;
     public float TimeOffset;
+    public Vector3 StartPosition;
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -15,6 +16,7 @@ public class CameraFollow : MonoBehaviour
         PositionOffset = new Vector3(0, 0, -10);
         Velocity = Vector3.zero;
         TimeOffset = 0.2f;
+        StartPosition = new Vector3(0, 0, -10);
     }
     
     public void Update() 
@@ -30,6 +32,6 @@ public class CameraFollow : MonoBehaviour
     }
     public void ResetPosition()
     {
-        transform.position = new Vector3(0, 0, -0.3f);
+        transform.position = StartPosition;
     }
 }
