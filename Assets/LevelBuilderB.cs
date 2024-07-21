@@ -721,5 +721,8 @@ public class LevelBuilderB : MonoBehaviour
         if (RestrictionManager.Instance.AllowSingleInheritance)
             swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
         swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Menus").GetComponent<GameplayManager>().ToggleOff());
+    
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().StartPosition = new Vector3(x_position, y_position, -10);
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().ResetPosition();
     }
 }
