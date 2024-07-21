@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
     public Rigidbody2D Rigidbody2D;
     public Vector2 CheckpointPosition;
     public FeedbackManager FeedbackManager;
+    bool isDead = false;
 
 
     public void Start() { InitializeProperties(); }
@@ -34,12 +35,14 @@ public class GameController : MonoBehaviour
 
     private void Die()
     {
-        FeedbackManager.DeathsCount++;
+        if (isDead) return;
         StartCoroutine(Respawn(0.25f));
+        FeedbackManager.DeathsCount++;
     }
 
     IEnumerator Respawn(float time)
     {
+        isDead = true;
         Rigidbody2D.velocity = new Vector2(0, 0);
         Rigidbody2D.simulated = false;
         transform.localScale = new Vector3(0, 0, 0);
@@ -49,6 +52,7 @@ public class GameController : MonoBehaviour
         transform.position = CheckpointPosition;
         transform.localScale = new Vector3(1, 1, 1);
         Rigidbody2D.simulated = true;
+        isDead = false;
     }
     public void ResetGame()
     {
