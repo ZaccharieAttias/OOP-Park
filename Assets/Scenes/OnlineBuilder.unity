@@ -20660,6 +20660,7 @@ MonoBehaviour:
   PositionOffset: {x: 0, y: 0, z: 0}
   Velocity: {x: 0, y: 0, z: 0}
   TimeOffset: 0
+  StartPosition: {x: 0, y: 0, z: 0}
 --- !u!81 &793108052
 AudioListener:
   m_ObjectHideFlags: 0
@@ -33409,7 +33410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllowSingleInheritance: 1
-  AllowBeginnerInheritance: 0
+  AllowBeginnerInheritance: 1
   AllowSpecialAbility: 1
   AllowAccessModifier: 1
   AllowOverride: 1
