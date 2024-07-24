@@ -233,6 +233,8 @@ public class LevelUpload : MonoBehaviour
     }
     public void SaveCharacter(string path)
     {
+        foreach (var character in CharactersData.CharactersManager.CharactersCollection)
+            character.IsOriginal = true;
         JsonUtilityManager.SetPath(path);
         JsonUtilityManager.Save();
     }
