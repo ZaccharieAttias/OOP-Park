@@ -29,6 +29,8 @@ public class CharactersManager : MonoBehaviour
     public GameObject GetButton;
     public GameObject SetButton;
 
+    public GameObject AttributePlusButton;
+    public GameObject MethodPlusButton;
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -54,6 +56,9 @@ public class CharactersManager : MonoBehaviour
 
         GetButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/G");
         SetButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Description/S");
+
+        AttributePlusButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Attributes/Buttons/Edit");
+        MethodPlusButton = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Methods/Buttons/Edit");
     }
 
 
@@ -108,6 +113,17 @@ public class CharactersManager : MonoBehaviour
 
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")
                 GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(null);
+
+            if (CurrentCharacter.IsOriginal)
+            {
+                AttributePlusButton.SetActive(false);
+                MethodPlusButton.SetActive(false);
+            }
+            else
+            {
+                AttributePlusButton.SetActive(true);
+                MethodPlusButton.SetActive(true);
+            }
         }
     }
     private void DisplayName()
