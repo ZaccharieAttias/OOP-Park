@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEngine;
+using System.Linq;
 
 
 public class JsonUtilityManager : MonoBehaviour
@@ -50,6 +51,8 @@ public class JsonUtilityManager : MonoBehaviour
         if (RestrictionManager.Instance.OnlineGame) RestrictionsData.Load();
 
         GameplayData.Load();
+        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.First());
+        GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
     }
     public void SetPath(string path)
     {
