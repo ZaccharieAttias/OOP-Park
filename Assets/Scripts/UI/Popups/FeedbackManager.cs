@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class FeedbackManager : MonoBehaviour
@@ -49,9 +50,18 @@ public class FeedbackManager : MonoBehaviour
         var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         var chapterNumber = int.Parse(currentSceneName[1].ToString());
 
-        string chapterName = SceneManagement.GameplayInfo[0].ChapterInfos[chapterNumber].Name;
-
-        SceneManagement.LoadScene(chapterName);
+        switch (chapterNumber)
+        {
+           case 0:
+               SceneManager.LoadScene("ChapterTutorial");
+               break;
+           case 1:
+               SceneManager.LoadScene("ChapterIneritance");
+               break;
+           case 2:
+                SceneManager.LoadScene("ChapterPolymorphism");
+                break;
+        }
     }
 
     public void RetryFactory()
