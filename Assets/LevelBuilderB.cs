@@ -440,6 +440,8 @@ public class LevelBuilderB : MonoBehaviour
         playTestManager.Player = Player;
         playTestManager.x_start_pos = Player.transform.position.x;
         playTestManager.y_start_pos = Player.transform.position.y;
+
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().StartPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, -10);
     }
     private void SetGround(int x, int y, int z)
     {
