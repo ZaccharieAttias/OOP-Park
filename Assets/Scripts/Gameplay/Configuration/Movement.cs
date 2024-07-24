@@ -124,7 +124,7 @@ public class Movement : MonoBehaviour
     private void PerformJump()
     {
         //si la gravité est inversée, on saute vers le bas
-        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, -JumpForce);
+        if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         else Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         JumpsLeft--;
 
@@ -272,26 +272,5 @@ public class Movement : MonoBehaviour
         }
 
         Gizmos.DrawWireSphere(GroundCheckCircle.position, GroundCheckRadius);
-    }
-    public void ResetPlayer()
-    {
-        MoveSpeed = 9f;
-        JumpForce = 20f;
-        MaxJumps = 1;
-        JumpsLeft = MaxJumps;
-        isGrounded = false;
-        IsWallSliding = false;
-        IsWallJumping = false;
-        AllowToWallJump = false;
-        WallJumpingCounter = 1;
-        WallJumpingDirection = 1;
-        WallJumpingVector = new Vector2(24f, 18f);
-        WallJumpingTime = 0.2f;
-        WallJumpingDuration = 0.4f;
-        PowerupTimer = 0f;
-        cooldownTimer = Mathf.Infinity;
-        attackCooldown = Mathf.Infinity;
-        Velocity = Vector3.zero;
-        Character.Animator.SetBool("Ready", true);
     }
 }
