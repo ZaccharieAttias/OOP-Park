@@ -51,7 +51,6 @@ public class AbstractClassCheck : MonoBehaviour
         TriesCounter = 0;
         FeedbackManager = GameObject.Find("Canvas/Popups").GetComponent<FeedbackManager>();
 
-        GameplayData.Load();
         if (RestrictionManager.Instance.AllowAbstractClass && !RestrictionManager.Instance.OnlineGame)
         {
             SetStage();
