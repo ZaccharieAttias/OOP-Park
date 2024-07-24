@@ -150,7 +150,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "inverseGravity",
             Description = "This is the InverseGravity attribute",
-            Value = -30f,
+            Value = -40f,
 
             AccessModifier = AccessModifier.Protected
         };
