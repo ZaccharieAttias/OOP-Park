@@ -78,8 +78,18 @@ public static class SceneManagement
         string LevelName = GameObject.Find("LevelManager").GetComponent<LevelDownload>().LevelName1;
         var ChapterInfos = GameplayInfo[1].ChapterInfos;
         var currentChapter = ChapterInfos.Find(chapter => chapter.Name == LevelName);
-
-        currentChapter.LevelsInfo[0].Status = 1;
+        if (currentChapter != null)
+            currentChapter.LevelsInfo[0].Status = 1;
+        else 
+            {
+                ChapterInfos.Add(new ChapterInfo
+                {
+                    ChapterNumber = ChapterInfos.Count,
+                    Name = LevelName,
+                    LevelsInfo = new List<LevelInfo> { new LevelInfo { LevelNumber = 1, Status = 1 } }
+                });
+            }
+        
         GameplayData.Save();
     }
 }
