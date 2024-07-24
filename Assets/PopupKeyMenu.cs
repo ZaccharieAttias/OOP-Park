@@ -32,7 +32,6 @@ public class PopupKeyMenu : MonoBehaviour
     }
     public void ToggleOn()
     {
-        SceneManagement.ScenePause("KeyMenu");
         if (RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowEncapsulation && !RestrictionManager.Instance.AllowOverride)
             {upcastingManager.ToggleActivation(); return;}
         else if (!RestrictionManager.Instance.AllowUpcasting && RestrictionManager.Instance.AllowEncapsulation && !RestrictionManager.Instance.AllowOverride)
@@ -40,6 +39,7 @@ public class PopupKeyMenu : MonoBehaviour
         else if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowEncapsulation && RestrictionManager.Instance.AllowOverride)
             {characterAppearanceManager.ToggleActivation(); return;}
         
+        SceneManagement.ScenePause("KeyMenu");
         PopupMenu.SetActive(true);
         LoadPopupButtons();
     }
