@@ -41,12 +41,15 @@ public class PauseManager : MonoBehaviour
 
     public void RestartFactory()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        SceneManagement.SceneResume("PauseManager");
+        SceneManagement.LoadScene(currentSceneName);
     }
 
     public void ExitFactory()
     {
         string sceneName = SceneManager.GetActiveScene().name;
+        SceneManagement.SceneResume("PauseManager");
         if (sceneName.Contains("C0"))
         {
             SceneManagement.LoadScene("ChapterTutorial");
