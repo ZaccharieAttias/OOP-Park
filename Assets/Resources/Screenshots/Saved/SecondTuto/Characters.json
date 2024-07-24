@@ -1,0 +1,90 @@
+[
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 1",
+    "Description": "This is Character 1.",
+    "Attributes": [
+      {
+        "Owner": "Character 1",
+        "Name": "speed",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 1",
+        "Name": "wallJump",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 1",
+        "Name": "WallJump",
+        "Attribute": {
+          "Owner": "Character 1",
+          "Name": "wallJump",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": null,
+    "Childrens": [
+      "Character 5"
+    ]
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 5",
+    "Description": "I'm Character 5",
+    "Attributes": [
+      {
+        "Owner": "Character 5",
+        "Name": "inverseGravity",
+        "Value": -40.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 5",
+        "Name": "InverseGravity",
+        "Attribute": {
+          "Owner": "Character 5",
+          "Name": "inverseGravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Character 1",
+    "Childrens": []
+  }
+]
