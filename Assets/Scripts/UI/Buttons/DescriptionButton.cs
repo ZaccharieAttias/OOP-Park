@@ -27,10 +27,13 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
             
 
             var attribute = CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name);
-            if (attribute != null && attribute.Owner == CharactersData.CharactersManager.CurrentCharacter.Name && RestrictionManager.Instance.AllowEncapsulation)
+            if (attribute != null && attribute.Owner == CharactersData.CharactersManager.CurrentCharacter.Name)
             {
-                MarkButton.ActivateButtons();
-                MarkButton.AttributeClicked(attribute);
+                if (RestrictionManager.Instance.AllowEncapsulation)
+                {
+                    MarkButton.ActivateButtons();
+                    MarkButton.AttributeClicked(attribute);
+                }
                 if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")
                     if (!GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay)
                         GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(attribute);
