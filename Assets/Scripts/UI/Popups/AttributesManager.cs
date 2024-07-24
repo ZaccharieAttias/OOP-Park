@@ -49,6 +49,11 @@ public class AttributesManager : MonoBehaviour
         {
             Image image = attributeGameObject.GetComponent<Image>();
             image.color = CharactersData.CharactersManager.CurrentCharacter.Attributes.Any(item => item.Name == attributeGameObject.name) ? Color.green : Color.white;
+
+            bool isAttributeAllowed = !IsAttributeExist(CharactersData.CharactersManager.CurrentCharacter.Parent, attributeGameObject.name);
+            bool isOkay = isAttributeAllowed || CharactersData.CharactersManager.CurrentCharacter.IsOriginal || RestrictionManager.Instance.OnlineGame;
+            attributeGameObject.GetComponent<Button>().interactable = isOkay;
+            image.color = isOkay ? Color.white : Color.yellow;
         }
     }
     public void MarkAttribute(GameObject attributeGameObject, Attribute attribute)
@@ -61,7 +66,6 @@ public class AttributesManager : MonoBehaviour
             Attribute newAttribute = new(attribute, currentCharacter.Name);
             currentCharacter.Attributes.Add(newAttribute);
         }
-
         else
         {
             bool isAttributeOwner = currentCharacter.Name == currentAttribute.Owner;
@@ -78,6 +82,20 @@ public class AttributesManager : MonoBehaviour
 
         Image image = attributeGameObject.GetComponent<Image>();
         image.color = currentAttribute is null ? Color.green : Color.white;
+    }
+    public bool IsAttributeExist(CharacterB character, string attributeName)
+    {
+        if (character == null)
+            return false;
+
+        bool isAttributeExist = character.Attributes.Any(attribute => attribute.Name.ToLower() == attributeName.ToLower());
+
+        if (isAttributeExist is false && character.Parent is not null)
+        {
+            isAttributeExist = IsAttributeExist(character.Parent, attributeName);
+        }
+
+        return isAttributeExist;
     }
 
     public void CancelAttributeReferences(CharacterB character, Attribute attribute)
@@ -121,11 +139,21 @@ public class AttributesManager : MonoBehaviour
         SceneManagement.ScenePause("AttributesManager");
         LoadPopup();
         Popup.SetActive(true);
+        if (RestrictionManager.Instance.AllowSingleInheritance)
+        {
+            var characterCreator = GameObject.Find("Canvas/Popups/CharacterCreation");
+            characterCreator.SetActive(false);
+        }
     }
     public void ToggleOff()
     {
         SceneManagement.SceneResume("AttributesManager");
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
+        if (RestrictionManager.Instance.AllowSingleInheritance)
+        {
+            var characterCreator = GameObject.Find("Canvas/Popups/CharacterCreation");
+            characterCreator.SetActive(true);
+        }
     }
 }

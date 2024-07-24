@@ -15,6 +15,7 @@ public class MethodsManager : MonoBehaviour
     [Header("Method Data")]
     public List<Method> MethodsCollection;
     public List<GameObject> MethodGameObjects;
+    public int MethodLimit;
 
 
     public void Start()
@@ -35,6 +36,8 @@ public class MethodsManager : MonoBehaviour
 
         Button popupToggleOff = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         popupToggleOff.onClick.AddListener(() => ToggleOff());
+
+        MethodLimit = 2;
     }
 
     public void LoadPopup()
@@ -50,7 +53,8 @@ public class MethodsManager : MonoBehaviour
             image.color = CharactersData.CharactersManager.CurrentCharacter.Methods.Any(item => item.Name == methodGameObject.name) ? Color.green : Color.white;
 
             Button methodButton = methodGameObject.GetComponent<Button>();
-            methodButton.interactable = HasRequiredAttribute(CharactersData.CharactersManager.CurrentCharacter, methodGameObject.name, RestrictionManager.Instance.AllowAccessModifier);
+            int methodCount = CharactersData.CharactersManager.CurrentCharacter.Methods.Count;
+            methodButton.interactable = HasRequiredAttribute(CharactersData.CharactersManager.CurrentCharacter, methodGameObject.name, RestrictionManager.Instance.AllowAccessModifier) && (image.color == Color.green || methodCount < MethodLimit || RestrictionManager.Instance.OnlineGame || CharactersData.CharactersManager.CurrentCharacter.IsOriginal);
         }
     }
     public void MarkMethod(GameObject methodGameObject, Method method)
@@ -74,6 +78,8 @@ public class MethodsManager : MonoBehaviour
 
         Image image = methodGameObject.GetComponent<Image>();
         image.color = currentMethod is null ? Color.green : Color.white;
+
+        LoadPopup();
     }
     
     public bool HasRequiredAttribute(CharacterB character, string methodName, bool allowAccessModifier)
@@ -129,11 +135,21 @@ public class MethodsManager : MonoBehaviour
         SceneManagement.ScenePause("MethodsManager");
         LoadPopup();
         Popup.SetActive(true);
+        if (RestrictionManager.Instance.AllowSingleInheritance)
+        {
+            var characterCreator = GameObject.Find("Canvas/Popups/CharacterCreation");
+            characterCreator.SetActive(false);
+        }
     }
     public void ToggleOff()
     {
         SceneManagement.SceneResume("MethodsManager");
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
+        if (RestrictionManager.Instance.AllowSingleInheritance)
+        {
+            var characterCreator = GameObject.Find("Canvas/Popups/CharacterCreation");
+            characterCreator.SetActive(true);
+        }
     }
 }
