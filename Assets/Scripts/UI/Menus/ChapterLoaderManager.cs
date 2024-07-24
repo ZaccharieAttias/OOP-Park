@@ -12,6 +12,8 @@ public class ChapterLoaderManager : MonoBehaviour
 
     public void Start()
     {
+        GameplayData.Initialize();
+        GameplayData.Load();
         var gameplayInfo = SceneManagement.GameplayInfo;
         var chapterInfos = gameplayInfo[0].ChapterInfos;
         var levelsInfo = ChapterIndex == -1 ? chapterInfos.Select(ci => ci.LevelsInfo[0]).ToList() : chapterInfos[ChapterIndex].LevelsInfo;
