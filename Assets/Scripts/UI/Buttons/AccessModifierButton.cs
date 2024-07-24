@@ -36,6 +36,8 @@ public class AccessModifierButton : MonoBehaviour
 
     private void MarkAccessModifier()
     {
+        if (CharactersData.CharactersManager.CurrentCharacter.IsOriginal) return;
+
         AccessModifierIndex = (AccessModifierIndex + 1) % AccessModifierCount;
 
         if (Attribute is not null) Attribute.AccessModifier = (AccessModifier)AccessModifierIndex;
