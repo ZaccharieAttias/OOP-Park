@@ -23,12 +23,7 @@ public class validateQuiz : MonoBehaviour
     public GameObject ErrorPanel;
     public TMP_Text ErrorText;
 
-    public void Start()
-    {
-        GameplayData.Initialize();
-        GameplayData.Load();
-    }
-    
+   
     public void Validate()
     {
         ErrorText.text = "";
