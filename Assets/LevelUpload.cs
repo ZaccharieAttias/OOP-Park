@@ -22,9 +22,9 @@ public class LevelUpload : MonoBehaviour
     private string LevelName;
     private GameObject LevelUploadUi;
 
-    private TileMap _groundMap;
-    private TileMap _coverMap;
-    private TileMap _propsMap;
+    public TileMap _groundMap;
+    public TileMap _coverMap;
+    public TileMap _propsMap;
     private LevelBuilderB LevelBuilder;
     private int TileMapContextID;
     private int CharacterTreeContextID;

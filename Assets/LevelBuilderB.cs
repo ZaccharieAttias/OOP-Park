@@ -576,6 +576,9 @@ public class LevelBuilderB : MonoBehaviour
     public void Load(string path, string LevelName)
     {
         BuildLevel(path + "/Level_" + LevelName + "_Data.json");
+        GameObject.Find("LevelManager").GetComponent<LevelUpload>()._groundMap = _groundMap;
+        GameObject.Find("LevelManager").GetComponent<LevelUpload>()._coverMap = _coverMap;
+        GameObject.Find("LevelManager").GetComponent<LevelUpload>()._propsMap = _propsMap;
         SetLayers(Terrain.Find("Ground"), "Ground");
         SetUpPlayer();
         JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
