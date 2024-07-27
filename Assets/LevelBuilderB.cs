@@ -31,6 +31,7 @@ public class LevelBuilderB : MonoBehaviour
     public TileMap _groundMap;
     public TileMap _coverMap;
     public TileMap _propsMap;
+    public TileMap _wallMap;
 
     private string _hash;
 
@@ -51,6 +52,7 @@ public class LevelBuilderB : MonoBehaviour
         _groundMap = new TileMap(1, 1, 4);
         _coverMap = new TileMap(1, 1, 4);
         _propsMap = new TileMap(1, 1, 4);
+        _wallMap = new TileMap(1, 1, 4);
 
         Parent = GameObject.Find("Grid/LevelBuilder").transform;
         Terrain = Parent.Find("Terrain");
@@ -60,6 +62,7 @@ public class LevelBuilderB : MonoBehaviour
 
         MinimumObjectsCreated.Add("Player", false);
         MinimumObjectsCreated.Add("Ground", false);
+        MinimumObjectsCreated.Add("Finish", false);
     }
     public void SwitchTile(int type, int index)
     {
@@ -85,7 +88,10 @@ public class LevelBuilderB : MonoBehaviour
                 case 3:
                     Cursor.sprite = SpriteCollection.OtherSprites[index];
                     break;
-                case 4:
+                case 4 :
+                    Cursor.sprite = SpriteCollection.WallTilesets[index];
+                    break;
+                case 5:
                     Cursor.sprite = SpriteCollection.GamePlaySprite[index];
                     break;
             }
@@ -122,6 +128,7 @@ public class LevelBuilderB : MonoBehaviour
             _groundMap.ExtendMap(p);
             _coverMap.ExtendMap(p);
             _propsMap.ExtendMap(p);
+            _wallMap.ExtendMap(p);
             _positionMin = new Position(Mathf.Min(_positionMin.X, position.X), Mathf.Min(_positionMin.Y, position.Y));
             p = position - _positionMin;
             _hash = null;
@@ -139,19 +146,22 @@ public class LevelBuilderB : MonoBehaviour
             case 1: CreateCover(p.X, p.Y, _layer); break;
             case 2:
             case 3: CreateProps(p.X, p.Y, _layer); break;
-            case 4: 
+            case 4: CreateWall(p.X, p.Y, _layer); break;
+            case 5: 
                 switch (_index)
                 {
                     case -1: 
                         if (p.X < 0 || p.X >= _propsMap.Width || p.Y <= 0 || p.Y >= _propsMap.Height) return;
+                        if (_propsMap[p.X, p.Y, _layer] != null && _propsMap[p.X, p.Y, _layer].SpriteRenderer.sprite.name == "End") MinimumObjectsCreated["Finish"] = false;
                         _propsMap.Destroy(p.X, p.Y, _layer);
                         break;
                     case 0: CreatePlayer(p.X, p.Y, _layer); break;
                     case 1: CreateCheckPoint(p.X, p.Y, _layer); break;
                     case 2: CreateCheckPoint(p.X, p.Y, _layer); break;
                     case 3: CreateCheckPoint(p.X, p.Y, _layer); break;
-                    case 4: CreacteDeathObject(p.X, p.Y, _layer); break;
-                    case 5: CreateDeathZone(p.X, p.Y, _layer); break;
+                    case 4: CreateEndPoint(p.X, p.Y, _layer); break;
+                    case 5: CreateDeathObject(p.X, p.Y, _layer); break;
+                    case 6: CreateDeathZone(p.X, p.Y, _layer); break;
                 }
                 break;
         }
@@ -209,6 +219,37 @@ public class LevelBuilderB : MonoBehaviour
             {
                 SetCover(x + dx, y + dy, z);
             }
+        }
+    }
+    public void CreateWall(int x, int y, int z)
+    {
+        if (x < 0 || x >= _wallMap.Width || y < 0 || y >= _wallMap.Height) return;
+
+        _wallMap.Destroy(x, y, z);
+
+        if (_groundMap[x, y, z] != null)
+        {
+            Debug.LogWarning("Wall can not be placed on a ground");
+            return;
+        }
+
+        if (_index != -1)
+        {
+            var block = new Block(SpriteCollection.WallTilesets[_index].name);
+
+            block.Transform.SetParent(Parent.Find("Walls").transform);
+            block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+            block.Transform.localScale = Vector3.one;
+            block.SpriteRenderer.sprite = SpriteCollection.WallTilesets[_index];
+
+            if (int.Parse(SpriteCollection.WallTilesets[_index].name) % 2 == 0)
+                block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(-0.3125846f, 0.5f);
+            else
+                block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0.3125846f, 0.5f);
+            block.GameObject.GetComponent<BoxCollider2D>().size = new Vector2(0.3748307f, 1f);
+            block.GameObject.layer = 8;
+
+            _wallMap[x, y, z] = block;
         }
     }
     public void CreateCover(int x, int y, int z)
@@ -317,7 +358,44 @@ public class LevelBuilderB : MonoBehaviour
 
         _propsMap[x, y, z] = block;
     }
-    public void CreacteDeathObject(int x, int y, int z)
+    public void CreateEndPoint(int x, int y, int z)
+    {
+        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
+        {
+            Debug.LogWarning("Object can be placed on the ground only.");
+            return;
+        }
+        
+        _propsMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+
+        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        if (RestrictionManager.Instance.OnlineBuild)
+            block.GameObject.tag = "EndPoint";
+        else if (RestrictionManager.Instance.OnlineGame)
+            block.GameObject.tag = "Finish";
+        MinimumObjectsCreated["Finish"] = true;
+
+        if (_type == 4 && _index != -1)
+        {
+            block.OffsetY = -1;
+            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
+        }
+
+        _propsMap[x, y, z] = block;
+    }
+    public void CreateDeathObject(int x, int y, int z)
     {
         if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
 
@@ -542,6 +620,10 @@ public class LevelBuilderB : MonoBehaviour
     {
         return _propsMap;
     }
+    public TileMap GetWallMap()
+    {
+        return _wallMap;
+    }
     public void SetUI()
     {
         if (Terrain.Find("Ground").childCount == 0) MinimumObjectsCreated["Ground"] = false;
@@ -552,8 +634,11 @@ public class LevelBuilderB : MonoBehaviour
             GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(true);
             if(MinimumObjectsCreated["Ground"])
             {
-                if (!swapScreen.firstTime){
-                    GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true);
+                if (!swapScreen.firstTime)
+                {
+                    if (MinimumObjectsCreated["Finish"])
+                        GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(true);
+                    else GameObject.Find("Canvas/Menus/Gameplay/Buttons/Upload").SetActive(false);
                     GameObject.Find("Canvas/Menus/Gameplay/Buttons/SaveForLater").SetActive(true);
                     GameObject.Find("Canvas/Menus/Gameplay/Buttons/PlayTest").SetActive(true);
                 }
@@ -579,6 +664,7 @@ public class LevelBuilderB : MonoBehaviour
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._groundMap = _groundMap;
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._coverMap = _coverMap;
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._propsMap = _propsMap;
+        GameObject.Find("LevelManager").GetComponent<LevelUpload>()._wallMap = _wallMap;
         SetLayers(Terrain.Find("Ground"), "Ground");
         SetUpPlayer();
         JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
@@ -603,6 +689,7 @@ public class LevelBuilderB : MonoBehaviour
                         _groundMap.Destroy(x, y, z);
                         _coverMap.Destroy(x, y, z);
                         _propsMap.Destroy(x, y, z);
+                        _wallMap.Destroy(x, y, z);
                     }
                 }
             }
@@ -617,6 +704,7 @@ public class LevelBuilderB : MonoBehaviour
         _groundMap = new TileMap(width, height, depth);
         _coverMap = new TileMap(width, height, depth);
         _propsMap = new TileMap(width, height, depth);
+        _wallMap = new TileMap(width, height, depth);
         _positionMin = new Position(-width / 2, -height / 2);
 
         var index = _index;
@@ -630,6 +718,7 @@ public class LevelBuilderB : MonoBehaviour
                     var ground = level.GroundMap[x, y, z] == 0 ? null : level.TileTable[level.GroundMap[x, y, z] - 1];
                     var cover = level.CoverMap[x, y, z] == 0 ? null : level.TileTable[level.CoverMap[x, y, z] - 1];
                     var props = level.PropsMap[x, y, z] == 0 ? null : level.TileTable[level.PropsMap[x, y, z] - 1];
+                    var walls = level.WallMap[x, y, z] == 0 ? null : level.TileTable[level.WallMap[x, y, z] - 1];
 
                     if (ground != null)
                     {
@@ -652,6 +741,16 @@ public class LevelBuilderB : MonoBehaviour
                             CreateCover(x, y, z);
                         }
                     }
+                    if (walls != null)
+                    {
+                        _type = 4;
+                        _index = SpriteCollection.WallTilesets.FindIndex(i => i.name == walls);
+
+                        if (_index != -1)
+                        {
+                            CreateWall(x, y, z);
+                        }
+                    }
 
                     if (props != null)
                     {
@@ -665,19 +764,21 @@ public class LevelBuilderB : MonoBehaviour
 
                             if (_index == -1)
                             {
-                                _type = 4;
+                                _type = 5;
                                 _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
                             }
                         }
                         if (_index != -1)
                         {
-                            if (_type == 4)
+                            if (_type == 5)
                             {
                                 if (_index == 1 || _index == 2 || _index == 3)
                                     CreateCheckPoint(x, y, z);
                                 else if (_index == 4)
-                                    CreacteDeathObject(x, y, z);
+                                    CreateEndPoint(x, y, z);
                                 else if (_index == 5)
+                                    CreateDeathObject(x, y, z);
+                                else if (_index == 6)
                                     CreateDeathZone(x, y, z);
 
                             }

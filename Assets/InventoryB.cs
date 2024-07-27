@@ -45,6 +45,14 @@ public class InventoryB : MonoBehaviour
                 }
                 break;
             case 4:
+                var walltilesets = SpriteCollection.WallTilesets;
+
+                for (var i = 0; i < walltilesets.Count; i++)
+                {
+                    CreateInventoryItem(walltilesets[i].name, walltilesets[i], tab, i);
+                }
+                break;
+            case 5:
                 var gameplayObjects = SpriteCollection.GamePlaySprite;
 
                 for (var i = 0; i < gameplayObjects.Count; i++)

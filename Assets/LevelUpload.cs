@@ -25,10 +25,12 @@ public class LevelUpload : MonoBehaviour
     public TileMap _groundMap;
     public TileMap _coverMap;
     public TileMap _propsMap;
+    public TileMap _wallMap;
     private LevelBuilderB LevelBuilder;
     private int TileMapContextID;
     private int CharacterTreeContextID;
     public JsonUtilityManager JsonUtilityManager;
+    public GameObject ErrorText;
 
     public void Start()
     {
@@ -40,6 +42,7 @@ public class LevelUpload : MonoBehaviour
         _groundMap = LevelBuilder.GetGroundMap();
         _coverMap = LevelBuilder.GetCoverMap();
         _propsMap = LevelBuilder.GetPropsMap();
+        _wallMap = LevelBuilder.GetWallMap();
 
         TileMapContextID = 235247;
         CharacterTreeContextID = 235353;
@@ -215,9 +218,17 @@ public class LevelUpload : MonoBehaviour
                         propsIndex = level.AddTexture(_propsMap[x, y, z].SpriteRenderer.sprite.name);
                     }
 
+                    var wallIndex = -1;
+
+                    if (_wallMap[x, y, z] != null)
+                    {
+                        wallIndex = level.AddTexture(_wallMap[x, y, z].SpriteRenderer.sprite.name);
+                    }
+
                     level.GroundMap[x, y, z] = groundIndex + 1;
                     level.CoverMap[x, y, z] = coverIndex + 1;
                     level.PropsMap[x, y, z] = propsIndex + 1;
+                    level.WallMap[x, y, z] = wallIndex + 1;
                 }
             }
         }
@@ -233,8 +244,6 @@ public class LevelUpload : MonoBehaviour
     }
     public void SaveCharacter(string path)
     {
-        foreach (var character in CharactersData.CharactersManager.CharactersCollection)
-            character.IsOriginal = true;
         JsonUtilityManager.SetPath(path);
         JsonUtilityManager.Save();
     }
@@ -245,7 +254,7 @@ public class LevelUpload : MonoBehaviour
             LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) =>{});
             return true;
         }
-        while (!files[i].Contains(".json") || files[i].Contains("_Data"))
+        while (!files[i].Contains(".json") || files[i].Contains("_Data") || files[i].Contains(".meta"))
         {
             i++;
             if (i >= files.Length)
@@ -273,5 +282,26 @@ public class LevelUpload : MonoBehaviour
             }
         });
         return false;
+    }
+    public void CheckName()
+    {
+        Button UploadButton = LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>();
+        UploadButton.interactable = false;
+        LootLockerSDKManager.GetAssetListWithCount(1000, (response) =>
+        {
+            for (int i = 0; i < response.assets.Length; i++)
+            {
+                if (response.assets[i].name == LevelNameInputField.text)
+                {
+                    ErrorText.SetActive(true);
+                    UploadButton.interactable = true;
+                    return;
+                }
+            }
+            ErrorText.SetActive(false);
+            UploadButton.interactable = true;
+            CreateLevel();
+
+        }, null, true, new Dictionary<string, string>() { { "Context", "TileMap" } });
     }
 }

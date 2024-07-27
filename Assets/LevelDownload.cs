@@ -20,7 +20,7 @@ public class LevelDownload : MonoBehaviour
 
     public void DownloadLevelData()
     {
-        LootLockerSDKManager.GetAssetListWithCount(50, (response) =>
+        LootLockerSDKManager.GetAssetListWithCount(1000, (response) =>
         {
             foreach (Transform child in LevelDataEntryContent)
             {
