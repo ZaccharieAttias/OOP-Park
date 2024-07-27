@@ -21,6 +21,7 @@ public class PlayTestManager : MonoBehaviour
     private string PreviousPath;
     public GameObject TreeContent;
     public GameObject SpecialAbilityTreeContent;
+    public GameObject[] bricks;
 
     public void RunTestGameplay()
     {
@@ -55,6 +56,8 @@ public class PlayTestManager : MonoBehaviour
         GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
 
         RestrictionManager.Instance.OnlineBuild = false;
+
+        bricks = GameObject.FindGameObjectsWithTag("Brick");
     }
 
     public void ResetTestGameplay()
@@ -98,6 +101,11 @@ public class PlayTestManager : MonoBehaviour
 
         foreach (Transform child in PopUp.transform)
             child.gameObject.SetActive(false);
+
+        //trouvez ts les objets qui ont le tag "Brick" et activez les
+        foreach (GameObject brick in bricks)
+            brick.GetComponent<BreakingBrick>().Activate();
+        
     }
 
     public void SetOnlickButton()

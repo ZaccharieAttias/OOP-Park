@@ -161,7 +161,8 @@ public class LevelBuilderB : MonoBehaviour
                     case 3: CreateCheckPoint(p.X, p.Y, _layer); break;
                     case 4: CreateEndPoint(p.X, p.Y, _layer); break;
                     case 5: CreateDeathObject(p.X, p.Y, _layer); break;
-                    case 6: CreateDeathZone(p.X, p.Y, _layer); break;
+                    case 6: CreateBrick(p.X, p.Y, _layer); break;
+                    case 7: CreateDeathZone(p.X, p.Y, _layer); break;
                 }
                 break;
         }
@@ -181,6 +182,7 @@ public class LevelBuilderB : MonoBehaviour
                 if (_groundMap[x, y, layer] != null) _groundMap[x, y, layer].SpriteRenderer.enabled = _layersEnabled[layer];
                 if (_coverMap[x, y, layer] != null) _coverMap[x, y, layer].SpriteRenderer.enabled = _layersEnabled[layer];
                 if (_propsMap[x, y, layer] != null) _propsMap[x, y, layer].SpriteRenderer.enabled = _layersEnabled[layer];
+                if (_wallMap[x, y, layer] != null) _wallMap[x, y, layer].SpriteRenderer.enabled = _layersEnabled[layer];
             }
         }
     }
@@ -420,6 +422,43 @@ public class LevelBuilderB : MonoBehaviour
         block.GameObject.GetComponent<EdgeCollider2D>().offset = new Vector2(0, 0.5f);
         block.GameObject.GetComponent<EdgeCollider2D>().isTrigger = true;
         block.GameObject.tag = "Obstacle";
+
+        if (_type == 4 && _index != -1)
+        {
+            block.OffsetY = -1;
+            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
+        }
+
+        _propsMap[x, y, z] = block;
+    }
+    public void CreateBrick(int x, int y, int z)
+    {
+        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+
+        //ne peut pas etre placé sur le sol ou sur un mur
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
+        {
+            Debug.LogWarning("Brick can not be placed on the ground or on a wall.");
+            return;
+        }
+
+        _propsMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+
+        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        block.GameObject.tag = "Brick";
+        block.GameObject.AddComponent<Animator>();
+        block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/BreakingBricks/Red/RedBrick") as RuntimeAnimatorController;
+        block.GameObject.AddComponent<BreakingBrick>();
 
         if (_type == 4 && _index != -1)
         {
@@ -779,6 +818,8 @@ public class LevelBuilderB : MonoBehaviour
                                 else if (_index == 5)
                                     CreateDeathObject(x, y, z);
                                 else if (_index == 6)
+                                    CreateBrick(x, y, z);
+                                else if (_index == 7)
                                     CreateDeathZone(x, y, z);
 
                             }
