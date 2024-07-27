@@ -111,7 +111,9 @@ public class FeedbackManager : MonoBehaviour
         FeedbackScore.text = $"{score}%";
         FeedbackText.text = DeathsCount == 0 ? "Congratulations! You have completed the level without dying!" : "You have died. Try again!";
 
-        if (score >= 70) SceneManagement.UnlockNextLevel();
+        if (SceneName == "OnlinePlayground")
+            SceneManagement.CompleteOnline();
+        else if (score >= 70) SceneManagement.UnlockNextLevel();
     }
 
     public void ToggleOn()

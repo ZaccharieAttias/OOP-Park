@@ -54,18 +54,19 @@ public class PlayTestManager : MonoBehaviour
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.First());
         GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
 
-        RestrictionManager.Instance.OnlineGame = false;
+        RestrictionManager.Instance.OnlineBuild = false;
     }
 
     public void ResetTestGameplay()
     {
         IsTestGameplay = false;
-        RestrictionManager.Instance.OnlineGame = true;
+        RestrictionManager.Instance.OnlineBuild = true;
 
         foreach (Transform child in TreeContent.transform)
             Destroy(child.gameObject);
         GameObject PopUp = GameObject.Find("Canvas/Popups");
         PopUp.GetComponent<CharacterSelectionManager>().CleanContent();
+        PopUp.GetComponent<CharacterSelectionManager>().MenuInitialization();
         PopUp.GetComponent<SpecialAbilityManager>().SpecialAbilityGameObjects.Clear();
 
         JsonUtilityManager.SetPath(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp");

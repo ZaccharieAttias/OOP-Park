@@ -26,6 +26,17 @@ public class GameController : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Finish"))
             FeedbackManager.ToggleOn();
+        if (collision.gameObject.CompareTag("EndPoint") && GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay)
+            {   
+                Waiting();
+                GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().ResetTestGameplay();
+                GameObject Buttons = GameObject.Find("Canvas/Menus/Gameplay/Buttons");
+                Buttons.transform.GetChild(0).gameObject.SetActive(true);
+                Buttons.transform.GetChild(1).gameObject.SetActive(true);
+                Buttons.transform.GetChild(2).gameObject.SetActive(false);
+                Buttons.transform.GetChild(3).gameObject.SetActive(true);
+                Buttons.transform.GetChild(4).gameObject.SetActive(true);
+            }
     }
 
     public void UpdateCheckpoint(Vector2 newCheckpointPos)
@@ -53,6 +64,10 @@ public class GameController : MonoBehaviour
         transform.localScale = new Vector3(1, 1, 1);
         Rigidbody2D.simulated = true;
         isDead = false;
+    }
+    IEnumerator Waiting()
+    {
+        yield return new WaitForSeconds(1);
     }
     public void ResetGame()
     {
