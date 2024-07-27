@@ -54,7 +54,7 @@ public class MethodsManager : MonoBehaviour
 
             Button methodButton = methodGameObject.GetComponent<Button>();
             int methodCount = CharactersData.CharactersManager.CurrentCharacter.Methods.Count;
-            methodButton.interactable = HasRequiredAttribute(CharactersData.CharactersManager.CurrentCharacter, methodGameObject.name, RestrictionManager.Instance.AllowAccessModifier) && (image.color == Color.green || methodCount < MethodLimit || RestrictionManager.Instance.OnlineGame || CharactersData.CharactersManager.CurrentCharacter.IsOriginal);
+            methodButton.interactable = HasRequiredAttribute(CharactersData.CharactersManager.CurrentCharacter, methodGameObject.name, RestrictionManager.Instance.AllowAccessModifier) && (image.color == Color.green || methodCount < MethodLimit || RestrictionManager.Instance.OnlineBuild || CharactersData.CharactersManager.CurrentCharacter.IsOriginal);
         }
     }
     public void MarkMethod(GameObject methodGameObject, Method method)

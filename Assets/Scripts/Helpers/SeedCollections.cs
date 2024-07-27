@@ -31,7 +31,7 @@ public class SeedCollections : MonoBehaviour
         InitializeAttributesCollection();
         InitializeMethodsCollection();
         InitializeSpecialAbilityCollection();
-        if (!RestrictionManager.Instance.OnlineGame) InitializeCharactersCollection();
+        if (!RestrictionManager.Instance.OnlineBuild && !RestrictionManager.Instance.OnlineGame) InitializeCharactersCollection();
 
         SceneManagement.GameplayInfo = BuildGameplayInfo();
     }

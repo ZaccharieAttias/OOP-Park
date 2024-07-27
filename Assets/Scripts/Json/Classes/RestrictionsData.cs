@@ -27,9 +27,20 @@ public static class RestrictionsData
                 AllowUpcasting = RestrictionManager.Instance.AllowUpcasting,
                 AllowAbstractClass = RestrictionManager.Instance.AllowAbstractClass,
                 AllowEncapsulation = RestrictionManager.Instance.AllowEncapsulation,
-                OnlineGame = RestrictionManager.Instance.OnlineGame
+                OnlineGame = RestrictionManager.Instance.OnlineGame,
+                OnlineBuild = RestrictionManager.Instance.OnlineBuild
             }
         };
+        if (FilePath.Contains("Saved") || FilePath.Contains("Temp")) 
+        {
+            restrictions[0].OnlineGame = false;
+            restrictions[0].OnlineBuild = true;
+        }
+        else if (FilePath.Contains("Download")) 
+        {
+            restrictions[0].OnlineGame = true;
+            restrictions[0].OnlineBuild = false;
+        }
         File.WriteAllText(FilePath, Serialize(restrictions)); 
     }
     public static void Load() 
@@ -43,7 +54,16 @@ public static class RestrictionsData
         RestrictionManager.Instance.AllowUpcasting = restrictions[0].AllowUpcasting;
         RestrictionManager.Instance.AllowAbstractClass = restrictions[0].AllowAbstractClass;
         RestrictionManager.Instance.AllowEncapsulation = restrictions[0].AllowEncapsulation;
-        RestrictionManager.Instance.OnlineGame = restrictions[0].OnlineGame;
+        if (FilePath.Contains("Saved") || FilePath.Contains("Temp")) 
+        {
+            RestrictionManager.Instance.OnlineGame = false;
+            RestrictionManager.Instance.OnlineBuild = true;
+        }
+        else if (FilePath.Contains("Download")) 
+        {
+            RestrictionManager.Instance.OnlineGame = true;
+            RestrictionManager.Instance.OnlineBuild = false;
+        }
     }
     public static void Load(string filename) 
     {
@@ -57,6 +77,7 @@ public static class RestrictionsData
         RestrictionManager.Instance.AllowAbstractClass = restrictions[0].AllowAbstractClass;
         RestrictionManager.Instance.AllowEncapsulation = restrictions[0].AllowEncapsulation;
         RestrictionManager.Instance.OnlineGame = restrictions[0].OnlineGame;
+        RestrictionManager.Instance.OnlineBuild = restrictions[0].OnlineBuild;
     }
 
     public static string Serialize(List<RestrictionData> restrictions) { return JsonConvert.SerializeObject(restrictions, Formatting.Indented); }
@@ -76,4 +97,5 @@ public class RestrictionData
     public bool AllowAbstractClass;
     public bool AllowEncapsulation;
     public bool OnlineGame;
+    public bool OnlineBuild;
 }

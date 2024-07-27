@@ -51,9 +51,10 @@ public class AttributesManager : MonoBehaviour
             image.color = CharactersData.CharactersManager.CurrentCharacter.Attributes.Any(item => item.Name == attributeGameObject.name) ? Color.green : Color.white;
 
             bool isAttributeAllowed = !IsAttributeExist(CharactersData.CharactersManager.CurrentCharacter.Parent, attributeGameObject.name);
-            bool isOkay = isAttributeAllowed || CharactersData.CharactersManager.CurrentCharacter.IsOriginal || RestrictionManager.Instance.OnlineGame;
+            bool isOkay = isAttributeAllowed || CharactersData.CharactersManager.CurrentCharacter.IsOriginal || RestrictionManager.Instance.OnlineBuild;
             attributeGameObject.GetComponent<Button>().interactable = isOkay;
-            image.color = isOkay ? Color.white : Color.yellow;
+            if (!isOkay)
+               image.color = Color.yellow;
         }
     }
     public void MarkAttribute(GameObject attributeGameObject, Attribute attribute)

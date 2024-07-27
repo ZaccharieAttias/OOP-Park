@@ -182,10 +182,11 @@ public class CharactersCreationManager : MonoBehaviour
 
     public IEnumerator CharacterBuildPipeline()
     {
-        if (RestrictionManager.Instance.OnlineGame)
+        if (RestrictionManager.Instance.OnlineBuild)
         {
             if (GetComponent<CharacterSelectionManager>().Content.childCount == 0)
                 GetComponent<CharacterSelectionManager>().MenuInitialization();
+            GetComponent<CharacterSelectionManager>().DisplayCharacters();
             yield return new WaitUntil(() => SelectionMenu.activeSelf);
             yield return new WaitUntil(() => !SelectionMenu.activeSelf);
         }
@@ -212,7 +213,7 @@ public class CharactersCreationManager : MonoBehaviour
         }
 
         CharacterB builtCharacter;
-        if(RestrictionManager.Instance.OnlineGame)
+        if(RestrictionManager.Instance.OnlineBuild)
         {
             builtCharacter = new CharacterB
             {

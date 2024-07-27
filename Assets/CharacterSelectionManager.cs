@@ -21,7 +21,7 @@ public class CharacterSelectionManager : MonoBehaviour
     public void Start()
     {
         charactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
-        charactersCreationManager.ConfirmButton.onClick.AddListener(() => DisplayCharacters());
+
 
         SelectionMenu = GameObject.Find("Canvas/Popups/Selection");
         CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();

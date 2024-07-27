@@ -37,7 +37,7 @@ public class JsonUtilityManager : MonoBehaviour
         MethodsData.Save();
         SpecialAbilitiesData.Save();
         CharactersData.Save();
-        if (RestrictionManager.Instance.OnlineGame) RestrictionsData.Save();
+        if (RestrictionManager.Instance.OnlineGame || RestrictionManager.Instance.OnlineBuild) RestrictionsData.Save();
 
         GameplayData.Save();
     }
@@ -48,7 +48,7 @@ public class JsonUtilityManager : MonoBehaviour
         SpecialAbilitiesData.Load();
         CharactersData.Load();
         CharactersGameObjectData.Load();
-        if (RestrictionManager.Instance.OnlineGame) RestrictionsData.Load();
+        if (RestrictionManager.Instance.OnlineGame || RestrictionManager.Instance.OnlineBuild) RestrictionsData.Load();
 
         GameplayData.Load();
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.First());

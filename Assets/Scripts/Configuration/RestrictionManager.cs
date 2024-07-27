@@ -15,6 +15,7 @@ public class RestrictionManager : MonoBehaviour
     public bool AllowAbstractClass;
     public bool AllowEncapsulation;
     public bool OnlineGame;
+    public bool OnlineBuild;
 
 
     public void Start() { InitializeProperties(); }
@@ -33,11 +34,9 @@ public class RestrictionManager : MonoBehaviour
             AllowAbstractClass = RestrictionMenu.Instance.AllowAbstractClass;
             AllowEncapsulation = RestrictionMenu.Instance.AllowEncapsulation;
             OnlineGame = true;
+            OnlineBuild = false;
             RestrictionMenu.Instance.Destroy();
         }
-
-
-
         ApplyRestrictions(); 
     }
 
