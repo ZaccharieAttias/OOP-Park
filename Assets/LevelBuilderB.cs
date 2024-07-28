@@ -162,7 +162,8 @@ public class LevelBuilderB : MonoBehaviour
                     case 4: CreateEndPoint(p.X, p.Y, _layer); break;
                     case 5: CreateDeathObject(p.X, p.Y, _layer); break;
                     case 6: CreateBrick(p.X, p.Y, _layer); break;
-                    case 7: CreateDeathZone(p.X, p.Y, _layer); break;
+                    case 7: CreateBrick(p.X, p.Y, _layer); break;
+                    case 8: CreateDeathZone(p.X, p.Y, _layer); break;
                 }
                 break;
         }
@@ -457,7 +458,9 @@ public class LevelBuilderB : MonoBehaviour
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = false;
         block.GameObject.tag = "Brick";
         block.GameObject.AddComponent<Animator>();
-        block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/BreakingBricks/Red/RedBrick") as RuntimeAnimatorController;
+        string name = _index == 6 ? "Animations/BreakingBricks/Red/RedBrick" : "Animations/BreakingBricks/Grey/GreyBrick";
+        Debug.Log(name);
+        block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load(name) as RuntimeAnimatorController;
         block.GameObject.AddComponent<BreakingBrick>();
 
         if (_type == 4 && _index != -1)
@@ -820,6 +823,8 @@ public class LevelBuilderB : MonoBehaviour
                                 else if (_index == 6)
                                     CreateBrick(x, y, z);
                                 else if (_index == 7)
+                                    CreateBrick(x, y, z);
+                                else if (_index == 8)
                                     CreateDeathZone(x, y, z);
 
                             }

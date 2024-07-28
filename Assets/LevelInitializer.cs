@@ -245,6 +245,8 @@ public class LevelInitializer : MonoBehaviour
                                 else if (_index == 6)
                                     CreateBrick(x, y, z);
                                 else if (_index == 7)
+                                    CreateBrick(x, y, z);
+                                else if (_index == 8)
                                     CreateDeathZone(x, y, z);
 
                             }
@@ -526,7 +528,8 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = false;
         block.GameObject.tag = "Brick";
         block.GameObject.AddComponent<Animator>();
-        block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/BreakingBricks/Red/RedBrick") as RuntimeAnimatorController;
+        string name = _index == 6 ? "Animations/BreakingBricks/Red/RedBrick" : "Animations/BreakingBricks/Grey/GreyBrick";
+        block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load(name) as RuntimeAnimatorController;
         block.GameObject.AddComponent<BreakingBrick>();
 
         if (_type == 4 && _index != -1)
