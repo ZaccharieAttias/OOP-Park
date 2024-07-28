@@ -3,14 +3,10 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Character move and jump example. Built-in component CharacterController (3D) is used. It can be replaced by 2D colliders.
-/// </summary>
 public class Movement : MonoBehaviour
 {
     [Header("Scripts Ref:")]
     public Rigidbody2D Rigidbody2D;
-
     public CharactersManager CharactersManager;
     public Powerup Powerup;
 
@@ -28,9 +24,11 @@ public class Movement : MonoBehaviour
     public int MaxJumps = 1;
     public int JumpsLeft = 1;
     public Vector3 Velocity;
-    public float WallSlideSpeed = 2f;
+    public float WallSlideSpeed = 1.5f;
     public float WallJumpingDirection = 1f;
     public float WallJumpingCounter = 1f;
+    public int MaxWallJumps = 1;
+    public int WallJumpsLeft = 1;
     public Vector2 WallJumpingVector;
 
     [Header("Ground Check:")]
@@ -44,15 +42,14 @@ public class Movement : MonoBehaviour
     [Header("Wall Check:")]
     public LayerMask WallLayer;
     public bool IsWallSliding = false;
+    public bool AllowToWallJump = false;
     public bool IsWallJumping = false;
 
-    public bool AllowToWallJump = false;
 
     [Header("Timers:")]
     public float attackCooldown = Mathf.Infinity;
     public float cooldownTimer = Mathf.Infinity;
     public float PowerupTimer = 0f;
-    public float WallJumpingTime = 0.2f;
     public float WallJumpingDuration = 0.4f;
 
 
@@ -97,23 +94,15 @@ public class Movement : MonoBehaviour
         CheckGround();
         CheckWallSliding();
         PerformWallSlide();
-        if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
+        if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0 && !IsWallSliding) PerformJump();
         if (Input.GetKey(KeyCode.A)) direction.x = -1;
         if (Input.GetKey(KeyCode.D)) direction.x = 1;
 
-        if (direction.x != 0)
-        {
-            Turn(direction.x);
-        }
+        if (direction.x != 0)Turn(direction.x);
 
         Move(direction);
 
-        if (Rigidbody2D.velocity.y == 0) JumpsLeft = MaxJumps;
-
-        // if (Input.GetKeyDown(KeyCode.D))
-        // {
-        //     Character.SetState(CharacterState.DeathB);
-        // }
+        if (Rigidbody2D.velocity.y == 0 && isGrounded) {JumpsLeft = MaxJumps; WallJumpsLeft = MaxWallJumps; WallJumpingCounter = 0; }
 
         if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown) PerformAttack();
 
@@ -143,7 +132,7 @@ public class Movement : MonoBehaviour
             else
                 boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), layer);
 
-            isGrounded = circleOverlap || boxOverlap;
+            isGrounded = circleOverlap && boxOverlap;
             if (isGrounded) break;
         }
     }
@@ -216,14 +205,15 @@ public class Movement : MonoBehaviour
         else
             boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), WallLayer);
 
-        IsWallSliding = boxOverlap && !isGrounded && horizontalInput != 0;
-
+        IsWallSliding = boxOverlap && !isGrounded && horizontalInput != 0 && Rigidbody2D.velocity.y < 0;
     }
     private void PerformWallSlide()
     {
         if (IsWallSliding)
         {
-            Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, Mathf.Clamp(Rigidbody2D.velocity.y, -WallSlideSpeed, float.MaxValue));
+            Vector2 velo = Rigidbody2D.velocity;
+            velo.y = -WallSlideSpeed;
+            Rigidbody2D.velocity = velo;
         }
     }
     private void WallJump()
@@ -232,17 +222,18 @@ public class Movement : MonoBehaviour
         {
             IsWallJumping = false;
             WallJumpingDirection = -transform.localScale.x;
-            WallJumpingCounter = WallJumpingTime;
+            WallJumpingCounter = 2f;
             CancelInvoke(nameof(StopwallJumping));
         }
         else
             WallJumpingCounter -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.W) && WallJumpingCounter > 0)
+        if (Input.GetKeyDown(KeyCode.W) && WallJumpsLeft > 0 && WallJumpingCounter > 0)
         {
             IsWallJumping = true;
             Rigidbody2D.velocity = new Vector2(WallJumpingDirection * WallJumpingVector.x, WallJumpingVector.y);
             WallJumpingCounter = 0;
+            WallJumpsLeft--;
 
             if (transform.localScale.x != WallJumpingDirection)
             {

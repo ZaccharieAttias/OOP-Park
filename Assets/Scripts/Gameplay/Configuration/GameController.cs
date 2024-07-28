@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 
 
 public class GameController : MonoBehaviour
@@ -47,6 +48,7 @@ public class GameController : MonoBehaviour
     private void Die()
     {
         if (isDead) return;
+        GetComponent<Character>().SetState(CharacterState.DeathB);
         StartCoroutine(Respawn(0.25f));
         FeedbackManager.DeathsCount++;
     }

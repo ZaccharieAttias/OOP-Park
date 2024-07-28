@@ -21462,6 +21462,8 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0, z: 0}
   TimeOffset: 0
   StartPosition: {x: 0, y: 0, z: 0}
+  MinValues: {x: 0, y: 0, z: 0}
+  MaxValues: {x: 0, y: 0, z: 0}
 --- !u!81 &793108052
 AudioListener:
   m_ObjectHideFlags: 0
@@ -21530,7 +21532,7 @@ Transform:
   m_GameObject: {fileID: 793108050}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.3}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41552,6 +41554,7 @@ MonoBehaviour:
   JsonUtilityManager: {fileID: 1271448928}
   TreeContent: {fileID: 733070452}
   SpecialAbilityTreeContent: {fileID: 331854694}
+  bricks: []
 --- !u!4 &1529990938
 Transform:
   m_ObjectHideFlags: 0
