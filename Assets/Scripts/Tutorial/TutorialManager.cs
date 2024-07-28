@@ -34,6 +34,7 @@ public class TutorialManager : MonoBehaviour
     public Vector3 StartPosition;
     public GameObject CheckPoint;
     public GameObject Wall;
+    public GameObject Brick;
     
 
     public GameObject SwapSceenToCenter;
@@ -65,7 +66,12 @@ public class TutorialManager : MonoBehaviour
             jsonUtilityManager.Load();
             TutorialTip.SetActive(true);
         }
-        
+        else
+        {
+            jsonUtilityManager.SetPath(Path.Combine(Application.dataPath, "Resources/Json", "C0L1"));
+            jsonUtilityManager.Load();
+        }
+
         StartPosition = Player.transform.position;
         Previouscharacter = CharactersData.CharactersManager.CurrentCharacter.Name;
     }
@@ -129,6 +135,16 @@ public class TutorialManager : MonoBehaviour
                 SwapSceenToGameplay.SetActive(false);
                 check++;
             }
+            else if (check == 8)
+            {
+                if (Vector3.Distance(Player.transform.position, Brick.transform.position) < 3)
+                {
+                    CommandPopup.gameObject.SetActive(true);
+                    CommandPopup.Show("These are bricks.\nYou can break them by shooting on", 4);
+                    check++;
+                }
+            }
+
         }
         else if (SceneManager.GetActiveScene().name == "C0L1")
         {
