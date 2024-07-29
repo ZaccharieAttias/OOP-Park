@@ -8,14 +8,18 @@ using TMPro;
 
 public class PopupKeyMenu : MonoBehaviour
 {
+    public CharacterChallangeManager characterChallangeManager;
     public CharacterAppearanceManager characterAppearanceManager;
     public EncapsulationManager encapsulationManager;
     public UpcastingManager upcastingManager;
     public Transform Content;
     public GameObject ButtonPrefab;
     public GameObject PopupMenu;
+
+
     public void Start()
     {
+        characterChallangeManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterChallangeManager>();
         characterAppearanceManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>();
         encapsulationManager = GameObject.Find("Canvas/Popups").GetComponent<EncapsulationManager>();
         upcastingManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastingManager>();
@@ -33,12 +37,12 @@ public class PopupKeyMenu : MonoBehaviour
     public void ToggleOn()
     {
         if (RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowEncapsulation && !RestrictionManager.Instance.AllowOverride)
-            {upcastingManager.ToggleActivation(); return;}
+        { upcastingManager.ToggleActivation(); return; }
         else if (!RestrictionManager.Instance.AllowUpcasting && RestrictionManager.Instance.AllowEncapsulation && !RestrictionManager.Instance.AllowOverride)
-            {encapsulationManager.ToggleActivation(); return;}
+        { encapsulationManager.ToggleActivation(); return; }
         else if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowEncapsulation && RestrictionManager.Instance.AllowOverride)
-            {characterAppearanceManager.ToggleActivation(); return;}
-        
+        { characterAppearanceManager.ToggleActivation(); return; }
+
         SceneManagement.ScenePause("KeyMenu");
         PopupMenu.SetActive(true);
         LoadPopupButtons();
@@ -66,7 +70,7 @@ public class PopupKeyMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        if(RestrictionManager.Instance.AllowUpcasting)
+        if (RestrictionManager.Instance.AllowUpcasting)
         {
             GameObject button = Instantiate(ButtonPrefab, Content);
             button.GetComponentInChildren<TMP_Text>().text = "Upcasting";
@@ -75,7 +79,7 @@ public class PopupKeyMenu : MonoBehaviour
             button.GetComponent<Button>().onClick.AddListener(() => upcastingManager.ToggleActivation());
             button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
         }
-        if(RestrictionManager.Instance.AllowEncapsulation && encapsulationManager.Checker())
+        if (RestrictionManager.Instance.AllowEncapsulation && encapsulationManager.Checker())
         {
             GameObject button = Instantiate(ButtonPrefab, Content);
             button.GetComponentInChildren<TMP_Text>().text = "Encapsulation";
@@ -84,14 +88,29 @@ public class PopupKeyMenu : MonoBehaviour
             button.GetComponent<Button>().onClick.AddListener(() => encapsulationManager.ToggleActivation());
             button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
         }
-        if(RestrictionManager.Instance.AllowOverride)
+        if (RestrictionManager.Instance.AllowOverride)
         {
-            GameObject button = Instantiate(ButtonPrefab, Content);
-            button.GetComponentInChildren<TMP_Text>().text = "Override";
-            button.GetComponentInChildren<TMP_Text>().fontSize = 40;
-            button.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
-            button.GetComponent<Button>().onClick.AddListener(() => characterAppearanceManager.ToggleActivation());
-            button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
+            if (RestrictionManager.Instance.AllowOverride)
+            {
+                if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "C2L3")
+                {
+                    GameObject button = Instantiate(ButtonPrefab, Content);
+                    button.GetComponentInChildren<TMP_Text>().text = "Override";
+                    button.GetComponentInChildren<TMP_Text>().fontSize = 40;
+                    button.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
+                    button.GetComponent<Button>().onClick.AddListener(() => characterChallangeManager.ToggleActivation());
+                    button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
+                }
+                else
+                {
+                    GameObject button = Instantiate(ButtonPrefab, Content);
+                    button.GetComponentInChildren<TMP_Text>().text = "Override";
+                    button.GetComponentInChildren<TMP_Text>().fontSize = 40;
+                    button.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
+                    button.GetComponent<Button>().onClick.AddListener(() => characterAppearanceManager.ToggleActivation());
+                    button.GetComponent<Button>().onClick.AddListener(() => ToggleActivation());
+                }
+            }
         }
     }
 }
