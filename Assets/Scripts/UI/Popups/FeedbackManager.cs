@@ -52,13 +52,13 @@ public class FeedbackManager : MonoBehaviour
 
         switch (chapterNumber)
         {
-           case 0:
-               SceneManager.LoadScene("ChapterTutorial");
-               break;
-           case 1:
-               SceneManager.LoadScene("ChapterIneritance");
-               break;
-           case 2:
+            case 0:
+                SceneManager.LoadScene("ChapterTutorial");
+                break;
+            case 1:
+                SceneManager.LoadScene("ChapterIneritance");
+                break;
+            case 2:
                 SceneManager.LoadScene("ChapterPolymorphism");
                 break;
         }
@@ -114,6 +114,8 @@ public class FeedbackManager : MonoBehaviour
         if (SceneName == "OnlinePlayground")
             SceneManagement.CompleteOnline();
         else if (score >= 70) SceneManagement.UnlockNextLevel();
+
+        NextLevelButton.interactable = score >= 70;
     }
 
     public void ToggleOn()
