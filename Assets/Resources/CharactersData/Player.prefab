@@ -14775,6 +14775,8 @@ MonoBehaviour:
   WallSlideSpeed: 2
   WallJumpingDirection: 1
   WallJumpingCounter: 1
+  MaxWallJumps: 1
+  WallJumpsLeft: 1
   WallJumpingVector: {x: 0, y: 0}
   CollisionLayers: []
   isGrounded: 0
@@ -14785,12 +14787,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   IsWallSliding: 0
-  IsWallJumping: 0
   AllowToWallJump: 0
+  IsWallJumping: 0
   attackCooldown: Infinity
   cooldownTimer: Infinity
   PowerupTimer: 0
-  WallJumpingTime: 0.2
   WallJumpingDuration: 0.4
   Character: {fileID: 1310191388405761012}
   _speed: {x: 0, y: 0, z: 0}

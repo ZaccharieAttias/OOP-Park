@@ -221,7 +221,7 @@ public class TutorialManager : MonoBehaviour
             {
                 hasSeenCheckpoint = true;
                 TutorialTip.SetActive(true);
-                MainTutorialTipText.text = "Congratulations! You've reached the first checkpoint.\n\nNow we'll explain how upcasting works.\nTo proceed an upcast, press [G] on your keyboard, this will open a contextual menu in which you can upcast your currently played class.\nYou'll be able to choose which class to upcast and which method to call.\nFor greater interactivity, you'll also be able to choose the time or number of times the method will be used.\n\nTip: To complete the level, you'll need to inverse the gravity and break walls with fireballs.\n\n\n\nClick on the [Enter] key to close.";
+                MainTutorialTipText.text = "Congratulations! You've reached the first checkpoint.\n\nNow we'll explain how upcasting works.\nTo proceed an upcast, press [G] on your keyboard, this will open a contextual menu in which you can upcast your currently played class.\nYou'll be able to choose and call non-private methods from ancestor classes through upcasting.\nFor greater interactivity, you'll also be able to choose the time or number of times the method will be used.\n\nTip: To complete the level, you'll need to inverse the gravity and break walls with fireballs.\n\n\n\nClick on the [Enter] key to close.";
                 check++;
             }
             else if (Input.GetKeyDown(KeyCode.Return) && check == 10)
