@@ -52,6 +52,7 @@ public class LevelInitializer : MonoBehaviour
     public string MethodssPath;
     public string SpecialAbilitiesPath;
     public JsonUtilityManager JsonUtilityManager;
+    public Vector3 MinValues = new Vector3(0, 0, -10), MaxValues = new Vector3(0, 0, -10);
     public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
@@ -277,7 +278,18 @@ public class LevelInitializer : MonoBehaviour
             block.GameObject.layer = 7;
 
             _groundMap[x, y, z] = block;
-        }
+
+            //verify if the ground is the most bottom, left, right or top
+            // if it is, set the maximum and minimum values of the camera
+            if (x < MinValues.x)
+                MinValues.x = x;
+            if (x > MaxValues.x)
+                MaxValues.x = x;
+            if (y < MinValues.y)
+                MinValues.y = y;
+            if (y > MaxValues.y)    
+                MaxValues.y = y;
+            }
 
         for (var dx = -1; dx <= 1; dx++)
         {
@@ -661,6 +673,9 @@ public class LevelInitializer : MonoBehaviour
         CharacterEditor1.Character = Player.GetComponent<CharacterBase>();
         Player.SetActive(true);
         MainCamera.GetComponent<CameraFollow>().Player = Player;
+        MainCamera.GetComponent<CameraFollow>().StartPosition = new Vector3(x_position, y_position, -10);
+        MainCamera.GetComponent<CameraFollow>().MinValues = MinValues;
+        MainCamera.GetComponent<CameraFollow>().MaxValues = MaxValues;
 
         //foreach object that have the tag "Checkpoint" in the scene set player
         GameObject[] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
@@ -670,5 +685,9 @@ public class LevelInitializer : MonoBehaviour
         }
         GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
         GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
+    }
+    public string GetLevelName()
+    {
+        return LevelName;
     }
 }
