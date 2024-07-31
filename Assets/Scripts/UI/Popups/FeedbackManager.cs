@@ -19,9 +19,7 @@ public class FeedbackManager : MonoBehaviour
     public Button NextLevelButton;
 
 
-    [Header("Score Data")]
-    public int DeathsCount;
-
+    public AiModelData AiModelData;
 
     public void Start()
     {
@@ -29,11 +27,11 @@ public class FeedbackManager : MonoBehaviour
     }
     public void InitializeProperties()
     {
+        AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
+
         Popup = GameObject.Find("Canvas/Popups/Feedback");
         FeedbackScore = Popup.transform.Find("Background/Foreground/Contour/Percentage").GetComponent<TMP_Text>();
         FeedbackText = Popup.transform.Find("Background/Foreground/Contour/Text").GetComponent<TMP_Text>();
-
-        DeathsCount = 0;
 
         ExitButton = Popup.transform.Find("Background/Foreground/Buttons/Exit").GetComponent<Button>();
         ExitButton.onClick.AddListener(() => ExitFactory());
@@ -97,22 +95,17 @@ public class FeedbackManager : MonoBehaviour
     public void LoadPopup()
     {
         GameObject.Find("Player").SetActive(false);
+        string sceneName = SceneManager.GetActiveScene().name;
+        int score = AiModelData.CalculateScore();
 
-        string SceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-
-        var timePass = (int)Time.timeSinceLevelLoad;
-
-        int score = 100 - DeathsCount * 7 - timePass;
-        if (SceneName == "C2L4")
-        {
-            int temp = GameObject.Find("Canvas/Popups").GetComponent<AbstractClassCheck>().TriesCounter;
-            score = 100 - temp * 7;
-        }
         FeedbackScore.text = $"{score}%";
-        FeedbackText.text = DeathsCount == 0 ? "Congratulations! You have completed the level without dying!" : "You have died. Try again!";
+        if (score < 50) FeedbackText.text = "Keep practicing! You can do better!";
+        else if (score < 70) FeedbackText.text = "You're close!, dont give up!";
+        else if (score < 85) FeedbackText.text = "Great job! You passed the level, but still need work!";
+        else if (score < 95) FeedbackText.text = "Excellent job! You're amazing!";
+        else FeedbackText.text = "Perfect! You're a master!";
 
-        if (SceneName == "OnlinePlayground")
-            SceneManagement.CompleteOnline();
+        if (sceneName == "OnlinePlayground") SceneManagement.CompleteOnline();
         else if (score >= 70) SceneManagement.UnlockNextLevel();
 
         NextLevelButton.interactable = score >= 70;

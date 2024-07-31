@@ -12,9 +12,9 @@ public class SceneMenusManagement : MonoBehaviour
     public void OnlinePlayground() { SceneManager.LoadScene("OnlinePlayground"); }
     public void OnlineBuilder() { SceneManager.LoadScene("RestrictionMenu"); }
     public void Chapter0() { SceneManager.LoadScene("ChapterTutorial"); }
-    public void C0L0() { SceneManager.LoadScene("C0L0"); }
     public void C0L1() { SceneManager.LoadScene("C0L1"); }
     public void C0L2() { SceneManager.LoadScene("C0L2"); }
+    public void C0L3() { SceneManager.LoadScene("C0L3"); }
     public void Chapter1() { SceneManager.LoadScene("ChapterIneritance"); }
     public void C1L1() { SceneManager.LoadScene("C1L1"); }
     public void C1L2() { SceneManager.LoadScene("C1L2"); }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 
-public class validateQuiz2 : MonoBehaviour
+public class ValidateQuiz2 : MonoBehaviour
 {
     public Button ValidateButton;
     public ToggleGroup toggleGroup1;
@@ -19,7 +19,7 @@ public class validateQuiz2 : MonoBehaviour
             new List<string> { "This is a standard way to implement encapsulation, not a violation of it.\n", "", "This is a controlled way to provide limited access, not a violation of encapsulation.\n", "This is normal use of a class and does not violate encapsulation.\n\n" }, 
             new List<string> { "This describes making a class final (or sealed), not using an abstract class.\n", "", "Abstract classes cannot be instantiated; this describes concrete classes.\n", "Multiple inheritance is typically achieved through interfaces, not abstract classes.\n" } };
 
-    public quizFeedback quizFeedback;
+    public QuizFeedback QuizFeedback;
     public GameObject ErrorPanel;
     public TMP_Text ErrorText;
     
@@ -52,7 +52,7 @@ public class validateQuiz2 : MonoBehaviour
         }
 
         if (score == total)
-            quizFeedback.ToggleOn();
+            QuizFeedback.ToggleOn();
         else
         {
             ErrorPanel.SetActive(true);

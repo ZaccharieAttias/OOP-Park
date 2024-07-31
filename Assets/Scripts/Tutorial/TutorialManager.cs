@@ -35,7 +35,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject CheckPoint;
     public GameObject Wall;
     public GameObject Brick;
-    
+
 
     public GameObject SwapSceenToCenter;
     public GameObject SwapSceenToGameplay;
@@ -51,24 +51,26 @@ public class TutorialManager : MonoBehaviour
     public int nbrOfChracaterSelected = 0;
     public string Previouscharacter;
 
-
+    public AiModelData AiModelData;
 
     public void Start()
     {
+        AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
+
         // si la scene est la scene de tutoriel
-        if (SceneManager.GetActiveScene().name == "C0L0")
+        if (SceneManager.GetActiveScene().name == "C0L1")
         {
             jsonUtilityManager.Load();
             CommandPopup.Show("<color=\"yellow\">[W]</color> Jump\n<color=\"yellow\">[A]</color> Left Move        <color=\"yellow\">[D]</color> Right Move", 2);
         }
-        else if (SceneManager.GetActiveScene().name == "C0L1")
+        else if (SceneManager.GetActiveScene().name == "C0L2")
         {
             jsonUtilityManager.Load();
             TutorialTip.SetActive(true);
         }
         else
         {
-            jsonUtilityManager.SetPath(Path.Combine(Application.dataPath, "Resources/Json", "C0L1"));
+            jsonUtilityManager.SetPath(Path.Combine(Application.dataPath, "Resources/Json", "C0L2"));
             jsonUtilityManager.Load();
         }
 
@@ -77,21 +79,21 @@ public class TutorialManager : MonoBehaviour
     }
     public void Update()
     {
-        if (SceneManager.GetActiveScene().name == "C0L0")
+        if (SceneManager.GetActiveScene().name == "C0L1")
         {
             if (check == 0)
             {
                 if (Player.transform.position.x != StartPosition.x && !hasMoved)
-                hasMoved = true;
+                    hasMoved = true;
                 if (Player.transform.position.y > StartPosition.y && !hasJumped)
-                hasJumped = true;
+                    hasJumped = true;
             }
             else if (Vector3.Distance(Player.transform.position, CheckPoint.transform.position) < 3 && !hasSeenCheckpoint && check == 1)
             {
                 hasSeenCheckpoint = true;
                 CommandPopup.Show("The flags are checkpoints.\nThey will turn red once they have been touch.", 4);
             }
-            else if (Player.GetComponent<GameController>().FeedbackManager.DeathsCount >= 3 && !TutorialTip.activeSelf && check == 2)
+            else if (Player.GetComponent<GameController>().AiModelData.DeathsCount >= 3 && !TutorialTip.activeSelf && check == 2)
             {
                 check++;
                 TutorialTip.SetActive(true);
@@ -146,7 +148,7 @@ public class TutorialManager : MonoBehaviour
             }
 
         }
-        else if (SceneManager.GetActiveScene().name == "C0L1")
+        else if (SceneManager.GetActiveScene().name == "C0L2")
         {
             if (Input.GetKeyDown(KeyCode.Return) && check == 0)
             {

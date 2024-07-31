@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class quizFeedback : MonoBehaviour
+public class QuizFeedback : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject Popup;

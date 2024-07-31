@@ -12492,6 +12492,56 @@ MonoBehaviour:
   m_Spacing: {x: 30, y: 30}
   m_Constraint: 1
   m_ConstraintCount: 2
+--- !u!1 &572561826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 572561827}
+  - component: {fileID: 572561828}
+  m_Layer: 0
+  m_Name: AiModelData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &572561827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572561826}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 816792766}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &572561828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572561826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bfeea33c977a24288d987e422c5982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharactersOrder: []
+  AbstractLevelTries: 0
+  AppearanceLevelTries: 0
+  DeathsCount: 0
+  TimeTook: 0
+  Score: 0
 --- !u!1 &573570210
 GameObject:
   m_ObjectHideFlags: 0
@@ -17396,6 +17446,7 @@ Transform:
   - {fileID: 1595343206}
   - {fileID: 845485414}
   - {fileID: 1427898203}
+  - {fileID: 572561827}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &826504009
@@ -26579,6 +26630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de9dc453374c364b8bb5d8ece0c266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterChallangeManager: {fileID: 0}
   characterAppearanceManager: {fileID: 0}
   encapsulationManager: {fileID: 0}
   upcastingManager: {fileID: 0}
@@ -26603,7 +26655,7 @@ MonoBehaviour:
   ExitButton: {fileID: 0}
   RetryButton: {fileID: 0}
   NextLevelButton: {fileID: 0}
-  DeathsCount: 0
+  AiModelData: {fileID: 0}
 --- !u!114 &1196029604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35049,6 +35101,7 @@ MonoBehaviour:
   SwapButtonToCharacterCenter: {fileID: 0}
   CharacterEditor: {fileID: 0}
   firstTime: 1
+  AiModelData: {fileID: 0}
 --- !u!114 &1595343208
 MonoBehaviour:
   m_ObjectHideFlags: 0

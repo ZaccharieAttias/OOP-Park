@@ -13,7 +13,7 @@ public class stageCollision : MonoBehaviour
     {
         CharacterChallangeManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterChallangeManager>();
     }
-    
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))

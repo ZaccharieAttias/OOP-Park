@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using LootLocker.Extension.DataTypes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -149,6 +148,7 @@ public class CharactersManager : MonoBehaviour
             bool isAttributeOwner = CurrentCharacter.Name == attribute.Owner;
             if (RestrictionManager.Instance.AllowAccessModifier && isAttributeOwner) { attributeGameObject.AddComponent<AccessModifierButton>().Attribute = attribute; }
         }
+        
     }
     private void DisplayMethods()
     {

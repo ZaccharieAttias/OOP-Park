@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 
-public class validateQuiz : MonoBehaviour
+public class ValidateQuiz : MonoBehaviour
 {
     public Button ValidateButton;
     public ToggleGroup toggleGroup1;
@@ -19,7 +19,7 @@ public class validateQuiz : MonoBehaviour
             new List<string> { "The public access modifier allows access from any other class.\n", "The protected access modifier allows access within its own class and by derived classes.\n", "", "It not a reason for the importance of inheritance.\n\n" }, 
             new List<string> { "Upcasting refers to treating a subclass object as an instance of its superclass, not the other way around.\n", "", "Upcasting is specifically about the relationship between a superclass and its subclass, not any arbitrary type conversion.\n", "Upcasting is about type conversion within an inheritance hierarchy, not about changing method access levels.\n" } };
 
-    public quizFeedback quizFeedback;
+    public QuizFeedback QuizFeedback;
     public GameObject ErrorPanel;
     public TMP_Text ErrorText;
 
@@ -53,7 +53,7 @@ public class validateQuiz : MonoBehaviour
         }
 
         if (score == total)
-            quizFeedback.ToggleOn();
+            QuizFeedback.ToggleOn();
         else
         {
             ErrorPanel.SetActive(true);

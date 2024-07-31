@@ -27,12 +27,14 @@ public class AbstractClassCheck : MonoBehaviour
 
     public GameObject ErrorObjectPrefab;
     public GameObject ErrorContentPanel;
-    public int TriesCounter;
     public FeedbackManager FeedbackManager;
+
+    public AiModelData AiModelData;
 
     public void Start()
     {
         Popup = GameObject.Find("Canvas/Popups/Abstract");
+        AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
 
         MessagePopup = Popup.transform.Find("Message").gameObject;
         ConfirmButton = Popup.transform.Find("Confirm").gameObject;
@@ -48,7 +50,6 @@ public class AbstractClassCheck : MonoBehaviour
         ErrorObjectPrefab = Resources.Load<GameObject>("ErrorObject");
         ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Message/ScrollView/ViewPort/Content");
 
-        TriesCounter = 0;
         FeedbackManager = GameObject.Find("Canvas/Popups").GetComponent<FeedbackManager>();
 
         if (RestrictionManager.Instance.AllowAbstractClass && (!RestrictionManager.Instance.OnlineGame || !RestrictionManager.Instance.OnlineBuild))
@@ -68,7 +69,6 @@ public class AbstractClassCheck : MonoBehaviour
             SpecialAbilitiesData.Load($"{FolderPath}/{stage}/SpecialAbilities.json");
             CharactersData.Load($"{FolderPath}/{stage}/Characters.json");
             CharactersGameObjectData.Load();
-
 
             FinalCharacterAttributesMap = new();
             FinalCharacterMethodsMap = new();
@@ -167,6 +167,8 @@ public class AbstractClassCheck : MonoBehaviour
     }
     public void ConfirmStage()
     {
+        AiModelData.AbstractLevelTries++;
+
         ErrorsMap = new();
         List<CharacterB> CharactersCollection = CharactersData.CharactersManager.CharactersCollection;
         foreach (CharacterB character in CharactersCollection)
@@ -231,7 +233,6 @@ public class AbstractClassCheck : MonoBehaviour
 
         if (ErrorsMap.Count > 0)
         {
-            TriesCounter++;
             foreach (Transform child in ErrorContentPanel.transform) Destroy(child.gameObject);
 
             foreach (KeyValuePair<CharacterB, List<string>> entry in ErrorsMap)

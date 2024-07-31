@@ -30,16 +30,18 @@ public class CharacterChallangeManager : MonoBehaviour
 
     public List<GameObject> Walls;
 
-    public int challenge = 1;
+    public int challenge = 0;
 
     public Transform Player;
     public List<GameObject> CharacterGameObjects;
     public CharacterEditor1 CharacterEditor1;
 
+    public AiModelData AiModelData;
+
     public void Start()
     {
         Player = GameObject.Find("Player").transform;
-
+        AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
         Mission1Popup = GameObject.Find("Canvas/Popups/Mission1");
         Mission2Popup = GameObject.Find("Canvas/Popups/Mission2");
         Mission3Popup = GameObject.Find("Canvas/Popups/Mission3");
@@ -77,6 +79,8 @@ public class CharacterChallangeManager : MonoBehaviour
         ConfirmButton.onClick.AddListener(() => ConfirmFactory());
         CancelButton.onClick.AddListener(() => CancelFactory());
         ResetButton.onClick.AddListener(() => ResetFactory());
+
+        ChallengeCheck();
     }
 
 
@@ -84,6 +88,7 @@ public class CharacterChallangeManager : MonoBehaviour
     {
         ChallengeCheck();
         ToggleOff();
+        AiModelData.AppearanceLevelTries++;
     }
 
     public void CancelFactory()
@@ -146,7 +151,11 @@ public class CharacterChallangeManager : MonoBehaviour
     }
     public void BackStage()
     {
-        if (challenge == 1)
+        if (challenge == 0)
+        {
+            Player.position = new Vector3(0, 0, 0);
+        }
+        else if (challenge == 1)
         {
             Player.position = new Vector3(12, 0, 0);
         }
