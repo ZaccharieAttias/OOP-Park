@@ -6,11 +6,13 @@ using LootLocker.Requests;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using TMPro;
 
 public class LevelDownload : MonoBehaviour
 {
     private Transform LevelDataEntryContent;
     public GameObject LevelEntryDisplayItem;
+    public TMP_InputField SearchBar;
     public string LevelName1;
 
     public void Start()
@@ -117,5 +119,20 @@ public class LevelDownload : MonoBehaviour
 
         Texture2D loadedImage = DownloadHandlerTexture.GetContent(www);
         levelImage.sprite = Sprite.Create(loadedImage, new Rect(0f, 0f, loadedImage.width, loadedImage.height), Vector2.zero);
+    }
+    public void SearchLevel()
+    {
+        foreach (Transform child in LevelDataEntryContent)
+        {
+            if (child.GetComponent<LevelInitializer>().GetLevelName().ToLower().Contains(SearchBar.text.ToLower()))
+            {
+                child.gameObject.SetActive(true);
+            }
+            else
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+        SearchBar.text = "";
     }
 }
