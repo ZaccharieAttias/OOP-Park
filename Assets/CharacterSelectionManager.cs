@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CharacterSelectionManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class CharacterSelectionManager : MonoBehaviour
     public string CharacterName;
     public bool RootCreated = false;
     public GameObject TreeContent;
+    public GameObject Abstract;
+    private bool isAbstract;
+
 
     public void Start()
     {
@@ -39,7 +43,13 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         ToggleOn();
         if(!RootCreated)
+        {
             MenuInitialization();
+            if(RestrictionManager.Instance.AllowAbstractClass)
+                Abstract.gameObject.SetActive(true);
+        }
+        else Abstract.gameObject.SetActive(false);
+            
     }
     public void MenuInitialization()
     {
@@ -107,9 +117,15 @@ public class CharacterSelectionManager : MonoBehaviour
                 RootSpecialAbility = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>().SpecialAbilitiesCollection.Find(ability => ability.Name == "General").SpecialAbility;
             else 
                 RootSpecialAbility = null;
-            CharacterB character = new(CharacterName, RootDescription, null, RootSpecialAbility, true, false);
+            if (RestrictionManager.Instance.AllowAbstractClass)
+                isAbstract = Abstract.transform.Find("Button").GetComponent<Toggle>().isOn;
+            else
+                isAbstract = false;
+            CharacterB character = new(CharacterName, RootDescription, null, RootSpecialAbility, true, isAbstract);
             InitializeCharacterObject(character);
             CharactersManager.AddCharacter(character);
+            CharactersManager.CurrentCharacter = character;
+            CharactersManager.DisplayCharacter(character);
         }
 
         ToggleOff();
@@ -147,7 +163,10 @@ public class CharacterSelectionManager : MonoBehaviour
         SelectionMenu.SetActive(false);
         charactersCreationManager.AddButton.gameObject.SetActive(true);
         if (!RootCreated)
-            GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>().interactable = true;
+        {
+            if (!CharactersData.CharactersManager.CurrentCharacter.IsAbstract)
+                GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>().interactable = true;
+        }
         RootCreated = true;
     }
 }

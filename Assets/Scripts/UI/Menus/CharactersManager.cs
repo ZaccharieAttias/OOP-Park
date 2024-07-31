@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class CharactersManager : MonoBehaviour
@@ -116,15 +117,15 @@ public class CharactersManager : MonoBehaviour
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")
                 GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(null);
 
-            if (CurrentCharacter.IsOriginal)
-            {
-                AttributePlusButton.SetActive(false);
-                MethodPlusButton.SetActive(false);
-            }
-            else
+            if (!CurrentCharacter.IsOriginal || (SceneManager.GetActiveScene().name == "OnlineBuilder" && !GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay))
             {
                 AttributePlusButton.SetActive(true);
                 MethodPlusButton.SetActive(true);
+            }
+            else
+            {
+                AttributePlusButton.SetActive(false);
+                MethodPlusButton.SetActive(false);
             }
         }
     }
