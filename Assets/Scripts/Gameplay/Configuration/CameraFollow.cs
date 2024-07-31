@@ -4,9 +4,9 @@
 public class CameraFollow : MonoBehaviour
 {
     public GameObject Player;
-    public Vector3 PositionOffset;
-    public Vector3 Velocity;
-    public float TimeOffset;
+    public Vector3 PositionOffset = new Vector3(0, 0, -10);
+    public Vector3 Velocity = Vector3.zero;
+    public float TimeOffset = 0.215f;
     public Vector3 StartPosition;
     public Vector3 MinValues, MaxValues;
 
@@ -14,10 +14,6 @@ public class CameraFollow : MonoBehaviour
     private void InitializeProperties()
     {
         if (!Player) Player = GameObject.Find("Player");
-        PositionOffset = new Vector3(0, 0, -10);
-        Velocity = Vector3.zero;
-        TimeOffset = 0.215f;
-        StartPosition = new Vector3(0, 0, -10);
     }
     
     public void Update() 
@@ -32,6 +28,13 @@ public class CameraFollow : MonoBehaviour
             
             transform.position = Vector3.SmoothDamp(transform.position, boundPosition, ref Velocity, TimeOffset);
             
+        }
+        else 
+        {
+            transform.position = new Vector3(
+                Mathf.Clamp(transform.position.x, MinValues.x, MaxValues.x), 
+                Mathf.Clamp(transform.position.y, MinValues.y, MaxValues.y), 
+                Mathf.Clamp(transform.position.z, MinValues.z, MaxValues.z));
         }
 
     }
