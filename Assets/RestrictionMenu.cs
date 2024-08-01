@@ -8,7 +8,6 @@ public class RestrictionMenu : MonoBehaviour
 {
     public static RestrictionMenu Instance;
     public bool AllowSingleInheritance;
-    public bool AllowBeginnerInheritance;
     public bool AllowSpecialAbility;
     public bool AllowAccessModifier;
     public bool AllowOverride;
@@ -44,9 +43,6 @@ public class RestrictionMenu : MonoBehaviour
         {
             case 0:
                 AllowSingleInheritance = !AllowSingleInheritance;
-                break;
-            case 1:
-                AllowBeginnerInheritance = !AllowBeginnerInheritance;
                 break;
             case 2:
                 AllowSpecialAbility = !AllowSpecialAbility;

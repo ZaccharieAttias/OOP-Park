@@ -60,8 +60,6 @@ public class CharacterB
         Childrens = new List<CharacterB>();
 
         CharacterButton = new CharacterButton();
-
-        if (RestrictionManager.Instance.AllowBeginnerInheritance) PreDetails();
     }
     public void InitializeCharacter(CharacterB character)
     {
@@ -82,20 +80,6 @@ public class CharacterB
 
         CharacterButton = character.CharacterButton;
     }
-    public void PreDetails()
-    {   
-        if (Parent is null) return;
-        foreach (var attribute in Parent?.Attributes)
-            if (!Attributes.Any(item => item.Name == attribute.Name))
-                if (RestrictionManager.Instance.AllowAccessModifier is false || attribute.AccessModifier is not AccessModifier.Private)
-                    Attributes.Add(attribute);
-
-        foreach (var method in Parent?.Methods)
-            if (!Methods.Any(item => item.Name == method.Name))
-                if (RestrictionManager.Instance.AllowAccessModifier is false || method.AccessModifier is not AccessModifier.Private)
-                    Methods.Add(method);
-    }
-
     public bool IsRoot() { return Parent is null; }
     public bool IsLeaf() { return Childrens.Count == 0; }
 

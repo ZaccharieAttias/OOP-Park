@@ -6,8 +6,6 @@ public class RestrictionManager : MonoBehaviour
     public static RestrictionManager Instance;
 
     public bool AllowSingleInheritance;
-    public bool AllowBeginnerInheritance;
-    
     public bool AllowSpecialAbility;
     public bool AllowAccessModifier;
     public bool AllowOverride;
@@ -26,7 +24,6 @@ public class RestrictionManager : MonoBehaviour
         if (RestrictionMenu.Instance != null)
         {
             AllowSingleInheritance = RestrictionMenu.Instance.AllowSingleInheritance;
-            AllowBeginnerInheritance = RestrictionMenu.Instance.AllowBeginnerInheritance;
             AllowSpecialAbility = RestrictionMenu.Instance.AllowSpecialAbility;
             AllowAccessModifier = RestrictionMenu.Instance.AllowAccessModifier;
             AllowOverride = RestrictionMenu.Instance.AllowOverride;

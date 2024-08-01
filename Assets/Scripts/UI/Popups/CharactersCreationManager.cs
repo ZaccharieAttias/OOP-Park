@@ -241,11 +241,6 @@ public class CharactersCreationManager : MonoBehaviour
             builtCharacter.Parent.Childrens.Add(builtCharacter);
         }
 
-        if (RestrictionManager.Instance.AllowBeginnerInheritance)
-        {
-            builtCharacter.PreDetails();
-        }
-
         return builtCharacter;
     }
     public void BuildCharacterObject(CharacterB character)

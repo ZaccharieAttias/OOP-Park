@@ -20,7 +20,6 @@ public static class RestrictionsData
             new()
             {
                 AllowSingleInheritance = RestrictionManager.Instance.AllowSingleInheritance,
-                AllowBeginnerInheritance = RestrictionManager.Instance.AllowBeginnerInheritance,
                 AllowSpecialAbility = RestrictionManager.Instance.AllowSpecialAbility,
                 AllowAccessModifier = RestrictionManager.Instance.AllowAccessModifier,
                 AllowOverride = RestrictionManager.Instance.AllowOverride,
@@ -47,7 +46,6 @@ public static class RestrictionsData
     { 
         List<RestrictionData> restrictions = Deserialize(File.ReadAllText(FilePath));
         RestrictionManager.Instance.AllowSingleInheritance = restrictions[0].AllowSingleInheritance;
-        RestrictionManager.Instance.AllowBeginnerInheritance = restrictions[0].AllowBeginnerInheritance;
         RestrictionManager.Instance.AllowSpecialAbility = restrictions[0].AllowSpecialAbility;
         RestrictionManager.Instance.AllowAccessModifier = restrictions[0].AllowAccessModifier;
         RestrictionManager.Instance.AllowOverride = restrictions[0].AllowOverride;
@@ -69,7 +67,6 @@ public static class RestrictionsData
     {
         List<RestrictionData> restrictions = Deserialize(File.ReadAllText(filename));
         RestrictionManager.Instance.AllowSingleInheritance = restrictions[0].AllowSingleInheritance;
-        RestrictionManager.Instance.AllowBeginnerInheritance = restrictions[0].AllowBeginnerInheritance;
         RestrictionManager.Instance.AllowSpecialAbility = restrictions[0].AllowSpecialAbility;
         RestrictionManager.Instance.AllowAccessModifier = restrictions[0].AllowAccessModifier;
         RestrictionManager.Instance.AllowOverride = restrictions[0].AllowOverride;
@@ -89,7 +86,6 @@ public static class RestrictionsData
 public class RestrictionData
 {
     public bool AllowSingleInheritance;
-    public bool AllowBeginnerInheritance;
     public bool AllowSpecialAbility;
     public bool AllowAccessModifier;
     public bool AllowOverride;
