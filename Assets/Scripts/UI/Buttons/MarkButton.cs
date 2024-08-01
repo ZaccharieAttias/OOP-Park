@@ -42,6 +42,8 @@ public class MarkButton : MonoBehaviour
     {
         GetButton.SetActive(true);
         SetButton.SetActive(true);
+        GetButton.GetComponent<Button>().interactable = !CharactersData.CharactersManager.CurrentCharacter.IsOriginal || RestrictionManager.Instance.OnlineBuild;
+        SetButton.GetComponent<Button>().interactable = !CharactersData.CharactersManager.CurrentCharacter.IsOriginal || RestrictionManager.Instance.OnlineBuild;
     }
 
     public void DeactivateButtons()
