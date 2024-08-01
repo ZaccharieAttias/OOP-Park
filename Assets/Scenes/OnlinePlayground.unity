@@ -12862,12 +12862,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8bfeea33c977a24288d987e422c5982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharactersOrder: []
-  AbstractLevelTries: 0
-  AppearanceLevelTries: 0
+  Score: 0
   DeathsCount: 0
   TimeTook: 0
-  Score: 0
+  AbstractLevelTries: 0
+  AppearanceLevelTries: 0
+  LevelDownload: {fileID: 1796146097}
 --- !u!1 &573570210
 GameObject:
   m_ObjectHideFlags: 0
@@ -27171,6 +27171,7 @@ MonoBehaviour:
   CharacterName: 
   RootCreated: 0
   TreeContent: {fileID: 0}
+  Abstract: {fileID: 0}
 --- !u!114 &1196029602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35862,7 +35863,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 756783166}
   m_HandleRect: {fileID: 756783165}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

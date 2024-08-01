@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using LootLocker.Requests;
+using System.IO;
 
 public class LootLockerManager : MonoBehaviour
 {
@@ -13,17 +14,36 @@ public class LootLockerManager : MonoBehaviour
         {
             if (response.success)
             {   
-                buttons.SetActive(true);
-                
-                // si GameObject.Find("LevelManager") a le composant LevelDownload alors on appelle la méthode DownloadLevelData
-                if (GameObject.Find("LevelManager").GetComponent<LevelDownload>())
+                if(SceneManager.GetActiveScene().name == "OnlineBuilder")
                 {
-                    GameObject.Find("LevelManager").GetComponent<LevelDownload>().DownloadLevelData();
+                    buttons.SetActive(true);
+                }
+                if (SceneManager.GetActiveScene().name == "OnlinePlayground")
+                {
+                    if(GameObject.Find("LevelManager").GetComponent<LevelDownload>())
+                    {
+                        GameObject.Find("LevelManager").GetComponent<LevelDownload>().DownloadLevelData();
+                    }
                 }
             }
             else
             {
                 Debug.Log("Login Failed");
+            }
+        });
+    }
+    public void UploadPlayerData()
+    {
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Json", "AiModelData.json");
+        LootLockerSDKManager.UploadPlayerFile(path, "save_game", response =>
+        {
+            if (response.success)
+            {
+                Debug.Log("Successfully uploaded player file, url: " + response.url);
+            } 
+            else
+            {
+                Debug.Log("Error uploading player file");
             }
         });
     }

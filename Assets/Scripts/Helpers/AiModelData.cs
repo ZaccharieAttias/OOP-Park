@@ -14,7 +14,7 @@ public class AiModelData : MonoBehaviour
     public int AppearanceLevelTries = 0;
     public List<CharacterData> CharactersOrder = new();
 
-    public LevelInitializer LevelInitializer;
+    public LevelDownload LevelDownload;
 
     private string FilePath;
 
@@ -57,7 +57,7 @@ public class AiModelData : MonoBehaviour
     {
         GameData gameData = new()
         {
-            LevelName = RestrictionManager.Instance.OnlineGame ? LevelInitializer.GetLevelName() : SceneManager.GetActiveScene().name,
+            LevelName = RestrictionManager.Instance.OnlineGame ? LevelDownload.LevelName1 : SceneManager.GetActiveScene().name,
             Score = Score,
             DeathsCount = DeathsCount,
             TimeTook = TimeTook,
@@ -68,6 +68,8 @@ public class AiModelData : MonoBehaviour
 
         string json = JsonConvert.SerializeObject(gameData, Formatting.Indented);
         File.WriteAllText(FilePath, json);
+
+        GameObject.Find("LootLockerManager").GetComponent<LootLockerManager>().UploadPlayerData();
     }
 
     public int CalculateScore()

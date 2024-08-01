@@ -46,18 +46,21 @@ public class FeedbackManager : MonoBehaviour
     public void ExitFactory()
     {
         var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        var chapterNumber = int.Parse(currentSceneName[1].ToString());
+        var chapterNumber = currentSceneName[1].ToString();
 
         switch (chapterNumber)
         {
-            case 0:
+            case "0":
                 SceneManager.LoadScene("ChapterTutorial");
                 break;
-            case 1:
+            case "1":
                 SceneManager.LoadScene("ChapterIneritance");
                 break;
-            case 2:
+            case "2":
                 SceneManager.LoadScene("ChapterPolymorphism");
+                break;
+            default:
+                SceneManager.LoadScene("OnlinePark");
                 break;
         }
     }
