@@ -18,7 +18,7 @@ public class SwapScreen : MonoBehaviour
         CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         SwapButtonToGameplay = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
         SwapButtonToGameplay.onClick.AddListener(() => CharacterEditor.LoadFromJson());
-        SwapButtonToGameplay.onClick.AddListener(() => AiModelData.AddCharacterOrder());
+        SwapButtonToGameplay.onClick.AddListener(() => AiModelData.AddCharacterData());
 
 
         SwapButtonToCharacterCenter = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
