@@ -1,92 +1,81 @@
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class PauseManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject Popup;
+
+    [Header("Buttons")]
     public Button ResumeButton;
     public Button RestartButton;
     public Button ExitButton;
 
+
     public void Start()
     {
-        InitializeProperties();
-    }
-    public void InitializeProperties()
-    {
-        Popup = GameObject.Find("Canvas/Popups/Pause");
-
-        ResumeButton = Popup.transform.Find("Background/Foreground/Buttons/Resume").transform.GetComponent<Button>();
-        ResumeButton.onClick.AddListener(() => ToggleOff());
-
-        RestartButton = Popup.transform.Find("Background/Foreground/Buttons/Restart").transform.GetComponent<Button>();
-        RestartButton.onClick.AddListener(() => RestartFactory());
-
-        ExitButton = Popup.transform.Find("Background/Foreground/Buttons/Exit").transform.GetComponent<Button>();
-        ExitButton.onClick.AddListener(() => ExitFactory());
+        InitializeUIElements();
+        InitializeButtonListeners();
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ToggleActivation();
-        }
+        if (Input.GetKeyDown(KeyCode.Escape)) ToggleActivation();
+    }
+    public void InitializeUIElements()
+    {
+        Popup = GameObject.Find("Canvas/Popups/Pause");
+    }
+    public void InitializeButtonListeners()
+    {
+        ResumeButton = Popup.transform.Find("Background/Foreground/Buttons/Resume").GetComponent<Button>();
+        ResumeButton.onClick.AddListener(ToggleOff);
+
+        RestartButton = Popup.transform.Find("Background/Foreground/Buttons/Restart").GetComponent<Button>();
+        RestartButton.onClick.AddListener(RestartScene);
+
+        ExitButton = Popup.transform.Find("Background/Foreground/Buttons/Exit").GetComponent<Button>();
+        ExitButton.onClick.AddListener(ExitScene);
     }
 
-    public void RestartFactory()
+    public void RestartScene()
     {
-        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManagement.SceneResume("PauseManager");
         SceneManagement.LoadScene(currentSceneName);
     }
-
-    public void ExitFactory()
+    public void ExitScene()
     {
         string sceneName = SceneManager.GetActiveScene().name;
         SceneManagement.SceneResume("PauseManager");
-        if (sceneName.Contains("C0"))
+
+        string nextScene = sceneName switch
         {
-            SceneManagement.LoadScene("ChapterTutorial");
-        }
-        else if (sceneName.Contains("C1"))
-        {
-            SceneManagement.LoadScene("ChapterIneritance");
-        }
-        else if (sceneName.Contains("C2"))
-        {
-            SceneManagement.LoadScene("ChapterPolymorphism");
-        }
-        else
-        {
-            SceneManagement.LoadScene("Playground");
-        }
+            _ when sceneName.Contains("C0") => "ChapterTutorial",
+            _ when sceneName.Contains("C1") => "ChapterInheritance",
+            _ when sceneName.Contains("C2") => "ChapterPolymorphism",
+            _ => "Playground"
+        };
+
+        SceneManagement.LoadScene(nextScene);
     }
 
     public void ToggleOn()
     {
         SceneManagement.ScenePause("PauseManager");
+
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
         SceneManagement.SceneResume("PauseManager");
+
         Popup.SetActive(false);
     }
     public void ToggleActivation()
     {
-        if (Popup.activeSelf)
-        {
-            ToggleOff();
-        }
-        else
-        {
-            ToggleOn();
-        }
+        if (Popup.activeSelf) ToggleOff();
+        else ToggleOn();
     }
 }
