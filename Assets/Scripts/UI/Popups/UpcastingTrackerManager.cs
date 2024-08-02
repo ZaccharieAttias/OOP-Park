@@ -5,23 +5,29 @@ using UnityEngine.UI;
 
 public class UpcastingTrackerManager : MonoBehaviour
 {
+    [Header("UI Elements")]
     public GameObject Popup;
     public TextMeshProUGUI AmountDescriptionText;
 
 
-    public void Start() { InitializeProperties(); }
-    private void InitializeProperties()
-    { 
+    public void Start()
+    {
+        InitializeUIElements();
+        InitializeButtons();
+    }
+    public void InitializeUIElements()
+    {
         Popup = GameObject.Find("Canvas/Popups/UpcastingTracker");
         AmountDescriptionText = Popup.transform.Find("Description").GetComponent<TextMeshProUGUI>();
-
-        Button ActivateGameplayButton = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
-        ActivateGameplayButton.onClick.AddListener(() => ToggleOn());
-
-        Button ActivateMenuButton = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
-        ActivateMenuButton.onClick.AddListener(() => ToggleOff());
     }
+    public void InitializeButtons()
+    {
+        Button activateGameplayButton = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
+        activateGameplayButton.onClick.AddListener(ToggleOn);
 
+        Button activateMenuButton = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
+        activateMenuButton.onClick.AddListener(ToggleOff);
+    }
 
     public void UpdateUpcastingMethod(float amount)
     {
@@ -29,10 +35,9 @@ public class UpcastingTrackerManager : MonoBehaviour
         CharacterB currentCharacter = charactersManager.CurrentCharacter;
 
         currentCharacter.UpcastMethod.Amount -= amount;
-        amount = (int)currentCharacter.UpcastMethod.Amount;
+        float updatedAmount = (int)currentCharacter.UpcastMethod.Amount;
 
-        if (amount > 0) AmountDescriptionText.text = amount.ToString();
-
+        if (updatedAmount > 0) AmountDescriptionText.text = updatedAmount.ToString();
         else
         {
             currentCharacter.UpcastMethod = null;
@@ -41,6 +46,12 @@ public class UpcastingTrackerManager : MonoBehaviour
         }
     }
 
-    public void ToggleOn() { if (CharactersData.CharactersManager.CurrentCharacter?.UpcastMethod is not null) Popup.SetActive(true); }
-    public void ToggleOff() { Popup.SetActive(false); }
+    public void ToggleOn()
+    {
+        if (CharactersData.CharactersManager.CurrentCharacter?.UpcastMethod != null) Popup.SetActive(true);
+    }
+    public void ToggleOff()
+    {
+        Popup.SetActive(false);
+    }
 }
