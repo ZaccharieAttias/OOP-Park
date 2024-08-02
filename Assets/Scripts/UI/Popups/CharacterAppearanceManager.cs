@@ -1,115 +1,134 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using System.Linq;
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
-using Assets.HeroEditor.Common.Scripts.Common;
 using UnityEngine;
 using UnityEngine.UI;
-
-
 
 
 public class CharacterAppearanceManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject Popup;
-    public Transform playerTransform;
-    public Vector3 oldPosition;
-    public List<GameObject> Cameras;
     public Canvas Canvas;
+    public List<GameObject> Cameras;
+
+    [Header("Buttons")]
     public Button ConfirmButton;
     public Button CancelButton;
     public Button ResetButton;
+
+    [Header("Character Components")]
     public Character Character;
+    public Transform playerTransform;
+    public Vector3 oldPosition;
+
 
     public void Start()
     {
+        InitializeUIElements();
+        InitializeButtons();
+        InitializeCharacterComponents();
+        InitializeOverride();
+    }
+    public void InitializeUIElements()
+    {
         Popup = GameObject.Find("Canvas/Popups/CharacterAppearance");
-        if(GameObject.Find("Player") != null)
-        {   
-            playerTransform = GameObject.Find("Player").transform;
-            Character = GameObject.Find("Player").GetComponent<Character>();
-        }
         Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        Cameras = new List<GameObject>()
+
+        Cameras = new List<GameObject>
         {
             GameObject.Find("Main Camera"),
             GameObject.Find("Camera"),
         };
-
         Cameras[1].SetActive(false);
-
-        ConfirmButton = Popup.transform.Find("Character/Buttons/Confirm").gameObject.GetComponent<Button>();
-        ConfirmButton.onClick.AddListener(() => ConfirmFactory());
-        CancelButton = Popup.transform.Find("Character/Buttons/Cancel").gameObject.GetComponent<Button>();
-        CancelButton.onClick.AddListener(() => CancelFactory());
-        ResetButton = Popup.transform.Find("Character/Buttons/Reset").gameObject.GetComponent<Button>();
-        ResetButton.onClick.AddListener(() => ResetFactory());
     }
-    public void CancelFactory()
+    public void InitializeButtons()
     {
-        ToggleOff();
+        ConfirmButton = Popup.transform.Find("Character/Buttons/Confirm").GetComponent<Button>();
+        ConfirmButton.onClick.AddListener(ToggleOff);
+
+        CancelButton = Popup.transform.Find("Character/Buttons/Cancel").GetComponent<Button>();
+        CancelButton.onClick.AddListener(ToggleOff);
+
+        ResetButton = Popup.transform.Find("Character/Buttons/Reset").GetComponent<Button>();
     }
-    public void ConfirmFactory()
+    public void InitializeCharacterComponents()
     {
-        string json = Character.ToJson();
-
-        // Save it into a file in json format
-        string path = Path.Combine(Application.dataPath, "Resources/CharactersData", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, $"{CharactersData.CharactersManager.CurrentCharacter.Name}.json");
-
-        if (File.Exists(path))
+        Character = GameObject.Find("Player").GetComponent<Character>();
+        playerTransform = GameObject.Find("Player").transform;
+        oldPosition = playerTransform.position;
+    }
+    public void InitializeOverride()
+    {
+        if (RestrictionManager.Instance.AllowOverride)
         {
-            File.Delete(path);
+            var rootCharacter = CharactersData.CharactersManager.CharactersCollection.First();
+            var attribute = new Attribute
+            {
+                Owner = rootCharacter.Name,
+                Name = "appearance",
+                Description = "override character appearance",
+                Value = 0,
+                AccessModifier = AccessModifier.Public,
+                Getter = false,
+                Setter = false,
+            };
+
+            var method = new Method
+            {
+                Owner = rootCharacter.Name,
+                Name = "Appearance",
+                Description = "override character appearance",
+                Attribute = attribute,
+                AccessModifier = AccessModifier.Public,
+            };
+
+            rootCharacter.Attributes.Add(attribute);
+            rootCharacter.Methods.Add(method);
         }
-        File.WriteAllText(path, json);
-
-        ToggleOff();
     }
-    public void ResetFactory()
-    {
-        // CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
-    }
-    public void ToggleOn()
-    {
-        SceneManagement.ScenePause("CharacterAppearanceManager");
 
+    public void SwitchToEditCamera()
+    {
         oldPosition = playerTransform.position;
         playerTransform.localScale = new Vector3(100, 100, 100);
         playerTransform.position = new Vector3(664, 618, 0);
 
-        // Change the canvas Render Camera to Cameras[1]
         Canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Canvas.worldCamera = Cameras[1].GetComponent<Camera>();
 
         Cameras[0].SetActive(false);
         Cameras[1].SetActive(true);
+    }
+    public void SwitchToMainCamera()
+    {
+        playerTransform.localScale = new Vector3(1, 1, 1);
+        playerTransform.position = oldPosition;
+
+        Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        Cameras[0].SetActive(true);
+        Cameras[1].SetActive(false);
+    }
+
+    public void ToggleOn()
+    {
+        SceneManagement.ScenePause("CharacterAppearanceManager");
+
+        SwitchToEditCamera();
 
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
         SceneManagement.SceneResume("CharacterAppearanceManager");
-        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
 
-        playerTransform.localScale = new Vector3(1, 1, 1);
-        playerTransform.position = oldPosition;
+        SwitchToMainCamera();
 
-        Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        // Canvas.worldCamera = Cameras[0].GetComponent<Camera>();
-
-        Cameras[0].SetActive(true);
-        Cameras[1].SetActive(false);
         Popup.SetActive(false);
     }
     public void ToggleActivation()
     {
-        if (Popup.activeSelf)
-            ToggleOff();
-        else
-            ToggleOn();
+        if (Popup.activeSelf) ToggleOff();
+        else ToggleOn();
     }
 }
-
-
-
