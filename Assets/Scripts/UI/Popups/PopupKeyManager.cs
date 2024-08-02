@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 
 
-public class PopupKeyMenu : MonoBehaviour
+public class PopupKeyManager : MonoBehaviour
 {
     [Header("Scripts")]
     public CharacterAppearanceManager CharacterAppearanceManager;
