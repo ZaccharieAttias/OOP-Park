@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class EncapsulationaAllManager : MonoBehaviour
+public class EncapsulationAllManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject Popup;
