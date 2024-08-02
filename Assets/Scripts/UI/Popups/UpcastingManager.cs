@@ -85,7 +85,7 @@ public class UpcastingManager : MonoBehaviour
 
         var parentMethods = character.Parent.Methods
             .Where(method => !RestrictionManager.Instance.AllowAccessModifier || method.AccessModifier != AccessModifier.Private)
-            .Where(method => method.Name != "CharacterAppearence")
+            .Where(method => method.Name != "Appearance")
             .ToList();
 
         if (parentMethods.Any()) UpcastableData.Add((character.Parent, parentMethods));
