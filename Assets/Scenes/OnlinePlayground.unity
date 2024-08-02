@@ -16741,12 +16741,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  PositionOffset: {x: 0, y: 0, z: 0}
+  PositionOffset: {x: 0, y: 0, z: -10}
   Velocity: {x: 0, y: 0, z: 0}
   TimeOffset: 0
   StartPosition: {x: 0, y: 0, z: 0}
-  MinValues: {x: 0, y: 0, z: 0}
-  MaxValues: {x: 0, y: 0, z: 0}
+  MinValues: {x: -51.08, y: -65.22, z: -10}
+  MaxValues: {x: 65.04, y: 48.66, z: -10}
 --- !u!81 &793108052
 AudioListener:
   m_ObjectHideFlags: 0
@@ -28441,7 +28441,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllowSingleInheritance: 0
-  AllowBeginnerInheritance: 0
   AllowSpecialAbility: 0
   AllowAccessModifier: 0
   AllowOverride: 0
@@ -35863,7 +35862,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 756783166}
   m_HandleRect: {fileID: 756783165}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -44989,6 +44988,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: LevelDownload, Assembly-CSharp
         m_MethodName: DownloadLevelData
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 610860658}
+        m_TargetAssemblyTypeName: TMPro.TMP_InputField, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
