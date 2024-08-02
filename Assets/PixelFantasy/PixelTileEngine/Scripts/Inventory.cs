@@ -37,8 +37,8 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
                     break;
                 case 2:
                 case 3:
-                    var sprites = tab == 2 ? SpriteCollection.PropsSprites : SpriteCollection.OtherSprites;
-
+                    // var sprites = tab == 2 ? SpriteCollection.PropsSprites : SpriteCollection.OtherSprites;
+                    var sprites = SpriteCollection.PropsSprites;
                     for (var i = 0; i < sprites.Count; i++)
                     {
                         CreateInventoryItem(sprites[i].name, sprites[i], tab, i);

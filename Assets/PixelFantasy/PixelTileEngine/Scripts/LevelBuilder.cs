@@ -58,9 +58,9 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
                 case 2:
                     Cursor.sprite = SpriteCollection.PropsSprites[index];
                     break;
-                case 3:
-                    Cursor.sprite = SpriteCollection.OtherSprites[index];
-                    break;
+                // case 3:
+                //     Cursor.sprite = SpriteCollection.OtherSprites[index];
+                //     break;
             }
         }
 
@@ -218,7 +218,8 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
 
             if (_index == -1) return;
 
-            var sprites = _type == 2 ? SpriteCollection.PropsSprites : SpriteCollection.OtherSprites;
+            // var sprites = _type == 2 ? SpriteCollection.PropsSprites : SpriteCollection.OtherSprites;
+            var sprites = SpriteCollection.PropsSprites;
             var block = new Block(sprites[_index].name);
 
             block.Transform.SetParent(Parent);
@@ -491,11 +492,11 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
                             _type = 2;
                             _index = SpriteCollection.PropsSprites.FindIndex(i => i.name == props);
 
-                            if (_index == -1)
-                            {
-                                _type = 3;
-                                _index = SpriteCollection.OtherSprites.FindIndex(i => i.name == props);
-                            }
+                            // if (_index == -1)
+                            // {
+                            //     _type = 3;
+                            //     _index = SpriteCollection.OtherSprites.FindIndex(i => i.name == props);
+                            // }
 
                             if (_index != -1)
                             {
