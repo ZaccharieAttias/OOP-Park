@@ -86,12 +86,9 @@ public class LevelBuilderB : MonoBehaviour
                     Cursor.sprite = SpriteCollection.PropsSprites[index];
                     break;
                 case 3:
-                    Cursor.sprite = SpriteCollection.OtherSprites[index];
-                    break;
-                case 4 :
                     Cursor.sprite = SpriteCollection.WallTilesets[index];
                     break;
-                case 5:
+                case 4:
                     Cursor.sprite = SpriteCollection.GamePlaySprite[index];
                     break;
             }
@@ -144,10 +141,9 @@ public class LevelBuilderB : MonoBehaviour
         {
             case 0: CreateGround(p.X, p.Y, _layer); break;
             case 1: CreateCover(p.X, p.Y, _layer); break;
-            case 2:
-            case 3: CreateProps(p.X, p.Y, _layer); break;
-            case 4: CreateWall(p.X, p.Y, _layer); break;
-            case 5: 
+            case 2: CreateProps(p.X, p.Y, _layer); break;
+            case 3: CreateWall(p.X, p.Y, _layer); break;
+            case 4: 
                 switch (_index)
                 {
                     case -1: 
@@ -301,7 +297,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index == -1) return;
 
-        var sprites = _type == 2 ? SpriteCollection.PropsSprites : SpriteCollection.OtherSprites;
+        var sprites = SpriteCollection.PropsSprites;
         var block = new Block(sprites[_index].name);
 
         block.Transform.SetParent(Terrain.Find("Props").transform);
@@ -801,14 +797,8 @@ public class LevelBuilderB : MonoBehaviour
 
                         if (_index == -1)
                         {
-                            _type = 3;
-                            _index = SpriteCollection.OtherSprites.FindIndex(i => i.name == props);
-
-                            if (_index == -1)
-                            {
-                                _type = 5;
-                                _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
-                            }
+                            _type = 4;
+                            _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
                         }
                         if (_index != -1)
                         {

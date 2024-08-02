@@ -224,14 +224,8 @@ public class LevelInitializer : MonoBehaviour
 
                         if (_index == -1)
                         {
-                            _type = 3;
-                            _index = SpriteCollection.OtherSprites.FindIndex(i => i.name == props);
-
-                            if (_index == -1)
-                            {
-                                _type = 5;
-                                _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
-                            }
+                            _type = 4;
+                            _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
                         }
                         if (_index != -1)
                         {
@@ -384,7 +378,7 @@ public class LevelInitializer : MonoBehaviour
 
         if (_index == -1) return;
 
-        var sprites = _type == 2 ? SpriteCollection.PropsSprites : SpriteCollection.OtherSprites;
+        var sprites = SpriteCollection.PropsSprites;
         var block = new Block(sprites[_index].name);
 
         block.Transform.SetParent(Terrain.Find("Props").transform);

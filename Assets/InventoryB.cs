@@ -36,15 +36,14 @@ public class InventoryB : MonoBehaviour
                 }
                 break;
             case 2:
-            case 3:
-                var sprites = tab == 2 ? SpriteCollection.PropsSprites : SpriteCollection.OtherSprites;
+                var sprites = SpriteCollection.PropsSprites;
 
-                for (var i = 0; i < sprites.Count; i++)
-                {
-                    CreateInventoryItem(sprites[i].name, sprites[i], tab, i);
-                }
-                break;
-            case 4:
+                    for (var i = 0; i < sprites.Count; i++)
+                    {
+                        CreateInventoryItem(sprites[i].name, sprites[i], tab, i);
+                    }
+                    break;
+            case 3:
                 var walltilesets = SpriteCollection.WallTilesets;
 
                 for (var i = 0; i < walltilesets.Count; i++)
@@ -52,14 +51,14 @@ public class InventoryB : MonoBehaviour
                     CreateInventoryItem(walltilesets[i].name, walltilesets[i], tab, i);
                 }
                 break;
-            case 5:
+            case 4:
                 var gameplayObjects = SpriteCollection.GamePlaySprite;
 
                 for (var i = 0; i < gameplayObjects.Count; i++)
                 {
                     CreateInventoryItem(gameplayObjects[i].name, gameplayObjects[i], tab, i);
                 }
-                break;
+                break;      
         }
     }
 
