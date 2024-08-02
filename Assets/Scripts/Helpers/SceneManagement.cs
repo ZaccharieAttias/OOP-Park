@@ -73,23 +73,23 @@ public static class SceneManagement
         GameplayData.Save();
     }
 
-    public static void CompleteOnline()
+    public static void CompleteOnline(bool isPassed)
     {
         string LevelName = GameObject.Find("LevelManager").GetComponent<LevelDownload>().LevelName1;
         var ChapterInfos = GameplayInfo[1].ChapterInfos;
         var currentChapter = ChapterInfos.Find(chapter => chapter.Name == LevelName);
         if (currentChapter != null)
-            currentChapter.LevelsInfo[0].Status = 1;
-        else 
+            currentChapter.LevelsInfo[0].Status = isPassed ? 1 : 0;
+        else
+        {
+            ChapterInfos.Add(new ChapterInfo
             {
-                ChapterInfos.Add(new ChapterInfo
-                {
-                    ChapterNumber = ChapterInfos.Count,
-                    Name = LevelName,
-                    LevelsInfo = new List<LevelInfo> { new LevelInfo { LevelNumber = 1, Status = 1 } }
-                });
-            }
-        
+                ChapterNumber = ChapterInfos.Count,
+                Name = LevelName,
+                LevelsInfo = new List<LevelInfo> { new() { LevelNumber = 1, Status = isPassed ? 1 : 0 } }
+            });
+        }
+
         GameplayData.Save();
     }
 }
