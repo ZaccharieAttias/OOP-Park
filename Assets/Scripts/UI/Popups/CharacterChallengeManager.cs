@@ -1,231 +1,133 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using Assets.HeroEditor.Common.Scripts.CharacterScripts;
-using Assets.HeroEditor.Common.Scripts.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
 
-
-
-public class CharacterChallangeManager : MonoBehaviour
+public class CharacterChallengeManager : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public GameObject Popup;
-    public Transform playerTransform;
-    public Vector3 oldPosition;
-    public List<GameObject> Cameras;
-    public Canvas Canvas;
-    public Character Character;
-    public Button ConfirmButton;
-    public Button CancelButton;
-    public Button ResetButton;
+    [Header("Scripts")]
+    public CharacterAppearanceManager CharacterAppearanceManager;
+    public CharacterEditor1 CharacterEditor1;
+    public AiModelData AiModelData;
 
+    [Header("UI Elements")]
     public GameObject Mission1Popup;
     public GameObject Mission2Popup;
     public GameObject Mission3Popup;
-
     public List<GameObject> Walls;
 
-    public int challenge = 0;
+    [Header("Challenge Attributes")]
+    public int challenge;
 
-    public Transform Player;
-    public List<GameObject> CharacterGameObjects;
-    public CharacterEditor1 CharacterEditor1;
-
-    public AiModelData AiModelData;
 
     public void Start()
     {
-        Player = GameObject.Find("Player").transform;
+        InitializeScripts();
+        InitializeUIElements();
+        InitializeUniqueListeners();
+        InitializeSelfProperties();
+        UpdateWallsBasedOnAppearance();
+
+    }
+    public void InitializeScripts()
+    {
+        CharacterAppearanceManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>();
+        CharacterAppearanceManager.ConfirmButton.onClick.AddListener(() => ConfirmFactory());
+        CharacterAppearanceManager.CancelButton.onClick.AddListener(() => CancelFactory());
+        CharacterAppearanceManager.ResetButton.onClick.AddListener(() => ResetFactory());
+
+        CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
+    }
+    public void InitializeUIElements()
+    {
         Mission1Popup = GameObject.Find("Canvas/Popups/Mission1");
         Mission2Popup = GameObject.Find("Canvas/Popups/Mission2");
         Mission3Popup = GameObject.Find("Canvas/Popups/Mission3");
 
-        Popup = GameObject.Find("Canvas/Popups/CharacterAppearance");
-        if (GameObject.Find("Player") != null)
-        {
-            playerTransform = GameObject.Find("Player").transform;
-            Character = GameObject.Find("Player").GetComponent<Character>();
-        }
-        Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        Cameras = new List<GameObject>()
-        {
-            GameObject.Find("Main Camera"),
-            GameObject.Find("Camera"),
-        };
-
-        Cameras[1].SetActive(false);
-
-
-        CharacterGameObjects = new List<GameObject>();
-        Walls = new List<GameObject>()
+        Walls = new List<GameObject>
         {
             GameObject.Find("Grid/Challenges/Wall1"),
             GameObject.Find("Grid/Challenges/Wall2"),
-            GameObject.Find("Grid/Challenges/Wall3"),
+            GameObject.Find("Grid/Challenges/Wall3")
         };
-
-        CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
-
-        ConfirmButton = Popup.transform.Find("Character/Buttons/Confirm").GetComponent<Button>();
-        CancelButton = Popup.transform.Find("Character/Buttons/Cancel").GetComponent<Button>();
-        ResetButton = Popup.transform.Find("Character/Buttons/Reset").GetComponent<Button>();
-
-        ConfirmButton.onClick.AddListener(() => ConfirmFactory());
-        CancelButton.onClick.AddListener(() => CancelFactory());
-        ResetButton.onClick.AddListener(() => ResetFactory());
-
-        ChallengeCheck();
     }
+    public void InitializeUniqueListeners()
+    {
+        Transform allTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
 
+        var CharacterGameObjects = allTransform.Cast<Transform>()
+            .Where(child => child.gameObject.name != "Line")
+            .Select(child => child.gameObject)
+            .ToList();
+
+        CharacterGameObjects.ForEach(item => item.GetComponent<Button>().onClick.AddListener(() => BackStage()));
+    }
+    public void InitializeSelfProperties()
+    {
+        challenge = 0;
+    }
 
     public void ConfirmFactory()
     {
-        ChallengeCheck();
-        ToggleOff();
+        UpdateWallsBasedOnAppearance();
         AiModelData.AppearanceLevelTries++;
     }
-
     public void CancelFactory()
     {
-        ChallengeCheck();
+        UpdateWallsBasedOnAppearance();
         CharacterEditor1.LoadFromJson();
-        ToggleOff();
     }
     public void ResetFactory()
     {
         CharacterEditor1.LoadFromJson();
     }
-    public void ChallengeCheck()
+
+    public void UpdateWallsBasedOnAppearance()
     {
-        if (CharacterGameObjects.Count == 0)
-        {
-            Transform allTransform = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
-            foreach (Transform child in allTransform)
-            {
-                if (child.gameObject.name != "Line")
-                {
-                    CharacterGameObjects.Add(child.gameObject);
-                }
-            }
+        string json = CharacterAppearanceManager.Character.ToJson();
 
-            foreach (var item in CharacterGameObjects)
-            {
-                item.GetComponent<Button>().onClick.AddListener(() => BackStage());
-            }
-        }
-
-
-        string json = Character.ToJson();
-        string glassesValue = "";
-        string helmetValue = "";
-        string beardValue = "";
-
-        foreach (var item in json.Split(','))
-        {
-            if (item.Contains("Glasses"))
-            {
-                glassesValue = item.Split(':')[1];
-            }
-
-            if (item.Contains("Helmet"))
-            {
-                helmetValue = item.Split(':')[1];
-            }
-
-            if (item.Contains("Beard"))
-            {
-                beardValue = item.Split(':')[1];
-            }
-        }
-
+        string glassesValue = GetAppearanceValue(json, "Glasses");
+        string helmetValue = GetAppearanceValue(json, "Helmet");
+        string beardValue = GetAppearanceValue(json, "Beard");
 
         Walls[0].SetActive(glassesValue.Length < 3);
         Walls[1].SetActive(helmetValue.Length < 3);
         Walls[2].SetActive(beardValue.Length < 3);
     }
-    public void BackStage()
+    public string GetAppearanceValue(string json, string appearanceType)
     {
-        if (challenge == 0)
-        {
-            Player.position = new Vector3(0, 0, 0);
-        }
-        else if (challenge == 1)
-        {
-            Player.position = new Vector3(12, 0, 0);
-        }
-        else if (challenge == 2)
-        {
-            Player.position = new Vector3(22, 0, 0);
-        }
-        else if (challenge == 3)
-        {
-            Player.position = new Vector3(48, 0, 0);
-        }
+        return json.Split(',')
+            .FirstOrDefault(item => item.Contains(appearanceType))?
+            .Split(':')[1] ?? "";
     }
 
     public void SetChallenge1()
     {
         challenge = 1;
-
         Mission1Popup.SetActive(true);
     }
-
     public void SetChallenge2()
     {
         challenge = 2;
         Mission2Popup.SetActive(true);
     }
-
     public void SetChallenge3()
     {
         challenge = 3;
         Mission3Popup.SetActive(true);
     }
 
-    public void ToggleOn()
+    public void BackStage()
     {
-        SceneManagement.ScenePause("CharacterChallengeManager");
-
-        oldPosition = playerTransform.position;
-        playerTransform.localScale = new Vector3(100, 100, 100);
-        playerTransform.position = new Vector3(664, 618, 0);
-
-        Canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        Canvas.worldCamera = Cameras[1].GetComponent<Camera>();
-
-        Cameras[0].SetActive(false);
-        Cameras[1].SetActive(true);
-
-        Popup.SetActive(true);
-    }
-    public void ToggleOff()
-    {
-        SceneManagement.SceneResume("CharacterChallengeManager");
-        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
-
-        playerTransform.localScale = new Vector3(1, 1, 1);
-        playerTransform.position = oldPosition;
-
-        Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-
-        Cameras[0].SetActive(true);
-        Cameras[1].SetActive(false);
-        Popup.SetActive(false);
-    }
-    public void ToggleActivation()
-    {
-        if (Popup.activeSelf)
-            ToggleOff();
-        else
-            ToggleOn();
+        Vector3 position = challenge switch
+        {
+            1 => new Vector3(12, 0, 0),
+            2 => new Vector3(22, 0, 0),
+            3 => new Vector3(48, 0, 0),
+            _ => new Vector3(0, 0, 0),
+        };
+        CharacterAppearanceManager.playerTransform.position = position;
     }
 }
-
-
-

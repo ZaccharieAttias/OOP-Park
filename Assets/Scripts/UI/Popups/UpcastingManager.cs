@@ -10,6 +10,8 @@ public class UpcastingManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject Popup;
     public List<TextMeshProUGUI> Texts;
+
+    [Header("Buttons")]
     public List<Button> Buttons;
 
     [Header("Upcasting Data")]
@@ -19,18 +21,24 @@ public class UpcastingManager : MonoBehaviour
 
     public void Start()
     {
-        InitializeProperties();
+        InitializeUIElements();
+        InitializeButtons();
+        InitializeUpcastingData();
     }
-    public void InitializeProperties()
+    public void InitializeUIElements()
     {
         Popup = GameObject.Find("Canvas/Popups/Upcasting");
+
         Texts = new List<TextMeshProUGUI>
         {
             Popup.transform.Find("Background/Foreground/Buttons/Character/Text").GetComponent<TextMeshProUGUI>(),
             Popup.transform.Find("Background/Foreground/Buttons/Method/Text").GetComponent<TextMeshProUGUI>(),
             Popup.transform.Find("Background/Foreground/Buttons/Amount/Text").GetComponent<TextMeshProUGUI>()
         };
-        Buttons = new List<Button>()
+    }
+    public void InitializeButtons()
+    {
+        Buttons = new List<Button>
         {
             Popup.transform.Find("Background/Foreground/Buttons/Character/Right").GetComponent<Button>(),
             Popup.transform.Find("Background/Foreground/Buttons/Character/Left").GetComponent<Button>(),
@@ -40,21 +48,24 @@ public class UpcastingManager : MonoBehaviour
             Popup.transform.Find("Background/Foreground/Buttons/Amount/Left").GetComponent<Button>(),
             Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>()
         };
+
         Buttons[0].onClick.AddListener(() => UpdateCharacter(1));
         Buttons[1].onClick.AddListener(() => UpdateCharacter(-1));
         Buttons[2].onClick.AddListener(() => UpdateMethod(1));
         Buttons[3].onClick.AddListener(() => UpdateMethod(-1));
         Buttons[4].onClick.AddListener(() => UpdateAmount(1));
         Buttons[5].onClick.AddListener(() => UpdateAmount(-1));
-        Buttons[6].onClick.AddListener(() => ApplyUpcasting());
-
-
-        UpcastableData = new List<(CharacterB, List<Method>)>();
-        Indices = new List<int> { 0, 0, 0 };
+        Buttons[6].onClick.AddListener(ApplyUpcasting);
 
         var closeButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
-        closeButton.onClick.AddListener(() => ToggleOff());
+        closeButton.onClick.AddListener(ToggleOff);
     }
+    public void InitializeUpcastingData()
+    {
+        UpcastableData = new List<(CharacterB, List<Method>)>();
+        Indices = new List<int> { 0, 0, 0 };
+    }
+
     public void LoadPopup()
     {
         ClearContentPanel();
@@ -68,32 +79,30 @@ public class UpcastingManager : MonoBehaviour
     }
     public void CollectUpcastableData(CharacterB character)
     {
-        if (character is null || character.Parent is null) return;
+        if (character == null || character.Parent == null) return;
+
         CollectUpcastableData(character.Parent);
 
-        List<Method> parentMethods = character.Parent.Methods
-            .Where(method => RestrictionManager.Instance.AllowAccessModifier is false || method.AccessModifier is not AccessModifier.Private)
+        var parentMethods = character.Parent.Methods
+            .Where(method => !RestrictionManager.Instance.AllowAccessModifier || method.AccessModifier != AccessModifier.Private)
+            .Where(method => method.Name != "Appearance")
             .ToList();
 
-        if (parentMethods.Count > 0)
-        {
-            UpcastableData.Add((character.Parent, parentMethods));
-        }
-
+        if (parentMethods.Any()) UpcastableData.Add((character.Parent, parentMethods));
     }
     public void ApplyUpcasting()
     {
-        CharactersData.CharactersManager.CurrentCharacter.UpcastMethod = new(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
-        CharactersData.CharactersManager.CurrentCharacter.UpcastMethod.UpcastingTrackerManager.ToggleOn();
+        var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
+        currentCharacter.UpcastMethod = new(UpcastableData[Indices[0]].Item2[Indices[1]], Indices[2]);
+        currentCharacter.UpcastMethod.UpcastingTrackerManager.ToggleOn();
 
         ToggleOff();
     }
     public void ClearContentPanel()
     {
-        UpcastableData = new();
+        UpcastableData.Clear();
         Indices = new List<int> { 0, 0, 0 };
     }
-
     public void DisplayCharacter()
     {
         Texts[0].text = UpcastableData.Count > 0 ? UpcastableData[Indices[0]].Item1.Name : "";
@@ -126,7 +135,6 @@ public class UpcastingManager : MonoBehaviour
         Buttons[5].interactable = UpcastableData.Count > 0;
         Buttons[6].interactable = UpcastableData.Count > 0 && Indices[2] > 0;
     }
-
     public void UpdateCharacter(int direction)
     {
         Indices[0] = (Indices[0] + direction + UpcastableData.Count) % UpcastableData.Count;
@@ -152,28 +160,29 @@ public class UpcastingManager : MonoBehaviour
         DisplayAmount();
     }
 
+    public bool Checker()
+    {
+        CollectUpcastableData(CharactersData.CharactersManager.CurrentCharacter);
+        return UpcastableData.Count > 0;
+    }
+
     public void ToggleOn()
     {
         SceneManagement.ScenePause("UpcastingManager");
+
         LoadPopup();
         Popup.SetActive(true);
     }
     public void ToggleOff()
     {
         SceneManagement.SceneResume("UpcastingManager");
+
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
     }
     public void ToggleActivation()
     {
-        if (Popup.activeSelf)
-        {
-            ToggleOff();
-        }
-
-        else
-        {
-            ToggleOn();
-        }
+        if (Popup.activeSelf) ToggleOff();
+        else ToggleOn();
     }
 }

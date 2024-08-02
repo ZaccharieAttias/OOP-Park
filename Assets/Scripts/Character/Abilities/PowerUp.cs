@@ -64,6 +64,7 @@ public class Powerup : MonoBehaviour
             for (int i = 0; i < character.Methods.Count; i++)
             {
                 if (PreviousUpcastMethod?.CharacterMethod?.Name == character.Methods[i].Name) continue;
+                if (character.Methods[i].Name.Equals("Appearance", StringComparison.OrdinalIgnoreCase)) continue;
                 PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(character.Methods[i].Name)).ActivatePower(Player, character.Methods[i].Attribute.Value);
                 PreviousMethods.Add(character.Methods[i]);
             }

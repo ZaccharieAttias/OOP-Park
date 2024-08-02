@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -9,30 +6,38 @@ using UnityEngine.SceneManagement;
 
 public class FeedbackManager : MonoBehaviour
 {
+    [Header("Scripts")]
+    public AiModelData AiModelData;
+
     [Header("UI Elements")]
     public GameObject Popup;
     public TMP_Text FeedbackScore;
     public TMP_Text FeedbackText;
 
+    [Header("Buttons")]
     public Button ExitButton;
     public Button RetryButton;
     public Button NextLevelButton;
 
 
-    public AiModelData AiModelData;
-
     public void Start()
     {
-        InitializeProperties();
+        InitializeScripts();
+        InitializeUIElements();
+        InitializeButtons();
     }
-    public void InitializeProperties()
+    public void InitializeScripts()
     {
         AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
-
+    }
+    public void InitializeUIElements()
+    {
         Popup = GameObject.Find("Canvas/Popups/Feedback");
         FeedbackScore = Popup.transform.Find("Background/Foreground/Contour/Percentage").GetComponent<TMP_Text>();
         FeedbackText = Popup.transform.Find("Background/Foreground/Contour/Text").GetComponent<TMP_Text>();
-
+    }
+    public void InitializeButtons()
+    {
         ExitButton = Popup.transform.Find("Background/Foreground/Buttons/Exit").GetComponent<Button>();
         ExitButton.onClick.AddListener(() => ExitFactory());
 
@@ -45,7 +50,7 @@ public class FeedbackManager : MonoBehaviour
 
     public void ExitFactory()
     {
-        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        var currentSceneName = SceneManager.GetActiveScene().name;
         var chapterNumber = currentSceneName[1].ToString();
 
         switch (chapterNumber)
@@ -54,7 +59,7 @@ public class FeedbackManager : MonoBehaviour
                 SceneManager.LoadScene("ChapterTutorial");
                 break;
             case "1":
-                SceneManager.LoadScene("ChapterIneritance");
+                SceneManager.LoadScene("ChapterInheritance");
                 break;
             case "2":
                 SceneManager.LoadScene("ChapterPolymorphism");
@@ -64,54 +69,48 @@ public class FeedbackManager : MonoBehaviour
                 break;
         }
     }
-
     public void RetryFactory()
     {
-        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        var currentSceneName = SceneManager.GetActiveScene().name;
         SceneManagement.LoadScene(currentSceneName);
     }
-
     public void NextLevelFactory()
     {
-        var currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        var ChapterInfos = SceneManagement.GameplayInfo[0].ChapterInfos;
+        var currentSceneName = SceneManager.GetActiveScene().name;
+        var chapterInfos = SceneManagement.GameplayInfo[0].ChapterInfos;
 
         int chapterNumber = int.Parse(currentSceneName[1].ToString());
         int levelNumber = int.Parse(currentSceneName[3].ToString());
 
-        if (levelNumber + 1 <= ChapterInfos[chapterNumber].LevelsInfo.Count)
-        {
-            SceneManagement.LoadScene($"C{chapterNumber}L{levelNumber + 1}");
-        }
-
-        else if (chapterNumber + 1 < ChapterInfos.Count)
-        {
-            SceneManagement.LoadScene($"C{chapterNumber + 1}L1");
-        }
-
-        else
-        {
-            SceneManagement.LoadScene("Playground");
-        }
+        if (levelNumber + 1 <= chapterInfos[chapterNumber].LevelsInfo.Count) SceneManagement.LoadScene($"C{chapterNumber}L{levelNumber + 1}");
+        else if (chapterNumber + 1 < chapterInfos.Count) SceneManagement.LoadScene($"C{chapterNumber + 1}L1");
+        else SceneManagement.LoadScene("Playground");
     }
 
     public void LoadPopup()
     {
         GameObject.Find("Player").SetActive(false);
+
         string sceneName = SceneManager.GetActiveScene().name;
         int score = AiModelData.CalculateScore();
+        bool isPassed = score >= 70;
 
         FeedbackScore.text = $"{score}%";
-        if (score < 50) FeedbackText.text = "Keep practicing! You can do better!";
-        else if (score < 70) FeedbackText.text = "You're close!, dont give up!";
-        else if (score < 85) FeedbackText.text = "Great job! You passed the level, but still need work!";
-        else if (score < 95) FeedbackText.text = "Excellent job! You're amazing!";
-        else FeedbackText.text = "Perfect! You're a master!";
+        FeedbackText.text = GetFeedbackText(score);
 
-        if (sceneName == "OnlinePlayground") SceneManagement.CompleteOnline();
+        if (sceneName == "OnlinePlayground") SceneManagement.CompleteOnline(isPassed);
         else if (score >= 70) SceneManagement.UnlockNextLevel();
 
         NextLevelButton.interactable = score >= 70;
+    }
+    public string GetFeedbackText(int score)
+    {
+        if (score < 50) return "Keep practicing! You can do better!";
+        if (score < 70) return "You're close! Don't give up!";
+        if (score < 85) return "Great job! You passed the level, but still need work!";
+        if (score < 95) return "Excellent job! You're amazing!";
+
+        return "Perfect! You're a master!";
     }
 
     public void ToggleOn()

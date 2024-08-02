@@ -4097,7 +4097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c467fc17f4a1946b740785ca67b073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterChallangeManager: {fileID: 0}
+  CharacterChallengeManager: {fileID: 0}
 --- !u!114 &161357846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4110,7 +4110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c467fc17f4a1946b740785ca67b073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterChallangeManager: {fileID: 0}
+  CharacterChallengeManager: {fileID: 0}
 --- !u!61 &161357847
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11515,8 +11515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f659f6834b2f7874b8fedffaec61b75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllowSingleInheritance: 1
-  AllowBeginnerInheritance: 0
+  AllowSingleInheritance: 0
   AllowSpecialAbility: 1
   AllowAccessModifier: 0
   AllowOverride: 1
@@ -12316,7 +12315,8 @@ GameObject:
   - component: {fileID: 482780946}
   - component: {fileID: 482780945}
   - component: {fileID: 482780944}
-  - component: {fileID: 482780956}
+  - component: {fileID: 482780957}
+  - component: {fileID: 482780958}
   m_Layer: 5
   m_Name: Popups
   m_TagString: Untagged
@@ -12372,7 +12372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de9dc453374c364b8bb5d8ece0c266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterChallangeManager: {fileID: 0}
   characterAppearanceManager: {fileID: 0}
   encapsulationManager: {fileID: 0}
   upcastingManager: {fileID: 0}
@@ -12579,8 +12578,30 @@ MonoBehaviour:
   Popup: {fileID: 0}
   AttributeButton: {fileID: 0}
   AttributesContentPanel: {fileID: 0}
+  InheritanceButton: {fileID: 0}
   AttributeGameObjects: []
---- !u!114 &482780956
+--- !u!114 &482780957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482780941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29582327a40f8184a86b2059d9e53e9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Popup: {fileID: 0}
+  playerTransform: {fileID: 0}
+  oldPosition: {x: 0, y: 0, z: 0}
+  Cameras: []
+  Canvas: {fileID: 0}
+  ConfirmButton: {fileID: 0}
+  CancelButton: {fileID: 0}
+  ResetButton: {fileID: 0}
+  Character: {fileID: 0}
+--- !u!114 &482780958
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12592,24 +12613,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dab9408aa6400f4e91068e78ca6dd7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  playerTransform: {fileID: 0}
-  oldPosition: {x: 0, y: 0, z: 0}
-  Cameras: []
-  Canvas: {fileID: 0}
-  Character: {fileID: 0}
-  ConfirmButton: {fileID: 0}
-  CancelButton: {fileID: 0}
-  ResetButton: {fileID: 0}
+  CharacterAppearanceManager: {fileID: 0}
+  CharacterEditor1: {fileID: 0}
+  AiModelData: {fileID: 0}
   Mission1Popup: {fileID: 0}
   Mission2Popup: {fileID: 0}
   Mission3Popup: {fileID: 0}
   Walls: []
-  challenge: 1
-  Player: {fileID: 0}
-  CharacterGameObjects: []
-  CharacterEditor1: {fileID: 0}
-  AiModelData: {fileID: 0}
+  challenge: 0
 --- !u!1 &492268003
 GameObject:
   m_ObjectHideFlags: 0
@@ -14819,7 +14830,7 @@ MonoBehaviour:
   TimeTook: 0
   AbstractLevelTries: 0
   AppearanceLevelTries: 0
-  LevelInitializer: {fileID: 0}
+  LevelDownload: {fileID: 0}
 --- !u!224 &570312959 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7933485975780354784, guid: 568c6156053e64941b1c619a2cf4e1b2, type: 3}
@@ -32180,7 +32191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c467fc17f4a1946b740785ca67b073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterChallangeManager: {fileID: 0}
+  CharacterChallengeManager: {fileID: 0}
 --- !u!61 &1375945419
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -46506,7 +46517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c467fc17f4a1946b740785ca67b073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterChallangeManager: {fileID: 0}
+  CharacterChallengeManager: {fileID: 0}
 --- !u!61 &1973943128
 BoxCollider2D:
   m_ObjectHideFlags: 0
