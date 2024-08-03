@@ -18,7 +18,6 @@ public class AttributesManager : MonoBehaviour
     [Header("Attribute Data")]
     public List<Attribute> AttributesCollection;
     public List<GameObject> AttributeGameObjects;
-    public int AttributeLimit;
 
 
     public void Start()
@@ -42,7 +41,6 @@ public class AttributesManager : MonoBehaviour
     {
         AttributesCollection = new List<Attribute>();
         AttributeGameObjects = new List<GameObject>();
-        AttributeLimit = 2;
     }
     public void InitializeEventListeners()
     {
@@ -57,26 +55,23 @@ public class AttributesManager : MonoBehaviour
     {
         if (AttributeGameObjects.Count == 0) BuildAttributeGameObjects();
 
-        var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
-        AttributeGameObjects.ForEach(attributeGameObject => UpdateAttributeGameObject(attributeGameObject, currentCharacter));
+        AttributeGameObjects.ForEach(attributeGameObject => UpdateAttributeGameObject(attributeGameObject));
     }
-    public void UpdateAttributeGameObject(GameObject attributeGameObject, CharacterB currentCharacter)
+    public void UpdateAttributeGameObject(GameObject attributeGameObject)
     {
+        var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         bool hasAttribute = currentCharacter.Attributes.Any(item => item.Name == attributeGameObject.name);
 
-        var image = attributeGameObject.GetComponent<Image>();
+        Image image = attributeGameObject.GetComponent<Image>();
         image.color = hasAttribute ? Color.green : Color.white;
 
-        var attributeButton = attributeGameObject.GetComponent<Button>();
-        attributeGameObject.GetComponent<Button>().interactable = IsAttributeSelectable(attributeGameObject.name, currentCharacter, hasAttribute);
-    }
-    public bool IsAttributeSelectable(string attributeName, CharacterB currentCharacter, bool hasAttribute)
-    {
-        int attributeCount = currentCharacter.Attributes.Count;
-        bool isAttributeAllowed = !IsAttributeExist(currentCharacter.Parent, attributeName);
+        bool isAttributeAllowed = !IsAttributeExist(currentCharacter.Parent, attributeGameObject.name);
+        bool isOkay = isAttributeAllowed || currentCharacter.IsOriginal || RestrictionManager.Instance.OnlineBuild;
+        attributeGameObject.GetComponent<Button>().interactable = isOkay;
 
-        return (isAttributeAllowed && attributeCount < AttributeLimit) || currentCharacter.IsOriginal || RestrictionManager.Instance.OnlineBuild || hasAttribute;
+        if (!isOkay) image.color = Color.yellow;
     }
+
     public void MarkAttribute(GameObject attributeGameObject, Attribute attribute)
     {
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
@@ -86,7 +81,6 @@ public class AttributesManager : MonoBehaviour
         else RemoveAttributeFromCharacter(currentCharacter, currentAttribute);
 
         UpdateAttributeColor(attributeGameObject, currentAttribute);
-        LoadPopup();
     }
     public void AddAttributeToCharacter(CharacterB currentCharacter, Attribute attribute)
     {
