@@ -17,7 +17,7 @@ public class PauseManager : MonoBehaviour
     public void Start()
     {
         InitializeUIElements();
-        InitializeButtonListeners();
+        InitializeButton();
     }
     public void Update()
     {
@@ -27,7 +27,7 @@ public class PauseManager : MonoBehaviour
     {
         Popup = GameObject.Find("Canvas/Popups/Pause");
     }
-    public void InitializeButtonListeners()
+    public void InitializeButton()
     {
         ResumeButton = Popup.transform.Find("Background/Foreground/Buttons/Resume").GetComponent<Button>();
         ResumeButton.onClick.AddListener(ToggleOff);

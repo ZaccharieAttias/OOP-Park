@@ -24,6 +24,7 @@ public class UpcastingManager : MonoBehaviour
         InitializeUIElements();
         InitializeButtons();
         InitializeUpcastingData();
+        InitializeEventListeners();
     }
     public void InitializeUIElements()
     {
@@ -56,16 +57,17 @@ public class UpcastingManager : MonoBehaviour
         Buttons[4].onClick.AddListener(() => UpdateAmount(1));
         Buttons[5].onClick.AddListener(() => UpdateAmount(-1));
         Buttons[6].onClick.AddListener(ApplyUpcasting);
-
-        var closeButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
-        closeButton.onClick.AddListener(ToggleOff);
     }
     public void InitializeUpcastingData()
     {
         UpcastableData = new List<(CharacterB, List<Method>)>();
         Indices = new List<int> { 0, 0, 0 };
     }
-
+    public void InitializeEventListeners()
+    {
+        var closeButton = Popup.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
+        closeButton.onClick.AddListener(ToggleOff);
+    }
     public void LoadPopup()
     {
         ClearContentPanel();
