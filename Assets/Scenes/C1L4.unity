@@ -123,6 +123,40 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &22633992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 22633993}
+  m_Layer: 0
+  m_Name: Scripts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &22633993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22633992}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 899.79565, y: 505.48734, z: 7.6408725}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1623013947}
+  - {fileID: 304611873}
+  - {fileID: 1189283020}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &30645766
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,9 +326,8 @@ GameObject:
   - component: {fileID: 48363566}
   - component: {fileID: 48363565}
   - component: {fileID: 48363564}
-  - component: {fileID: 48363563}
   m_Layer: 0
-  m_Name: Button
+  m_Name: ValidateButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -307,39 +340,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 48363561}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1761147556}
-  m_Father: {fileID: 916774295}
+  m_Father: {fileID: 1283879388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.188599, y: -405.7851}
+  m_AnchoredPosition: {x: 26.640686, y: -403.9087}
   m_SizeDelta: {x: 348.2899, y: 83.465}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &48363563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 48363561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9db0848f81ed0c143be9ade0bcddb7dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ValidateButton: {fileID: 48363564}
-  toggleGroup1: {fileID: 1052555193}
-  toggleGroup2: {fileID: 1244074663}
-  toggleGroup3: {fileID: 1320064894}
-  answer: 020000000200000001000000
-  quizFeedback: {fileID: 1127376397}
-  ErrorPanel: {fileID: 231902855}
-  ErrorText: {fileID: 1057501906}
 --- !u!114 &48363564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,19 +396,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 48363565}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: Validate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &48363565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1372,19 +1373,7 @@ MonoBehaviour:
   m_Group: {fileID: 1244074663}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion2
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &270488318
 GameObject:
@@ -1469,19 +1458,7 @@ MonoBehaviour:
   m_Group: {fileID: 1244074663}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion2
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!224 &276490983 stripped
 RectTransform:
@@ -1757,6 +1734,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 568c6156053e64941b1c619a2cf4e1b2, type: 3}
+--- !u!1 &304611872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 304611873}
+  - component: {fileID: 304611874}
+  m_Layer: 0
+  m_Name: RestrictionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &304611873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304611872}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22633993}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &304611874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304611872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f659f6834b2f7874b8fedffaec61b75a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllowSingleInheritance: 0
+  AllowSpecialAbility: 0
+  AllowAccessModifier: 0
+  AllowOverride: 0
+  AllowUpcasting: 0
+  AllowAbstractClass: 0
+  AllowEncapsulation: 0
+  OnlineGame: 0
+  OnlineBuild: 0
 --- !u!1 &322462134
 GameObject:
   m_ObjectHideFlags: 0
@@ -2496,6 +2526,9 @@ MonoBehaviour:
   PositionOffset: {x: 0, y: 0, z: 0}
   Velocity: {x: 0, y: 0, z: 0}
   TimeOffset: 0
+  StartPosition: {x: 0, y: 0, z: 0}
+  MinValues: {x: 0, y: 0, z: 0}
+  MaxValues: {x: 0, y: 0, z: 0}
 --- !u!224 &545467907 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7933485975780354784, guid: 568c6156053e64941b1c619a2cf4e1b2, type: 3}
@@ -2962,19 +2995,7 @@ MonoBehaviour:
   m_Group: {fileID: 1052555193}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion1
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &643984313
 GameObject:
@@ -3854,7 +3875,6 @@ RectTransform:
   m_Children:
   - {fileID: 1896039866}
   - {fileID: 732701314}
-  - {fileID: 48363562}
   m_Father: {fileID: 1283879388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4479,19 +4499,7 @@ MonoBehaviour:
   m_Group: {fileID: 1244074663}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion2
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1022156129
 GameObject:
@@ -4576,19 +4584,7 @@ MonoBehaviour:
   m_Group: {fileID: 1320064894}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion3
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1022438171
 GameObject:
@@ -5356,19 +5352,7 @@ MonoBehaviour:
   m_Group: {fileID: 1320064894}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion3
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1102613749
 GameObject:
@@ -5665,19 +5649,7 @@ MonoBehaviour:
   m_Group: {fileID: 1244074663}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion2
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1127376384
 GameObject:
@@ -5689,6 +5661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1127376385}
   - component: {fileID: 1127376396}
+  - component: {fileID: 1127376398}
   - component: {fileID: 1127376397}
   m_Layer: 5
   m_Name: Popups
@@ -5745,16 +5718,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1127376384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d0458e6808d850449d928e319945e41, type: 3}
+  m_Script: {fileID: 11500000, guid: 1da913fdcc86f0e4f9669b9b816584d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Popup: {fileID: 1720382461}
-  FeedbackScore: {fileID: 1011960669}
-  FeedbackText: {fileID: 1183745398}
-  ExitButton: {fileID: 1895167678}
-  RetryButton: {fileID: 659807318}
-  NextLevelButton: {fileID: 2082073360}
-  DeathsCount: 0
+  AiModelData: {fileID: 0}
+  FeedbackManager: {fileID: 0}
+  Popup: {fileID: 0}
+  ErrorText: {fileID: 0}
+  ToggleGroup: []
+  ValidateButton: {fileID: 0}
+  Answers: 
+--- !u!114 &1127376398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127376384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab516027f19ba2a4eaac2d20690fa35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AiModelData: {fileID: 0}
+  Popup: {fileID: 0}
+  FeedbackScore: {fileID: 0}
+  FeedbackText: {fileID: 0}
+  ExitButton: {fileID: 0}
+  RetryButton: {fileID: 0}
+  NextLevelButton: {fileID: 0}
 --- !u!1 &1132934233
 GameObject:
   m_ObjectHideFlags: 0
@@ -5972,19 +5964,7 @@ MonoBehaviour:
   m_Group: {fileID: 1320064894}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion3
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1156114148
 GameObject:
@@ -6713,6 +6693,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1189283019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1189283020}
+  - component: {fileID: 1189283021}
+  m_Layer: 0
+  m_Name: LootLockerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1189283020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189283019}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -899.9038, y: -504.9464, z: -7.65214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22633993}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1189283021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189283019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a467975838643a44584bbf5d84b790fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons: {fileID: 0}
 --- !u!1 &1193402467
 GameObject:
   m_ObjectHideFlags: 0
@@ -7505,6 +7530,7 @@ RectTransform:
   - {fileID: 1272770870}
   - {fileID: 2019898776}
   - {fileID: 916774295}
+  - {fileID: 48363562}
   m_Father: {fileID: 2086033898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -8106,19 +8132,7 @@ MonoBehaviour:
   m_Group: {fileID: 1320064894}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion3
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1453041183
 GameObject:
@@ -8737,20 +8751,59 @@ MonoBehaviour:
   m_Group: {fileID: 1052555193}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion1
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
+--- !u!1 &1623013946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1623013947}
+  - component: {fileID: 1623013948}
+  m_Layer: 0
+  m_Name: AiModelData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1623013947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623013946}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 22633993}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1623013948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623013946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bfeea33c977a24288d987e422c5982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Score: 0
+  DeathsCount: 0
+  TimeTook: 0
+  AbstractLevelTries: 0
+  AppearanceLevelTries: 0
+  QuizLevelTries: 0
+  LevelDownload: {fileID: 0}
 --- !u!1 &1630526435
 GameObject:
   m_ObjectHideFlags: 0
@@ -9279,7 +9332,7 @@ GameObject:
   - component: {fileID: 1700041571}
   - component: {fileID: 1700041570}
   m_Layer: 5
-  m_Name: Contour
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10784,19 +10837,7 @@ MonoBehaviour:
   m_Group: {fileID: 1052555193}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion1
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1895167676
 GameObject:
@@ -11517,19 +11558,7 @@ MonoBehaviour:
   m_Group: {fileID: 1052555193}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 48363563}
-        m_TargetAssemblyTypeName: validateQuiz, Assembly-CSharp
-        m_MethodName: SetValueQuestion1
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!1 &1990312587
 GameObject:
@@ -12877,5 +12906,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 22633993}
   - {fileID: 1349085674}
   - {fileID: 246542478}
