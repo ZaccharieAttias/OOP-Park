@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class AiModelData : MonoBehaviour
 {
     public int Score = 0;
@@ -12,6 +13,7 @@ public class AiModelData : MonoBehaviour
     public int TimeTook = 0;
     public int AbstractLevelTries = 0;
     public int AppearanceLevelTries = 0;
+    public int QuizLevelTries = 0;
     public List<CharacterData> CharactersOrder = new();
 
     public LevelDownload LevelDownload;
@@ -63,12 +65,12 @@ public class AiModelData : MonoBehaviour
             TimeTook = TimeTook,
             AbstractLevelTries = AbstractLevelTries,
             AppearanceLevelTries = AppearanceLevelTries,
+            QuizLevelTries = QuizLevelTries,
             CharactersOrder = CharactersOrder
         };
 
         string json = JsonConvert.SerializeObject(gameData, Formatting.Indented);
         File.WriteAllText(FilePath, json);
-
         GameObject.Find("LootLockerManager").GetComponent<LootLockerManager>().UploadPlayerData();
     }
 
@@ -80,8 +82,9 @@ public class AiModelData : MonoBehaviour
         int deathsVariable = DeathsCount > 2 ? DeathsCount - 2 : 0;
         int abstractLevelTriesVariable = AbstractLevelTries > 5 ? AbstractLevelTries - 5 : 0;
         int appearanceLevelTriesVariable = AppearanceLevelTries > 5 ? AppearanceLevelTries - 5 : 0;
+        int quizLevelTriesVariable = QuizLevelTries > 5 ? QuizLevelTries - 5 : 0;
 
-        Score = 100 - (deathsVariable * 5) - (abstractLevelTriesVariable * 5) - (appearanceLevelTriesVariable * 5) - (timeVariable * 5);
+        Score = 100 - (deathsVariable * 5) - (abstractLevelTriesVariable * 5) - (appearanceLevelTriesVariable * 5) - (quizLevelTriesVariable * 5) - (timeVariable * 5);
         Score = Score < 0 ? 0 : Score;
 
         SaveJson();
@@ -98,5 +101,6 @@ public class GameData
     public int TimeTook;
     public int AbstractLevelTries;
     public int AppearanceLevelTries;
+    public int QuizLevelTries;
     public List<CharacterData> CharactersOrder;
 }
