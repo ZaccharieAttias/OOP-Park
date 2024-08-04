@@ -2,7 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using System;
+using System.Collections.Generic;
 
 public class FeedbackManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class FeedbackManager : MonoBehaviour
 
     public void Start()
     {
+        GameplayData.Initialize();
         InitializeScripts();
         InitializeUIElements();
         InitializeButtons();
@@ -89,19 +91,20 @@ public class FeedbackManager : MonoBehaviour
 
     public void LoadPopup()
     {
-        GameObject.Find("Player").SetActive(false);
+        GameObject player = GameObject.Find("Player");
+        if (player != null) player.SetActive(false);
 
         string sceneName = SceneManager.GetActiveScene().name;
         int score = AiModelData.CalculateScore();
-        bool isPassed = score >= 70;
 
         FeedbackScore.text = $"{score}%";
         FeedbackText.text = GetFeedbackText(score);
 
-        if (sceneName == "OnlinePlayground") SceneManagement.CompleteOnline(isPassed);
-        else if (score >= 70) SceneManagement.UnlockNextLevel();
+        bool isNextChallengePlayable;
+        if (sceneName == "OnlinePlayground") isNextChallengePlayable = UpdateOnlineProgression(score);
+        else isNextChallengePlayable = UpdateLocalProgression(score);
 
-        NextLevelButton.interactable = score >= 70;
+        NextLevelButton.interactable = isNextChallengePlayable;
     }
     public string GetFeedbackText(int score)
     {
@@ -112,6 +115,82 @@ public class FeedbackManager : MonoBehaviour
 
         return "Perfect! You're a master!";
     }
+
+    public bool UpdateLocalProgression(int score)
+    {
+        const int MinScoreToUnlockNextLevel = 70;
+        bool isNextChallengePlayable = false;
+
+        var chapterInfos = SceneManagement.GameplayInfo[0].ChapterInfos;
+        var currentSceneName = SceneManager.GetActiveScene().name;
+
+        int chapterNumber = int.Parse(currentSceneName[1].ToString());
+        int levelNumber = int.Parse(currentSceneName[3].ToString());
+
+        var currentLevel = chapterInfos[chapterNumber].LevelsInfo[levelNumber - 1];
+        currentLevel.Score = Math.Max(currentLevel.Score, score);
+        currentLevel.Status = currentLevel.Score >= MinScoreToUnlockNextLevel ? 1 : 0;
+
+        if (TryGetNextLevel(chapterInfos, chapterNumber, levelNumber, out var nextLevel))
+        {
+            if (nextLevel.Status != 1) nextLevel.Status = currentLevel.Score >= MinScoreToUnlockNextLevel ? 0 : -1;
+            isNextChallengePlayable = currentLevel.Score >= MinScoreToUnlockNextLevel || nextLevel.Status == 1;
+        }
+        else
+        {
+            SceneManagement.LoadScene("Finish");
+        }
+
+        GameplayData.Save();
+        return isNextChallengePlayable;
+    }
+    public bool UpdateOnlineProgression(int score)
+    {
+        const int MinScoreToUnlockNextLevel = 70;
+        bool isNextChallengePlayable = false;
+
+        string LevelName = GameObject.Find("LevelManager").GetComponent<LevelDownload>().LevelName1;
+        var ChapterInfos = SceneManagement.GameplayInfo[1].ChapterInfos;
+        var currentChapter = ChapterInfos.Find(chapter => chapter.Name == LevelName);
+
+        if (currentChapter != null)
+        {
+            var currentLevel = currentChapter.LevelsInfo[0];
+
+            currentLevel.Score = Math.Max(currentLevel.Score, score);
+            currentLevel.Status = currentLevel.Score >= MinScoreToUnlockNextLevel ? 1 : 0;
+        }
+
+        else
+        {
+            ChapterInfos.Add(new ChapterInfo
+            {
+                ChapterNumber = ChapterInfos.Count,
+                Name = LevelName,
+                LevelsInfo = new List<LevelInfo> { new() { LevelNumber = 1, Score = score, Status = score >= MinScoreToUnlockNextLevel ? 1 : 0 } }
+            });
+        }
+
+        GameplayData.Save();
+        return isNextChallengePlayable;
+    }
+    public bool TryGetNextLevel(IList<ChapterInfo> chapterInfos, int chapterNumber, int levelNumber, out LevelInfo nextLevel)
+    {
+        if (levelNumber < chapterInfos[chapterNumber].LevelsInfo.Count)
+        {
+            nextLevel = chapterInfos[chapterNumber].LevelsInfo[levelNumber];
+            return true;
+        }
+        else if (chapterNumber + 1 < chapterInfos.Count)
+        {
+            nextLevel = chapterInfos[chapterNumber + 1].LevelsInfo[0];
+            return true;
+        }
+
+        nextLevel = null;
+        return false;
+    }
+
 
     public void ToggleOn()
     {
