@@ -26,6 +26,7 @@ public class SceneMenusManagement : MonoBehaviour
     public void C2L3() { SceneManager.LoadScene("C2L3"); }
     public void C2L4() { SceneManager.LoadScene("C2L4"); }
     public void C2L5() { SceneManager.LoadScene("C2L5"); }
+    public void Finish() { SceneManager.LoadScene("Finish"); }
     public void Quit() { Application.Quit(); }
 
 }
