@@ -10,6 +10,7 @@ public class EncapsulationManager : MonoBehaviour
 {
     [Header("Scripts")]
     public Powerup PowerUp;
+    public SwipeMenu SwipeMenu;
 
     [Header("UI Elements")]
     public GameObject Popup;
@@ -40,6 +41,7 @@ public class EncapsulationManager : MonoBehaviour
     public void InitializeScripts()
     {
         PowerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
+        SwipeMenu = GameObject.Find("Canvas/Popups/Encapsulation/Background/Foreground/Set/Back/ScrollView/Viewport/Content").GetComponent<SwipeMenu>();
     }
     public void InitializeUIElements()
     {
@@ -48,19 +50,21 @@ public class EncapsulationManager : MonoBehaviour
         GetContent = Popup.transform.Find("Background/Foreground/Get/Back/ScrollView/Viewport/Content").GetComponent<Transform>();
 
         CurrentSet = null;
+
         InputField = Popup.transform.Find("Background/Foreground/Set/Input/InputField").GetComponent<TMP_InputField>();
         SelectedGetClick = "";
     }
     public void InitializeButtons()
     {
-        GetRowPrefab = Resources.Load<GameObject>("Buttons/GetRow");
         SetRowPrefab = Resources.Load<GameObject>("Buttons/SetRow");
+        GetRowPrefab = Resources.Load<GameObject>("Buttons/GetRow");
 
         SetButtonPrefab = Popup.transform.Find("Background/Foreground/Set/Input/Button").gameObject;
         SetButtonPrefab.GetComponent<Button>().onClick.AddListener(SetAttribute);
 
         closeButton = GameObject.Find("Canvas/Popups/Encapsulation/Background/Foreground/Close");
         closeButton.GetComponent<Button>().onClick.AddListener(ToggleOff);
+
     }
     public void InitializeAttributeCollections()
     {
@@ -82,19 +86,11 @@ public class EncapsulationManager : MonoBehaviour
     }
     public void ClearContentPanel()
     {
-        foreach (Transform attributeTransform in SetContent)
-        {
-            Destroy(attributeTransform.gameObject);
-        }
+        SetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
+        GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
 
-        foreach (Transform attributeTransform in GetContent)
-        {
-            Destroy(attributeTransform.gameObject);
-        }
-
-        var swipeMenu = SetContent.GetComponent<SwipeMenu>();
-        swipeMenu.Scroll_pos = 1;
-        swipeMenu.Scrollposition = 1;
+        SwipeMenu.CurrentScrollPosition = 1;
+        SwipeMenu.PreviousScrollPosition = 1;
     }
     public void PopulateCollections()
     {
@@ -109,21 +105,20 @@ public class EncapsulationManager : MonoBehaviour
     }
     public void FillGetCollection(CharacterB character)
     {
-        if (character == null) return;
+        if (character is null) return;
 
         foreach (var attribute in character.Attributes.Where(attr => attr.Getter && SetCollection.Any(item => item.Name == attr.Name)))
         {
             var attributeList = GetCollection.FirstOrDefault(item => item.Item1.Name == attribute.Name);
-            if (attributeList.Item1 != null && !attributeList.Item2.Contains(character)) attributeList.Item2.Add(character);
+            if (attributeList.Item1 is not null && attributeList.Item2.Contains(character) is false) attributeList.Item2.Add(character);
             else GetCollection.Add((attribute, new List<CharacterB> { character }));
-
         }
 
         FillGetCollection(character.Parent);
     }
     public void UpdateGetContent(string attributeName)
     {
-        ClearContentPanel();
+        GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
 
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         if (!GetCollection.Any(item => item.Item1.Name == attributeName)) return;
@@ -137,13 +132,13 @@ public class EncapsulationManager : MonoBehaviour
     public void CreateSetAttributeUI(Attribute attribute)
     {
         GameObject attributeGameObject = Instantiate(SetRowPrefab, SetContent);
-        attributeGameObject.name = $"{attribute.Name} Set";
+        attributeGameObject.name = attribute.Name + " Set";
 
-        TMP_Text buttonText = attributeGameObject.transform.Find("BackName/Name").GetComponent<TMP_Text>();
-        buttonText.text = attribute.Name;
+        TMP_Text ButtonText = attributeGameObject.transform.Find("BackName").transform.Find("Name").GetComponent<TMP_Text>();
+        ButtonText.text = attribute.Name;
 
-        TMP_Text buttonValueText = attributeGameObject.transform.Find("BackValue/Value").GetComponent<TMP_Text>();
-        buttonValueText.text = attribute.Value.ToString();
+        TMP_Text ButtonText2 = attributeGameObject.transform.Find("BackValue").transform.Find("Value").GetComponent<TMP_Text>();
+        ButtonText2.text = attribute.Value.ToString();
     }
     public void CreateGetAttributeUI(CharacterB character, string attributeName)
     {
@@ -230,11 +225,11 @@ public class EncapsulationManager : MonoBehaviour
 
     public bool Checker()
     {
-        if (!RestrictionManager.Instance.AllowEncapsulation) return false;
+        if (RestrictionManager.Instance.AllowEncapsulation is false) return false;
         if (!GameObject.Find("Player")) return false;
-        if (CharactersData.CharactersManager.CurrentCharacter == null) return false;
+        if (CharactersData.CharactersManager.CurrentCharacter is null) return false;
 
-        var setList = CharactersData.CharactersManager.CurrentCharacter.Attributes.Where(item => item.Setter).ToList();
+        List<Attribute> setList = CharactersData.CharactersManager.CurrentCharacter.Attributes.Where(item => item.Setter).ToList();
         return setList.Count > 0;
     }
 
