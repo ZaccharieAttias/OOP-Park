@@ -4,16 +4,23 @@ using UnityEngine.UI;
 
 public class GameplayManager : MonoBehaviour
 {
+    [Header("UI Elements")]
     public GameObject Gameplay;
     public GameObject CharacterCenter;
 
 
-    public void Start() { InitializeProperties(); }
-    private void InitializeProperties()
+    public void Start()
+    {
+        InitializeUIElements();
+        InitializeEventListeners();
+    }
+    public void InitializeUIElements()
     {
         Gameplay = GameObject.Find("Canvas/Menus/Gameplay");
         CharacterCenter = GameObject.Find("Canvas/Menus/CharacterCenter");
-
+    }
+    public void InitializeEventListeners()
+    {
         Button activateTree = Gameplay.transform.Find("SwapScreen").GetComponent<Button>();
         activateTree.onClick.AddListener(() => ToggleOff());
 
@@ -21,11 +28,9 @@ public class GameplayManager : MonoBehaviour
         activateGameplay.onClick.AddListener(() => ToggleOn());
     }
 
-
     public void ToggleOn()
     {
-        if (CharactersData.CharactersManager.CurrentCharacter != null && CharactersData.CharactersManager.CurrentCharacter.IsAbstract)
-            return;
+        if (CharactersData.CharactersManager.CurrentCharacter != null && CharactersData.CharactersManager.CurrentCharacter.IsAbstract) return;
 
         SceneManagement.SceneResume("GameplayManager");
 
