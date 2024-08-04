@@ -27,7 +27,7 @@ public class PopupKeyManager : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G) && ShouldTogglePopup()) ToggleActivation();
+        if (Input.GetKeyDown(KeyCode.G)) ToggleActivation();
     }
     public void InitializeScripts()
     {
@@ -88,19 +88,19 @@ public class PopupKeyManager : MonoBehaviour
     public bool ShouldTogglePopup()
     {
         var restrictionManager = RestrictionManager.Instance;
-        return restrictionManager.AllowUpcasting || restrictionManager.AllowEncapsulation || restrictionManager.AllowOverride;
+        return (restrictionManager.AllowUpcasting && UpcastingManager.Checker()) || (restrictionManager.AllowEncapsulation && EncapsulationManager.Checker()) || restrictionManager.AllowOverride;
     }
     public bool HandleSpecialCases()
     {
         var restrictionManager = RestrictionManager.Instance;
 
-        if (restrictionManager.AllowUpcasting && !restrictionManager.AllowEncapsulation && !restrictionManager.AllowOverride)
+        if (restrictionManager.AllowUpcasting && UpcastingManager.Checker() && !restrictionManager.AllowEncapsulation && !restrictionManager.AllowOverride)
         {
             UpcastingManager.ToggleActivation();
             return true;
         }
 
-        if (!restrictionManager.AllowUpcasting && restrictionManager.AllowEncapsulation && !restrictionManager.AllowOverride)
+        if (!restrictionManager.AllowUpcasting && restrictionManager.AllowEncapsulation && EncapsulationManager.Checker() && !restrictionManager.AllowOverride)
         {
             EncapsulationManager.ToggleActivation();
             return true;
@@ -117,6 +117,8 @@ public class PopupKeyManager : MonoBehaviour
 
     public void ToggleOn()
     {
+        if (!GameObject.Find("Canvas/Menus/Gameplay").activeSelf) return;
+        if (!ShouldTogglePopup()) return;
         if (HandleSpecialCases()) return;
 
         SceneManagement.ScenePause("KeyMenu");
