@@ -11515,7 +11515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f659f6834b2f7874b8fedffaec61b75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllowSingleInheritance: 0
+  AllowSingleInheritance: 1
   AllowSpecialAbility: 1
   AllowAccessModifier: 0
   AllowOverride: 1
@@ -12372,12 +12372,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de9dc453374c364b8bb5d8ece0c266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterAppearanceManager: {fileID: 0}
-  encapsulationManager: {fileID: 0}
-  upcastingManager: {fileID: 0}
+  CharacterAppearanceManager: {fileID: 0}
+  EncapsulationManager: {fileID: 0}
+  UpcastingManager: {fileID: 0}
   Content: {fileID: 0}
-  ButtonPrefab: {fileID: 0}
   PopupMenu: {fileID: 0}
+  ButtonPrefab: {fileID: 0}
 --- !u!114 &482780945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12390,13 +12390,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab516027f19ba2a4eaac2d20690fa35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AiModelData: {fileID: 0}
   Popup: {fileID: 0}
   FeedbackScore: {fileID: 0}
   FeedbackText: {fileID: 0}
   ExitButton: {fileID: 0}
   RetryButton: {fileID: 0}
   NextLevelButton: {fileID: 0}
-  AiModelData: {fileID: 0}
 --- !u!114 &482780946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12444,13 +12444,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140dc0c73ae5b584d884b95eb601a993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  SpecialAbilityButton: {fileID: 0}
-  SpecialAbilityContentPanel: {fileID: 0}
-  CancelButton: {fileID: 0}
-  ConfirmButton: {fileID: 0}
   CharacterCreationManager: {fileID: 0}
   SpecialAbilityTreeManager: {fileID: 0}
+  Popup: {fileID: 0}
+  SpecialAbilityContentPanel: {fileID: 0}
+  SpecialAbilityButtonPrefab: {fileID: 0}
+  CancelButton: {fileID: 0}
+  ConfirmButton: {fileID: 0}
   SpecialAbilityGameObjects: []
 --- !u!114 &482780949
 MonoBehaviour:
@@ -12482,16 +12482,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05b78994bf8b7b4e9280a4548cc1059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PowerUp: {fileID: 0}
   Popup: {fileID: 0}
   SetContent: {fileID: 0}
   GetContent: {fileID: 0}
+  CurrentSet: {fileID: 0}
+  InputField: {fileID: 0}
+  SelectedGetClick: 
   GetRowPrefab: {fileID: 0}
   SetRowPrefab: {fileID: 0}
-  InputField: {fileID: 0}
   SetButtonPrefab: {fileID: 0}
-  CurrentSet: {fileID: 0}
-  PowerUp: {fileID: 0}
-  SelectedGetClick: 
   closeButton: {fileID: 0}
 --- !u!114 &482780951
 MonoBehaviour:
@@ -12506,15 +12506,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  CharacterPrefab: {fileID: 0}
   SelectionMenu: {fileID: 0}
   CharactersContentPanel: {fileID: 0}
-  CharacterGameObjects: []
-  DuplicateCharacterGameObjects: []
+  CharacterPrefab: {fileID: 0}
   AddButton: {fileID: 0}
   CancelButton: {fileID: 0}
   ConfirmButton: {fileID: 0}
   NotAllowedButtons: []
+  CharacterGameObjects: []
+  DuplicateCharacterGameObjects: []
   CharacterToggleType: {fileID: 0}
 --- !u!114 &482780952
 MonoBehaviour:
@@ -12559,8 +12559,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  MethodButton: {fileID: 0}
   MethodsContentPanel: {fileID: 0}
+  MethodButton: {fileID: 0}
+  InheritanceButton: {fileID: 0}
   MethodGameObjects: []
   MethodLimit: 0
 --- !u!114 &482780955
@@ -12576,10 +12577,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  AttributeButton: {fileID: 0}
   AttributesContentPanel: {fileID: 0}
+  AttributeButton: {fileID: 0}
   InheritanceButton: {fileID: 0}
   AttributeGameObjects: []
+  AttributeLimit: 0
 --- !u!114 &482780957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12593,14 +12595,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  playerTransform: {fileID: 0}
-  oldPosition: {x: 0, y: 0, z: 0}
-  Cameras: []
   Canvas: {fileID: 0}
+  Cameras: []
   ConfirmButton: {fileID: 0}
   CancelButton: {fileID: 0}
   ResetButton: {fileID: 0}
   Character: {fileID: 0}
+  playerTransform: {fileID: 0}
+  oldPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &482780958
 MonoBehaviour:
   m_ObjectHideFlags: 0
