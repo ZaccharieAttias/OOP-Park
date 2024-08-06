@@ -18,7 +18,7 @@ public class RestrictionManager : MonoBehaviour
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
-    { 
+    {
         Instance = this;
 
         if (RestrictionMenu.Instance != null)
@@ -34,7 +34,7 @@ public class RestrictionManager : MonoBehaviour
             OnlineBuild = false;
             RestrictionMenu.Instance.Destroy();
         }
-        ApplyRestrictions(); 
+        ApplyRestrictions();
     }
 
     private void ApplyRestrictions()

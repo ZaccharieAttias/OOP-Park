@@ -45,11 +45,9 @@ public class SeedCollections : MonoBehaviour
             Name = "Tutorial",
             LevelsInfo = new List<LevelInfo>
             {
-                new LevelInfo { LevelNumber = 1, Status = 1 },
-                new LevelInfo { LevelNumber = 2, Status = 1 },
-                new LevelInfo { LevelNumber = 3, Status = 1 },
-                new LevelInfo { LevelNumber = 4, Status = 1 },
-                new LevelInfo { LevelNumber = 5, Status = 1 },
+                new() { LevelNumber = 1, Score = 0, Status = 0 },
+                new() { LevelNumber = 2, Score = 0, Status = -1 },
+                new() { LevelNumber = 3, Score = 0, Status = -1 },
             }
         };
         var chapter1 = new ChapterInfo
@@ -58,11 +56,10 @@ public class SeedCollections : MonoBehaviour
             Name = "Inheritance",
             LevelsInfo = new List<LevelInfo>
             {
-                new LevelInfo { LevelNumber = 1, Status = 1 },
-                new LevelInfo { LevelNumber = 2, Status = 1 },
-                new LevelInfo { LevelNumber = 3, Status = 0 },
-                new LevelInfo { LevelNumber = 4, Status = -1 },
-                new LevelInfo { LevelNumber = 5, Status = -1 },
+                new() { LevelNumber = 1, Score = 0, Status = -1 },
+                new() { LevelNumber = 2, Score = 0, Status = -1 },
+                new() { LevelNumber = 3, Score = 0, Status = -1 },
+                new() { LevelNumber = 4, Score = 0, Status = -1 },
             }
         };
         var chapter2 = new ChapterInfo
@@ -71,11 +68,11 @@ public class SeedCollections : MonoBehaviour
             Name = "Polymorphishm",
             LevelsInfo = new List<LevelInfo>
             {
-                new LevelInfo { LevelNumber = 1, Status = -1 },
-                new LevelInfo { LevelNumber = 2, Status = -1 },
-                new LevelInfo { LevelNumber = 3, Status = -1 },
-                new LevelInfo { LevelNumber = 4, Status = -1 },
-                new LevelInfo { LevelNumber = 5, Status = -1 },
+                new() { LevelNumber = 1, Score = 0, Status = -1 },
+                new() { LevelNumber = 2, Score = 0, Status = -1 },
+                new() { LevelNumber = 3, Score = 0, Status = -1 },
+                new() { LevelNumber = 4, Score = 0, Status = -1 },
+                new() { LevelNumber = 5, Score = 0, Status = -1 },
             }
         };
 
@@ -101,7 +98,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "speed",
-            Description = "This is the MoveSpeed attribute",
+            Description = "Enables the character to move faster, granting the ability to react faster",
             Value = 2f,
 
             AccessModifier = AccessModifier.Public
@@ -113,7 +110,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "gravity",
-            Description = "This is the GravityForce attribute",
+            Description = "Enables the character to jump higher, granting the ability to reach higher places",
             Value = 4f,
 
             AccessModifier = AccessModifier.Protected
@@ -125,7 +122,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "multipleJumps",
-            Description = "This is the DoubleJump attribute",
+            Description = "Enables the character to jump multiple times before landing, granting the ability to reach further places",
             Value = 1f,
 
             AccessModifier = AccessModifier.Private
@@ -137,7 +134,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "fireballShoot",
-            Description = "This is the FireballShoot attribute",
+            Description = "Enables the character to shoot fireballs, granting the ability to destory special obstacles",
             Value = 0.25f,
 
             AccessModifier = AccessModifier.Public
@@ -149,7 +146,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "inverseGravity",
-            Description = "This is the InverseGravity attribute",
+            Description = "Enables the character to inverse the gravity, granting the ability turn the game upside down",
             Value = -40f,
 
             AccessModifier = AccessModifier.Protected
@@ -161,7 +158,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "wallJump",
-            Description = "This is the WallJump attribute",
+            Description = "Enables the character to jump and slide from special walls, granting the ability to parkour",
             Value = 1f,
 
             AccessModifier = AccessModifier.Private
@@ -173,7 +170,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "grabbing",
-            Description = "This is the grabbing attribute",
+            Description = "Enables the character to grab objects, granting the ability to move objects",
             Value = 20f,
 
             AccessModifier = AccessModifier.Public
@@ -189,7 +186,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "Speed",
-            Description = "This is the MoveSpeed method",
+            Description = "Granting the character the ability to move faster and react faster\nThe method is manually activated by the keys [A, D]",
             Attribute = AttributesManager.AttributesCollection[0],
 
             AccessModifier = AccessModifier.Public
@@ -201,7 +198,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "Gravity",
-            Description = "This is the GravityForce method",
+            Description = "Granting the character the ability to jump higher and reach higher places\nThe method is manually activated by the key [W]",
             Attribute = AttributesManager.AttributesCollection[1],
 
             AccessModifier = AccessModifier.Protected
@@ -213,7 +210,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "MultipleJumps",
-            Description = "This is the DoubleJump method",
+            Description = "Granting the character the ability to jump multiple times before landing and reach further places\nThe method is manually activated by the key [W]",
             Attribute = AttributesManager.AttributesCollection[2],
 
             AccessModifier = AccessModifier.Private
@@ -225,7 +222,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "FireballShoot",
-            Description = "This is the FireballShoot method",
+            Description = "Granting the character the ability to shoot fireballs and destory special obstacles\nThe method is manually activated by the key [Q]",
             Attribute = AttributesManager.AttributesCollection[3],
 
             AccessModifier = AccessModifier.Public
@@ -238,7 +235,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "InverseGravity",
-            Description = "This is the InverseGravity method",
+            Description = "Granting the character the ability to inverse the gravity and turn the game upside down\nThe method is automatically activated",
             Attribute = AttributesManager.AttributesCollection[4],
 
             AccessModifier = AccessModifier.Protected
@@ -250,7 +247,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "WallJump",
-            Description = "This is the WallJump method",
+            Description = "Granting the character the ability to jump and slide from special walls\nThe method is manually activated by the key [W, A, D]",
             Attribute = AttributesManager.AttributesCollection[5],
 
             AccessModifier = AccessModifier.Private
@@ -262,7 +259,7 @@ public class SeedCollections : MonoBehaviour
         {
             Owner = null,
             Name = "Grabbing",
-            Description = "This is the grabbing method",
+            Description = "Granting the character the ability to grab objects and move them\nThe method is manually activated by the key [E]",
             Attribute = AttributesManager.AttributesCollection[6],
 
             AccessModifier = AccessModifier.Public
@@ -283,7 +280,7 @@ public class SeedCollections : MonoBehaviour
 
         // Special Ability 1 (General)
         abilityName = "General";
-        abilityDescription = "Nothing Special";
+        abilityDescription = "Defining an common interface for the special abilities";
         abilityValue = 0;
         abilityType = SpecialAbilityType.General;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -296,7 +293,7 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 2 (Automatic)
         specialAbilities = new();
         abilityName = "Automatic";
-        abilityDescription = "Automatically";
+        abilityDescription = "Defining the automatic interface, which their special abilities will be automatically activated";
         abilityValue = 0;
         abilityType = SpecialAbilityType.Automatic;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -313,7 +310,7 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 3 (Manual)
         specialAbilities = new();
         abilityName = "Manual";
-        abilityDescription = "Manually";
+        abilityDescription = "Defining the manual interface, which their special abilities will be manually activated";
         abilityValue = 0;
         abilityType = SpecialAbilityType.Manual;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -330,8 +327,8 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 4 (Jump)
         specialAbilities = new();
         abilityName = "Jump";
-        abilityDescription = "Base Jump";
-        abilityValue = 1;
+        abilityDescription = "Defining the jump interface";
+        abilityValue = 0;
         abilityType = SpecialAbilityType.Jump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -347,8 +344,8 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 5 (Gravity)
         specialAbilities = new();
         abilityName = "Gravity";
-        abilityDescription = "Base Gravity";
-        abilityValue = 1;
+        abilityDescription = "Enhances the Gravity method by reducing further the gravity force";
+        abilityValue = 3;
         abilityType = SpecialAbilityType.Gravity;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -364,8 +361,8 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 6 (Speed)
         specialAbilities = new();
         abilityName = "Speed";
-        abilityDescription = "Base Speed";
-        abilityValue = 1;
+        abilityDescription = "Enhances the Speed method by increasing the speed force";
+        abilityValue = 2;
         abilityType = SpecialAbilityType.Speed;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -381,7 +378,7 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 7 (FireballShoot)
         specialAbilities = new();
         abilityName = "Fireball Shoot";
-        abilityDescription = "Fireball Shoot";
+        abilityDescription = "Enhances the FireballShoot method by reducing the fireball rate of fire";
         abilityValue = 0.25f;
         abilityType = SpecialAbilityType.FireballShoot;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -398,8 +395,8 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 8 (DoubleJump)
         specialAbilities = new();
         abilityName = "Multiple Jumps";
-        abilityDescription = "Multiple Jump";
-        abilityValue = 2;
+        abilityDescription = "Enhances the MultipleJumps method by increasing the number of jumps";
+        abilityValue = 1;
         abilityType = SpecialAbilityType.MultipleJumps;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -414,7 +411,7 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 12 (InverseGravity)
         specialAbilities = new();
         abilityName = "Inverse Gravity";
-        abilityDescription = "Inverse Gravity";
+        abilityDescription = "Enhances the InverseGravity method by reducing the gravity force";
         abilityValue = -40;
         abilityType = SpecialAbilityType.InverseGravity;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -431,7 +428,7 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 13 (WallJump)
         specialAbilities = new();
         abilityName = "Wall Jump";
-        abilityDescription = "Wall Jump";
+        abilityDescription = "Enhances the WallJump method by increasing the wall jump amount";
         abilityValue = 1;
         abilityType = SpecialAbilityType.WallJump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -448,7 +445,7 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 14 (Grabbing)
         specialAbilities = new();
         abilityName = "Grabbing";
-        abilityDescription = "Grabbing";
+        abilityDescription = "Enhances the Grabbing method by increasing the grabbing force";
         abilityValue = 10000;
         abilityType = SpecialAbilityType.Grabbing;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);

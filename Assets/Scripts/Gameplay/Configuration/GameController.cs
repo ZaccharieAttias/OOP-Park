@@ -1,6 +1,6 @@
+using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using System.Collections;
 using UnityEngine;
-using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 
 
 public class GameController : MonoBehaviour

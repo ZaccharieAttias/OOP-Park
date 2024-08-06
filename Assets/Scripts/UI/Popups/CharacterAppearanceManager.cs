@@ -1,6 +1,6 @@
+using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,6 +54,8 @@ public class CharacterAppearanceManager : MonoBehaviour
     }
     public void InitializeCharacterComponents()
     {
+        if (GameObject.Find("Player") == null) return;
+        
         Character = GameObject.Find("Player").GetComponent<Character>();
         playerTransform = GameObject.Find("Player").transform;
         oldPosition = playerTransform.position;

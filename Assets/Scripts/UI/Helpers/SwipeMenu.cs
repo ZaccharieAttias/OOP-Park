@@ -36,7 +36,7 @@ public class SwipeMenu : MonoBehaviour
         PreviousScrollPosition = 1;
         ItemPosition = new float[transform.childCount];
     }
-    
+
     public void UpdatePositions()
     {
         int childCount = transform.childCount;

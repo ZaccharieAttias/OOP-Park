@@ -28,12 +28,12 @@ public class ProjectileB : MonoBehaviour
     {
         hit = true;
         boxCollider.enabled = false;
-        transform.localScale = new Vector3(Mathf.Sign(transform.localScale.x+2), Mathf.Sign(transform.localScale.y+3), transform.localScale.z);
+        transform.localScale = new Vector3(Mathf.Sign(transform.localScale.x + 2), Mathf.Sign(transform.localScale.y + 3), transform.localScale.z);
         anim.SetTrigger("Explode");
         if (collision.gameObject.tag == "Brick")
-        {   
+        {
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder")
-            { 
+            {
                 if (GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay)
                     collision.gameObject.GetComponent<BreakingBrick>().Deactivate();
             }

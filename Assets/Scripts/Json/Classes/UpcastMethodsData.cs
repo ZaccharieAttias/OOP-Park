@@ -1,5 +1,6 @@
 using System.Linq;
 
+
 public static class UpcastMethodsData
 {
     public static UpcastMethodData PackData(CharacterB character)
@@ -9,7 +10,7 @@ public static class UpcastMethodsData
         {
             Owner = upcastMethod?.Owner,
             Name = upcastMethod?.Name,
-            Amount = upcastMethod is null ? 0 : character.UpcastMethod.Amount
+            Amount = upcastMethod != null ? character.UpcastMethod.Amount : 0
         };
 
         return upcastMethodData;
@@ -20,7 +21,7 @@ public static class UpcastMethodsData
             .FirstOrDefault(character => character.Name == characterData.UpcastMethod.Owner)?.Methods
             .FirstOrDefault(method => method.Name == characterData.UpcastMethod.Name);
 
-        return upcastMethodData is null ? null : new(upcastMethodData, characterData.UpcastMethod.Amount);
+        return upcastMethodData != null ? new UpcastMethod(upcastMethodData, characterData.UpcastMethod.Amount) : null;
     }
 }
 

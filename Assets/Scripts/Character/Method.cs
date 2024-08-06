@@ -9,7 +9,7 @@ public class Method
 
 
     public Method()
-    { 
+    {
         Owner = null;
         Name = "Default";
         Description = "Default";
@@ -23,7 +23,7 @@ public class Method
         Name = method.Name;
         Description = method.Description;
         Attribute = attribute;
-        
+
         AccessModifier = method.AccessModifier;
     }
 }

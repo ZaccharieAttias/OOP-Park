@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    public GameController gameController; 
+    public GameController gameController;
     public Transform respawnPoint;
 
     public SpriteRenderer spriteRenderer;
@@ -15,7 +15,7 @@ public class Checkpoint : MonoBehaviour
     {
         gameController = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<GameController>();
     }
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))

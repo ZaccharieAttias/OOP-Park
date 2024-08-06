@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class EncapsulationManager : MonoBehaviour
 {
     [Header("Scripts")]
-    public Powerup PowerUp;
+    public Powerup Powerup;
     public SwipeMenu SwipeMenu;
 
     [Header("UI Elements")]
@@ -24,7 +24,7 @@ public class EncapsulationManager : MonoBehaviour
     public GameObject GetRowPrefab;
     public GameObject SetRowPrefab;
     public GameObject SetButtonPrefab;
-    public GameObject closeButton;
+    public GameObject CloseButton;
 
     [Header("Attribute Collections")]
     public List<Attribute> SetCollection;
@@ -40,7 +40,7 @@ public class EncapsulationManager : MonoBehaviour
     }
     public void InitializeScripts()
     {
-        PowerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
+        Powerup = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
         SwipeMenu = GameObject.Find("Canvas/Popups/Encapsulation/Background/Foreground/Set/Back/ScrollView/Viewport/Content").GetComponent<SwipeMenu>();
     }
     public void InitializeUIElements()
@@ -62,8 +62,8 @@ public class EncapsulationManager : MonoBehaviour
         SetButtonPrefab = Popup.transform.Find("Background/Foreground/Set/Input/Button").gameObject;
         SetButtonPrefab.GetComponent<Button>().onClick.AddListener(SetAttribute);
 
-        closeButton = GameObject.Find("Canvas/Popups/Encapsulation/Background/Foreground/Close");
-        closeButton.GetComponent<Button>().onClick.AddListener(ToggleOff);
+        CloseButton = GameObject.Find("Canvas/Popups/Encapsulation/Background/Foreground/Close");
+        CloseButton.GetComponent<Button>().onClick.AddListener(ToggleOff);
 
     }
     public void InitializeAttributeCollections()
@@ -152,14 +152,14 @@ public class EncapsulationManager : MonoBehaviour
         buttonValueText.text = character.Attributes.First(item => item.Name == attributeName).Value.ToString();
 
         Button getButton = attributeGameObject.transform.Find("Selection").GetComponent<Button>();
-        getButton.onClick.AddListener(() => GetSelected(character, attributeName, attributeGameObject));
+        getButton.onClick.AddListener(() => GetSelected(character, attributeName));
 
         if (character.Name == SelectedGetClick)
         {
             attributeGameObject.transform.Find("Selection").GetComponent<Image>().color = new Color(0.5f, 1, 0.5f, 1);
         }
     }
-    public void GetSelected(CharacterB character, string attributeName, GameObject selectedGet)
+    public void GetSelected(CharacterB character, string attributeName)
     {
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
         var oldAttribute = currentCharacter.Attributes.First(item => item.Name == attributeName);
@@ -172,7 +172,7 @@ public class EncapsulationManager : MonoBehaviour
 
         SelectedGetClick = character.Name;
         UpdateGetContent(attributeName);
-        PowerUp.ApplyPowerup(currentCharacter);
+        Powerup.ApplyPowerup(currentCharacter);
     }
     public List<Method> UpdateMethods(CharacterB character, Attribute modifyAttribute)
     {
@@ -198,7 +198,7 @@ public class EncapsulationManager : MonoBehaviour
         modifyAttribute.Value = ToFloat(input);
         dependentMethods.ForEach(method => method.Attribute = modifyAttribute);
 
-        PowerUp.ApplyPowerup(currentCharacter);
+        Powerup.ApplyPowerup(currentCharacter);
         InputField.text = "";
         LoadPopup();
     }

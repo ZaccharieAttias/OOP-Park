@@ -1,6 +1,7 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 
 public class PopupKeyManager : MonoBehaviour
@@ -9,7 +10,6 @@ public class PopupKeyManager : MonoBehaviour
     public CharacterAppearanceManager CharacterAppearanceManager;
     public EncapsulationManager EncapsulationManager;
     public UpcastingManager UpcastingManager;
-
 
     [Header("UI Elements")]
     public Transform Content;
@@ -73,7 +73,7 @@ public class PopupKeyManager : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
-    public void CreateButton(string buttonText, UnityEngine.Events.UnityAction onClickAction)
+    public void CreateButton(string buttonText, UnityAction onClickAction)
     {
         GameObject button = Instantiate(ButtonPrefab, Content);
         var textComponent = button.GetComponentInChildren<TMP_Text>();

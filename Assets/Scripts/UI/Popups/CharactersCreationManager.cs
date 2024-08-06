@@ -28,6 +28,7 @@ public class CharactersCreationManager : MonoBehaviour
     [Header("Managers")]
     public Toggle CharacterToggleType;
 
+
     public void Start()
     {
         InitializeUIElements();

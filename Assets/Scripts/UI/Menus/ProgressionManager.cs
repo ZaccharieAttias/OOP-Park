@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 
 public class ProgressionManager : MonoBehaviour
@@ -12,7 +12,7 @@ public class ProgressionManager : MonoBehaviour
     public GameObject ProgressionPrefab;
 
 
-    void Start()
+    public void Start()
     {
         InitializeUIElements();
         InitializeButtons();

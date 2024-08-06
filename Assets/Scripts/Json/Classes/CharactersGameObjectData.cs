@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class CharactersGameObjectData
 {
+    [Header("Scripts")]
     public static CharactersManager CharactersManager;
     public static CharactersTreeManager CharactersTreeManager;
     public static CharactersCreationManager CharactersCreationManager;
@@ -13,13 +14,15 @@ public static class CharactersGameObjectData
     {
         CharactersManager = CharactersData.CharactersManager;
         CharactersTreeManager = CharactersManager.CharactersTreeManager;
-        CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();    
+        CharactersCreationManager = GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>();
     }
-
 
     public static void Load()
     {
-        foreach (var character in CharactersManager.CharactersCollection) CharactersCreationManager.BuildCharacterObject(character);
+        foreach (var character in CharactersManager.CharactersCollection)
+        {
+            CharactersCreationManager.BuildCharacterObject(character);
+        }
 
         CharactersTreeManager.BuildTree(CharactersManager.CharactersCollection.First(), CharactersManager.CharactersCollection.Last());
         CharactersManager.DisplayCharacter(CharactersManager.CharactersCollection.Last());

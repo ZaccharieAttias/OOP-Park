@@ -7,7 +7,10 @@ using UnityEngine;
 
 public static class CharactersData
 {
+    [Header("File Path")]
     public static string FilePath;
+
+    [Header("Managers")]
     public static CharactersManager CharactersManager;
 
 
@@ -16,9 +19,10 @@ public static class CharactersData
         FilePath = Path.Combine(folderPath, "Characters.json");
         CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
     }
-
-
-    public static void Save() { File.WriteAllText(FilePath, Serialize(CharactersManager.CharactersCollection)); }
+    public static void Save()
+    {
+        File.WriteAllText(FilePath, Serialize(CharactersManager.CharactersCollection));
+    }
     public static void Load()
     {
         CharactersManager.CharactersCollection = new();
@@ -29,11 +33,14 @@ public static class CharactersData
         CharactersManager.CharactersCollection = new();
         Deserialize(File.ReadAllText(filename));
     }
-
-
-    public static string Serialize(List<CharacterB> characters) { return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented); }
-    public static void Deserialize(string json) { UnpackData(JsonConvert.DeserializeObject<List<CharacterData>>(json)); }
-
+    public static string Serialize(List<CharacterB> characters)
+    {
+        return JsonConvert.SerializeObject(PackData(characters), Formatting.Indented);
+    }
+    public static void Deserialize(string json)
+    {
+        UnpackData(JsonConvert.DeserializeObject<List<CharacterData>>(json));
+    }
     public static List<CharacterData> PackData(List<CharacterB> characters)
     {
         List<CharacterData> characterData = new();
@@ -52,7 +59,7 @@ public static class CharactersData
 
                 SpecialAbility = SpecialAbilitiesData.PackData(character),
                 UpcastMethod = UpcastMethodsData.PackData(character),
-                
+
                 Parent = character.Parent?.Name,
                 Childrens = character.Childrens.Select(child => child.Name).ToList(),
             };
@@ -87,7 +94,10 @@ public static class CharactersData
             character.Parent?.Childrens.Add(character);
         }
     }
-    public static void SetPath(string path) { FilePath = path; }
+    public static void SetPath(string path)
+    {
+        FilePath = path;
+    }
 }
 
 
@@ -95,16 +105,12 @@ public class CharacterData
 {
     public bool IsOriginal;
     public bool IsAbstract;
-
     public string Name;
     public string Description;
-
     public List<AttributeData> Attributes;
     public List<MethodData> Methods;
-
     public SpecialAbilityData SpecialAbility;
     public UpcastMethodData UpcastMethod;
-
     public string Parent;
     public List<string> Childrens;
 }

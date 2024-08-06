@@ -1,6 +1,6 @@
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
@@ -98,11 +98,11 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) direction.x = -1;
         if (Input.GetKey(KeyCode.D)) direction.x = 1;
 
-        if (direction.x != 0)Turn(direction.x);
+        if (direction.x != 0) Turn(direction.x);
 
         Move(direction);
 
-        if (Rigidbody2D.velocity.y == 0 && isGrounded) {JumpsLeft = MaxJumps; WallJumpsLeft = MaxWallJumps; WallJumpingCounter = 0; }
+        if (Rigidbody2D.velocity.y == 0 && isGrounded) { JumpsLeft = MaxJumps; WallJumpsLeft = MaxWallJumps; WallJumpingCounter = 0; }
 
         if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown) PerformAttack();
 

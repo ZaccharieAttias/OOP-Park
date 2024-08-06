@@ -1,77 +1,97 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 
 public class AttributeValueManager : MonoBehaviour
 {
+    [Header("Scripts")]
+    public Powerup Powerup;
+
+    [Header("UI Elements")]
+    public TextMeshProUGUI Value;
+
+    [Header("Buttons")]
     public Button UpButton;
     public Button DownButton;
-    public TextMeshProUGUI Value;
+
+    [Header("Attribute Data")]
     public Attribute Attribute;
 
-    public void Start() { InitializeProperties(); }
-    private void InitializeProperties()
+
+    public void Start()
     {
-        UpButton.onClick.AddListener(() => UpAttributeValue());
-        DownButton.onClick.AddListener(() => DownAttributeValue());
+        InitializeScripts();
+        InitializeUIElements();
+        InitializeButtons();
+        InitializeAttributeData();
+
+        gameObject.SetActive(false);
+    }
+    public void InitializeScripts()
+    {
+        Powerup = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
+    }
+    public void InitializeUIElements()
+    {
+        Value = gameObject.transform.Find("Value").GetComponent<TextMeshProUGUI>();
+    }
+    public void InitializeButtons()
+    {
+        UpButton = transform.Find("Up").GetComponent<Button>();
+        UpButton.onClick.AddListener(IncrementAttributeValue);
+
+        DownButton = transform.Find("Down").GetComponent<Button>();
+        DownButton.onClick.AddListener(DecrementAttributeValue);
+    }
+    public void InitializeAttributeData()
+    {
+        Attribute = null;
     }
 
-    public void UpAttributeValue()
+    public void IncrementAttributeValue()
     {
-        if (Attribute.Value.ToString().Contains(","))
-        {
-            if (Attribute.Value.ToString().Split(',')[1].Length == 1)
-            {
-                Attribute.Value += 0.1f;
-            }
-            else
-            {
-                Attribute.Value += 0.05f;
-            }
-        }
-        else
-        {
-            Attribute.Value++;
-        }
-        Value.text = Attribute.Value.ToString();
-        Powerup powerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
-        powerUp.ApplyPowerup(CharactersData.CharactersManager.CurrentCharacter);
+        if (IsDecimal(Attribute.Value)) Attribute.Value += (Attribute.Value.ToString().Split(',')[1].Length == 1) ? 0.1f : 0.05f;
+        else Attribute.Value++;
+
+        UpdateValueDisplay();
+        ApplyPowerup();
     }
-    public void DownAttributeValue()
+    public void DecrementAttributeValue()
     {
-        if (Attribute.Value.ToString().Contains(","))
-        {
-            if (Attribute.Value.ToString().Split(',')[1].Length == 1)
-            {
-                Attribute.Value -= 0.1f;
-            }
-            else
-            {
-                Attribute.Value -= 0.05f;
-            }
-        }
-        else
-        {
-            Attribute.Value--;
-        }
-        Value.text = Attribute.Value.ToString();
-        Powerup powerUp = GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>();
-        powerUp.ApplyPowerup(CharactersData.CharactersManager.CurrentCharacter);
+        if (IsDecimal(Attribute.Value)) Attribute.Value -= (Attribute.Value.ToString().Split(',')[1].Length == 1) ? 0.1f : 0.05f;
+        else Attribute.Value--;
+
+        UpdateValueDisplay();
+        ApplyPowerup();
+    }
+
+    public bool IsDecimal(float value)
+    {
+        return value.ToString().Contains(",");
+    }
+    public void UpdateValueDisplay()
+    {
+        Value.text = Attribute.Value.ToString("0.##");
+    }
+    public void ApplyPowerup()
+    {
+        Powerup.ApplyPowerup(CharactersData.CharactersManager.CurrentCharacter);
     }
     public void SetAttribute(Attribute attribute)
     {
         if (attribute != null)
         {
-            gameObject.SetActive(true);
-            Value.text = attribute.Value.ToString();
             Attribute = attribute;
+            Value.text = attribute.Value.ToString("0.##");
+            gameObject.SetActive(true);
         }
+
         else
         {
-            gameObject.SetActive(false);
-            Value.text = 0.ToString();
             Attribute = null;
+            Value.text = "0";
+            gameObject.SetActive(false);
         }
     }
 }

@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     [Header("Ground Check:")]
-    public List <LayerMask> CollisionLayers;
+    public List<LayerMask> CollisionLayers;
     public bool isGrounded = false;
     public float GroundCheckRadius = 0.25f;
     public float GroundCheckBoxLength = 0.07f;
@@ -104,7 +104,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (AllowToWallJump) WallJump();
         if (Input.GetKeyDown(KeyCode.W) && JumpsLeft > 0) PerformJump();
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) {
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
             if (horizontalInput > 0.01f)//inverse gravity
                 transform.localScale = new Vector3(1, 1, 1);
             else if (horizontalInput < -0.01f)
@@ -114,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
                     transform.localScale = new Vector3(1, -1, 1);
                 else if (horizontalInput < -0.01f)
                     transform.localScale = new Vector3(-1, -1, 1);
-            
+
         }
         if (Input.GetKeyDown(KeyCode.Q) && cooldownTimer > attackCooldown) PerformAttack();
     }
@@ -130,15 +131,15 @@ public class PlayerMovement : MonoBehaviour
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(PowerupTimer);
     }
     private void CheckGround()
-    {   
+    {
         bool circleOverlap;
         bool boxOverlap;
         foreach (LayerMask layer in CollisionLayers)
         {
             circleOverlap = Physics2D.OverlapCircle(GroundCheckCircle.position, GroundCheckRadius, layer);
-            if (transform.localScale.x > 0) 
+            if (transform.localScale.x > 0)
                 boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), layer);
-            else 
+            else
                 boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), layer);
 
             isGrounded = circleOverlap || boxOverlap;
@@ -153,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded == false) Animator.SetTrigger("Jump");///////////////////////////////
     }
     private void PerformJump()
-    {   
+    {
         //si la gravité est inversée, on saute vers le bas
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, -JumpForce);
         else Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
@@ -184,15 +185,15 @@ public class PlayerMovement : MonoBehaviour
     private void CheckWallSliding()
     {
         bool boxOverlap;
-        if (transform.localScale.x > 0) 
+        if (transform.localScale.x > 0)
             boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x + GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), WallLayer);
-        else 
+        else
             boxOverlap = Physics2D.OverlapArea(GroundCheckBox.position, new Vector2(GroundCheckBox.position.x - GroundCheckBoxWidth, GroundCheckBox.position.y - GroundCheckBoxLength), WallLayer);
 
         IsWallSliding = boxOverlap && !isGrounded && horizontalInput != 0;
-        
+
     }
-    private void  PerformWallSlide()
+    private void PerformWallSlide()
     {
         if (IsWallSliding)
         {
@@ -210,14 +211,14 @@ public class PlayerMovement : MonoBehaviour
         }
         else
             WallJumpingCounter -= Time.deltaTime;
-        
+
         if (Input.GetKeyDown(KeyCode.W) && WallJumpingCounter > 0)
         {
             IsWallJumping = true;
             Rigidbody2D.velocity = new Vector2(WallJumpingDirection * WallJumpingVector.x, WallJumpingVector.y);
             WallJumpingCounter = 0;
 
-            if (transform.localScale.x != WallJumpingDirection) 
+            if (transform.localScale.x != WallJumpingDirection)
             {
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             }
@@ -229,20 +230,22 @@ public class PlayerMovement : MonoBehaviour
     {
         IsWallJumping = false;
     }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 
-        if (transform.localScale.x > 0) {
+        if (transform.localScale.x > 0)
+        {
             Vector3 halfPosition = new Vector3(GroundCheckBox.position.x + GroundCheckBoxWidth / 2, GroundCheckBox.position.y - GroundCheckBoxLength / 2, GroundCheckBox.position.z);
-            Gizmos.DrawWireCube(halfPosition, new Vector3(GroundCheckBoxWidth, GroundCheckBoxLength, 0));}
+            Gizmos.DrawWireCube(halfPosition, new Vector3(GroundCheckBoxWidth, GroundCheckBoxLength, 0));
+        }
         else
         {
             Vector3 halfPosition = new Vector3(GroundCheckBox.position.x - GroundCheckBoxWidth / 2, GroundCheckBox.position.y - GroundCheckBoxLength / 2, GroundCheckBox.position.z);
             Gizmos.DrawWireCube(halfPosition, new Vector3(GroundCheckBoxWidth, GroundCheckBoxLength, 0));
         }
-        
+
         Gizmos.DrawWireSphere(GroundCheckCircle.position, GroundCheckRadius);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class CharacterButton
 {
     public GameObject Button;
-    
+
     public int X;
     public int Y;
     public int Mod;
@@ -14,7 +14,7 @@ public class CharacterButton
     public CharacterButton()
     {
         Button = null;
-        
+
         X = 0;
         Y = 0;
         Mod = 0;

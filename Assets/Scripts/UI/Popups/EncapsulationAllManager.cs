@@ -64,7 +64,7 @@ public class EncapsulationAllManager : MonoBehaviour
         {
             Destroy(attributeTransform.gameObject);
         }
-        
+
         foreach (Transform attributeTransform in GetContent)
         {
             Destroy(attributeTransform.gameObject);

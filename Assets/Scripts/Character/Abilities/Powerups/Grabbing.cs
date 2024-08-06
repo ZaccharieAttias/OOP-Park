@@ -3,7 +3,7 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "PowerUpEffects/Grabbing")]
 public class Grabbing : PowerupEffect
-{   
+{
     public float MassIncrease = 0f;
 
 

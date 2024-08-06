@@ -1,73 +1,88 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
-using System.IO;
-
 
 
 public class AbstractClassCheck : MonoBehaviour
 {
+    [Header("Scripts")]
+    public AiModelData AiModelData;
+    public FeedbackManager FeedbackManager;
+
+    [Header("UI Elements")]
     public GameObject Popup;
-
-    public GameObject ConfirmButton;
     public GameObject MessagePopup;
-
+    public GameObject ErrorContentPanel;
     public Transform CharactersContentPanel;
 
-    public int stage;
-    public int maxStage;
-    public string FolderPath;
+    [Header("Buttons")]
+    public GameObject ConfirmButton;
+    public GameObject ErrorObjectPrefab;
 
+    [Header("Data")]
     public Dictionary<CharacterB, List<string>> FinalCharacterAttributesMap;
     public Dictionary<CharacterB, List<string>> FinalCharacterMethodsMap;
     public Dictionary<CharacterB, List<string>> ErrorsMap;
     public List<(CharacterB, bool)> AbstractClasses;
+    public int Stage;
+    public int MaxStage;
+    public string FolderPath;
 
-    public GameObject ErrorObjectPrefab;
-    public GameObject ErrorContentPanel;
-    public FeedbackManager FeedbackManager;
-
-    public AiModelData AiModelData;
 
     public void Start()
     {
-        Popup = GameObject.Find("Canvas/Popups/Abstract");
-        AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
+        InitializeScripts();
+        InitializeUIElements();
+        InitializeButtons();
+        InitializeData();
 
+        if (RestrictionManager.Instance.AllowAbstractClass && (!RestrictionManager.Instance.OnlineGame || !RestrictionManager.Instance.OnlineBuild)) SetStage();
+    }
+    public void InitializeScripts()
+    {
+        AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
+        FeedbackManager = GameObject.Find("Canvas/Popups").GetComponent<FeedbackManager>();
+    }
+    public void InitializeUIElements()
+    {
+        Popup = GameObject.Find("Canvas/Popups/Abstract");
         MessagePopup = Popup.transform.Find("Message").gameObject;
+        CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
+        ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Message/ScrollView/ViewPort/Content");
+    }
+    public void InitializeButtons()
+    {
         ConfirmButton = Popup.transform.Find("Confirm").gameObject;
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmStage());
 
-        CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
-
-        stage = -1;
-        maxStage = 2;
-        FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-
-
         ErrorObjectPrefab = Resources.Load<GameObject>("ErrorObject");
-        ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Message/ScrollView/ViewPort/Content");
-
-        FeedbackManager = GameObject.Find("Canvas/Popups").GetComponent<FeedbackManager>();
-
-        if (RestrictionManager.Instance.AllowAbstractClass && (!RestrictionManager.Instance.OnlineGame || !RestrictionManager.Instance.OnlineBuild))
-        {
-            SetStage();
-        }
     }
+    public void InitializeData()
+    {
+        FinalCharacterAttributesMap = new();
+        FinalCharacterMethodsMap = new();
+        ErrorsMap = new();
+        AbstractClasses = new();
+
+        Stage = -1;
+        MaxStage = 2;
+        FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
+
     public void SetStage()
     {
-        stage++;
+        Stage++;
         foreach (Transform child in CharactersContentPanel) Destroy(child.gameObject);
 
-        if (stage < maxStage)
+        if (Stage < MaxStage)
         {
-            AttributesData.Load($"{FolderPath}/{stage}/Attributes.json");
-            MethodsData.Load($"{FolderPath}/{stage}/Methods.json");
-            SpecialAbilitiesData.Load($"{FolderPath}/{stage}/SpecialAbilities.json");
-            CharactersData.Load($"{FolderPath}/{stage}/Characters.json");
+            AttributesData.Load($"{FolderPath}/{Stage}/Attributes.json");
+            MethodsData.Load($"{FolderPath}/{Stage}/Methods.json");
+            SpecialAbilitiesData.Load($"{FolderPath}/{Stage}/SpecialAbilities.json");
+            CharactersData.Load($"{FolderPath}/{Stage}/Characters.json");
             CharactersGameObjectData.Load();
 
             FinalCharacterAttributesMap = new();
@@ -78,13 +93,12 @@ public class AbstractClassCheck : MonoBehaviour
 
             BuildFinalDataMap();
         }
-
         else
         {
             FeedbackManager.ToggleOn();
         }
     }
-    private void BuildFinalDataMap()
+    public void BuildFinalDataMap()
     {
         List<CharacterB> charactersCollection = CharactersData.CharactersManager.CharactersCollection;
 
@@ -96,15 +110,13 @@ public class AbstractClassCheck : MonoBehaviour
             if (character.IsAbstract) AbstractClasses.Add((character, false));
         }
 
-        // Call the AbstractMapModifier for each of the abstract classses in AbstractClasses only if their corresponds value is False, Please
         for (int i = 0; i < AbstractClasses.Count; i++)
         {
             (CharacterB, bool) item = AbstractClasses[i];
             AbstractMapModifier(item.Item1);
         }
     }
-
-    private void AbstractMapModifier(CharacterB character)
+    public void AbstractMapModifier(CharacterB character)
     {
         if (AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)].Item2)
         {
@@ -121,7 +133,7 @@ public class AbstractClassCheck : MonoBehaviour
 
             foreach (Attribute attribute in child.Attributes)
             {
-                if (commonAttributes.TryGetValue(attribute.Name, out List<CharacterB> characters) == false)
+                if (!commonAttributes.TryGetValue(attribute.Name, out List<CharacterB> characters))
                 {
                     characters = new List<CharacterB>();
                     commonAttributes.Add(attribute.Name, characters);
@@ -131,7 +143,7 @@ public class AbstractClassCheck : MonoBehaviour
 
             foreach (Method method in child.Methods)
             {
-                if (commonMethods.TryGetValue(method.Name, out List<CharacterB> characters) == false)
+                if (!commonMethods.TryGetValue(method.Name, out List<CharacterB> characters))
                 {
                     characters = new List<CharacterB>();
                     commonMethods.Add(method.Name, characters);
@@ -152,6 +164,7 @@ public class AbstractClassCheck : MonoBehaviour
                 }
             }
         }
+
         foreach (KeyValuePair<string, List<CharacterB>> entry in commonMethods)
         {
             if (entry.Value.Count > 1)
@@ -178,9 +191,9 @@ public class AbstractClassCheck : MonoBehaviour
 
             foreach (string attribute in characterAttributes)
             {
-                if (finalAttributes.Contains(attribute) == false)
+                if (!finalAttributes.Contains(attribute))
                 {
-                    if (ErrorsMap.ContainsKey(character) == false)
+                    if (!ErrorsMap.ContainsKey(character))
                     {
                         List<string> errors = new();
                         ErrorsMap.Add(character, errors);
@@ -190,9 +203,9 @@ public class AbstractClassCheck : MonoBehaviour
             }
             foreach (string attribute in finalAttributes)
             {
-                if (characterAttributes.Contains(attribute) == false)
+                if (!characterAttributes.Contains(attribute))
                 {
-                    if (ErrorsMap.ContainsKey(character) == false)
+                    if (!ErrorsMap.ContainsKey(character))
                     {
                         List<string> errors = new();
                         ErrorsMap.Add(character, errors);
@@ -206,9 +219,9 @@ public class AbstractClassCheck : MonoBehaviour
 
             foreach (string method in characterMethods)
             {
-                if (finalMethods.Contains(method) == false)
+                if (!finalMethods.Contains(method))
                 {
-                    if (ErrorsMap.ContainsKey(character) == false)
+                    if (!ErrorsMap.ContainsKey(character))
                     {
                         List<string> errors = new();
                         ErrorsMap.Add(character, errors);
@@ -218,9 +231,9 @@ public class AbstractClassCheck : MonoBehaviour
             }
             foreach (string method in finalMethods)
             {
-                if (characterMethods.Contains(method) == false)
+                if (!characterMethods.Contains(method))
                 {
-                    if (ErrorsMap.ContainsKey(character) == false)
+                    if (!ErrorsMap.ContainsKey(character))
                     {
                         List<string> errors = new();
                         ErrorsMap.Add(character, errors);
@@ -228,7 +241,6 @@ public class AbstractClassCheck : MonoBehaviour
                     ErrorsMap[character].Add($"{method} is missing.");
                 }
             }
-
         }
 
         if (ErrorsMap.Count > 0)
@@ -253,7 +265,6 @@ public class AbstractClassCheck : MonoBehaviour
 
             MessagePopup.SetActive(true);
         }
-
         else
         {
             SetStage();

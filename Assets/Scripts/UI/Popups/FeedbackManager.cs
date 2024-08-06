@@ -1,9 +1,10 @@
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class FeedbackManager : MonoBehaviour
 {
@@ -23,7 +24,6 @@ public class FeedbackManager : MonoBehaviour
 
     public void Start()
     {
-        GameplayData.Initialize();
         InitializeScripts();
         InitializeUIElements();
         InitializeButtons();

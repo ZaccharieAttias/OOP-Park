@@ -8,30 +8,45 @@ using UnityEngine.SceneManagement;
 
 public class AiModelData : MonoBehaviour
 {
-    public int Score = 0;
-    public int DeathsCount = 0;
-    public int TimeTook = 0;
-    public int AbstractLevelTries = 0;
-    public int AppearanceLevelTries = 0;
-    public int QuizLevelTries = 0;
-    public List<CharacterData> CharactersOrder = new();
+    [Header("Game Stats")]
+    public int Score;
+    public int DeathsCount;
+    public int TimeTook;
+    public int AbstractLevelTries;
+    public int AppearanceLevelTries;
+    public int QuizLevelTries;
+    public List<CharacterData> CharactersOrder;
 
+    [Header("Level Download")]
     public LevelDownload LevelDownload;
 
-    private string FilePath;
+    [Header("File Path")]
+    public string FilePath;
+
 
     public void Start()
     {
-        Initialize();
+        InitializeGameplayData();
+        InitializeFilePath();
     }
+    public void InitializeGameplayData()
+    {
+        GameplayData.Initialize();
 
-    public void Initialize()
+        Score = 0;
+        DeathsCount = 0;
+        TimeTook = 0;
+        AbstractLevelTries = 0;
+        AppearanceLevelTries = 0;
+        QuizLevelTries = 0;
+        CharactersOrder = new();
+    }
+    public void InitializeFilePath()
     {
         var folderPath = Path.Combine(Application.dataPath, "Resources/Json");
-
         FilePath = Path.Combine(folderPath, "AiModelData.json");
     }
-
+    
     public void AddCharacterData()
     {
         var currentCharacter = CharactersData.CharactersManager.CurrentCharacter;
@@ -54,7 +69,6 @@ public class AiModelData : MonoBehaviour
             Childrens = currentCharacter.Childrens.Select(child => child.Name).ToList()
         });
     }
-
     public void SaveJson()
     {
         GameData gameData = new()
@@ -73,7 +87,6 @@ public class AiModelData : MonoBehaviour
         File.WriteAllText(FilePath, json);
         GameObject.Find("LootLockerManager").GetComponent<LootLockerManager>().UploadPlayerData();
     }
-
     public int CalculateScore()
     {
         TimeTook = (int)Time.timeSinceLevelLoad;

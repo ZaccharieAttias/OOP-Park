@@ -8,7 +8,7 @@ public class SpecialAbility
 
 
     public SpecialAbility()
-    { 
+    {
         Name = "Default";
         Description = "Default";
         Value = 0;
@@ -28,7 +28,7 @@ public class SpecialAbility
         Name = specialAbility.Name;
         Description = specialAbility.Description;
         Value = specialAbility.Value;
-        
+
         Type = specialAbility.Type;
     }
 }

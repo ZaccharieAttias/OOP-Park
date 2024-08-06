@@ -18,7 +18,7 @@ public class CharacterChallengeManager : MonoBehaviour
     public List<GameObject> Walls;
 
     [Header("Challenge Attributes")]
-    public int challenge;
+    public int Challenge;
 
 
     public void Start()
@@ -66,7 +66,7 @@ public class CharacterChallengeManager : MonoBehaviour
     }
     public void InitializeSelfProperties()
     {
-        challenge = 0;
+        Challenge = 0;
     }
 
     public void ConfirmFactory()
@@ -105,23 +105,23 @@ public class CharacterChallengeManager : MonoBehaviour
 
     public void SetChallenge1()
     {
-        challenge = 1;
+        Challenge = 1;
         Mission1Popup.SetActive(true);
     }
     public void SetChallenge2()
     {
-        challenge = 2;
+        Challenge = 2;
         Mission2Popup.SetActive(true);
     }
     public void SetChallenge3()
     {
-        challenge = 3;
+        Challenge = 3;
         Mission3Popup.SetActive(true);
     }
 
     public void BackStage()
     {
-        Vector3 position = challenge switch
+        Vector3 position = Challenge switch
         {
             1 => new Vector3(12, 0, 0),
             2 => new Vector3(22, 0, 0),

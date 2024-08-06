@@ -10,9 +10,9 @@ public class Attribute
     public bool Getter;
     public bool Setter;
 
-    
+
     public Attribute()
-    { 
+    {
         Owner = null;
         Name = "Default";
         Description = "Default";
@@ -28,7 +28,7 @@ public class Attribute
         Name = attribute.Name;
         Description = attribute.Description;
         Value = attribute.Value;
-        
+
         Getter = false;
         Setter = false;
 
