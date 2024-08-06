@@ -8280,7 +8280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllowSingleInheritance: 1
-  AllowSpecialAbility: 0
+  AllowSpecialAbility: 1
   AllowAccessModifier: 0
   AllowOverride: 0
   AllowUpcasting: 0
@@ -11928,9 +11928,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EncapsulationManager: {fileID: 0}
   ScrollBar: {fileID: 0}
-  Scroll_pos: 0
-  pos: []
-  Scrollposition: 0
+  CurrentScrollPosition: 0
+  PreviousScrollPosition: 0
+  ItemPosition: []
 --- !u!114 &795487047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15728,6 +15728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PowerUp: {fileID: 0}
+  SwipeMenu: {fileID: 0}
   Popup: {fileID: 0}
   SetContent: {fileID: 0}
   GetContent: {fileID: 0}
