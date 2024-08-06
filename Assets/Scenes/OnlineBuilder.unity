@@ -16108,7 +16108,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 590608121}
-  - component: {fileID: 590608122}
   m_Layer: 5
   m_Name: Value
   m_TagString: Untagged
@@ -16139,22 +16138,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &590608122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 590608120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b93819eff18b0c9439d2840be3dcfef2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Powerup: {fileID: 0}
-  Value: {fileID: 0}
-  UpButton: {fileID: 0}
-  DownButton: {fileID: 0}
 --- !u!1 &596175715
 GameObject:
   m_ObjectHideFlags: 0
@@ -18876,6 +18859,7 @@ Transform:
   m_Children:
   - {fileID: 1800533763}
   - {fileID: 1404008986}
+  - {fileID: 1718049204}
   - {fileID: 30804958}
   m_Father: {fileID: 1246068771}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -34831,11 +34815,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllowSingleInheritance: 1
   AllowSpecialAbility: 0
-  AllowAccessModifier: 1
+  AllowAccessModifier: 0
   AllowOverride: 0
-  AllowUpcasting: 1
+  AllowUpcasting: 0
   AllowAbstractClass: 0
-  AllowEncapsulation: 1
+  AllowEncapsulation: 0
   OnlineGame: 0
   OnlineBuild: 1
 --- !u!4 &1271448935
@@ -41559,6 +41543,7 @@ GameObject:
   - component: {fileID: 1517366376}
   - component: {fileID: 1517366378}
   - component: {fileID: 1517366377}
+  - component: {fileID: 1517366379}
   m_Layer: 5
   m_Name: Menus
   m_TagString: Untagged
@@ -41619,6 +41604,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Gameplay: {fileID: 0}
   CharacterCenter: {fileID: 0}
+--- !u!114 &1517366379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517366375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b93819eff18b0c9439d2840be3dcfef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Powerup: {fileID: 0}
+  Popup: {fileID: 0}
+  Value: {fileID: 0}
+  UpButton: {fileID: 0}
+  DownButton: {fileID: 0}
 --- !u!1 &1520065043
 GameObject:
   m_ObjectHideFlags: 0
@@ -44187,11 +44189,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 243d3b4ce4da6074594241fb5b34455d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AiModelData: {fileID: 0}
+  CharacterEditor: {fileID: 0}
   SwapButtonToGameplay: {fileID: 0}
   SwapButtonToCharacterCenter: {fileID: 0}
-  CharacterEditor: {fileID: 0}
   firstTime: 1
-  AiModelData: {fileID: 0}
 --- !u!114 &1595343208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48200,6 +48202,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717434234}
   m_CullTransparentMesh: 1
+--- !u!1 &1718049203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1718049204}
+  m_Layer: 0
+  m_Name: Gameplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1718049204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718049203}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 682083939}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1718245498
 GameObject:
   m_ObjectHideFlags: 0
@@ -51523,6 +51556,7 @@ MonoBehaviour:
   AppearanceLevelTries: 0
   QuizLevelTries: 0
   LevelDownload: {fileID: 0}
+  FilePath: 
 --- !u!1 &1869369453
 GameObject:
   m_ObjectHideFlags: 0
