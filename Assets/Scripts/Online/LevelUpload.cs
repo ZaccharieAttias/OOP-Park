@@ -19,6 +19,7 @@ public class LevelUpload : MonoBehaviour
     public TileMap _coverMap;
     public TileMap _propsMap;
     public TileMap _wallMap;
+    public TileMap _gameplayMap;
     private LevelBuilderB LevelBuilder;
     private int TileMapContextID;
     private int CharacterTreeContextID;
@@ -35,6 +36,7 @@ public class LevelUpload : MonoBehaviour
         _groundMap = LevelBuilder.GetGroundMap();
         _coverMap = LevelBuilder.GetCoverMap();
         _propsMap = LevelBuilder.GetPropsMap();
+        _gameplayMap = LevelBuilder.GetGameplayMap();
         _wallMap = LevelBuilder.GetWallMap();
 
         TileMapContextID = 235247;
@@ -218,10 +220,18 @@ public class LevelUpload : MonoBehaviour
                         wallIndex = level.AddTexture(_wallMap[x, y, z].SpriteRenderer.sprite.name);
                     }
 
+                    var gameplayIndex = -1;
+
+                    if (_gameplayMap[x, y, z] != null)
+                    {
+                        gameplayIndex = level.AddTexture(_gameplayMap[x, y, z].SpriteRenderer.sprite.name);
+                    }
+
                     level.GroundMap[x, y, z] = groundIndex + 1;
                     level.CoverMap[x, y, z] = coverIndex + 1;
                     level.PropsMap[x, y, z] = propsIndex + 1;
                     level.WallMap[x, y, z] = wallIndex + 1;
+                    level.GameplayMap[x, y, z] = gameplayIndex + 1;
                 }
             }
         }

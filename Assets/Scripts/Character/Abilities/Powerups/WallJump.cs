@@ -16,5 +16,5 @@ public class WallJump : PowerupEffect
 
     public override void plusDeactivatePower(GameObject player) { player.GetComponent<Movement>().MaxWallJumps -= 1; }
 
-    public override void DeactivatePower(GameObject player) { player.GetComponent<Movement>().AllowToWallJump = false; player.GetComponent<Movement>().MaxWallJumps = 0; }
+    public override void DeactivatePower(GameObject player) { player.GetComponent<Movement>().AllowToWallJump = false; player.GetComponent<Movement>().MaxWallJumps = 7; }
 }

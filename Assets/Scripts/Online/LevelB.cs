@@ -7,6 +7,7 @@ public class LevelB
     public int[,,] CoverMap;
     public int[,,] PropsMap;
     public int[,,] WallMap;
+    public int[,,] GameplayMap;
     public float characterX;
     public float characterY;
 
@@ -16,6 +17,7 @@ public class LevelB
         GroundMap = new int[width, height, depth];
         CoverMap = new int[width, height, depth];
         PropsMap = new int[width, height, depth];
+        GameplayMap = new int[width, height, depth];
         WallMap = new int[width, height, depth];
         this.characterX = characterX;
         this.characterY = characterY;

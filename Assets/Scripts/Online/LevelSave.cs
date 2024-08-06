@@ -15,6 +15,7 @@ public class LevelSave : MonoBehaviour
     private TileMap _coverMap;
     private TileMap _propsMap;
     private TileMap _wallMap;
+    private TileMap _gameplayMap;
     private LevelBuilderB LevelBuilder;
 
     public JsonUtilityManager JsonUtilityManager;
@@ -33,6 +34,7 @@ public class LevelSave : MonoBehaviour
         _coverMap = LevelBuilder.GetCoverMap();
         _propsMap = LevelBuilder.GetPropsMap();
         _wallMap = LevelBuilder.GetWallMap();
+        _gameplayMap = LevelBuilder.GetGameplayMap();
         string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
@@ -111,10 +113,18 @@ public class LevelSave : MonoBehaviour
                         wallsIndex = level.AddTexture(_wallMap[x, y, z].SpriteRenderer.sprite.name);
                     }
 
+                    var gameplayIndex = -1;
+
+                    if (_gameplayMap[x, y, z] != null)
+                    {
+                        gameplayIndex = level.AddTexture(_gameplayMap[x, y, z].SpriteRenderer.sprite.name);
+                    }
+
                     level.GroundMap[x, y, z] = groundIndex + 1;
                     level.CoverMap[x, y, z] = coverIndex + 1;
                     level.PropsMap[x, y, z] = propsIndex + 1;
                     level.WallMap[x, y, z] = wallsIndex + 1;
+                    level.GameplayMap[x, y, z] = gameplayIndex + 1;
 
                 }
             }

@@ -26,6 +26,7 @@ public class LevelInitializer : MonoBehaviour
     private TileMap _coverMap;
     private TileMap _propsMap;
     private TileMap _wallMap;
+    private TileMap _gameplayMap;
 
     private Transform Terrain;
     private Transform Walls;
@@ -57,6 +58,7 @@ public class LevelInitializer : MonoBehaviour
         _coverMap = new TileMap(1, 1, 4);
         _propsMap = new TileMap(1, 1, 4);
         _wallMap = new TileMap(1, 1, 4);
+        _gameplayMap = new TileMap(1, 1, 4);
 
         Parent = GameObject.Find("Grid/LevelBuilder").transform;
         Terrain = Parent.Find("Terrain");
@@ -152,6 +154,7 @@ public class LevelInitializer : MonoBehaviour
                         _coverMap.Destroy(x, y, z);
                         _propsMap.Destroy(x, y, z);
                         _wallMap.Destroy(x, y, z);
+                        _gameplayMap.Destroy(x, y, z);
                     }
                 }
             }
@@ -167,6 +170,7 @@ public class LevelInitializer : MonoBehaviour
         _coverMap = new TileMap(width, height, depth);
         _propsMap = new TileMap(width, height, depth);
         _wallMap = new TileMap(width, height, depth);
+        _gameplayMap = new TileMap(width, height, depth);
         _positionMin = new Position(-width / 2, -height / 2);
 
         var index = _index;
@@ -181,6 +185,7 @@ public class LevelInitializer : MonoBehaviour
                     var cover = level.CoverMap[x, y, z] == 0 ? null : level.TileTable[level.CoverMap[x, y, z] - 1];
                     var props = level.PropsMap[x, y, z] == 0 ? null : level.TileTable[level.PropsMap[x, y, z] - 1];
                     var walls = level.WallMap[x, y, z] == 0 ? null : level.TileTable[level.WallMap[x, y, z] - 1];
+                    var gameplay = level.GameplayMap[x, y, z] == 0 ? null : level.TileTable[level.GameplayMap[x, y, z] - 1];
 
                     if (ground != null)
                     {
@@ -220,31 +225,36 @@ public class LevelInitializer : MonoBehaviour
                         _type = 2;
                         _index = SpriteCollection.PropsSprites.FindIndex(i => i.name == props);
 
-                        if (_index == -1)
-                        {
-                            _type = 4;
-                            _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == props);
-                        }
                         if (_index != -1)
                         {
-                            if (_type == 5)
-                            {
-                                if (_index == 1 || _index == 2 || _index == 3)
-                                    CreateCheckPoint(x, y, z);
-                                else if (_index == 4)
-                                    CreateEndPoint(x, y, z);
-                                else if (_index == 5)
-                                    CreateDeathObject(x, y, z);
-                                else if (_index == 6)
-                                    CreateBrick(x, y, z);
-                                else if (_index == 7)
-                                    CreateBrick(x, y, z);
-                                else if (_index == 8)
-                                    CreateDeathZone(x, y, z);
+                            CreateProps(x, y, z);
+                        }
+                    }
 
-                            }
-                            else
-                                CreateProps(x, y, z);
+                    if (gameplay != null)
+                    {
+                        _type = 5;
+                        _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == gameplay);
+                        if (_index != -1)
+                        {
+                            if (_index == 1 || _index == 2 || _index == 3)
+                                CreateCheckPoint(x, y, z);
+                            else if (_index == 4)
+                                CreateEndPoint(x, y, z);
+                            else if (_index == 5)
+                                CreateBrick(x, y, z);
+                            else if (_index == 6)
+                                CreateBrick(x, y, z);
+                            else if (_index == 7)
+                                CreateDeathZone(x, y, z);
+                            else if (_index == 8)
+                                CreateReverseDeathObject(x, y, z);
+                            else if (_index == 9)
+                                CreateDeathObject(x, y, z);
+                            else if (_index == 10)
+                                CreateReverseDeathObject(x, y, z);
+                            else if (_index == 11)
+                                CreateDeathObject(x, y, z);
                         }
                     }
                 }
@@ -395,7 +405,7 @@ public class LevelInitializer : MonoBehaviour
     }
     public void CreateCheckPoint(int x, int y, int z)
     {
-        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
 
         if (_index != -1 && _type == 2 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
@@ -403,13 +413,13 @@ public class LevelInitializer : MonoBehaviour
             return;
         }
 
-        _propsMap.Destroy(x, y, z);
+        _gameplayMap.Destroy(x, y, z);
 
         if (_index == -1) return;
 
         var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
 
-        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
         block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         block.Transform.localScale = Vector3.one;
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
@@ -428,17 +438,11 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.GetComponent<Checkpoint>().col = block.GameObject.GetComponent<BoxCollider2D>();
         block.GameObject.tag = "Checkpoint";
 
-        if (_type == 4 && _index != -1)
-        {
-            block.OffsetY = -1;
-            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
-        }
-
-        _propsMap[x, y, z] = block;
+        _gameplayMap[x, y, z] = block;
     }
     public void CreateEndPoint(int x, int y, int z)
     {
-        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
@@ -446,13 +450,13 @@ public class LevelInitializer : MonoBehaviour
             return;
         }
 
-        _propsMap.Destroy(x, y, z);
+        _gameplayMap.Destroy(x, y, z);
 
         if (_index == -1) return;
 
         var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
 
-        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
         block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         block.Transform.localScale = Vector3.one;
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
@@ -464,17 +468,11 @@ public class LevelInitializer : MonoBehaviour
         else if (RestrictionManager.Instance.OnlineGame)
             block.GameObject.tag = "Finish";
 
-        if (_type == 4 && _index != -1)
-        {
-            block.OffsetY = -1;
-            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
-        }
-
-        _propsMap[x, y, z] = block;
+        _gameplayMap[x, y, z] = block;
     }
     public void CreateDeathObject(int x, int y, int z)
     {
-        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
@@ -482,13 +480,13 @@ public class LevelInitializer : MonoBehaviour
             return;
         }
 
-        _propsMap.Destroy(x, y, z);
+        _gameplayMap.Destroy(x, y, z);
 
         if (_index == -1) return;
 
         var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
 
-        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
         block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         block.Transform.localScale = Vector3.one;
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
@@ -496,19 +494,43 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.AddComponent<EdgeCollider2D>();
         block.GameObject.GetComponent<EdgeCollider2D>().offset = new Vector2(0, 0.5f);
         block.GameObject.GetComponent<EdgeCollider2D>().isTrigger = true;
+        block.GameObject.GetComponent<EdgeCollider2D>().points = new Vector2[] { new Vector2(-0.436338425f, -0.5048233f), new Vector2(-0.4363384f, 0.06517267f), new Vector2(-0.406106949f, 0.126236439f), new Vector2(-0.368604422f, 0.06568074f), new Vector2(-0.188889742f, -0.0613064766f), new Vector2(-0.12655139f, 0.122369051f), new Vector2(0.00450277328f, 0.250551224f), new Vector2(0.161319971f, 0.126229048f), new Vector2(0.246645927f, 0.1931541f), new Vector2(0.373010635f, 0.132702589f), new Vector2(0.435099125f, 0.06654525f), new Vector2(0.438595772f, -0.506190062f), new Vector2(-0.4385958f, -0.5061901f) };
         block.GameObject.tag = "Obstacle";
 
-        if (_type == 4 && _index != -1)
+        _gameplayMap[x, y, z] = block;
+    }
+    public void CreateReverseDeathObject(int x, int y, int z)
+    {
+        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y + 1, z] == null))
         {
-            block.OffsetY = -1;
-            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
+            Debug.LogWarning("Object can be placed under the ground only.");
+            return;
         }
 
-        _propsMap[x, y, z] = block;
+        _gameplayMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<EdgeCollider2D>();
+        block.GameObject.GetComponent<EdgeCollider2D>().offset = new Vector2(0, 0.5f);
+        block.GameObject.GetComponent<EdgeCollider2D>().isTrigger = true;
+        block.GameObject.GetComponent<EdgeCollider2D>().points = new Vector2[] {new Vector2(0.436338425f, 0.5048233f), new Vector2(0.4363384f, -0.06517267f), new Vector2(0.406106949f, -0.126236439f), new Vector2(0.368604422f, -0.06568074f), new Vector2(0.188889742f, 0.0613064766f), new Vector2(0.12655139f, -0.122369051f), new Vector2(-0.00450277328f, -0.250551224f), new Vector2(-0.161319971f, -0.126229048f), new Vector2(-0.246645927f, -0.1931541f), new Vector2(-0.373010635f, -0.132702589f), new Vector2(-0.435099125f, -0.06654525f), new Vector2(-0.438595772f, 0.506190062f), new Vector2(0.4385958f, 0.5061901f)};
+        block.GameObject.tag = "Obstacle";
+
+        _gameplayMap[x, y, z] = block;
     }
     public void CreateBrick(int x, int y, int z)
     {
-        if (x < 0 || x >= _propsMap.Width || y <= 0 || y >= _propsMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
 
         //ne peut pas etre placé sur le sol ou sur un mur
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
@@ -517,13 +539,13 @@ public class LevelInitializer : MonoBehaviour
             return;
         }
 
-        _propsMap.Destroy(x, y, z);
+        _gameplayMap.Destroy(x, y, z);
 
         if (_index == -1) return;
 
         var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
 
-        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
         block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         block.Transform.localScale = Vector3.one;
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
@@ -532,17 +554,11 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = false;
         block.GameObject.tag = "Brick";
         block.GameObject.AddComponent<Animator>();
-        string name = _index == 6 ? "Animations/BreakingBricks/Red/RedBrick" : "Animations/BreakingBricks/Grey/GreyBrick";
+        string name = _index == 5 ? "Animations/BreakingBricks/Red/RedBrick" : "Animations/BreakingBricks/Grey/GreyBrick";
         block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load(name) as RuntimeAnimatorController;
         block.GameObject.AddComponent<BreakingBrick>();
 
-        if (_type == 4 && _index != -1)
-        {
-            block.OffsetY = -1;
-            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
-        }
-
-        _propsMap[x, y, z] = block;
+        _gameplayMap[x, y, z] = block;
     }
     public void CreateDeathZone(int x, int y, int z)
     {
@@ -550,13 +566,13 @@ public class LevelInitializer : MonoBehaviour
 
         _groundMap.Destroy(x, y, z);
 
-        _propsMap.Destroy(x, y, z);
+        _gameplayMap.Destroy(x, y, z);
 
         if (_index == -1) return;
 
         var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
 
-        block.Transform.SetParent(Terrain.Find("Props").transform);
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
         block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
         block.Transform.localScale = Vector3.one;
         block.GameObject.GetComponent<SpriteRenderer>().sprite = SpriteCollection.GamePlaySprite[_index];
@@ -566,13 +582,7 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         block.GameObject.tag = "DeathZone";
 
-        if (_type == 4 && _index != -1)
-        {
-            block.OffsetY = -1;
-            block.Transform.localPosition -= new Vector3(0, 1f / 16f);
-        }
-
-        _propsMap[x, y, z] = block;
+        _gameplayMap[x, y, z] = block;
     }
     private void SetGround(int x, int y, int z)
     {
