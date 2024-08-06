@@ -27,7 +27,7 @@ public class Movement : MonoBehaviour
     public float WallSlideSpeed = 1.5f;
     public float WallJumpingDirection = 1f;
     public float WallJumpingCounter = 1f;
-    public int MaxWallJumps = 1;
+    public int MaxWallJumps = 7;
     public int WallJumpsLeft = 1;
     public Vector2 WallJumpingVector;
 

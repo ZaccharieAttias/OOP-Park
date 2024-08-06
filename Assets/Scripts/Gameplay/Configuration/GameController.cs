@@ -65,12 +65,13 @@ public class GameController : MonoBehaviour
         isDead = true;
         Rigidbody2D.velocity = new Vector2(0, 0);
         Rigidbody2D.simulated = false;
+        var predecentlocalScale = transform.localScale;
         transform.localScale = new Vector3(0, 0, 0);
 
         yield return new WaitForSeconds(time);
 
         transform.position = CheckpointPosition;
-        transform.localScale = new Vector3(1, 1, 1);
+        transform.localScale = predecentlocalScale;
         Rigidbody2D.simulated = true;
         isDead = false;
     }
