@@ -120,7 +120,7 @@ public class CharactersManager : MonoBehaviour
             GetButton.SetActive(false);
             SetButton.SetActive(false);
 
-            if (SceneManager.GetActiveScene().name == "OnlineBuilder") GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value").GetComponent<AttributeValueManager>().SetAttribute(null);
+            if (SceneManager.GetActiveScene().name == "OnlineBuilder") GameObject.Find("Canvas/Menus").GetComponent<AttributeValueManager>().SetAttribute(null);
             ToggleEditButtons();
         }
     }

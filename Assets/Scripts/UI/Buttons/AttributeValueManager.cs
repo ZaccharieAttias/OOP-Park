@@ -9,7 +9,8 @@ public class AttributeValueManager : MonoBehaviour
     public Powerup Powerup;
 
     [Header("UI Elements")]
-    public TextMeshProUGUI Value;
+    public GameObject Popup;
+     public TextMeshProUGUI Value;
 
     [Header("Buttons")]
     public Button UpButton;
@@ -26,7 +27,6 @@ public class AttributeValueManager : MonoBehaviour
         InitializeButtons();
         InitializeAttributeData();
 
-        gameObject.SetActive(false);
     }
     public void InitializeScripts()
     {
@@ -34,14 +34,15 @@ public class AttributeValueManager : MonoBehaviour
     }
     public void InitializeUIElements()
     {
-        Value = gameObject.transform.Find("Value").GetComponent<TextMeshProUGUI>();
+        Popup = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Value");
+        Value = Popup.transform.Find("Value").GetComponent<TextMeshProUGUI>();
     }
     public void InitializeButtons()
     {
-        UpButton = transform.Find("Up").GetComponent<Button>();
+        UpButton = Popup.transform.Find("Up").GetComponent<Button>();
         UpButton.onClick.AddListener(IncrementAttributeValue);
 
-        DownButton = transform.Find("Down").GetComponent<Button>();
+        DownButton = Popup.transform.Find("Down").GetComponent<Button>();
         DownButton.onClick.AddListener(DecrementAttributeValue);
     }
     public void InitializeAttributeData()
@@ -84,14 +85,13 @@ public class AttributeValueManager : MonoBehaviour
         {
             Attribute = attribute;
             Value.text = attribute.Value.ToString("0.##");
-            gameObject.SetActive(true);
+            Popup.SetActive(true);
         }
-
         else
         {
             Attribute = null;
             Value.text = "0";
-            gameObject.SetActive(false);
+            Popup.SetActive(false);
         }
     }
 }
