@@ -2,8 +2,8 @@
   {
     "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 2",
-    "Description": "This is Character 2.",
+    "Name": "Character 1",
+    "Description": "This is Character 1.",
     "Attributes": [],
     "Methods": [],
     "SpecialAbility": null,
@@ -13,95 +13,6 @@
       "Amount": 0.0
     },
     "Parent": null,
-    "Childrens": [
-      "Character 7"
-    ]
-  },
-  {
-    "IsOriginal": false,
-    "IsAbstract": false,
-    "Name": "Character 7",
-    "Description": "I'm Character 7",
-    "Attributes": [
-      {
-        "Owner": "Character 7",
-        "Name": "gravity",
-        "Value": 4.0,
-        "Getter": true,
-        "Setter": false,
-        "AccessModifier": 1
-      }
-    ],
-    "Methods": [],
-    "SpecialAbility": null,
-    "UpcastMethod": {
-      "Owner": null,
-      "Name": null,
-      "Amount": 0.0
-    },
-    "Parent": "Character 2",
-    "Childrens": [
-      "Character 8"
-    ]
-  },
-  {
-    "IsOriginal": false,
-    "IsAbstract": false,
-    "Name": "Character 8",
-    "Description": "I'm Character 8",
-    "Attributes": [
-      {
-        "Owner": "Character 8",
-        "Name": "gravity",
-        "Value": 4.0,
-        "Getter": true,
-        "Setter": false,
-        "AccessModifier": 1
-      }
-    ],
-    "Methods": [],
-    "SpecialAbility": null,
-    "UpcastMethod": {
-      "Owner": null,
-      "Name": null,
-      "Amount": 0.0
-    },
-    "Parent": "Character 7",
-    "Childrens": [
-      "Character 1"
-    ]
-  },
-  {
-    "IsOriginal": false,
-    "IsAbstract": false,
-    "Name": "Character 1",
-    "Description": "I'm Character 1",
-    "Attributes": [
-      {
-        "Owner": "Character 1",
-        "Name": "gravity",
-        "Value": 4.0,
-        "Getter": true,
-        "Setter": true,
-        "AccessModifier": 1
-      },
-      {
-        "Owner": "Character 1",
-        "Name": "fireballShoot",
-        "Value": 0.25,
-        "Getter": true,
-        "Setter": true,
-        "AccessModifier": 1
-      }
-    ],
-    "Methods": [],
-    "SpecialAbility": null,
-    "UpcastMethod": {
-      "Owner": null,
-      "Name": null,
-      "Amount": 0.0
-    },
-    "Parent": "Character 8",
     "Childrens": []
   }
 ]
