@@ -11,12 +11,14 @@ public class SeedCollections : MonoBehaviour
     public CharactersManager CharactersManager;
     public SpecialAbilityManager SpecialAbilityManager;
     public CharacterEditor1 CharacterEditor;
+    public JsonUtilityManager jsonUtilityManager;
 
 
     public void Start()
     {
         InitializeProperties();
-        InitializeCollections();
+        //InitializeCollections();
+        jsonUtilityManager.Load();
     }
     private void InitializeProperties()
     {
@@ -25,6 +27,7 @@ public class SeedCollections : MonoBehaviour
         SpecialAbilityManager = GameObject.Find("Canvas/Popups").GetComponent<SpecialAbilityManager>();
         CharactersManager = GameObject.Find("Scripts/CharactersManager").GetComponent<CharactersManager>();
         CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
+        jsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
     }
     private void InitializeCollections()
     {
