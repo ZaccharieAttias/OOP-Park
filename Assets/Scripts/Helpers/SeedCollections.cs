@@ -173,7 +173,7 @@ public class SeedCollections : MonoBehaviour
             Owner = null,
             Name = "grabbing",
             Description = "Enables the character to grab objects, granting the ability to move objects",
-            Value = 20f,
+            Value = 50f,
 
             AccessModifier = AccessModifier.Public
         };

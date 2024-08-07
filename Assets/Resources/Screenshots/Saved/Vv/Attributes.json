@@ -2,8 +2,8 @@
   {
     "Owner": null,
     "Name": "speed",
-    "Description": "Enables the character to move faster, granting the ability to react faster",
-    "Value": 2.0,
+    "Description": "This is the MoveSpeed attribute",
+    "Value": 5.0,
     "AccessModifier": 0,
     "Getter": false,
     "Setter": false
@@ -11,8 +11,8 @@
   {
     "Owner": null,
     "Name": "gravity",
-    "Description": "Enables the character to jump higher, granting the ability to reach higher places",
-    "Value": 4.0,
+    "Description": "This is the GravityForce attribute",
+    "Value": 20.0,
     "AccessModifier": 1,
     "Getter": false,
     "Setter": false
@@ -20,8 +20,8 @@
   {
     "Owner": null,
     "Name": "multipleJumps",
-    "Description": "Enables the character to jump multiple times before landing, granting the ability to reach further places",
-    "Value": 1.0,
+    "Description": "This is the DoubleJump attribute",
+    "Value": 2.0,
     "AccessModifier": 2,
     "Getter": false,
     "Setter": false
@@ -29,7 +29,7 @@
   {
     "Owner": null,
     "Name": "fireballShoot",
-    "Description": "Enables the character to shoot fireballs, granting the ability to destory special obstacles",
+    "Description": "This is the FireballShoot attribute",
     "Value": 0.25,
     "AccessModifier": 0,
     "Getter": false,
@@ -37,8 +37,17 @@
   },
   {
     "Owner": null,
+    "Name": "grapplingGun",
+    "Description": "This is the GrapplingGun attribute",
+    "Value": 10.0,
+    "AccessModifier": 0,
+    "Getter": false,
+    "Setter": false
+  },
+  {
+    "Owner": null,
     "Name": "inverseGravity",
-    "Description": "Enables the character to inverse the gravity, granting the ability turn the game upside down",
+    "Description": "This is the InverseGravity attribute",
     "Value": -40.0,
     "AccessModifier": 1,
     "Getter": false,
@@ -47,7 +56,7 @@
   {
     "Owner": null,
     "Name": "wallJump",
-    "Description": "Enables the character to jump and slide from special walls, granting the ability to parkour",
+    "Description": "This is the WallJump attribute",
     "Value": 1.0,
     "AccessModifier": 2,
     "Getter": false,
@@ -56,8 +65,8 @@
   {
     "Owner": null,
     "Name": "grabbing",
-    "Description": "Enables the character to grab objects, granting the ability to move objects",
-    "Value": 50.0,
+    "Description": "This is the grabbing attribute",
+    "Value": 10000.0,
     "AccessModifier": 0,
     "Getter": false,
     "Setter": false

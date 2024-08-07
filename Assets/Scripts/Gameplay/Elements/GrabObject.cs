@@ -43,7 +43,7 @@ public class GrabObject : MonoBehaviour
     public void InitializeSettings()
     {
         RaycastDistance = 0.6f;
-        CanGrabMass = 10f;
+        CanGrabMass = 50f;
         PowerupTimer = 0f;
     }
     public void InitializeState()

@@ -42,17 +42,15 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
     }
     public void HandleAttributeClick(Attribute attribute)
     {
-        if (attribute != null && (RestrictionManager.Instance.AllowEncapsulation || RestrictionManager.Instance.OnlineBuild))
+        if (attribute != null)
         {
-            MarkButton.ActivateButtons();
-            MarkButton.AttributeClicked(attribute);
-
+            if (RestrictionManager.Instance.AllowEncapsulation) { MarkButton.ActivateButtons(); MarkButton.AttributeClicked(attribute);}
             if (IsOnlineBuilder() && !IsTestGameplay()) GameObject.Find("Canvas/Menus").GetComponent<AttributeValueManager>().SetAttribute(attribute);
         }
 
         else
         {
-            MarkButton.DeactivateButtons();
+            if (RestrictionManager.Instance.AllowEncapsulation) MarkButton.DeactivateButtons();
 
             if (IsOnlineBuilder() && !IsTestGameplay()) GameObject.Find("Canvas/Menus").GetComponent<AttributeValueManager>().SetAttribute(null);
         }
