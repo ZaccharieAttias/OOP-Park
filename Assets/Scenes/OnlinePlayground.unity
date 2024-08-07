@@ -1577,7 +1577,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &39504375
@@ -4359,12 +4359,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0219db2cce479b4da5b3d0f63b9589f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScrollView: {fileID: 0}
+  AllGameObject: {fileID: 0}
   NodeSize: 0
   SiblingDistance: 0
   TreeDistance: 0
   DepthDistance: 0
-  ScrollView: {fileID: 0}
-  AllGameObject: {fileID: 0}
 --- !u!114 &99964892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11176,7 +11176,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &483527589
@@ -11445,7 +11445,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &489039029
@@ -12867,7 +12867,9 @@ MonoBehaviour:
   TimeTook: 0
   AbstractLevelTries: 0
   AppearanceLevelTries: 0
+  QuizLevelTries: 0
   LevelDownload: {fileID: 1796146097}
+  FilePath: 
 --- !u!1 &573570210
 GameObject:
   m_ObjectHideFlags: 0
@@ -14777,6 +14779,7 @@ Transform:
   m_Children:
   - {fileID: 1800533763}
   - {fileID: 1404008986}
+  - {fileID: 766437441}
   - {fileID: 30804958}
   m_Father: {fileID: 1246068771}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15519,6 +15522,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762190033}
   m_CullTransparentMesh: 1
+--- !u!1 &766437440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 766437441}
+  m_Layer: 0
+  m_Name: Gameplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &766437441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766437440}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 682083939}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &769903796
 GameObject:
   m_ObjectHideFlags: 0
@@ -16046,7 +16080,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &784604174
@@ -18829,7 +18863,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &843712226
@@ -19246,16 +19280,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7b519f030b6db488211cf6abba4584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CharactersTreeManager: {fileID: 0}
+  Powerup: {fileID: 0}
   Menu: {fileID: 0}
   NameText: {fileID: 0}
   DescriptionText: {fileID: 0}
-  DefaultButton: {fileID: 0}
-  DeleteButton: {fileID: 0}
-  GameplayButton: {fileID: 0}
   AttributesContentPanel: {fileID: 0}
   MethodsContentPanel: {fileID: 0}
   SpecialAbilityContentPanel: {fileID: 0}
-  CharactersTreeManager: {fileID: 0}
+  DefaultButton: {fileID: 0}
+  DeleteButton: {fileID: 0}
+  GameplayButton: {fileID: 0}
   GetButton: {fileID: 0}
   SetButton: {fileID: 0}
   AttributePlusButton: {fileID: 0}
@@ -20371,7 +20406,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &892648189
@@ -21167,7 +21202,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &915299315
@@ -27184,13 +27219,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de9dc453374c364b8bb5d8ece0c266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterChallangeManager: {fileID: 0}
-  characterAppearanceManager: {fileID: 0}
-  encapsulationManager: {fileID: 0}
-  upcastingManager: {fileID: 0}
+  CharacterAppearanceManager: {fileID: 0}
+  EncapsulationManager: {fileID: 0}
+  UpcastingManager: {fileID: 0}
   Content: {fileID: 0}
-  ButtonPrefab: {fileID: 0}
   PopupMenu: {fileID: 0}
+  ButtonPrefab: {fileID: 0}
 --- !u!114 &1196029603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27203,13 +27237,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab516027f19ba2a4eaac2d20690fa35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AiModelData: {fileID: 0}
   Popup: {fileID: 0}
   FeedbackScore: {fileID: 0}
   FeedbackText: {fileID: 0}
   ExitButton: {fileID: 0}
   RetryButton: {fileID: 0}
   NextLevelButton: {fileID: 0}
-  AiModelData: {fileID: 0}
 --- !u!114 &1196029604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27238,13 +27272,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f480ad74e09dd4d4abf157229f060f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScrollView: {fileID: 0}
+  AllGameObject: {fileID: 0}
   X_NodeSize: 0
   Y_NodeSize: 0
   SiblingDistance: 0
   TreeDistance: 0
   DepthDistance: 0
-  ScrollView: {fileID: 0}
-  AllGameObject: {fileID: 0}
 --- !u!114 &1196029606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27257,13 +27291,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140dc0c73ae5b584d884b95eb601a993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Popup: {fileID: 0}
-  SpecialAbilityButton: {fileID: 0}
-  SpecialAbilityContentPanel: {fileID: 0}
-  CancelButton: {fileID: 0}
-  ConfirmButton: {fileID: 0}
   CharacterCreationManager: {fileID: 0}
   SpecialAbilityTreeManager: {fileID: 0}
+  Popup: {fileID: 0}
+  SpecialAbilityContentPanel: {fileID: 0}
+  SpecialAbilityButtonPrefab: {fileID: 0}
+  CancelButton: {fileID: 0}
+  ConfirmButton: {fileID: 0}
   SpecialAbilityGameObjects: []
 --- !u!114 &1196029607
 MonoBehaviour:
@@ -27295,17 +27329,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05b78994bf8b7b4e9280a4548cc1059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Powerup: {fileID: 0}
+  SwipeMenu: {fileID: 0}
   Popup: {fileID: 0}
   SetContent: {fileID: 0}
   GetContent: {fileID: 0}
+  CurrentSet: {fileID: 0}
+  InputField: {fileID: 0}
+  SelectedGetClick: 
   GetRowPrefab: {fileID: 0}
   SetRowPrefab: {fileID: 0}
-  InputField: {fileID: 0}
   SetButtonPrefab: {fileID: 0}
-  CurrentSet: {fileID: 0}
-  PowerUp: {fileID: 0}
-  SelectedGetClick: 
-  closeButton: {fileID: 0}
+  CloseButton: {fileID: 0}
 --- !u!114 &1196029609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27319,15 +27354,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  CharacterPrefab: {fileID: 0}
   SelectionMenu: {fileID: 0}
   CharactersContentPanel: {fileID: 0}
-  CharacterGameObjects: []
-  DuplicateCharacterGameObjects: []
+  CharacterPrefab: {fileID: 0}
   AddButton: {fileID: 0}
   CancelButton: {fileID: 0}
   ConfirmButton: {fileID: 0}
   NotAllowedButtons: []
+  CharacterGameObjects: []
+  DuplicateCharacterGameObjects: []
   CharacterToggleType: {fileID: 0}
 --- !u!114 &1196029610
 MonoBehaviour:
@@ -27372,8 +27407,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  MethodButton: {fileID: 0}
   MethodsContentPanel: {fileID: 0}
+  MethodButton: {fileID: 0}
+  InheritanceButton: {fileID: 0}
   MethodGameObjects: []
   MethodLimit: 0
 --- !u!114 &1196029613
@@ -27389,8 +27425,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  AttributeButton: {fileID: 0}
   AttributesContentPanel: {fileID: 0}
+  AttributeButton: {fileID: 0}
+  InheritanceButton: {fileID: 0}
   AttributeGameObjects: []
 --- !u!114 &1196029614
 MonoBehaviour:
@@ -27405,14 +27442,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Popup: {fileID: 0}
-  playerTransform: {fileID: 0}
-  oldPosition: {x: 0, y: 0, z: 0}
-  Cameras: []
   Canvas: {fileID: 0}
+  Cameras: []
   ConfirmButton: {fileID: 0}
   CancelButton: {fileID: 0}
   ResetButton: {fileID: 0}
   Character: {fileID: 0}
+  playerTransform: {fileID: 0}
+  oldPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &1201668149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28428,6 +28465,7 @@ MonoBehaviour:
   CharactersManager: {fileID: 0}
   SpecialAbilityManager: {fileID: 0}
   CharacterEditor: {fileID: 0}
+  jsonUtilityManager: {fileID: 0}
 --- !u!114 &1271448934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32387,11 +32425,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2eca159f91d16041a9ff2f89f6e18f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScrollBar: {fileID: 0}
-  Scroll_pos: 0
-  pos: []
   EncapsulationManager: {fileID: 0}
-  Scrollposition: 0
+  ScrollBar: {fileID: 0}
+  CurrentScrollPosition: 0
+  PreviousScrollPosition: 0
+  ItemPosition: []
 --- !u!114 &1446546765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35650,11 +35688,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 243d3b4ce4da6074594241fb5b34455d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AiModelData: {fileID: 0}
+  CharacterEditor: {fileID: 0}
   SwapButtonToGameplay: {fileID: 0}
   SwapButtonToCharacterCenter: {fileID: 0}
-  CharacterEditor: {fileID: 0}
   firstTime: 1
-  AiModelData: {fileID: 0}
 --- !u!114 &1595343208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35862,7 +35900,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 756783166}
   m_HandleRect: {fileID: 756783165}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -36208,7 +36246,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1625616532
@@ -44166,7 +44204,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1944490567
@@ -45731,7 +45769,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 91173542}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 1607880943}
@@ -46526,7 +46564,7 @@ SpriteRenderer:
   m_Size: {x: 1.72, y: 1.39}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2050491072
