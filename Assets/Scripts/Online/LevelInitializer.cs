@@ -250,13 +250,13 @@ public class LevelInitializer : MonoBehaviour
                             else if (_index == 9 || _index == 11)
                                 CreateDeathObject(x, y, z);
                             else if (_index == 12)
-                                CreateGrabbableObject(x, y, z, 50);
+                                CreateGrabbableObject(x, y, z, 49);
                             else if (_index == 13)
-                                CreateGrabbableObject(x, y, z, 100);
+                                CreateGrabbableObject(x, y, z, 99);
                             else if (_index == 14)
-                                CreateGrabbableObject(x, y, z, 200);
+                                CreateGrabbableObject(x, y, z, 199);
                             else if (_index == 15)
-                                CreateGrabbableObject(x, y, z, 500);
+                                CreateGrabbableObject(x, y, z, 499);
                         }
                     }
                 }
@@ -602,11 +602,14 @@ public class LevelInitializer : MonoBehaviour
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
-        block.GameObject.AddComponent<Rigidbody2D>().mass = mass;
+        block.GameObject.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        block.GameObject.GetComponent<Rigidbody2D>().mass = mass;
         block.GameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         block.GameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         block.GameObject.AddComponent<BoxMovement>();
         block.GameObject.layer = 9;
+        block.GameObject.tag = "Grab";
+        block.GameObject.GetComponent<BoxMovement>().SetPosition(block.Transform.position);
 
         _gameplayMap[x, y, z] = block;
     }

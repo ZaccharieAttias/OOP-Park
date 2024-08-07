@@ -8,6 +8,7 @@ public class PlayTestManager : MonoBehaviour
     public GameObject Player;
     public GameObject[] Checkpoints;
     public GameObject[] DeathZone;
+    public GameObject[] GrabObjects;
     public float x_start_pos, y_start_pos;
     public GameObject TestButton;
     public bool IsTestGameplay = false;
@@ -40,6 +41,10 @@ public class PlayTestManager : MonoBehaviour
         }
         MainCamera.GetComponent<CameraFollow>().Player = Player;
         MainCamera.GetComponent<CameraFollow>().StartPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, -10);
+
+        GrabObjects = GameObject.FindGameObjectsWithTag("Grab");
+        foreach (GameObject grabObject in GrabObjects)
+            grabObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
         PreviousPath = JsonUtilityManager.FolderPath;
         JsonUtilityManager.SetPath(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp");
@@ -84,6 +89,8 @@ public class PlayTestManager : MonoBehaviour
             checkpoint.GetComponent<Checkpoint>().ResetCheckpoint();
         foreach (GameObject deathzone in DeathZone)
             deathzone.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        foreach (GameObject grabObject in GrabObjects)
+            grabObject.GetComponent<BoxMovement>().Respawn();
         MainCamera.GetComponent<CameraFollow>().Player = null;
         MainCamera.GetComponent<CameraFollow>().ResetPosition();
 
