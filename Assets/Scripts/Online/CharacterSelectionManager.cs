@@ -32,7 +32,6 @@ public class CharacterSelectionManager : MonoBehaviour
         ConfirmButton = SelectionMenu.transform.Find("Background/Foreground/Buttons/Confirm").gameObject;
         TreeContent = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All");
         ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmRootCharacter());
-        ConfirmButton.GetComponent<Button>().onClick.AddListener(() => ConfirmButton.GetComponent<Button>().interactable = false);
 
         CharacterName = "";
     }

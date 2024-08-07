@@ -54,11 +54,11 @@ public class LevelInitializer : MonoBehaviour
     public Vector3 MinValues = new Vector3(0, 0, -10), MaxValues = new Vector3(0, 0, -10);
     public void Start()
     {
-        _groundMap = new TileMap(1, 1, 4);
-        _coverMap = new TileMap(1, 1, 4);
-        _propsMap = new TileMap(1, 1, 4);
-        _wallMap = new TileMap(1, 1, 4);
-        _gameplayMap = new TileMap(1, 1, 4);
+        _groundMap = new TileMap(100, 100, 4);
+        _coverMap = new TileMap(100, 100, 4);
+        _propsMap = new TileMap(100, 100, 4);
+        _wallMap = new TileMap(100, 100, 4);
+        _gameplayMap = new TileMap(100, 100, 4);
 
         Parent = GameObject.Find("Grid/LevelBuilder").transform;
         Terrain = Parent.Find("Terrain");
@@ -241,20 +241,22 @@ public class LevelInitializer : MonoBehaviour
                                 CreateCheckPoint(x, y, z);
                             else if (_index == 4)
                                 CreateEndPoint(x, y, z);
-                            else if (_index == 5)
-                                CreateBrick(x, y, z);
-                            else if (_index == 6)
+                            else if (_index == 5 || _index == 6)
                                 CreateBrick(x, y, z);
                             else if (_index == 7)
                                 CreateDeathZone(x, y, z);
-                            else if (_index == 8)
+                            else if (_index == 8 || _index == 10)
                                 CreateReverseDeathObject(x, y, z);
-                            else if (_index == 9)
+                            else if (_index == 9 || _index == 11)
                                 CreateDeathObject(x, y, z);
-                            else if (_index == 10)
-                                CreateReverseDeathObject(x, y, z);
-                            else if (_index == 11)
-                                CreateDeathObject(x, y, z);
+                            else if (_index == 12)
+                                CreateGrabbableObject(x, y, z, 50);
+                            else if (_index == 13)
+                                CreateGrabbableObject(x, y, z, 100);
+                            else if (_index == 14)
+                                CreateGrabbableObject(x, y, z, 200);
+                            else if (_index == 15)
+                                CreateGrabbableObject(x, y, z, 500);
                         }
                     }
                 }
@@ -581,6 +583,30 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         block.GameObject.tag = "DeathZone";
+
+        _gameplayMap[x, y, z] = block;
+    }
+    public void CreateGrabbableObject(int x, int y, int z, float mass)
+    {
+        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+
+        _gameplayMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.AddComponent<Rigidbody2D>().mass = mass;
+        block.GameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        block.GameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        block.GameObject.AddComponent<BoxMovement>();
+        block.GameObject.layer = 9;
 
         _gameplayMap[x, y, z] = block;
     }
