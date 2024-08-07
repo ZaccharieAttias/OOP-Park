@@ -17,8 +17,7 @@ public class SeedCollections : MonoBehaviour
     public void Start()
     {
         InitializeProperties();
-        //InitializeCollections();
-        jsonUtilityManager.Load();
+        InitializeCollections();
     }
     private void InitializeProperties()
     {

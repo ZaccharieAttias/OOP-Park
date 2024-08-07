@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class GrabObject : MonoBehaviour
@@ -100,7 +101,11 @@ public class GrabObject : MonoBehaviour
     public void Drop()
     {
         ObjectInHand.GetComponent<Rigidbody2D>().isKinematic = false;
-        ObjectInHand.transform.parent = GameObject.Find("Grid/Obstacles/Grabbables").transform;
+        if (SceneManager.GetActiveScene().name.Contains("Online")) ObjectInHand.transform.parent = GameObject.Find("Grid/LevelBuilder/Gameplay").transform;
+        else ObjectInHand.transform.parent = GameObject.Find("Grid/Gameplay").transform;
+        ObjectInHand.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        ObjectInHand.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+
         ObjectInHand = null;
         IsHolding = false;
         CanHold = true;
