@@ -435,7 +435,7 @@ MonoBehaviour:
     m_Bits: 0
   Powerup: {fileID: 0}
   RaycastDistance: 0
-  CanGrabMass: 10
+  CanGrabMass: 0
   PowerupTimer: 0
   IsHolding: 0
   CanHold: 0
@@ -451,47 +451,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca6107db0132764ebd11399f6fa9f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rigidbody2D: {fileID: 4802387}
+  Rigidbody2D: {fileID: 0}
   CharactersManager: {fileID: 0}
   Powerup: {fileID: 0}
   GroundCheckCircle: {fileID: 481070615}
   GroundCheckBox: {fileID: 36560796}
   firePoint: {fileID: 1367244882}
-  fireballs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  WallCheck: {fileID: 291633000}
+  fireballs: []
+  WallCheck: {fileID: 0}
   MoveSpeed: 9
   JumpForce: 20
   MaxJumps: 1
   JumpsLeft: 1
   Velocity: {x: 0, y: 0, z: 0}
-  WallSlideSpeed: 2
+  WallSlideSpeed: 1.5
   WallJumpingDirection: 1
   WallJumpingCounter: 1
-  MaxWallJumps: 1
+  MaxWallJumps: 7
   WallJumpsLeft: 1
-  WallJumpingVector: {x: 24, y: 18}
-  CollisionLayers:
-  - serializedVersion: 2
-    m_Bits: 128
-  - serializedVersion: 2
-    m_Bits: 512
+  WallJumpingVector: {x: 0, y: 0}
+  CollisionLayers: []
   isGrounded: 0
   GroundCheckRadius: 0.25
   GroundCheckBoxLength: 0.07
   GroundCheckBoxWidth: 1.71
   WallLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   IsWallSliding: 0
   AllowToWallJump: 0
   IsWallJumping: 0
@@ -499,7 +485,7 @@ MonoBehaviour:
   cooldownTimer: Infinity
   PowerupTimer: 0
   WallJumpingDuration: 0.4
-  Character: {fileID: 4802385}
+  Character: {fileID: 0}
   _speed: {x: 0, y: 0, z: 0}
 --- !u!114 &4802383
 MonoBehaviour:
