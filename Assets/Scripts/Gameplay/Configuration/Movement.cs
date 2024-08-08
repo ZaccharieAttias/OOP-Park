@@ -83,6 +83,7 @@ public class Movement : MonoBehaviour
         }
         WallJumpingVector = new Vector2(24f, 18f);
 
+        Character = GetComponent<Character>();
         Character.Animator.SetBool("Ready", true);
     }
     public void Update()

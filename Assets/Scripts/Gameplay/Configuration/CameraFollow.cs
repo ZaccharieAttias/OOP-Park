@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
     {
-        if (!Player) Player = GameObject.Find("Player");
+        if (!Player) Player = GameObject.FindGameObjectsWithTag("Player")[0];
     }
 
     public void Update()
