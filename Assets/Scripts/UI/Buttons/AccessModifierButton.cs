@@ -44,7 +44,8 @@ public class AccessModifierButton : MonoBehaviour
 
     public void MarkAccessModifier()
     {
-        if (CharactersData.CharactersManager.CurrentCharacter.IsOriginal) return;
+        // If the character is original and the scene is not Online Builder in play test mode, return
+        if (CharactersData.CharactersManager.CurrentCharacter.IsOriginal && (!IsOnlineBuilder() || IsTestGameplay())) return;
 
         AccessModifierIndex = (AccessModifierIndex + 1) % AccessModifierCount;
 
@@ -73,5 +74,13 @@ public class AccessModifierButton : MonoBehaviour
                 }
             }
         }
+    }
+    public bool IsOnlineBuilder()
+    {
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "OnlineBuilder";
+    }
+    public bool IsTestGameplay()
+    {
+        return GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay;
     }
 }
