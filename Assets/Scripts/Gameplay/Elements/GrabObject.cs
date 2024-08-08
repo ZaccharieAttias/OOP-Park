@@ -42,7 +42,7 @@ public class GrabObject : MonoBehaviour
     }
     public void InitializeSettings()
     {
-        RaycastDistance = 0.6f;
+        RaycastDistance = 1f;
         CanGrabMass = 50f;
         PowerupTimer = 0f;
     }
@@ -54,7 +54,7 @@ public class GrabObject : MonoBehaviour
 
     public void HandleRaycast()
     {
-        RaycastDistance = transform.localScale.x > 0 ? 0.6f : -0.6f;
+        RaycastDistance = transform.localScale.x > 0 ? 1f : -1f;
         RaycastHit2D hit = Physics2D.Raycast(RaycastPoint.position, transform.right, RaycastDistance);
         Debug.DrawRay(RaycastPoint.position, transform.right * RaycastDistance, Color.red);
 
@@ -94,6 +94,7 @@ public class GrabObject : MonoBehaviour
         ObjectInHand.GetComponent<Rigidbody2D>().isKinematic = true;
         ObjectInHand.transform.position = GrabPoint.position;
         ObjectInHand.transform.parent = GameObject.Find("Player").transform;
+        ObjectInHand.GetComponent<BoxMovement>().ResetTimers();
         IsHolding = true;
         CanHold = false;
     }
@@ -101,10 +102,11 @@ public class GrabObject : MonoBehaviour
     public void Drop()
     {
         ObjectInHand.GetComponent<Rigidbody2D>().isKinematic = false;
+        ObjectInHand.GetComponent<Rigidbody2D>().velocity = new Vector2(transform.localScale.x*1.5f, 3f);
         if (SceneManager.GetActiveScene().name.Contains("Online")) ObjectInHand.transform.parent = GameObject.Find("Grid/LevelBuilder/Gameplay").transform;
         else ObjectInHand.transform.parent = GameObject.Find("Grid/Gameplay").transform;
         ObjectInHand.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        ObjectInHand.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        // ObjectInHand.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
 
         ObjectInHand = null;
         IsHolding = false;

@@ -44,11 +44,11 @@ public class LevelBuilderB : MonoBehaviour
 
     public void Start()
     {
-        _groundMap = new TileMap(100, 100, 4);
-        _coverMap = new TileMap(100, 100, 4);
-        _propsMap = new TileMap(100, 100, 4);
-        _wallMap = new TileMap(100, 100, 4);
-        _gameplayMap = new TileMap(100, 100, 4);
+        _groundMap = new TileMap(1, 1, 4);
+        _coverMap = new TileMap(1, 1, 4);
+        _propsMap = new TileMap(1, 1, 4);
+        _wallMap = new TileMap(1, 1, 4);
+        _gameplayMap = new TileMap(1, 1, 4);
 
         Parent = GameObject.Find("Grid/LevelBuilder").transform;
         Terrain = Parent.Find("Terrain");
