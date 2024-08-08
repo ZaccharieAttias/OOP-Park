@@ -1,0 +1,442 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "a",
+    "Description": "This is a.",
+    "Attributes": [
+      {
+        "Owner": "a",
+        "Name": "speed",
+        "Value": -18.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "a",
+        "Name": "wallJump",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "a",
+        "Name": "fireballShoot",
+        "Value": 0.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "a",
+        "Name": "Speed",
+        "Attribute": {
+          "Owner": "a",
+          "Name": "speed",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "a",
+        "Name": "WallJump",
+        "Attribute": {
+          "Owner": "a",
+          "Name": "wallJump",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": null,
+    "Childrens": [
+      "c",
+      "r",
+      "Character 3"
+    ]
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "c",
+    "Description": "I'm c",
+    "Attributes": [
+      {
+        "Owner": "c",
+        "Name": "multipleJumps",
+        "Value": 2.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "c",
+        "Name": "grabbing",
+        "Value": 40.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "c",
+        "Name": "wallJump",
+        "Value": 10.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "c",
+        "Name": "MultipleJumps",
+        "Attribute": {
+          "Owner": "c",
+          "Name": "multipleJumps",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "c",
+        "Name": "Speed",
+        "Attribute": {
+          "Owner": "a",
+          "Name": "speed",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "a",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "r",
+    "Description": "I'm r",
+    "Attributes": [
+      {
+        "Owner": "r",
+        "Name": "multipleJumps",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "r",
+        "Name": "grabbing",
+        "Value": 100.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "r",
+        "Name": "MultipleJumps",
+        "Attribute": {
+          "Owner": "r",
+          "Name": "multipleJumps",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "r",
+        "Name": "Speed",
+        "Attribute": {
+          "Owner": "a",
+          "Name": "speed",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "a",
+    "Childrens": [
+      "k",
+      "j"
+    ]
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "k",
+    "Description": "I'm k",
+    "Attributes": [
+      {
+        "Owner": "k",
+        "Name": "fireballShoot",
+        "Value": 0.25,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "k",
+        "Name": "inverseGravity",
+        "Value": -40.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "k",
+        "Name": "InverseGravity",
+        "Attribute": {
+          "Owner": "k",
+          "Name": "inverseGravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "r",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "j",
+    "Description": "I'm j",
+    "Attributes": [
+      {
+        "Owner": "j",
+        "Name": "fireballShoot",
+        "Value": 0.25,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "r",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 3",
+    "Description": "I'm Character 3",
+    "Attributes": [
+      {
+        "Owner": "Character 3",
+        "Name": "multipleJumps",
+        "Value": 3.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "gravity",
+        "Value": -2.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "grabbing",
+        "Value": 45.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "fireballShoot",
+        "Value": 0.25,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 3",
+        "Name": "MultipleJumps",
+        "Attribute": {
+          "Owner": "Character 3",
+          "Name": "multipleJumps",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Character 3",
+        "Name": "Speed",
+        "Attribute": {
+          "Owner": "a",
+          "Name": "speed",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "a",
+    "Childrens": [
+      "Character 46"
+    ]
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 46",
+    "Description": "I'm Character 46",
+    "Attributes": [
+      {
+        "Owner": "Character 46",
+        "Name": "wallJump",
+        "Value": 10.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 46",
+        "Name": "fireballShoot",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 46",
+        "Name": "gravity",
+        "Value": 10.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 46",
+        "Name": "multipleJumps",
+        "Value": 10.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 46",
+        "Name": "grabbing",
+        "Value": 100.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 46",
+        "Name": "inverseGravity",
+        "Value": -60.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Character 46",
+        "Name": "speed",
+        "Value": 20.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 46",
+        "Name": "Speed",
+        "Attribute": {
+          "Owner": "a",
+          "Name": "speed",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Character 3",
+    "Childrens": []
+  }
+]
