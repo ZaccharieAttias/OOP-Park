@@ -216,6 +216,12 @@ public class CharactersCreationManager : MonoBehaviour
     {
         if (RestrictionManager.Instance.AllowSpecialAbility && SpecialAbilitiesData.SpecialAbilityManager.SelectedSpecialAbility == null) return null;
 
+        //take a random name from "Sprites/Characters/" folder that not used yet
+        List<string> usedSprites = CharactersData.CharactersManager.CharactersCollection.Select(item => item.Name).ToList();
+        List<string> allSprites = Resources.LoadAll<Sprite>("Sprites/Characters").Select(item => item.name).ToList();
+        List<string> availableSprites = allSprites.Except(usedSprites).ToList();
+        string randomSprite = availableSprites[Random.Range(0, availableSprites.Count)];
+        
         CharacterB builtCharacter = RestrictionManager.Instance.OnlineBuild
             ? new CharacterB
             {
@@ -228,8 +234,8 @@ public class CharactersCreationManager : MonoBehaviour
             : new CharacterB
             {
                 IsAbstract = CharacterToggleType.isOn,
-                Name = $"Character {CharacterGameObjects.Count + 1}",
-                Description = $"I'm {CharacterGameObjects.Count + 1}",
+                Name = $"{randomSprite}",
+                Description = $"I'm {randomSprite}",
                 SpecialAbility = RestrictionManager.Instance.AllowSpecialAbility ? SpecialAbilitiesData.SpecialAbilityManager.SelectedSpecialAbility : null,
                 Parent = SelectedParent
             };
