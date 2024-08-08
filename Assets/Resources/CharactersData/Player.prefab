@@ -1221,7 +1221,7 @@ Transform:
   m_GameObject: {fileID: 1259184516119684644}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.53, y: 3.9160004, z: 0}
+  m_LocalPosition: {x: 1.82, y: 2.76, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14764,7 +14764,7 @@ MonoBehaviour:
   Powerup: {fileID: 0}
   GroundCheckCircle: {fileID: 3728399998209371966}
   GroundCheckBox: {fileID: 4101093348039030103}
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 552644650848452878}
   fireballs: []
   WallCheck: {fileID: 0}
   MoveSpeed: 9
@@ -14772,10 +14772,10 @@ MonoBehaviour:
   MaxJumps: 1
   JumpsLeft: 1
   Velocity: {x: 0, y: 0, z: 0}
-  WallSlideSpeed: 2
+  WallSlideSpeed: 1.5
   WallJumpingDirection: 1
   WallJumpingCounter: 1
-  MaxWallJumps: 1
+  MaxWallJumps: 7
   WallJumpsLeft: 1
   WallJumpingVector: {x: 0, y: 0}
   CollisionLayers: []
@@ -14793,7 +14793,7 @@ MonoBehaviour:
   cooldownTimer: Infinity
   PowerupTimer: 0
   WallJumpingDuration: 0.4
-  Character: {fileID: 1310191388405761012}
+  Character: {fileID: 0}
   _speed: {x: 0, y: 0, z: 0}
 --- !u!114 &8897005514050785497
 MonoBehaviour:
@@ -14831,7 +14831,7 @@ MonoBehaviour:
     m_Bits: 0
   Powerup: {fileID: 0}
   RaycastDistance: 0
-  CanGrabMass: 10
+  CanGrabMass: 0
   PowerupTimer: 0
   IsHolding: 0
   CanHold: 0
