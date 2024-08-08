@@ -55,6 +55,8 @@ public class LevelSave : MonoBehaviour
 
         // Save Level Data (character center)
         SaveLevelTreeData();
+        
+        LevelSaveUi.SetActive(false);
     }
     public void SaveLevelData()
     {

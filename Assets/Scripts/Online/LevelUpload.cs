@@ -47,7 +47,6 @@ public class LevelUpload : MonoBehaviour
     public void CreateLevel()
     {
         LevelName = LevelNameInputField.text;
-        LevelUploadUi.SetActive(false);
         string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
@@ -75,6 +74,7 @@ public class LevelUpload : MonoBehaviour
             else
             {
                 Debug.Log("Level Creation Failed");
+                LevelUploadUi.SetActive(false);
                 return;
             }
         }, filters: new Dictionary<string, string>() { { "Context", "TileMap" } }, context_id: TileMapContextID);
@@ -89,6 +89,7 @@ public class LevelUpload : MonoBehaviour
             else
             {
                 Debug.Log("Character Center Creation Failed");
+                LevelUploadUi.SetActive(false);
                 return;
             }
         }, filters: new Dictionary<string, string>() { { "Context", "CharacterTree" } }, context_id: CharacterTreeContextID);
@@ -174,8 +175,10 @@ public class LevelUpload : MonoBehaviour
     }
     public void TakeScreenshot()
     {
+        GameObject.Find("Canvas/Menus/Gameplay").SetActive(false);
         string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/";
         ScreenCapture.CaptureScreenshot(Path.Combine(filepath, "Level_" + LevelName + ".png"));
+        GameObject.Find("Canvas/Menus/Gameplay").SetActive(true);
     }
     public void SaveLevel(string path)
     {
@@ -278,6 +281,9 @@ public class LevelUpload : MonoBehaviour
             {
                 i++;
                 AddingFilesToAsset(levelID, files, i, filePurpose);
+                // si cetait le dernier fichier LevelUploadUi.SetActive(false);
+                if (i >= files.Length)
+                    LevelUploadUi.SetActive(false);
             }
             else
             {
@@ -304,7 +310,6 @@ public class LevelUpload : MonoBehaviour
             ErrorText.SetActive(false);
             UploadButton.interactable = true;
             CreateLevel();
-
         }, null, true, new Dictionary<string, string>() { { "Context", "TileMap" } });
     }
 }
