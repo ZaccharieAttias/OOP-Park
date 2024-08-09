@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Text.RegularExpressions;
+using System;
 
 
 public class DescriptionButton : MonoBehaviour, IPointerClickHandler
@@ -32,13 +34,26 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
     }
     public string GetDescription()
     {
-        string gameObjectDescription = null;
+        // string gameObjectDescription = null;
 
-        gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name)?.Description;
-        gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name)?.Description;
-        gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Name == gameObject.name ? CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Description : null;
+        // gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name)?.Description;
+        // gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name)?.Description;
+        // gameObjectDescription ??= CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Name == gameObject.name ? CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Description : null;
 
-        return gameObjectDescription;
+        // return gameObjectDescription;
+
+
+        string description = null;
+
+        Attribute attribute = CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name);
+        Method method = CharactersData.CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name);
+        SpecialAbility specialAbility = CharactersData.CharactersManager.CurrentCharacter.SpecialAbility;
+
+        if (attribute != null) description = Regex.Replace(attribute.Description, @"\d+(\.\d+)?", Math.Abs(attribute.Value).ToString("0.00"));
+        if (method != null) description = Regex.Replace(method.Description, @"\d+(\.\d+)?", Math.Abs(attribute.Value).ToString("0.00"));
+        if (specialAbility != null) description = Regex.Replace(specialAbility.Description, @"\d+(\.\d+)?", Math.Abs(attribute.Value).ToString("0.00"));
+
+        return description;
     }
     public void HandleAttributeClick(Attribute attribute)
     {
