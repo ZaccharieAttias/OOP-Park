@@ -40,6 +40,7 @@ public class LevelBuilderB : MonoBehaviour
     public GameObject CheckPointPrefab;
     public Dictionary<string, bool> MinimumObjectsCreated = new Dictionary<string, bool>();
     public PlayTestManager playTestManager;
+    public Popup CommandPopup;
 
 
     public void Start()
@@ -59,6 +60,8 @@ public class LevelBuilderB : MonoBehaviour
         MinimumObjectsCreated.Add("Player", false);
         MinimumObjectsCreated.Add("Ground", false);
         MinimumObjectsCreated.Add("Finish", false);
+
+        CommandPopup = GameObject.Find("Canvas/Popups/Command").GetComponent<Popup>();
     }
     public void SwitchTile(int type, int index)
     {
@@ -150,16 +153,16 @@ public class LevelBuilderB : MonoBehaviour
                         _gameplayMap.Destroy(p.X, p.Y, _layer);
                         break;
                     case 0: CreatePlayer(p.X, p.Y, _layer); break;
-                    case 1: CreateCheckPoint(p.X, p.Y, _layer); break;
-                    case 2: CreateCheckPoint(p.X, p.Y, _layer); break;
+                    case 1: 
+                    case 2:
                     case 3: CreateCheckPoint(p.X, p.Y, _layer); break;
                     case 4: CreateEndPoint(p.X, p.Y, _layer); break;
-                    case 5: CreateBrick(p.X, p.Y, _layer); break;
+                    case 5: 
                     case 6: CreateBrick(p.X, p.Y, _layer); break;
                     case 7: CreateDeathZone(p.X, p.Y, _layer); break;
-                    case 8: CreateReverseDeathObject(p.X, p.Y, _layer); break;
-                    case 9: CreateDeathObject(p.X, p.Y, _layer); break;
+                    case 8: 
                     case 10: CreateReverseDeathObject(p.X, p.Y, _layer); break;
+                    case 9:                     
                     case 11: CreateDeathObject(p.X, p.Y, _layer); break;
                     case 12: CreateGrabbableObject(p.X, p.Y, _layer, 49); break;
                     case 13: CreateGrabbableObject(p.X, p.Y, _layer, 99); break;
@@ -235,7 +238,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_groundMap[x, y, z] != null)
         {
-            Debug.LogWarning("Wall can not be placed on a ground");
+            CommandPopup.Show("Wall can not be placed on a ground", 2);
             return;
         }
 
@@ -266,7 +269,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_groundMap[x, y, z] == null || _groundMap[x, y + 1, z] != null)
         {
-            Debug.LogWarning("Covers can be placed over the ground only.");
+            CommandPopup.Show("Covers can be placed over the ground only.", 2);
             return;
         }
 
@@ -296,7 +299,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 2 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            Debug.LogWarning("Props can be placed on the ground only.");
+            CommandPopup.Show("Props can be placed on the ground only.", 2);
             return;
         }
 
@@ -327,7 +330,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            Debug.LogWarning("Checkpoints can be placed on the ground only.");
+            CommandPopup.Show("Checkpoints can be placed on the ground only.", 2);
             return;
         }
 
@@ -364,7 +367,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            Debug.LogWarning("Object can be placed on the ground only.");
+            CommandPopup.Show("Trophy can be placed on the ground only.", 2);
             return;
         }
 
@@ -395,7 +398,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            Debug.LogWarning("Object can be placed on the ground only.");
+            CommandPopup.Show("Spike can be placed on the ground only.", 2);
             return;
         }
 
@@ -420,11 +423,11 @@ public class LevelBuilderB : MonoBehaviour
     }
     public void CreateReverseDeathObject(int x, int y, int z)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y > 0 || y >= _gameplayMap.Height) return;
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y + 1, z] == null))
         {
-            Debug.LogWarning("Object can be placed under the ground only.");
+            CommandPopup.Show("Reverse Spike can be placed under the ground only.", 2);
             return;
         }
 
@@ -449,12 +452,12 @@ public class LevelBuilderB : MonoBehaviour
     }
     public void CreateBrick(int x, int y, int z)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
         //ne peut pas etre placé sur le sol ou sur un mur
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
         {
-            Debug.LogWarning("Brick can not be placed on the ground or on a wall.");
+            CommandPopup.Show("Brick can not be placed on the ground or on a wall.", 2);
             return;
         }
 
@@ -502,7 +505,7 @@ public class LevelBuilderB : MonoBehaviour
     }
     public void CreateGrabbableObject(int x, int y, int z, float mass)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
         _gameplayMap.Destroy(x, y, z);
 
@@ -529,11 +532,11 @@ public class LevelBuilderB : MonoBehaviour
     }
     public void CreatePlayer(int x, int y, int z)
     {
-        if (x < 0 || x >= _groundMap.Width || y <= 0 || y >= _groundMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
-        if (_index != -1 && _type == 2 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
         {
-            Debug.LogWarning("Players can be placed on the ground only.");
+            CommandPopup.Show("Players can not be placed on the ground or on a wall.", 2);
             return;
         }
 

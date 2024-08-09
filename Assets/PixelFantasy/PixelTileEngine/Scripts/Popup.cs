@@ -12,10 +12,11 @@ public class Popup : MonoBehaviour
     {
         CanvasGroup.alpha = 1;
         Message.text = message;
-        StartCoroutine(Hide(duration));
+        if (TutorialManager) StartCoroutine(HideTuto(duration));
+        else StartCoroutine(Hide(duration));
     }
 
-    private IEnumerator Hide(int duration)
+    private IEnumerator HideTuto(int duration)
     {
         yield return new WaitForSeconds(duration);
         // attendre que hasMoved et hasJumped soit vrai
@@ -28,5 +29,16 @@ public class Popup : MonoBehaviour
             yield return null;
         }
         TutorialManager.check++;
+    }
+    private IEnumerator Hide(int duration)
+    {
+        yield return new WaitForSeconds(duration);
+        
+        while (CanvasGroup.alpha > 0)
+        {
+            CanvasGroup.alpha -= Time.deltaTime;
+
+            yield return null;
+        }
     }
 }

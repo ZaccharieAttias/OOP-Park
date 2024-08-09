@@ -237,26 +237,24 @@ public class LevelInitializer : MonoBehaviour
                         _index = SpriteCollection.GamePlaySprite.FindIndex(i => i.name == gameplay);
                         if (_index != -1)
                         {
-                            if (_index == 1 || _index == 2 || _index == 3)
-                                CreateCheckPoint(x, y, z);
-                            else if (_index == 4)
-                                CreateEndPoint(x, y, z);
-                            else if (_index == 5 || _index == 6)
-                                CreateBrick(x, y, z);
-                            else if (_index == 7)
-                                CreateDeathZone(x, y, z);
-                            else if (_index == 8 || _index == 10)
-                                CreateReverseDeathObject(x, y, z);
-                            else if (_index == 9 || _index == 11)
-                                CreateDeathObject(x, y, z);
-                            else if (_index == 12)
-                                CreateGrabbableObject(x, y, z, 49);
-                            else if (_index == 13)
-                                CreateGrabbableObject(x, y, z, 99);
-                            else if (_index == 14)
-                                CreateGrabbableObject(x, y, z, 199);
-                            else if (_index == 15)
-                                CreateGrabbableObject(x, y, z, 499);
+                            switch (_index)
+                            {
+                                case 1:
+                                case 2:
+                                case 3: CreateCheckPoint(x, y, z); break;
+                                case 4: CreateEndPoint(x, y, z); break;
+                                case 5:
+                                case 6: CreateBrick(x, y, z); break;
+                                case 7: CreateDeathZone(x, y, z); break;
+                                case 8:
+                                case 10: CreateReverseDeathObject(x, y, z); break;
+                                case 9:
+                                case 11: CreateDeathObject(x, y, z); break;
+                                case 12: CreateGrabbableObject(x, y, z, 49); break;
+                                case 13: CreateGrabbableObject(x, y, z, 99); break;
+                                case 14: CreateGrabbableObject(x, y, z, 199); break;
+                                case 15: CreateGrabbableObject(x, y, z, 499); break;
+                            }
                         }
                     }
                 }
@@ -503,7 +501,7 @@ public class LevelInitializer : MonoBehaviour
     }
     public void CreateReverseDeathObject(int x, int y, int z)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y > 0 || y >= _gameplayMap.Height) return;
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y + 1, z] == null))
         {
@@ -532,7 +530,7 @@ public class LevelInitializer : MonoBehaviour
     }
     public void CreateBrick(int x, int y, int z)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
         //ne peut pas etre placé sur le sol ou sur un mur
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
@@ -588,7 +586,7 @@ public class LevelInitializer : MonoBehaviour
     }
     public void CreateGrabbableObject(int x, int y, int z, float mass)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y <= 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
         _gameplayMap.Destroy(x, y, z);
 
