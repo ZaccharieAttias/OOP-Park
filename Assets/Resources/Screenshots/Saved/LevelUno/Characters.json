@@ -2,11 +2,11 @@
   {
     "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 7",
-    "Description": "This is Character 7.",
+    "Name": "Liam",
+    "Description": "I'm Liam",
     "Attributes": [
       {
-        "Owner": "Character 7",
+        "Owner": "Liam",
         "Name": "gravity",
         "Value": 4.0,
         "Getter": false,
@@ -14,15 +14,15 @@
         "AccessModifier": 1
       },
       {
-        "Owner": "Character 7",
+        "Owner": "Liam",
         "Name": "grabbing",
-        "Value": 20.0,
+        "Value": 50.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 0
       },
       {
-        "Owner": "Character 7",
+        "Owner": "Liam",
         "Name": "inverseGravity",
         "Value": -40.0,
         "Getter": false,
@@ -30,7 +30,7 @@
         "AccessModifier": 1
       },
       {
-        "Owner": "Character 7",
+        "Owner": "Liam",
         "Name": "wallJump",
         "Value": 3.0,
         "Getter": false,
@@ -40,10 +40,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 7",
+        "Owner": "Liam",
         "Name": "Gravity",
         "Attribute": {
-          "Owner": "Character 7",
+          "Owner": "Liam",
           "Name": "gravity",
           "Value": 0.0,
           "Getter": false,
@@ -61,19 +61,19 @@
     },
     "Parent": null,
     "Childrens": [
-      "Character 4",
-      "Character 8",
-      "Character 2"
+      "Emily",
+      "Chloe",
+      "Grace"
     ]
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 4",
-    "Description": "I'm Character 4",
+    "Name": "Emily",
+    "Description": "I'm Emily",
     "Attributes": [
       {
-        "Owner": "Character 4",
+        "Owner": "Emily",
         "Name": "grabbing",
         "Value": 20.0,
         "Getter": false,
@@ -81,7 +81,7 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "Character 4",
+        "Owner": "Emily",
         "Name": "wallJump",
         "Value": 1.0,
         "Getter": false,
@@ -89,7 +89,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 4",
+        "Owner": "Emily",
         "Name": "fireballShoot",
         "Value": 0.25,
         "Getter": false,
@@ -99,10 +99,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 4",
+        "Owner": "Emily",
         "Name": "Grabbing",
         "Attribute": {
-          "Owner": "Character 4",
+          "Owner": "Emily",
           "Name": "grabbing",
           "Value": 0.0,
           "Getter": false,
@@ -112,10 +112,10 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "Character 4",
+        "Owner": "Emily",
         "Name": "FireballShoot",
         "Attribute": {
-          "Owner": "Character 4",
+          "Owner": "Emily",
           "Name": "fireballShoot",
           "Value": 0.0,
           "Getter": false,
@@ -131,17 +131,17 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 7",
+    "Parent": "Liam",
     "Childrens": []
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 8",
-    "Description": "I'm Character 8",
+    "Name": "Chloe",
+    "Description": "I'm Chloe",
     "Attributes": [
       {
-        "Owner": "Character 8",
+        "Owner": "Chloe",
         "Name": "multipleJumps",
         "Value": 1.0,
         "Getter": false,
@@ -151,10 +151,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 8",
+        "Owner": "Chloe",
         "Name": "MultipleJumps",
         "Attribute": {
-          "Owner": "Character 8",
+          "Owner": "Chloe",
           "Name": "multipleJumps",
           "Value": 0.0,
           "Getter": false,
@@ -170,20 +170,20 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 7",
+    "Parent": "Liam",
     "Childrens": [
-      "Character 3",
-      "Character 1"
+      "Oliver",
+      "Henry"
     ]
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 2",
-    "Description": "I'm Character 2",
+    "Name": "Grace",
+    "Description": "I'm Grace",
     "Attributes": [
       {
-        "Owner": "Character 2",
+        "Owner": "Grace",
         "Name": "inverseGravity",
         "Value": -40.0,
         "Getter": false,
@@ -191,7 +191,7 @@
         "AccessModifier": 1
       },
       {
-        "Owner": "Character 2",
+        "Owner": "Grace",
         "Name": "wallJump",
         "Value": 2.0,
         "Getter": false,
@@ -201,10 +201,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 2",
+        "Owner": "Grace",
         "Name": "WallJump",
         "Attribute": {
-          "Owner": "Character 2",
+          "Owner": "Grace",
           "Name": "wallJump",
           "Value": 0.0,
           "Getter": false,
@@ -220,17 +220,17 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 7",
+    "Parent": "Liam",
     "Childrens": []
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 3",
-    "Description": "I'm Character 3",
+    "Name": "Oliver",
+    "Description": "I'm Oliver",
     "Attributes": [
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "speed",
         "Value": 2.0,
         "Getter": false,
@@ -238,7 +238,7 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "gravity",
         "Value": -5.0,
         "Getter": false,
@@ -248,10 +248,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "Speed",
         "Attribute": {
-          "Owner": "Character 3",
+          "Owner": "Oliver",
           "Name": "speed",
           "Value": 0.0,
           "Getter": false,
@@ -261,10 +261,10 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "Gravity",
         "Attribute": {
-          "Owner": "Character 3",
+          "Owner": "Oliver",
           "Name": "gravity",
           "Value": 0.0,
           "Getter": false,
@@ -280,17 +280,17 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 8",
+    "Parent": "Chloe",
     "Childrens": []
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 1",
-    "Description": "I'm Character 1",
+    "Name": "Henry",
+    "Description": "I'm Henry",
     "Attributes": [
       {
-        "Owner": "Character 1",
+        "Owner": "Henry",
         "Name": "wallJump",
         "Value": 5.0,
         "Getter": false,
@@ -305,7 +305,7 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 8",
+    "Parent": "Chloe",
     "Childrens": []
   }
 ]

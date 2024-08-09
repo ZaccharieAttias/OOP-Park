@@ -2,8 +2,8 @@
   {
     "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 2",
-    "Description": "This is Character 2.",
+    "Name": "Grace",
+    "Description": "I'm Grace",
     "Attributes": [],
     "Methods": [],
     "SpecialAbility": {
@@ -17,18 +17,18 @@
     },
     "Parent": null,
     "Childrens": [
-      "Character 1",
-      "Character 3"
+      "Henry",
+      "Oliver"
     ]
   },
   {
     "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 1",
-    "Description": "I'm Character 1",
+    "Name": "Henry",
+    "Description": "I'm Henry",
     "Attributes": [
       {
-        "Owner": "Character 1",
+        "Owner": "Henry",
         "Name": "multipleJumps",
         "Value": 2.0,
         "Getter": false,
@@ -36,7 +36,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 1",
+        "Owner": "Henry",
         "Name": "speed",
         "Value": 5.0,
         "Getter": false,
@@ -46,10 +46,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 1",
+        "Owner": "Henry",
         "Name": "MultipleJumps",
         "Attribute": {
-          "Owner": "Character 1",
+          "Owner": "Henry",
           "Name": "multipleJumps",
           "Value": 0.0,
           "Getter": false,
@@ -65,17 +65,17 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 2",
+    "Parent": "Grace",
     "Childrens": []
   },
   {
     "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 3",
-    "Description": "I'm Character 3",
+    "Name": "Oliver",
+    "Description": "I'm Oliver",
     "Attributes": [
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "fireballShoot",
         "Value": 0.25,
         "Getter": false,
@@ -85,10 +85,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "FireballShoot",
         "Attribute": {
-          "Owner": "Character 3",
+          "Owner": "Oliver",
           "Name": "fireballShoot",
           "Value": 0.0,
           "Getter": false,
@@ -104,7 +104,7 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 2",
+    "Parent": "Grace",
     "Childrens": []
   }
 ]

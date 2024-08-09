@@ -2,11 +2,11 @@
   {
     "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "a",
-    "Description": "This is a.",
+    "Name": "Alex",
+    "Description": "I'm Alex",
     "Attributes": [
       {
-        "Owner": "a",
+        "Owner": "Alex",
         "Name": "speed",
         "Value": -18.0,
         "Getter": false,
@@ -14,7 +14,7 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "a",
+        "Owner": "Alex",
         "Name": "wallJump",
         "Value": 1.0,
         "Getter": false,
@@ -22,7 +22,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "a",
+        "Owner": "Alex",
         "Name": "fireballShoot",
         "Value": 0.0,
         "Getter": false,
@@ -32,10 +32,10 @@
     ],
     "Methods": [
       {
-        "Owner": "a",
+        "Owner": "Alex",
         "Name": "Speed",
         "Attribute": {
-          "Owner": "a",
+          "Owner": "Alex",
           "Name": "speed",
           "Value": 0.0,
           "Getter": false,
@@ -45,10 +45,10 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "a",
+        "Owner": "Alex",
         "Name": "WallJump",
         "Attribute": {
-          "Owner": "a",
+          "Owner": "Alex",
           "Name": "wallJump",
           "Value": 0.0,
           "Getter": false,
@@ -66,19 +66,19 @@
     },
     "Parent": null,
     "Childrens": [
-      "c",
-      "r",
-      "Character 3"
+      "Charlie",
+      "Rachel",
+      "Oliver"
     ]
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "c",
-    "Description": "I'm c",
+    "Name": "Charlie",
+    "Description": "I'm Charlie",
     "Attributes": [
       {
-        "Owner": "c",
+        "Owner": "Charlie",
         "Name": "multipleJumps",
         "Value": 2.0,
         "Getter": false,
@@ -86,7 +86,7 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "c",
+        "Owner": "Charlie",
         "Name": "grabbing",
         "Value": 40.0,
         "Getter": false,
@@ -94,7 +94,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "c",
+        "Owner": "Charlie",
         "Name": "wallJump",
         "Value": 10.0,
         "Getter": false,
@@ -104,10 +104,10 @@
     ],
     "Methods": [
       {
-        "Owner": "c",
+        "Owner": "Charlie",
         "Name": "MultipleJumps",
         "Attribute": {
-          "Owner": "c",
+          "Owner": "Charlie",
           "Name": "multipleJumps",
           "Value": 0.0,
           "Getter": false,
@@ -117,10 +117,10 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "c",
+        "Owner": "Charlie",
         "Name": "Speed",
         "Attribute": {
-          "Owner": "a",
+          "Owner": "Alex",
           "Name": "speed",
           "Value": 0.0,
           "Getter": false,
@@ -136,17 +136,17 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "a",
+    "Parent": "Alex",
     "Childrens": []
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "r",
-    "Description": "I'm r",
+    "Name": "Rachel",
+    "Description": "I'm Rachel",
     "Attributes": [
       {
-        "Owner": "r",
+        "Owner": "Rachel",
         "Name": "multipleJumps",
         "Value": 1.0,
         "Getter": false,
@@ -154,7 +154,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "r",
+        "Owner": "Rachel",
         "Name": "grabbing",
         "Value": 100.0,
         "Getter": false,
@@ -164,10 +164,10 @@
     ],
     "Methods": [
       {
-        "Owner": "r",
+        "Owner": "Rachel",
         "Name": "MultipleJumps",
         "Attribute": {
-          "Owner": "r",
+          "Owner": "Rachel",
           "Name": "multipleJumps",
           "Value": 0.0,
           "Getter": false,
@@ -177,10 +177,10 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "r",
+        "Owner": "Rachel",
         "Name": "Speed",
         "Attribute": {
-          "Owner": "a",
+          "Owner": "Alex",
           "Name": "speed",
           "Value": 0.0,
           "Getter": false,
@@ -196,20 +196,20 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "a",
+    "Parent": "Alex",
     "Childrens": [
-      "k",
-      "j"
+      "Kevin",
+      "Julia"
     ]
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "k",
-    "Description": "I'm k",
+    "Name": "Kevin",
+    "Description": "I'm Kevin",
     "Attributes": [
       {
-        "Owner": "k",
+        "Owner": "Kevin",
         "Name": "fireballShoot",
         "Value": 0.25,
         "Getter": false,
@@ -217,7 +217,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "k",
+        "Owner": "Kevin",
         "Name": "inverseGravity",
         "Value": -40.0,
         "Getter": false,
@@ -227,10 +227,10 @@
     ],
     "Methods": [
       {
-        "Owner": "k",
+        "Owner": "Kevin",
         "Name": "InverseGravity",
         "Attribute": {
-          "Owner": "k",
+          "Owner": "Kevin",
           "Name": "inverseGravity",
           "Value": 0.0,
           "Getter": false,
@@ -246,17 +246,17 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "r",
+    "Parent": "Rachel",
     "Childrens": []
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "j",
-    "Description": "I'm j",
+    "Name": "Julia",
+    "Description": "I'm Julia",
     "Attributes": [
       {
-        "Owner": "j",
+        "Owner": "Julia",
         "Name": "fireballShoot",
         "Value": 0.25,
         "Getter": false,
@@ -271,17 +271,17 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "r",
+    "Parent": "Rachel",
     "Childrens": []
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 3",
-    "Description": "I'm Character 3",
+    "Name": "Oliver",
+    "Description": "I'm Oliver",
     "Attributes": [
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "multipleJumps",
         "Value": 3.0,
         "Getter": false,
@@ -289,7 +289,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "gravity",
         "Value": -2.0,
         "Getter": false,
@@ -297,7 +297,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "grabbing",
         "Value": 45.0,
         "Getter": false,
@@ -305,7 +305,7 @@
         "AccessModifier": 1
       },
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "fireballShoot",
         "Value": 0.25,
         "Getter": false,
@@ -315,10 +315,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "MultipleJumps",
         "Attribute": {
-          "Owner": "Character 3",
+          "Owner": "Oliver",
           "Name": "multipleJumps",
           "Value": 0.0,
           "Getter": false,
@@ -328,10 +328,10 @@
         "AccessModifier": 0
       },
       {
-        "Owner": "Character 3",
+        "Owner": "Oliver",
         "Name": "Speed",
         "Attribute": {
-          "Owner": "a",
+          "Owner": "Alex",
           "Name": "speed",
           "Value": 0.0,
           "Getter": false,
@@ -347,19 +347,19 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "a",
+    "Parent": "Alex",
     "Childrens": [
-      "Character 46"
+      "David"
     ]
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Character 46",
-    "Description": "I'm Character 46",
+    "Name": "David",
+    "Description": "I'm David",
     "Attributes": [
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "wallJump",
         "Value": 10.0,
         "Getter": false,
@@ -367,7 +367,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "fireballShoot",
         "Value": 1.0,
         "Getter": false,
@@ -375,7 +375,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "gravity",
         "Value": 10.0,
         "Getter": false,
@@ -383,7 +383,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "multipleJumps",
         "Value": 10.0,
         "Getter": false,
@@ -391,7 +391,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "grabbing",
         "Value": 100.0,
         "Getter": false,
@@ -399,7 +399,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "inverseGravity",
         "Value": -60.0,
         "Getter": false,
@@ -407,7 +407,7 @@
         "AccessModifier": 2
       },
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "speed",
         "Value": 20.0,
         "Getter": false,
@@ -417,10 +417,10 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 46",
+        "Owner": "David",
         "Name": "Speed",
         "Attribute": {
-          "Owner": "a",
+          "Owner": "Alex",
           "Name": "speed",
           "Value": 0.0,
           "Getter": false,
@@ -436,7 +436,7 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 3",
+    "Parent": "Oliver",
     "Childrens": []
   }
 ]

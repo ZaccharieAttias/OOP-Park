@@ -2,7 +2,7 @@
   {
     "Owner": null,
     "Name": "speed",
-    "Description": "This is the MoveSpeed attribute",
+    "Description": "Enables the character to move faster by 5 units, granting the ability to react faster",
     "Value": 5.0,
     "AccessModifier": 0,
     "Getter": false,
@@ -11,7 +11,7 @@
   {
     "Owner": null,
     "Name": "gravity",
-    "Description": "This is the GravityForce attribute",
+    "Description": "Enables the character to increase the gravity by 20 units, granting the ability to reach higher places",
     "Value": 20.0,
     "AccessModifier": 1,
     "Getter": false,
@@ -20,7 +20,7 @@
   {
     "Owner": null,
     "Name": "multipleJumps",
-    "Description": "This is the DoubleJump attribute",
+    "Description": "Enables the character to jump 2 more times before landing, granting the ability to reach further places",
     "Value": 2.0,
     "AccessModifier": 2,
     "Getter": false,
@@ -29,7 +29,7 @@
   {
     "Owner": null,
     "Name": "fireballShoot",
-    "Description": "This is the FireballShoot attribute",
+    "Description": "Enables the character to shoot fireballs at rate of 0.25s, granting the ability to destory special obstacles",
     "Value": 0.25,
     "AccessModifier": 0,
     "Getter": false,
@@ -38,7 +38,7 @@
   {
     "Owner": null,
     "Name": "inverseGravity",
-    "Description": "This is the InverseGravity attribute",
+    "Description": "Enables the character to inverse the gravity by -40 units, granting the ability turn the game upside down",
     "Value": -40.0,
     "AccessModifier": 1,
     "Getter": false,
@@ -47,7 +47,7 @@
   {
     "Owner": null,
     "Name": "wallJump",
-    "Description": "This is the WallJump attribute",
+    "Description": "Enables the character to jump 1 time from special walls, granting the ability to parkour",
     "Value": 1.0,
     "AccessModifier": 2,
     "Getter": false,
@@ -56,8 +56,8 @@
   {
     "Owner": null,
     "Name": "grabbing",
-    "Description": "This is the grabbing attribute",
-    "Value": 10000.0,
+    "Description": "Enables the character to grab objects that weight max of 50 units, granting the ability to move objects",
+    "Value": 50.0,
     "AccessModifier": 0,
     "Getter": false,
     "Setter": false
