@@ -50,7 +50,7 @@ public class CharactersManager : MonoBehaviour
     {
         Menu = GameObject.Find("Canvas/Menus/CharacterCenter");
         NameText = Menu.transform.Find("Characters/Details/Name").GetComponent<TMP_Text>();
-        DescriptionText = Menu.transform.Find("Characters/Details/Description/Text").GetComponent<TMP_Text>();
+        DescriptionText = Menu.transform.Find("Characters/Details/Description/ScrollView/Viewport/Text").GetComponent<TMP_Text>();
 
         AttributesContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Attributes/Buttons/ScrollView/ViewPort/Content").transform;
         MethodsContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Details/Methods/Buttons/ScrollView/ViewPort/Content").transform;
