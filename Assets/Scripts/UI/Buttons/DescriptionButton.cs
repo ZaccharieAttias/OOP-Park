@@ -50,8 +50,8 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
         SpecialAbility specialAbility = CharactersData.CharactersManager.CurrentCharacter.SpecialAbility;
 
         if (attribute != null) description = Regex.Replace(attribute.Description, @"\d+(\.\d+)?", Math.Abs(attribute.Value).ToString("0.00"));
-        if (method != null) description = Regex.Replace(method.Description, @"\d+(\.\d+)?", Math.Abs(attribute.Value).ToString("0.00"));
-        if (specialAbility != null) description = Regex.Replace(specialAbility.Description, @"\d+(\.\d+)?", Math.Abs(attribute.Value).ToString("0.00"));
+        if (method != null) description = Regex.Replace(method.Description, @"\d+(\.\d+)?", Math.Abs(method.Attribute.Value).ToString("0.00"));
+        if (specialAbility != null) description = Regex.Replace(specialAbility.Description, @"\d+(\.\d+)?", Math.Abs(specialAbility.Value).ToString("0.00"));
 
         return description;
     }
