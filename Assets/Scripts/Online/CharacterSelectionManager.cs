@@ -105,7 +105,7 @@ public class CharacterSelectionManager : MonoBehaviour
             }
         }
 
-        string RootDescription = "This is " + CharacterName + ".";
+        string RootDescription = "I'm " + CharacterName;
 
         SpecialAbility RootSpecialAbility;
         if (!RootCreated)
