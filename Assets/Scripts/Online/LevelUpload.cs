@@ -172,13 +172,13 @@ public class LevelUpload : MonoBehaviour
     {
         TakeScreenshot();
         yield return new WaitForSeconds(1.0f);
+        GameObject.Find("Canvas/Menus/Gameplay").SetActive(true);
     }
     public void TakeScreenshot()
     {
         GameObject.Find("Canvas/Menus/Gameplay").SetActive(false);
         string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/";
         ScreenCapture.CaptureScreenshot(Path.Combine(filepath, "Level_" + LevelName + ".png"));
-        GameObject.Find("Canvas/Menus/Gameplay").SetActive(true);
     }
     public void SaveLevel(string path)
     {
@@ -283,7 +283,11 @@ public class LevelUpload : MonoBehaviour
                 AddingFilesToAsset(levelID, files, i, filePurpose);
                 // si cetait le dernier fichier LevelUploadUi.SetActive(false);
                 if (i >= files.Length)
+                {   
                     LevelUploadUi.SetActive(false);
+                    LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>().interactable = true;
+                    LevelUploadUi.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>().interactable = true;
+                }
             }
             else
             {
@@ -295,7 +299,9 @@ public class LevelUpload : MonoBehaviour
     public void CheckName()
     {
         Button UploadButton = LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>();
+        Button CloseButton = LevelUploadUi.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>();
         UploadButton.interactable = false;
+        CloseButton.interactable = false;
         LootLockerSDKManager.GetAssetListWithCount(1000, (response) =>
         {
             for (int i = 0; i < response.assets.Length; i++)
@@ -304,11 +310,11 @@ public class LevelUpload : MonoBehaviour
                 {
                     ErrorText.SetActive(true);
                     UploadButton.interactable = true;
+                    CloseButton.interactable = true;
                     return;
                 }
             }
             ErrorText.SetActive(false);
-            UploadButton.interactable = true;
             CreateLevel();
         }, null, true, new Dictionary<string, string>() { { "Context", "TileMap" } });
     }

@@ -10,12 +10,6 @@ public class Checkpoint : MonoBehaviour
     public Sprite passive, active;
     public Collider2D col;
 
-    public void Start() { InitializeProperties(); }
-    private void InitializeProperties()
-    {
-        gameController = GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<GameController>();
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -23,6 +17,15 @@ public class Checkpoint : MonoBehaviour
             gameController.UpdateCheckpoint(respawnPoint.position);
             spriteRenderer.sprite = active;
             col.enabled = false;
+            //activate checkpoint
+            GameObject [] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+            foreach (GameObject checkpoint in Checkpoints)
+            {
+                if (checkpoint != this.gameObject)
+                {
+                    checkpoint.GetComponent<Checkpoint>().col.enabled = true;
+                }
+            }
         }
     }
     public void ResetCheckpoint()

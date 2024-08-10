@@ -41,6 +41,7 @@ public class LevelBuilderB : MonoBehaviour
     public Dictionary<string, bool> MinimumObjectsCreated = new Dictionary<string, bool>();
     public PlayTestManager playTestManager;
     public Popup CommandPopup;
+    public bool start = true;
 
 
     public void Start()
@@ -61,7 +62,14 @@ public class LevelBuilderB : MonoBehaviour
         MinimumObjectsCreated.Add("Ground", false);
         MinimumObjectsCreated.Add("Finish", false);
 
-        CommandPopup = GameObject.Find("Canvas/Popups/Command").GetComponent<Popup>();
+        CommandPopup = GameObject.Find("Canvas/Command").GetComponent<Popup>();
+
+        Draw(new Vector2(-65, 24));
+        Draw(new Vector2(196, 24));
+        Draw(new Vector2(-65, -25));
+        Draw(new Vector2(196, -25));
+        start = false;
+
     }
     public void SwitchTile(int type, int index)
     {
@@ -117,7 +125,10 @@ public class LevelBuilderB : MonoBehaviour
     {
         if (!_layersEnabled[_layer]) return;
 
-        var position = Position.FromPointer(pointer);
+        Position position;
+        if(start) position = new Position(Mathf.Floor(pointer.x), Mathf.Floor(pointer.y));
+        else position = Position.FromPointer(pointer);
+        
         var p = new Position(position.X - _positionMin.X, position.Y - _positionMin.Y);
 
         if (p.X < 0 || p.X >= _groundMap.Width || p.Y < 0 || p.Y >= _groundMap.Height)
@@ -423,7 +434,7 @@ public class LevelBuilderB : MonoBehaviour
     }
     public void CreateReverseDeathObject(int x, int y, int z)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y > 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y + 1, z] == null))
         {
@@ -518,7 +529,8 @@ public class LevelBuilderB : MonoBehaviour
         block.Transform.localScale = Vector3.one;
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
-        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.4825f);
+        block.GameObject.GetComponent<BoxCollider2D>().size = new Vector2(0.85f, 0.85f);
         block.GameObject.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         block.GameObject.GetComponent<Rigidbody2D>().mass = mass;
         block.GameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
@@ -704,7 +716,7 @@ public class LevelBuilderB : MonoBehaviour
     }
     public void SetUI()
     {
-        if (Terrain.Find("Ground").childCount == 0) MinimumObjectsCreated["Ground"] = false;
+        if (Terrain.Find("Ground").childCount == 4) MinimumObjectsCreated["Ground"] = false;
         if (MinimumObjectsCreated["Ground"] || MinimumObjectsCreated["Player"]) GameObject.Find("Canvas/Menus/Gameplay/LoadALevel").SetActive(false);
         else GameObject.Find("Canvas/Menus/Gameplay/LoadALevel").SetActive(true);
         if (MinimumObjectsCreated["Player"])
@@ -786,7 +798,7 @@ public class LevelBuilderB : MonoBehaviour
         _propsMap = new TileMap(width, height, depth);
         _wallMap = new TileMap(width, height, depth);
         _gameplayMap = new TileMap(width, height, depth);
-        _positionMin = new Position(-width / 2, -height / 2);
+        _positionMin = new Position(66f -width / 2, -height / 2);
 
         var index = _index;
 

@@ -52,6 +52,7 @@ public class LevelInitializer : MonoBehaviour
     public string SpecialAbilitiesPath;
     public JsonUtilityManager JsonUtilityManager;
     public Vector3 MinValues = new Vector3(0, 0, -10), MaxValues = new Vector3(0, 0, -10);
+    public bool start = true;
     public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
@@ -82,6 +83,11 @@ public class LevelInitializer : MonoBehaviour
     }
     public void LoadLevel()
     {
+        GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Draw(new Vector2(-65, 24));
+        GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Draw(new Vector2(196, 24));
+        GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Draw(new Vector2(-65, -25));
+        GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Draw(new Vector2(196, -25));
+        start = false;
         string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
         GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Load(path, LevelName);
     }
@@ -171,7 +177,7 @@ public class LevelInitializer : MonoBehaviour
         _propsMap = new TileMap(width, height, depth);
         _wallMap = new TileMap(width, height, depth);
         _gameplayMap = new TileMap(width, height, depth);
-        _positionMin = new Position(-width / 2, -height / 2);
+        _positionMin = new Position(66f -width / 2, -height / 2);
 
         var index = _index;
 
@@ -501,7 +507,7 @@ public class LevelInitializer : MonoBehaviour
     }
     public void CreateReverseDeathObject(int x, int y, int z)
     {
-        if (x < 0 || x >= _gameplayMap.Width || y > 0 || y >= _gameplayMap.Height) return;
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y + 1, z] == null))
         {
@@ -599,7 +605,8 @@ public class LevelInitializer : MonoBehaviour
         block.Transform.localScale = Vector3.one;
         block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
-        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.4825f);
+        block.GameObject.GetComponent<BoxCollider2D>().size = new Vector2(0.85f, 0.85f);
         block.GameObject.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         block.GameObject.GetComponent<Rigidbody2D>().mass = mass;
         block.GameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
