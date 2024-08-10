@@ -29,18 +29,18 @@
     {
       "Name": "Jump",
       "Description": "Defining the jump interface",
-      "Value": 0.0,
+      "Value": 1.0,
       "Type": 3
     },
     {
       "Name": "Gravity",
-      "Description": "Enhances the Gravity method by reducing further the gravity force",
+      "Description": "Enhances the Gravity method by reducing further the gravity force of 3 units",
       "Value": 3.0,
       "Type": 4
     },
     {
       "Name": "Speed",
-      "Description": "Enhances the Speed method by increasing the speed force",
+      "Description": "Enhances the Speed method by increasing the speed force by 2 units",
       "Value": 2.0,
       "Type": 5
     }
@@ -54,13 +54,13 @@
     },
     {
       "Name": "Fireball Shoot",
-      "Description": "Enhances the FireballShoot method by reducing the fireball rate of fire",
+      "Description": "Enhances the FireballShoot method by reducing the fireball rate of fire by 0.25 units",
       "Value": 0.25,
       "Type": 6
     },
     {
       "Name": "Grabbing",
-      "Description": "Enhances the Grabbing method by increasing the grabbing force",
+      "Description": "Enhances the Grabbing method by increasing the grabbing force by 10000 weight units",
       "Value": 10000.0,
       "Type": 10
     }
@@ -69,18 +69,18 @@
     {
       "Name": "Jump",
       "Description": "Defining the jump interface",
-      "Value": 0.0,
+      "Value": 1.0,
       "Type": 3
     },
     {
       "Name": "Multiple Jumps",
-      "Description": "Enhances the MultipleJumps method by increasing the number of jumps",
+      "Description": "Enhances the MultipleJumps method by increasing the number of jumps by 1",
       "Value": 1.0,
       "Type": 7
     },
     {
       "Name": "Wall Jump",
-      "Description": "Enhances the WallJump method by increasing the wall jump amount",
+      "Description": "Enhances the WallJump method by increasing the number of jumps by 1",
       "Value": 1.0,
       "Type": 9
     }
@@ -88,13 +88,13 @@
   "Gravity": [
     {
       "Name": "Gravity",
-      "Description": "Enhances the Gravity method by reducing further the gravity force",
+      "Description": "Enhances the Gravity method by reducing further the gravity force of 3 units",
       "Value": 3.0,
       "Type": 4
     },
     {
       "Name": "Inverse Gravity",
-      "Description": "Enhances the InverseGravity method by reducing the gravity force",
+      "Description": "Enhances the InverseGravity method by reducing the gravity force by 40 units",
       "Value": -40.0,
       "Type": 8
     }
@@ -102,7 +102,7 @@
   "Speed": [
     {
       "Name": "Speed",
-      "Description": "Enhances the Speed method by increasing the speed force",
+      "Description": "Enhances the Speed method by increasing the speed force by 2 units",
       "Value": 2.0,
       "Type": 5
     }
@@ -110,7 +110,7 @@
   "FireballShoot": [
     {
       "Name": "Fireball Shoot",
-      "Description": "Enhances the FireballShoot method by reducing the fireball rate of fire",
+      "Description": "Enhances the FireballShoot method by reducing the fireball rate of fire by 0.25 units",
       "Value": 0.25,
       "Type": 6
     }
@@ -118,7 +118,7 @@
   "MultipleJumps": [
     {
       "Name": "Multiple Jumps",
-      "Description": "Enhances the MultipleJumps method by increasing the number of jumps",
+      "Description": "Enhances the MultipleJumps method by increasing the number of jumps by 1",
       "Value": 1.0,
       "Type": 7
     }
@@ -126,7 +126,7 @@
   "InverseGravity": [
     {
       "Name": "Inverse Gravity",
-      "Description": "Enhances the InverseGravity method by reducing the gravity force",
+      "Description": "Enhances the InverseGravity method by reducing the gravity force by 40 units",
       "Value": -40.0,
       "Type": 8
     }
@@ -134,7 +134,7 @@
   "WallJump": [
     {
       "Name": "Wall Jump",
-      "Description": "Enhances the WallJump method by increasing the wall jump amount",
+      "Description": "Enhances the WallJump method by increasing the number of jumps by 1",
       "Value": 1.0,
       "Type": 9
     }
@@ -142,7 +142,7 @@
   "Grabbing": [
     {
       "Name": "Grabbing",
-      "Description": "Enhances the Grabbing method by increasing the grabbing force",
+      "Description": "Enhances the Grabbing method by increasing the grabbing force by 10000 weight units",
       "Value": 10000.0,
       "Type": 10
     }
