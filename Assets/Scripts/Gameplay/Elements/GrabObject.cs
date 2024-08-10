@@ -43,7 +43,7 @@ public class GrabObject : MonoBehaviour
     public void InitializeSettings()
     {
         RaycastDistance = 1f;
-        CanGrabMass = 50f;
+        CanGrabMass = 0f;
         PowerupTimer = 0f;
     }
     public void InitializeState()
@@ -54,18 +54,23 @@ public class GrabObject : MonoBehaviour
 
     public void HandleRaycast()
     {
-        RaycastDistance = transform.localScale.x > 0 ? 1f : -1f;
+        RaycastDistance = transform.localScale.x > 0 ? 0.5f : -0.5f;
         RaycastHit2D hit = Physics2D.Raycast(RaycastPoint.position, transform.right, RaycastDistance);
         Debug.DrawRay(RaycastPoint.position, transform.right * RaycastDistance, Color.red);
 
+        RaycastHit2D grabpointHitLeft = Physics2D.Raycast(GrabPoint.position, -transform.right, 0.6f);
+        RaycastHit2D grabpointHitRight = Physics2D.Raycast(GrabPoint.position, transform.right, 0.6f);
+        Debug.DrawRay(GrabPoint.position, -transform.right * RaycastDistance, Color.green);
+        Debug.DrawRay(GrabPoint.position, transform.right * RaycastDistance, Color.green);
+
         if (hit.collider != null && IsValidGrab(hit))
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 Grabbing(hit);
             }
         }
-        else if (IsHolding && Input.GetKeyDown(KeyCode.Q))
+        else if (IsHolding && grabpointHitLeft.collider == null && grabpointHitRight.collider == null && Input.GetKeyDown(KeyCode.E))
         {
             Drop();
         }
@@ -92,6 +97,9 @@ public class GrabObject : MonoBehaviour
     {
         ObjectInHand = hit.collider.gameObject;
         ObjectInHand.GetComponent<Rigidbody2D>().isKinematic = true;
+        ObjectInHand.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        ObjectInHand.GetComponent<Rigidbody2D>().angularVelocity = 0f;
+        ObjectInHand.transform.rotation = Quaternion.Euler(0, 0, 0);
         ObjectInHand.transform.position = GrabPoint.position;
         ObjectInHand.transform.parent = GameObject.Find("Player").transform;
         ObjectInHand.GetComponent<BoxMovement>().ResetTimers();
@@ -116,7 +124,9 @@ public class GrabObject : MonoBehaviour
     public void ResetGrab()
     {
         PowerupTimer = 0f;
-        CanGrabMass = 50f;
+        CanGrabMass = 0f;
+        if (ObjectInHand != null)
+            Drop();
         IsHolding = false;
         CanHold = true;
     }

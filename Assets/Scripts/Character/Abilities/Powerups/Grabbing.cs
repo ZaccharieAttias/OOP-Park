@@ -13,6 +13,6 @@ public class Grabbing : PowerupEffect
         player.GetComponent<GrabObject>().CanGrabMass += MassIncrease;
     }
     public override void plusActivatePower(GameObject player) { player.GetComponent<GrabObject>().CanGrabMass += 1000f; }
-    public override void DeactivatePower(GameObject player) { player.GetComponent<GrabObject>().CanGrabMass -= MassIncrease; }
-    public override void plusDeactivatePower(GameObject player) { player.GetComponent<GrabObject>().CanGrabMass -= 1000f; }
+    public override void DeactivatePower(GameObject player) { player.GetComponent<GrabObject>().CanGrabMass -= MassIncrease;player.GetComponent<GrabObject>().ResetGrab(); }
+    public override void plusDeactivatePower(GameObject player) { player.GetComponent<GrabObject>().CanGrabMass -= 1000f; player.GetComponent<GrabObject>().ResetGrab(); }
 }

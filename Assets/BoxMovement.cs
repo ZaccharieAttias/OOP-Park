@@ -16,7 +16,7 @@ public class BoxMovement : MonoBehaviour
         if (isOnGround && isFirstTime)
         {
             timeOnGround += Time.deltaTime;
-            if (timeOnGround > 1.5f)
+            if (timeOnGround > 3f)
             {
                 GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                 GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
@@ -83,6 +83,7 @@ public class BoxMovement : MonoBehaviour
     {
         GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         transform.position = InitialPosition;
+        transform.localScale = new Vector3(1, 1, 1);
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         transform.rotation = Quaternion.Euler(0, 0, 0);
