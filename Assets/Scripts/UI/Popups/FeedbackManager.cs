@@ -10,6 +10,7 @@ public class FeedbackManager : MonoBehaviour
 {
     [Header("Scripts")]
     public AiModelData AiModelData;
+    public TransitionManager TransitionManager;
 
     [Header("UI Elements")]
     public GameObject Popup;
@@ -31,6 +32,7 @@ public class FeedbackManager : MonoBehaviour
     public void InitializeScripts()
     {
         AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
+        TransitionManager = GameObject.Find("Scripts/TransitionManager").GetComponent<TransitionManager>();
     }
     public void InitializeUIElements()
     {
@@ -54,27 +56,29 @@ public class FeedbackManager : MonoBehaviour
     {
         var currentSceneName = SceneManager.GetActiveScene().name;
         var chapterNumber = currentSceneName[1].ToString();
-
+        
+        string sceneName;
         switch (chapterNumber)
         {
             case "0":
-                SceneManager.LoadScene("ChapterTutorial");
+                sceneName = "ChapterTutorial";
                 break;
             case "1":
-                SceneManager.LoadScene("ChapterInheritance");
+                sceneName = "ChapterInheritance";
                 break;
             case "2":
-                SceneManager.LoadScene("ChapterPolymorphism");
+                sceneName = "ChapterPolymorphism";
                 break;
             default:
-                SceneManager.LoadScene("OnlinePark");
+                sceneName = "OnlinePark";
                 break;
         }
+        TransitionManager.EnableEndingSceneTransition(sceneName);
     }
     public void RetryFactory()
     {
         var currentSceneName = SceneManager.GetActiveScene().name;
-        SceneManagement.LoadScene(currentSceneName);
+        TransitionManager.EnableEndingSceneTransition(currentSceneName);
     }
     public void NextLevelFactory()
     {
@@ -84,9 +88,12 @@ public class FeedbackManager : MonoBehaviour
         int chapterNumber = int.Parse(currentSceneName[1].ToString());
         int levelNumber = int.Parse(currentSceneName[3].ToString());
 
-        if (levelNumber + 1 <= chapterInfos[chapterNumber].LevelsInfo.Count) SceneManagement.LoadScene($"C{chapterNumber}L{levelNumber + 1}");
-        else if (chapterNumber + 1 < chapterInfos.Count) SceneManagement.LoadScene($"C{chapterNumber + 1}L1");
-        else SceneManagement.LoadScene("Playground");
+        string nextSceneName;
+        if (levelNumber + 1 <= chapterInfos[chapterNumber].LevelsInfo.Count) nextSceneName = $"C{chapterNumber}L{levelNumber + 1}";
+        else if (chapterNumber + 1 < chapterInfos.Count) nextSceneName = $"C{chapterNumber + 1}L1";
+        else nextSceneName ="Playground";
+
+        TransitionManager.EnableEndingSceneTransition(nextSceneName);
     }
 
     public void LoadPopup()
@@ -138,7 +145,7 @@ public class FeedbackManager : MonoBehaviour
         }
         else
         {
-            SceneManagement.LoadScene("Finish");
+            TransitionManager.EnableEndingSceneTransition("Finish");
         }
 
         GameplayData.Save();
