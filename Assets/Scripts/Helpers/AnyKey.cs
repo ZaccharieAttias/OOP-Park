@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class AnyKey : MonoBehaviour
 {
+    [SerializeField] private TransitionManager transitionManager;
     void Update()
     {
         if (Input.anyKey)
         {
-            GetComponent<SceneMenusManagement>().Playground();
+            transitionManager.EnableEndingSceneTransition("Playground");
         }
     }
 }

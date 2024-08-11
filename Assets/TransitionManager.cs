@@ -14,7 +14,6 @@ public class TransitionManager : MonoBehaviour
     private void Start()
     {
         _startingSceneTransition.SetActive(true);
-        StartCoroutine(Wait(1f));
     }
     private void DisableStartingSceneTransition()
     {
@@ -23,7 +22,7 @@ public class TransitionManager : MonoBehaviour
     public void EnableEndingSceneTransition(string sceneName)
     {
         _endingSceneTransition.SetActive(true);
-        GameObject.Find("Canvas/Popups").SetActive(false);
+        if (GameObject.Find("Canvas/Popups") != null) GameObject.Find("Canvas/Popups").SetActive(false);
         StartCoroutine(WaitForEndingSceneTransition(sceneName));
     }
     private void DisableEndingSceneTransition()
@@ -36,7 +35,7 @@ public class TransitionManager : MonoBehaviour
     }
     IEnumerator WaitForEndingSceneTransition(string sceneName)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene(sceneName);
     }
 }   
