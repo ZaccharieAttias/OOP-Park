@@ -10,6 +10,13 @@ public class Checkpoint : MonoBehaviour
     public Sprite passive, active;
     public Collider2D col;
 
+    private void Start()
+    {
+        if(GameObject.FindGameObjectWithTag("Player") != null)
+        {
+            gameController = GameObject.FindGameObjectWithTag("Player").GetComponent<GameController>();
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
