@@ -14793,6 +14793,8 @@ MonoBehaviour:
   cooldownTimer: Infinity
   PowerupTimer: 0
   WallJumpingDuration: 0.4
+  fireballSound: {fileID: 8300000, guid: 20116b8760a4077469ee4a0d882d92d1, type: 3}
+  jumpSound: {fileID: 8300000, guid: 99d45e69d43a88c4a83f93a1f79669ae, type: 3}
   Character: {fileID: 0}
   _speed: {x: 0, y: 0, z: 0}
 --- !u!114 &8897005514050785497
@@ -14810,7 +14812,10 @@ MonoBehaviour:
   Rigidbody2D: {fileID: 0}
   CheckpointPosition: {x: 0, y: 0}
   FeedbackManager: {fileID: 0}
+  isDead: 0
   AiModelData: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: bc8a4bda3bdf15b499817f1fe0e58ec9, type: 3}
+  victorySound: {fileID: 8300000, guid: 1dafdcfc8d2889b4a8d996fa8d4005a7, type: 3}
 --- !u!114 &7698125727170096805
 MonoBehaviour:
   m_ObjectHideFlags: 0

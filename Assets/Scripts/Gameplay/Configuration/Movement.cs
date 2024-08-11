@@ -52,6 +52,10 @@ public class Movement : MonoBehaviour
     public float PowerupTimer = 0f;
     public float WallJumpingDuration = 0.4f;
 
+    [Header("Audio:")]
+    [SerializeField] private AudioClip fireballSound;
+    [SerializeField] private AudioClip jumpSound;
+
 
     public Character Character;
     public Vector3 _speed = Vector3.zero;
@@ -88,6 +92,7 @@ public class Movement : MonoBehaviour
     }
     public void Update()
     {
+        if (GetComponent<GameController>().isDead) return;
         PowerupTimer = 0f;
         horizontalInput = Input.GetAxis("Horizontal");
 
@@ -113,6 +118,7 @@ public class Movement : MonoBehaviour
 
     private void PerformJump()
     {
+        SoundManager.instance.PlaySound(jumpSound);
         //si la gravité est inversée, on saute vers le bas
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "InverseGravity") Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
         else Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, JumpForce);
@@ -180,7 +186,8 @@ public class Movement : MonoBehaviour
     }
     private void PerformAttack()////////////////////
     {
-        //Animator.SetTrigger("Shoot");
+        Character.Animator.SetTrigger("ThrowSupply");
+        SoundManager.instance.PlaySound(fireballSound);
         cooldownTimer = 0;
 
         fireballs[FindFireball()].transform.position = firePoint.position;

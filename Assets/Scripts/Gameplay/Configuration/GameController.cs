@@ -8,10 +8,13 @@ public class GameController : MonoBehaviour
     public Rigidbody2D Rigidbody2D;
     public Vector2 CheckpointPosition;
     public FeedbackManager FeedbackManager;
-    bool isDead = false;
+    public bool isDead = false;
 
     public AiModelData AiModelData;
 
+    [Header("Audio:")]
+    [SerializeField] private AudioClip deathSound;
+    [SerializeField] private AudioClip victorySound;
 
     public void Start() { InitializeProperties(); }
     private void InitializeProperties()
@@ -31,11 +34,12 @@ public class GameController : MonoBehaviour
             Die();
         }
 
-        if (collision.gameObject.CompareTag("Finish"))
-            FeedbackManager.ToggleOn();
+        if (collision.gameObject.CompareTag("Finish")){ GetComponent<Character>().Animator.SetBool("Victory", true); FeedbackManager.ToggleOn(); }
+
         if (collision.gameObject.CompareTag("EndPoint") && GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay)
         {
             Waiting();
+            SoundManager.instance.PlaySound(victorySound);
             GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().ResetTestGameplay();
             GameObject Buttons = GameObject.Find("Canvas/Menus/Gameplay/Buttons");
             Buttons.transform.GetChild(0).gameObject.SetActive(true);
@@ -54,8 +58,7 @@ public class GameController : MonoBehaviour
     private void Die()
     {
         if (isDead) return;
-        GetComponent<Character>().SetState(CharacterState.DeathB);
-        StartCoroutine(Respawn(0.25f));
+        StartCoroutine(Respawn(1f));
         AiModelData.DeathsCount++;
 
     }
@@ -66,6 +69,9 @@ public class GameController : MonoBehaviour
         Rigidbody2D.velocity = new Vector2(0, 0);
         Rigidbody2D.simulated = false;
         var predecentlocalScale = transform.localScale;
+        GetComponent<Character>().SetState(CharacterState.DeathB);
+        SoundManager.instance.PlaySound(deathSound);
+        yield return new WaitForSeconds(0.45f);
         transform.localScale = new Vector3(0, 0, 0);
 
         yield return new WaitForSeconds(time);
