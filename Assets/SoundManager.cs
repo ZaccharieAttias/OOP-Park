@@ -16,6 +16,7 @@ public class SoundManager : MonoBehaviour
         }
 
         instance = this;
+        audioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(gameObject);
     }
 
