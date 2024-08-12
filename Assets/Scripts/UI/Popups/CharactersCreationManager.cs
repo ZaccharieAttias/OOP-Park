@@ -121,12 +121,21 @@ public class CharactersCreationManager : MonoBehaviour
     {
         var selectedGameObject = EventSystem.current.currentSelectedGameObject;
         bool isSelectedParent = SelectedParent == null;
+        bool isCreationAllowed = true;
         SelectedParent = isSelectedParent ? selectedGameObject.GetComponent<CharacterDetails>().Character : null;
+
+
+        if (isSelectedParent && RestrictionManager.Instance.AllowSpecialAbility)
+        {
+            var specialAbilityType = SelectedParent.SpecialAbility.Type;
+            isCreationAllowed = SpecialAbilitiesData.SpecialAbilityManager.SpecialAbilitiesDictionary[specialAbilityType].Count() > 1;
+        }
+
 
         selectedGameObject.GetComponent<Image>().color = isSelectedParent ? Color.green : Color.white;
         selectedGameObject.GetComponent<Button>().interactable = true;
 
-        ConfirmButton.GetComponent<Button>().interactable = isSelectedParent;
+        ConfirmButton.GetComponent<Button>().interactable = isSelectedParent && isCreationAllowed;
 
         foreach (GameObject gameObject in DuplicateCharacterGameObjects.Where(item => item != selectedGameObject))
         {
@@ -221,7 +230,7 @@ public class CharactersCreationManager : MonoBehaviour
         List<string> allSprites = Resources.LoadAll<Sprite>("Sprites/Characters").Select(item => item.name).ToList();
         List<string> availableSprites = allSprites.Except(usedSprites).ToList();
         string randomSprite = availableSprites[Random.Range(0, availableSprites.Count)];
-        
+
         CharacterB builtCharacter = RestrictionManager.Instance.OnlineBuild
             ? new CharacterB
             {

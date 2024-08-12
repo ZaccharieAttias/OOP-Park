@@ -17,8 +17,8 @@ public class SeedCollections : MonoBehaviour
     public void Start()
     {
         InitializeProperties();
-        //InitializeCollections();
-        jsonUtilityManager.Load();
+        InitializeCollections();
+        // jsonUtilityManager.Load();
     }
     private void InitializeProperties()
     {
@@ -757,7 +757,7 @@ public class SeedCollections : MonoBehaviour
         specialAbilities = new();
         abilityName = "Jump";
         abilityDescription = "Defining the jump interface";
-        abilityValue = 1;
+        abilityValue = 0;
         abilityType = SpecialAbilityType.Jump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -857,7 +857,7 @@ public class SeedCollections : MonoBehaviour
         // Special Ability 13 (WallJump)
         specialAbilities = new();
         abilityName = "Wall Jump";
-        abilityDescription = "Enhances the WallJump method by increasing the number of jumps by 1";
+        abilityDescription = "Enhances the WallJump method by increasing the wall jump amount";
         abilityValue = 1;
         abilityType = SpecialAbilityType.WallJump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
@@ -890,5 +890,4 @@ public class SeedCollections : MonoBehaviour
 
         SpecialAbilityManager.SpecialAbilitiesCollection = specialAbilityObjects;
     }
-
 }
