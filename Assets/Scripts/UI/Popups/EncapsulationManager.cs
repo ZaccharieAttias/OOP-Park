@@ -192,15 +192,16 @@ public class EncapsulationManager : MonoBehaviour
         var attributeSetter = SetCollection.First(item => item.Name == CurrentSet.name.Split(' ')[0]);
         var modifyAttribute = currentCharacter.Attributes.First(item => item.Name == attributeSetter.Name);
 
+        modifyAttribute.Value = ToFloat(input);
         CurrentSet.transform.Find("BackValue/Value").GetComponent<TMP_Text>().text = modifyAttribute.Value.ToString();
 
         var dependentMethods = UpdateMethods(currentCharacter, modifyAttribute);
-        modifyAttribute.Value = ToFloat(input);
         dependentMethods.ForEach(method => method.Attribute = modifyAttribute);
 
         Powerup.ApplyPowerup(currentCharacter);
         InputField.text = "";
-        LoadPopup();
+
+        UpdateGetContent(attributeSetter.Name);
     }
     public float ToFloat(string input)
     {
@@ -213,6 +214,9 @@ public class EncapsulationManager : MonoBehaviour
                 break;
             result = result * 10 + (input[i] - '0');
         }
+        if (input.IndexOf('.') == -1)
+            return result;
+
         for (int i = input.IndexOf('.') + 1; i < input.Length; i++)
         {
             tmp = tmp * 10 + (input[i] - '0');

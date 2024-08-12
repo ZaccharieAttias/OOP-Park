@@ -65,7 +65,7 @@ public class AttributesManager : MonoBehaviour
         Image image = attributeGameObject.GetComponent<Image>();
         image.color = hasAttribute ? Color.green : Color.white;
 
-        bool isAttributeAllowed = !IsAttributeExist(currentCharacter.Parent, attributeGameObject.name);
+        bool isAttributeAllowed = !IsAttributeExist(currentCharacter.Parent, attributeGameObject.name) || (RestrictionManager.Instance.AllowEncapsulation && IsAttributeGetterExist(currentCharacter, attributeGameObject.name));
         bool isOkay = isAttributeAllowed || currentCharacter.IsOriginal || RestrictionManager.Instance.OnlineBuild;
         attributeGameObject.GetComponent<Button>().interactable = isOkay;
 
@@ -108,6 +108,15 @@ public class AttributesManager : MonoBehaviour
         if (isAttributeExist == false && character.Parent != null) isAttributeExist = IsAttributeExist(character.Parent, attributeName);
 
         return isAttributeExist;
+    }
+    public bool IsAttributeGetterExist(CharacterB character, string attributeName)
+    {
+        if (character == null) return false;
+
+        bool isAttributeGetterExist = character.Attributes.Any(attribute => attribute.Name.ToLower() == attributeName.ToLower() && attribute.Getter);
+        if (isAttributeGetterExist == false && character.Parent != null) isAttributeGetterExist = IsAttributeGetterExist(character.Parent, attributeName);
+
+        return isAttributeGetterExist;
     }
     public void CancelAttributeReferences(CharacterB character, Attribute attribute)
     {
