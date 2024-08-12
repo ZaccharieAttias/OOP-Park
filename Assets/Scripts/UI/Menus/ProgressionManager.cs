@@ -71,11 +71,11 @@ public class ProgressionManager : MonoBehaviour
             progressionInformation.transform.Find("ChapterName").GetComponent<TextMeshProUGUI>().text = chapterInfo.Name;
 
 
-            int completedLevels = chapterInfo.LevelsInfo[0].Status == 1 ? 1 : 0;
+            int completedLevels = chapterInfo.LevelsInfo[0].Status == 1 ? 100 : 0;
             int score = chapterInfo.LevelsInfo[0].Score;
 
             progressionInformation.transform.Find("ProgressionPercentage").GetComponent<TextMeshProUGUI>().text = $"{completedLevels}%";
-            progressionInformation.transform.Find("AverageScore").GetComponent<TextMeshProUGUI>().text = $"{score}%";
+            progressionInformation.transform.Find("AverageScore").GetComponent<TextMeshProUGUI>().text = $"{score}";
             progressionInformation.transform.Find("Description").GetComponent<TextMeshProUGUI>().text = DescriptionSentence(completedLevels);
         }
     }
