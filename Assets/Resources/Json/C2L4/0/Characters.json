@@ -1,15 +1,21 @@
 [
   {
-    "IsOriginal": true,
+    "IsOriginal": false,
     "IsAbstract": true,
-    "Name": "Character 1",
-    "Description": "This is the first character",
-    "Attributes": [],
+    "Name": "Alex",
+    "Description": "I'm Alex",
+    "Attributes": [
+      {
+        "Owner": "Alex",
+        "Name": "inverseGravity",
+        "Value": -40.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      }
+    ],
     "Methods": [],
-    "SpecialAbility": {
-      "Name": "General",
-      "Type": 0
-    },
+    "SpecialAbility": null,
     "UpcastMethod": {
       "Owner": null,
       "Name": null,
@@ -17,19 +23,22 @@
     },
     "Parent": null,
     "Childrens": [
-      "Character 2",
-      "Character 3"
+      "Charlie",
+      "Rachel",
+      "Olivia",
+      "Victoria"
     ]
   },
   {
-    "IsOriginal": true,
+    "IsOriginal": false,
     "IsAbstract": false,
-    "Name": "Character 2",
-    "Description": "This is the second character",
+    "Name": "Charlie",
+    "Description": "I'm Charlie",
     "Attributes": [
       {
-        "Owner": "Character 2",
-        "Name": "grabbing",
+        "Owner": "Charlie",
+        "Name": "speed",
+        "Value": 2.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 0
@@ -37,11 +46,72 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 2",
-        "Name": "Grabbing",
+        "Owner": "Charlie",
+        "Name": "InverseGravity",
         "Attribute": {
-          "Owner": "Character 2",
-          "Name": "grabbing",
+          "Owner": "Alex",
+          "Name": "inverseGravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Alex",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Rachel",
+    "Description": "I'm Rachel",
+    "Attributes": [
+      {
+        "Owner": "Rachel",
+        "Name": "speed",
+        "Value": 2.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Rachel",
+        "Name": "fireballShoot",
+        "Value": 0.25,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Rachel",
+        "Name": "InverseGravity",
+        "Attribute": {
+          "Owner": "Alex",
+          "Name": "inverseGravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Rachel",
+        "Name": "FireballShoot",
+        "Attribute": {
+          "Owner": "Rachel",
+          "Name": "fireballShoot",
+          "Value": 0.0,
           "Getter": false,
           "Setter": false,
           "AccessModifier": 0
@@ -49,34 +119,33 @@
         "AccessModifier": 0
       }
     ],
-    "SpecialAbility": {
-      "Name": "Automatic",
-      "Type": 1
-    },
+    "SpecialAbility": null,
     "UpcastMethod": {
       "Owner": null,
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 1",
+    "Parent": "Alex",
     "Childrens": []
   },
   {
-    "IsOriginal": true,
+    "IsOriginal": false,
     "IsAbstract": false,
-    "Name": "Character 3",
-    "Description": "This is the third character",
+    "Name": "Olivia",
+    "Description": "I'm Olivia",
     "Attributes": [
       {
-        "Owner": "Character 3",
-        "Name": "wallJump",
+        "Owner": "Olivia",
+        "Name": "speed",
+        "Value": 2.0,
         "Getter": false,
         "Setter": false,
-        "AccessModifier": 2
+        "AccessModifier": 0
       },
       {
-        "Owner": "Character 3",
+        "Owner": "Olivia",
         "Name": "grabbing",
+        "Value": 50.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 0
@@ -84,40 +153,99 @@
     ],
     "Methods": [
       {
-        "Owner": "Character 3",
-        "Name": "WallJump",
+        "Owner": "Olivia",
+        "Name": "InverseGravity",
         "Attribute": {
-          "Owner": "Character 3",
-          "Name": "wallJump",
+          "Owner": "Alex",
+          "Name": "inverseGravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Olivia",
+        "Name": "Grabbing",
+        "Attribute": {
+          "Owner": "Olivia",
+          "Name": "grabbing",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Alex",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Victoria",
+    "Description": "I'm Victoria",
+    "Attributes": [
+      {
+        "Owner": "Victoria",
+        "Name": "speed",
+        "Value": 2.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Victoria",
+        "Name": "multipleJumps",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Victoria",
+        "Name": "InverseGravity",
+        "Attribute": {
+          "Owner": "Alex",
+          "Name": "inverseGravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Victoria",
+        "Name": "MultipleJumps",
+        "Attribute": {
+          "Owner": "Victoria",
+          "Name": "multipleJumps",
+          "Value": 0.0,
           "Getter": false,
           "Setter": false,
           "AccessModifier": 2
         },
         "AccessModifier": 2
-      },
-      {
-        "Owner": "Character 3",
-        "Name": "Grabbing",
-        "Attribute": {
-          "Owner": "Character 3",
-          "Name": "grabbing",
-          "Getter": false,
-          "Setter": false,
-          "AccessModifier": 0
-        },
-        "AccessModifier": 0
       }
     ],
-    "SpecialAbility": {
-      "Name": "Manual",
-      "Type": 2
-    },
+    "SpecialAbility": null,
     "UpcastMethod": {
       "Owner": null,
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Character 1",
+    "Parent": "Alex",
     "Childrens": []
   }
 ]
