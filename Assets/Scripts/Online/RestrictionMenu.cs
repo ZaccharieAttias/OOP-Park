@@ -70,6 +70,6 @@ public class RestrictionMenu : MonoBehaviour
     }
     public void Destroy()
     {
-        Destroy(gameObject);
+        Destroy(gameObject.GetComponent<RestrictionMenu>());
     }
 }

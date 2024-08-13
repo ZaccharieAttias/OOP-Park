@@ -20,7 +20,7 @@ namespace Assets.HeroEditor.Common.Scripts.Collections
 		[RuntimeInitializeOnLoadMethod]
 		private static void Initialize()
 		{
-			Instances = Resources.LoadAll<FirearmCollection>("").ToDictionary(i => i.Id, i => i);
+			//Instances = Resources.LoadAll<FirearmCollection>("").ToDictionary(i => i.Id, i => i);
 		}
 		
 		public void OnValidate()
