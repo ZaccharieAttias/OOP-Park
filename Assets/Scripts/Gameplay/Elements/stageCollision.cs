@@ -33,9 +33,6 @@ public class StageCollision : MonoBehaviour
             case "Stage2":
                 CharacterChallengeManager.SetChallenge2();
                 break;
-            case "Stage3":
-                CharacterChallengeManager.SetChallenge3();
-                break;
         }
     }
 }

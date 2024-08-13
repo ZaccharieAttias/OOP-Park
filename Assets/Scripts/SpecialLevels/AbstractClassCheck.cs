@@ -26,7 +26,7 @@ public class AbstractClassCheck : MonoBehaviour
     public Dictionary<CharacterB, List<string>> FinalCharacterAttributesMap;
     public Dictionary<CharacterB, List<string>> FinalCharacterMethodsMap;
     public Dictionary<CharacterB, List<string>> ErrorsMap;
-    public List<(CharacterB, bool)> AbstractClasses;
+    public List<(CharacterB, int)> AbstractClasses;
     public int Stage;
     public int MaxStage;
     public string FolderPath;
@@ -67,14 +67,13 @@ public class AbstractClassCheck : MonoBehaviour
         ErrorsMap = new();
         AbstractClasses = new();
 
-        Stage = -1;
-        MaxStage = 2;
+        Stage = 0;
+        MaxStage = 3;
         FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     public void SetStage()
     {
-        Stage++;
         foreach (Transform child in CharactersContentPanel) Destroy(child.gameObject);
 
         if (Stage < MaxStage)
@@ -92,6 +91,7 @@ public class AbstractClassCheck : MonoBehaviour
             AbstractClasses = new();
 
             BuildFinalDataMap();
+            Stage++;
         }
         else
         {
@@ -106,78 +106,101 @@ public class AbstractClassCheck : MonoBehaviour
         {
             FinalCharacterAttributesMap.Add(character, character.Attributes.Select(attribute => attribute.Name).ToList());
             FinalCharacterMethodsMap.Add(character, character.Methods.Select(method => method.Name).ToList());
-
-            if (character.IsAbstract) AbstractClasses.Add((character, false));
         }
 
+        // Traverse the charactersCollection from the root to each abstarct class (using the childrens) and get its depth using BFS
+        Queue<(CharacterB, int)> queue = new();
+        queue.Enqueue((charactersCollection[0], 0));
+
+        while (queue.Count > 0)
+        {
+            (CharacterB character, int depth) = queue.Dequeue();
+
+            if (character.IsAbstract)
+            {
+                AbstractClasses.Add((character, depth));
+            }
+
+            if (character.Childrens.Count > 0)
+            {
+                foreach (CharacterB child in character.Childrens)
+                {
+                    queue.Enqueue((child, depth + 1));
+                }
+            }
+        }
+
+        // Sort the abstract classes by depth from higher to lower
+        AbstractClasses = AbstractClasses.OrderByDescending(tuple => tuple.Item2).ToList();
         for (int i = 0; i < AbstractClasses.Count; i++)
         {
-            (CharacterB, bool) item = AbstractClasses[i];
-            AbstractMapModifier(item.Item1);
+            var (character, _) = AbstractClasses[i];
+            AbstractMapModifier(character);
         }
     }
     public void AbstractMapModifier(CharacterB character)
     {
-        if (AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)].Item2)
-        {
-            return;
-        }
-        AbstractClasses[AbstractClasses.FindIndex(item => item.Item1 == character)] = (character, true);
+        Dictionary<string, int> attributeCount = new();
+        Dictionary<string, int> methodCount = new();
+        int totalChildren = character.Childrens.Count;
 
-        Dictionary<string, List<CharacterB>> commonAttributes = new();
-        Dictionary<string, List<CharacterB>> commonMethods = new();
-
+        // Traverse all direct children of the abstract class
         foreach (CharacterB child in character.Childrens)
         {
-            if (child.IsAbstract) AbstractMapModifier(child);
-
-            foreach (Attribute attribute in child.Attributes)
+            // Count attributes acroos all childrens
+            foreach (string attribute in FinalCharacterAttributesMap[child])
             {
-                if (!commonAttributes.TryGetValue(attribute.Name, out List<CharacterB> characters))
+                if (!attributeCount.ContainsKey(attribute))
                 {
-                    characters = new List<CharacterB>();
-                    commonAttributes.Add(attribute.Name, characters);
+                    attributeCount[attribute] = 0;
                 }
-                commonAttributes[attribute.Name].Add(child);
+                attributeCount[attribute]++;
             }
 
-            foreach (Method method in child.Methods)
+            // Count attributes acroos all childrens
+            foreach (string method in FinalCharacterMethodsMap[child])
             {
-                if (!commonMethods.TryGetValue(method.Name, out List<CharacterB> characters))
+                if (!methodCount.ContainsKey(method))
                 {
-                    characters = new List<CharacterB>();
-                    commonMethods.Add(method.Name, characters);
+                    methodCount[method] = 0;
                 }
-                commonMethods[method.Name].Add(child);
+                methodCount[method]++;
             }
         }
 
-        foreach (KeyValuePair<string, List<CharacterB>> entry in commonAttributes)
+        // Identify and move common attributes to the abstract parent
+        foreach (var entry in attributeCount)
         {
-            if (entry.Value.Count > 1)
+            if (entry.Value == totalChildren) // All children share this attribute
             {
                 FinalCharacterAttributesMap[character].Add(entry.Key);
 
-                foreach (CharacterB characterFix in entry.Value)
+                // Remove this attribute from all children
+                foreach (CharacterB child in character.Childrens)
                 {
-                    FinalCharacterAttributesMap[characterFix].Remove(entry.Key);
+                    FinalCharacterAttributesMap[child].Remove(entry.Key);
                 }
             }
         }
 
-        foreach (KeyValuePair<string, List<CharacterB>> entry in commonMethods)
+        // Identify and move common methods to the abstract parent
+        foreach (var entry in methodCount)
         {
-            if (entry.Value.Count > 1)
+            if (entry.Value == totalChildren) // All children share this method
             {
                 FinalCharacterMethodsMap[character].Add(entry.Key);
 
-                foreach (CharacterB characterFix in entry.Value)
+                // Remove this method from all children
+                foreach (CharacterB child in character.Childrens)
                 {
-                    FinalCharacterMethodsMap[characterFix].Remove(entry.Key);
+                    FinalCharacterMethodsMap[child].Remove(entry.Key);
                 }
             }
         }
     }
+
+
+
     public void ConfirmStage()
     {
         AiModelData.AbstractLevelTries++;

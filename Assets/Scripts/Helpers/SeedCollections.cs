@@ -17,8 +17,8 @@ public class SeedCollections : MonoBehaviour
     public void Start()
     {
         InitializeProperties();
-        InitializeCollections();
-        // jsonUtilityManager.Load();
+        // InitializeCollections();
+        jsonUtilityManager.Load();
     }
     private void InitializeProperties()
     {
@@ -36,7 +36,7 @@ public class SeedCollections : MonoBehaviour
         InitializeSpecialAbilityCollection();
         if (!RestrictionManager.Instance.OnlineBuild && !RestrictionManager.Instance.OnlineGame) InitializeCharactersCollection();
 
-        SceneManagement.GameplayInfo = BuildGameplayInfo();
+        // SceneManagement.GameplayInfo = BuildGameplayInfo();
     }
 
     public List<GameplayInfo> BuildGameplayInfo()

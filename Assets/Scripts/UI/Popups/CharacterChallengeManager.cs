@@ -14,7 +14,6 @@ public class CharacterChallengeManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject Mission1Popup;
     public GameObject Mission2Popup;
-    public GameObject Mission3Popup;
     public List<GameObject> Walls;
 
     [Header("Challenge Attributes")]
@@ -44,13 +43,11 @@ public class CharacterChallengeManager : MonoBehaviour
     {
         Mission1Popup = GameObject.Find("Canvas/Popups/Mission1");
         Mission2Popup = GameObject.Find("Canvas/Popups/Mission2");
-        Mission3Popup = GameObject.Find("Canvas/Popups/Mission3");
 
         Walls = new List<GameObject>
         {
             GameObject.Find("Grid/Challenges/Wall1"),
             GameObject.Find("Grid/Challenges/Wall2"),
-            GameObject.Find("Grid/Challenges/Wall3")
         };
     }
     public void InitializeUniqueListeners()
@@ -66,7 +63,7 @@ public class CharacterChallengeManager : MonoBehaviour
     }
     public void InitializeSelfProperties()
     {
-        Challenge = 0;
+        Challenge = 1;
     }
 
     public void ConfirmFactory()
@@ -76,12 +73,13 @@ public class CharacterChallengeManager : MonoBehaviour
     }
     public void CancelFactory()
     {
-        UpdateWallsBasedOnAppearance();
         CharacterEditor1.LoadFromJson();
+        UpdateWallsBasedOnAppearance();
     }
     public void ResetFactory()
     {
         CharacterEditor1.LoadFromJson();
+        UpdateWallsBasedOnAppearance();
     }
 
     public void UpdateWallsBasedOnAppearance()
@@ -89,12 +87,10 @@ public class CharacterChallengeManager : MonoBehaviour
         string json = CharacterAppearanceManager.Character.ToJson();
 
         string glassesValue = GetAppearanceValue(json, "Glasses");
-        string helmetValue = GetAppearanceValue(json, "Helmet");
         string beardValue = GetAppearanceValue(json, "Beard");
 
         Walls[0].SetActive(glassesValue.Length < 3);
-        Walls[1].SetActive(helmetValue.Length < 3);
-        Walls[2].SetActive(beardValue.Length < 3);
+        Walls[1].SetActive(beardValue.Length < 3);
     }
     public string GetAppearanceValue(string json, string appearanceType)
     {
@@ -113,21 +109,18 @@ public class CharacterChallengeManager : MonoBehaviour
         Challenge = 2;
         Mission2Popup.SetActive(true);
     }
-    public void SetChallenge3()
-    {
-        Challenge = 3;
-        Mission3Popup.SetActive(true);
-    }
 
     public void BackStage()
     {
         Vector3 position = Challenge switch
         {
-            1 => new Vector3(12, 0, 0),
-            2 => new Vector3(22, 0, 0),
-            3 => new Vector3(48, 0, 0),
-            _ => new Vector3(0, 0, 0),
+            1 => new Vector3(-11.45f, -4.850f, 0),
+            2 => new Vector3(40.745f, -4.850f, 0),
+            _ => new Vector3(-11.45f, -4.850f, 0),
         };
         CharacterAppearanceManager.playerTransform.position = position;
+
+        CharacterEditor1.LoadFromJson();
+        UpdateWallsBasedOnAppearance();
     }
 }
