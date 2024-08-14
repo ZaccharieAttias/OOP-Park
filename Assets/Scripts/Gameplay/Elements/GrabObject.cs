@@ -103,6 +103,7 @@ public class GrabObject : MonoBehaviour
         ObjectInHand.transform.position = GrabPoint.position;
         ObjectInHand.transform.parent = GameObject.Find("Player").transform;
         ObjectInHand.GetComponent<BoxMovement>().ResetTimers();
+        ObjectInHand.GetComponent<BoxCollider2D>().isTrigger = true;
         IsHolding = true;
         CanHold = false;
     }
@@ -114,7 +115,7 @@ public class GrabObject : MonoBehaviour
         if (SceneManager.GetActiveScene().name.Contains("Online")) ObjectInHand.transform.parent = GameObject.Find("Grid/LevelBuilder/Gameplay").transform;
         else ObjectInHand.transform.parent = GameObject.Find("Grid/Gameplay").transform;
         ObjectInHand.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        // ObjectInHand.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        ObjectInHand.GetComponent<BoxCollider2D>().isTrigger = false;
 
         ObjectInHand = null;
         IsHolding = false;

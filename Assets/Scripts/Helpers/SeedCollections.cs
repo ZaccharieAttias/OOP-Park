@@ -18,7 +18,6 @@ public class SeedCollections : MonoBehaviour
     {
         InitializeProperties();
         InitializeCollections();
-        //jsonUtilityManager.Load();
     }
     private void InitializeProperties()
     {
@@ -34,7 +33,7 @@ public class SeedCollections : MonoBehaviour
         InitializeAttributesCollection();
         InitializeMethodsCollection();
         InitializeSpecialAbilityCollection();
-        if (!RestrictionManager.Instance.OnlineBuild && !RestrictionManager.Instance.OnlineGame) InitializeCharactersCollection();
+        if (!RestrictionManager.Instance.OnlineBuild && !RestrictionManager.Instance.OnlineGame) jsonUtilityManager.Load();
 
         // SceneManagement.GameplayInfo = BuildGameplayInfo();
     }
@@ -774,7 +773,7 @@ public class SeedCollections : MonoBehaviour
         specialAbilities = new();
         abilityName = "Gravity";
         abilityDescription = "Enhances the Gravity method by reducing further the gravity force of 3 units";
-        abilityValue = 3;
+        abilityValue = 20;
         abilityType = SpecialAbilityType.Gravity;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -791,7 +790,7 @@ public class SeedCollections : MonoBehaviour
         specialAbilities = new();
         abilityName = "Speed";
         abilityDescription = "Enhances the Speed method by increasing the speed force by 2 units";
-        abilityValue = 2;
+        abilityValue = 15;
         abilityType = SpecialAbilityType.Speed;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -825,7 +824,7 @@ public class SeedCollections : MonoBehaviour
         specialAbilities = new();
         abilityName = "Multiple Jumps";
         abilityDescription = "Enhances the MultipleJumps method by increasing the number of jumps by 1";
-        abilityValue = 1;
+        abilityValue = 10;
         abilityType = SpecialAbilityType.MultipleJumps;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -841,7 +840,7 @@ public class SeedCollections : MonoBehaviour
         specialAbilities = new();
         abilityName = "Inverse Gravity";
         abilityDescription = "Enhances the InverseGravity method by reducing the gravity force by 40 units";
-        abilityValue = -40;
+        abilityValue = -60;
         abilityType = SpecialAbilityType.InverseGravity;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);
@@ -858,7 +857,7 @@ public class SeedCollections : MonoBehaviour
         specialAbilities = new();
         abilityName = "Wall Jump";
         abilityDescription = "Enhances the WallJump method by increasing the wall jump amount";
-        abilityValue = 1;
+        abilityValue = 100;
         abilityType = SpecialAbilityType.WallJump;
         specialAbility = new SpecialAbility(abilityName, abilityDescription, abilityValue, abilityType);
         specialAbilities.Add(specialAbility);

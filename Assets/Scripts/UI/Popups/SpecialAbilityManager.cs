@@ -17,7 +17,6 @@ public class SpecialAbilityManager : MonoBehaviour
 
     [Header("Buttons")]
     public GameObject SpecialAbilityButtonPrefab;
-    public Button CancelButton;
     public Button ConfirmButton;
 
     [Header("Special Abilities Data")]
@@ -48,9 +47,6 @@ public class SpecialAbilityManager : MonoBehaviour
     {
         SpecialAbilityButtonPrefab = Resources.Load<GameObject>("Buttons/Ability");
 
-        CancelButton = Popup.transform.Find("Background/Foreground/Buttons/Cancel").GetComponent<Button>();
-        CancelButton.onClick.AddListener(CancelFactory);
-
         ConfirmButton = Popup.transform.Find("Background/Foreground/Buttons/Confirm").GetComponent<Button>();
         ConfirmButton.onClick.AddListener(ConfirmFactory);
     }
@@ -64,7 +60,6 @@ public class SpecialAbilityManager : MonoBehaviour
 
     public void StartFactory()
     {
-        CancelButton.interactable = true;
         ConfirmButton.interactable = false;
 
         SelectedSpecialAbility = null;
