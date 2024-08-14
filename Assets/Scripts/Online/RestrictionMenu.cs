@@ -14,8 +14,9 @@ public class RestrictionMenu : MonoBehaviour
     public bool AllowUpcasting;
     public bool AllowAbstractClass;
     public bool AllowEncapsulation;
-    [SerializeField] List<Button> RestrictionButtons = new List<Button>();
+    public List<Button> RestrictionButtons = new List<Button>();
     public Button ConfirmButton;
+    public Button SkipButton;
 
     public void Awake()
     {
@@ -24,9 +25,27 @@ public class RestrictionMenu : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
+        SetButtons();
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    public void SetButtons()
+    {
+        var transform = GameObject.Find("Canvas/Menus/Panel/Window/Inner/ButtonsGrid").transform;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            int index = i;
+            var button = transform.GetChild(i).GetComponent<Button>();
+            button.onClick.AddListener(() => SetBool(index));
+            button.onClick.AddListener(Mark);
+            RestrictionButtons.Add(button);
+        }
+        transform = GameObject.Find("Canvas/Menus/Panel/Window/Inner/Buttons").transform;
+        ConfirmButton = transform.GetChild(0).GetComponent<Button>();
+        ConfirmButton.onClick.AddListener(Confirm);
+
+        SkipButton = transform.GetChild(1).GetComponent<Button>();
+        SkipButton.onClick.AddListener(Confirm);
     }
 
     public void Mark()
@@ -44,22 +63,22 @@ public class RestrictionMenu : MonoBehaviour
             case 0:
                 AllowSingleInheritance = !AllowSingleInheritance;
                 break;
-            case 2:
+            case 1:
                 AllowSpecialAbility = !AllowSpecialAbility;
                 break;
-            case 3:
+            case 2:
                 AllowAccessModifier = !AllowAccessModifier;
                 break;
-            case 4:
+            case 3:
                 AllowOverride = !AllowOverride;
                 break;
-            case 5:
+            case 4:
                 AllowUpcasting = !AllowUpcasting;
                 break;
-            case 6:
+            case 5:
                 AllowAbstractClass = !AllowAbstractClass;
                 break;
-            case 7:
+            case 6:
                 AllowEncapsulation = !AllowEncapsulation;
                 break;
         }
