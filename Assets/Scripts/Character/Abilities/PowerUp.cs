@@ -34,7 +34,6 @@ public class Powerup : MonoBehaviour
             var specialAbilityName = PreviousSpecialAbility.Name.Replace(" ", "");
             PowerUpEffects.Find(powerup => powerup.GetType().Name.Equals(specialAbilityName, StringComparison.OrdinalIgnoreCase)).plusDeactivatePower(Player);
             if (PowerUpEffects.Find(powerup => powerup.GetType().Name.Equals(specialAbilityName, StringComparison.OrdinalIgnoreCase)))
-                Debug.Log("here");
             PreviousSpecialAbility = null;
         }
 
@@ -76,7 +75,6 @@ public class Powerup : MonoBehaviour
             var specialAbilityName = character.SpecialAbility.Name.Replace(" ", "");
             if (PreviousMethods.Exists(method => method.Name.Equals(specialAbilityName, StringComparison.OrdinalIgnoreCase)))
             {
-                Debug.Log("Special Ability already exists");
                 PowerUpEffects.Find(powerup => powerup.GetType().Name.Contains(specialAbilityName)).plusActivatePower(Player);
                 PreviousSpecialAbility = character.SpecialAbility;
             }
