@@ -124,7 +124,7 @@ public class CharacterSelectionManager : MonoBehaviour
             CharactersManager.CurrentCharacter = character;
             CharactersManager.DisplayCharacter(character);
         }
-
+        ConfirmButton.GetComponent<Button>().interactable = false;
         ToggleOff();
     }
     private void InitializeCharacterObject(CharacterB characterNode)

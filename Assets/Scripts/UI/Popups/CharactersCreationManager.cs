@@ -95,6 +95,8 @@ public class CharactersCreationManager : MonoBehaviour
         BuildCharacterGameObjects();
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
         ToggleButtonsInteractability(NotAllowedButtons);
+        NotAllowedButtons[2].gameObject.SetActive(false);
+        NotAllowedButtons[2].interactable = false;
     }
     public void CancelFactory()
     {
@@ -104,6 +106,9 @@ public class CharactersCreationManager : MonoBehaviour
         DestroyGameObjects(DuplicateCharacterGameObjects);
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
         ToggleButtonsInteractability(NotAllowedButtons);
+        NotAllowedButtons[2].gameObject.SetActive(true);
+        NotAllowedButtons[2].interactable = true;
+        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
     }
     public void ConfirmFactory()
     {
@@ -113,6 +118,8 @@ public class CharactersCreationManager : MonoBehaviour
         DestroyGameObjects(DuplicateCharacterGameObjects);
         ToggleButtonsInteractability(CharacterGameObjects.Select(item => item.GetComponent<Button>()).ToList());
         ToggleButtonsInteractability(NotAllowedButtons);
+        NotAllowedButtons[2].gameObject.SetActive(true);
+        NotAllowedButtons[2].interactable = true;
 
         StartCoroutine(CharacterBuildPipeline());
     }
