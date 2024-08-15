@@ -38,7 +38,7 @@ public class DescriptionButton : MonoBehaviour, IPointerClickHandler
 
         Attribute attribute = CharactersData.CharactersManager.CurrentCharacter.Attributes.Find(item => item.Name == gameObject.name);
         Method method = CharactersData.CharactersManager.CurrentCharacter.Methods.Find(item => item.Name == gameObject.name);
-        SpecialAbility specialAbility = CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Type.ToString() == gameObject.name ? CharactersData.CharactersManager.CurrentCharacter.SpecialAbility : null;
+        SpecialAbility specialAbility = CharactersData.CharactersManager.CurrentCharacter.SpecialAbility?.Type.ToString() == gameObject.name && method == null ? CharactersData.CharactersManager.CurrentCharacter.SpecialAbility : null;
         
         if (attribute != null) description = Regex.Replace(attribute.Description, @"(-)?\d+(\.\d+)?", attribute.Value.ToString("0.00"));
         if (method != null) description = Regex.Replace(method.Description, @"(-)?\d+(\.\d+)?", method.Attribute.Value.ToString("0.00"));
