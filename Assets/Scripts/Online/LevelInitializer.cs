@@ -51,7 +51,6 @@ public class LevelInitializer : MonoBehaviour
     public string MethodssPath;
     public string SpecialAbilitiesPath;
     public JsonUtilityManager JsonUtilityManager;
-    public Vector3 MinValues = new Vector3(0, 0, -10), MaxValues = new Vector3(0, 0, -10);
     public bool start = true;
     public void Start()
     {
@@ -286,17 +285,6 @@ public class LevelInitializer : MonoBehaviour
             block.GameObject.layer = 7;
 
             _groundMap[x, y, z] = block;
-
-            //verify if the ground is the most bottom, left, right or top
-            // if it is, set the maximum and minimum values of the camera
-            if (x < MinValues.x)
-                MinValues.x = x;
-            if (x > MaxValues.x)
-                MaxValues.x = x;
-            if (y < MinValues.y)
-                MinValues.y = y;
-            if (y > MaxValues.y)
-                MaxValues.y = y;
         }
 
         for (var dx = -1; dx <= 1; dx++)
@@ -560,8 +548,8 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = false;
         block.GameObject.tag = "Brick";
         block.GameObject.AddComponent<Animator>();
-        string name = _index == 5 ? "Animations/BreakingBricks/Red/RedBrick" : "Animations/BreakingBricks/Grey/GreyBrick";
-        block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load(name) as RuntimeAnimatorController;
+        if (_index == 5) block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/BreakingBricks/Red/RedBrick") as RuntimeAnimatorController;
+        else block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/BreakingBricks/Grey/GreyBrick") as RuntimeAnimatorController;
         block.GameObject.AddComponent<BreakingBrick>();
 
         _gameplayMap[x, y, z] = block;
@@ -710,8 +698,6 @@ public class LevelInitializer : MonoBehaviour
         Player.SetActive(true);
         MainCamera.GetComponent<CameraFollow>().Player = Player;
         MainCamera.GetComponent<CameraFollow>().StartPosition = new Vector3(x_position, y_position, -10);
-        MainCamera.GetComponent<CameraFollow>().MinValues = MinValues;
-        MainCamera.GetComponent<CameraFollow>().MaxValues = MaxValues;
 
         //foreach object that have the tag "Checkpoint" in the scene set player
         GameObject[] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");

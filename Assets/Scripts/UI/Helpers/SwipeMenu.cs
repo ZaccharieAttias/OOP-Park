@@ -76,7 +76,7 @@ public class SwipeMenu : MonoBehaviour
             if (invertedScrollPos < ItemPosition[i] + (distance / 2) && invertedScrollPos > ItemPosition[i] - (distance / 2))
             {
                 Transform childTransform = transform.GetChild(childCount - i - 1);
-                childTransform.localScale = Vector2.Lerp(childTransform.localScale, new Vector2(1f, 1f), 0.1f);
+
                 activeItemIndex = i;
 
                 for (int j = 0; j < ItemPosition.Length; j++)
@@ -84,7 +84,6 @@ public class SwipeMenu : MonoBehaviour
                     if (j != i)
                     {
                         Transform otherChildTransform = transform.GetChild(childCount - j - 1);
-                        otherChildTransform.localScale = Vector2.Lerp(otherChildTransform.localScale, new Vector2(0.8f, 0.8f), 0.1f);
                     }
                 }
             }
@@ -101,7 +100,18 @@ public class SwipeMenu : MonoBehaviour
             int childCount = transform.childCount;
             GameObject activeItem = transform.GetChild(childCount - activeItemIndex - 1).gameObject;
 
+            if (EncapsulationManager.CurrentSet != null)
+            {
+                foreach (Transform child in EncapsulationManager.CurrentSet.transform)
+                {
+                    child.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                }
+            }
             EncapsulationManager.CurrentSet = activeItem;
+            foreach (Transform child in EncapsulationManager.CurrentSet.transform)
+            {
+                child.GetComponent<Image>().color = new Color(0.5f, 1, 0.5f, 1);
+            }
             EncapsulationManager.UpdateGetContent(activeItem.name.Split(' ')[0]);
         }
     }

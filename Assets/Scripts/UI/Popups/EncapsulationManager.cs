@@ -82,7 +82,13 @@ public class EncapsulationManager : MonoBehaviour
 
         UpdateGetContent(CurrentSet.name.Split(' ')[0]);
         SelectedGetClick = CharactersData.CharactersManager.CurrentCharacter.Name;
-        GetContent.GetChild(0).transform.Find("Selection").GetComponent<Image>().color = new Color(0.5f, 1, 0.5f, 1);
+        if (GetContent.childCount > 0)
+            GetContent.GetChild(0).transform.Find("Selection").GetComponent<Image>().color = new Color(0.5f, 1, 0.5f, 1);
+        if(SetContent.childCount > 0)
+        {
+            SetContent.GetChild(0).transform.Find("BackName").GetComponent<Image>().color = new Color(0.5f, 1, 0.5f, 1);
+            SetContent.GetChild(0).transform.Find("BackValue").GetComponent<Image>().color = new Color(0.5f, 1, 0.5f, 1);
+        }
     }
     public void ClearContentPanel()
     {
@@ -90,7 +96,7 @@ public class EncapsulationManager : MonoBehaviour
         GetContent.Cast<Transform>().ToList().ForEach(attributeTransform => Destroy(attributeTransform.gameObject));
 
         SwipeMenu.CurrentScrollPosition = 1;
-        SwipeMenu.PreviousScrollPosition = 1;
+        SwipeMenu.PreviousScrollPosition = -1;
     }
     public void PopulateCollections()
     {
@@ -205,6 +211,7 @@ public class EncapsulationManager : MonoBehaviour
     }
     public float ToFloat(string input)
     {
+        int sign = input[0] == '-' ? -1 : 1;
         float result = 0;
         int tmp = 0;
         int j = 0;
@@ -212,10 +219,12 @@ public class EncapsulationManager : MonoBehaviour
         {
             if (input[i] == '.')
                 break;
+            if (input[i] == '-')
+                continue;
             result = result * 10 + (input[i] - '0');
         }
         if (input.IndexOf('.') == -1)
-            return result;
+            return result *sign;
 
         for (int i = input.IndexOf('.') + 1; i < input.Length; i++)
         {
@@ -224,7 +233,7 @@ public class EncapsulationManager : MonoBehaviour
         }
         if (j > 0)
             result += (float)tmp / Mathf.Pow(10, j);
-        return result;
+        return result * sign;
     }
 
     public bool Checker()
