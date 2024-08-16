@@ -10,6 +10,7 @@ public class CharacterChallengeManager : MonoBehaviour
     public CharacterAppearanceManager CharacterAppearanceManager;
     public CharacterEditor1 CharacterEditor1;
     public AiModelData AiModelData;
+    public GameController GameController;
 
     [Header("UI Elements")]
     public GameObject Mission1Popup;
@@ -38,6 +39,7 @@ public class CharacterChallengeManager : MonoBehaviour
 
         CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
+        GameController = GameObject.Find("Player").GetComponent<GameController>();
     }
     public void InitializeUIElements()
     {
@@ -101,24 +103,16 @@ public class CharacterChallengeManager : MonoBehaviour
 
     public void SetChallenge1()
     {
-        Challenge = 1;
         Mission1Popup.SetActive(true);
     }
     public void SetChallenge2()
     {
-        Challenge = 2;
         Mission2Popup.SetActive(true);
     }
 
     public void BackStage()
     {
-        Vector3 position = Challenge switch
-        {
-            1 => new Vector3(-11.45f, -4.850f, 0),
-            2 => new Vector3(40.745f, -4.850f, 0),
-            _ => new Vector3(-11.45f, -4.850f, 0),
-        };
-        CharacterAppearanceManager.playerTransform.position = position;
+        GameController.returnLastPosition();
 
         CharacterEditor1.LoadFromJson();
         UpdateWallsBasedOnAppearance();

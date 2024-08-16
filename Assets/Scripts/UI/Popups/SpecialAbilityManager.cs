@@ -25,11 +25,6 @@ public class SpecialAbilityManager : MonoBehaviour
     public List<GameObject> SpecialAbilityGameObjects;
     public Dictionary<SpecialAbilityType, List<SpecialAbility>> SpecialAbilitiesDictionary;
 
-    public void Update()
-    {
-        Debug.Log(SpecialAbilitiesDictionary.Count);
-    }
-
 
     public void Start()
     {

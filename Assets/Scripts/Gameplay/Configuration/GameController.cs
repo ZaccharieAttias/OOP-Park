@@ -81,6 +81,8 @@ public class GameController : MonoBehaviour
         Rigidbody2D.simulated = true;
         isDead = false;
     }
+
+
     IEnumerator Waiting()
     {
         yield return new WaitForSeconds(1);
@@ -89,5 +91,9 @@ public class GameController : MonoBehaviour
     {
         AiModelData.DeathsCount = 0;
         CheckpointPosition = transform.position;
+    }
+    public void returnLastPosition()
+    {
+        transform.position = CheckpointPosition;
     }
 }

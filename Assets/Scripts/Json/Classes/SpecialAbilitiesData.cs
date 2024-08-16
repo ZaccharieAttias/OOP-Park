@@ -35,6 +35,7 @@ public static class SpecialAbilitiesData
     }
     public static List<SpecialAbilityObject> Deserialize(string json)
     {
+        SpecialAbilityManager.SpecialAbilitiesDictionary = JsonConvert.DeserializeObject<Dictionary<SpecialAbilityType, List<SpecialAbility>>>(json);
         return temp(json);
     }
     public static SpecialAbilityData PackData(CharacterB character)
