@@ -3,6 +3,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class TutorialManager : MonoBehaviour
     public bool hasSwapped = false;
     public int nbrOfChracaterSelected = 0;
     public string Previouscharacter;
+    public bool clikedForCreation = false;
 
     public AiModelData AiModelData;
 
@@ -52,11 +54,10 @@ public class TutorialManager : MonoBehaviour
     {
         AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
 
-        // si la scene est la scene de tutoriel
         if (SceneManager.GetActiveScene().name == "C0L1")
         {
             jsonUtilityManager.Load();
-            CommandPopup.Show("<color=\"yellow\">[W]</color> Jump\n<color=\"yellow\">[A]</color> Left Move        <color=\"yellow\">[D]</color> Right Move", 2);
+            CommandPopup.Show("<color=\"yellow\">[W]</color> Jump\n<color=\"yellow\">[A]</color> Left Move        <color=\"yellow\">[D]</color> Right Move", 2, "C0L1");
         }
         else if (SceneManager.GetActiveScene().name == "C0L2")
         {
@@ -65,8 +66,8 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            jsonUtilityManager.SetPath(Path.Combine(Application.dataPath, "Resources/Json", "C0L2"));
             jsonUtilityManager.Load();
+            TutorialTip.SetActive(true);
         }
 
         StartPosition = Player.transform.position;
@@ -86,7 +87,7 @@ public class TutorialManager : MonoBehaviour
             else if (Vector3.Distance(Player.transform.position, CheckPoint.transform.position) < 3 && !hasSeenCheckpoint && check == 1)
             {
                 hasSeenCheckpoint = true;
-                CommandPopup.Show("The flags are checkpoints.\nThey will turn red once they have been touch.", 4);
+                CommandPopup.Show("The flags are checkpoints.\nThey will turn red once they have been touch.", 4, "C0L1");
             }
             else if (Player.GetComponent<GameController>().AiModelData.DeathsCount >= 3 && !TutorialTip.activeSelf && check == 2)
             {
@@ -137,7 +138,7 @@ public class TutorialManager : MonoBehaviour
                 if (Vector3.Distance(Player.transform.position, Brick.transform.position) < 3)
                 {
                     CommandPopup.gameObject.SetActive(true);
-                    CommandPopup.Show("These are bricks.\nYou can break them by shooting on", 4);
+                    CommandPopup.Show("These are bricks.\nYou can break them by shooting on", 4, "C0L1");
                     check++;
                 }
             }
@@ -149,7 +150,7 @@ public class TutorialManager : MonoBehaviour
             {
                 TutorialTip.SetActive(false);
 
-                CommandPopup.Show("What you see in gray are walls.\nThey can be climbed using a certain method.", 6);
+                CommandPopup.Show("What you see in gray are walls.\nThey can be climbed using a certain method.", 6, "C0L2");
                 check++;
             }
             else if (hasSwapped && check == 1)
@@ -229,6 +230,63 @@ public class TutorialManager : MonoBehaviour
                 check++;
             }
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Return) && check == 0)
+            {
+                TutorialTip.SetActive(false);
+                MainForeground.SetActive(false);
+                CommandPopup.Show("Cube objects can be carried and moved using a certain method. They don't all have the same weight! The yellow ones are EXTREMELY heavy.", 3, "C0L3");
+                check++;
+            }
+            else if (hasSwapped && check == 1)
+            {
+                CommandPopup.CanvasGroup.alpha = 0;
+                SwapSceenToGameplay.SetActive(false);
+                CharacterCreationPlus.SetActive(false);
+                check++;
+            }
+            else if (Previouscharacter != CharactersData.CharactersManager.CurrentCharacter.Name && check == 2)
+            {
+                Previouscharacter = CharactersData.CharactersManager.CurrentCharacter.Name;
+                nbrOfChracaterSelected++;
+                if (nbrOfChracaterSelected >= 3)
+                {
+                    TutorialTip.SetActive(true);
+                    RightForeground.SetActive(true);
+                    RightTutorialTipText.text = "Once you've inspected the classes, you'll have noticed a number of new features. To begin with, let's focus on the Abstract classes. In the tree provided, Ava (tree head) is an abstract class. These classes act as templates, defining a common interface and shared functionality for other playable classes. They are not playable to support the fact that it's an abstract class. If you select it, it won't be highlighted in orange in the tree, you won't be able to return to the gameplay screen and the character name displayed will indicate that the class is abstract.\n\n\n\nClick on the [Enter] key to continue.";
+                    check++;
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) && check == 3)
+            {
+                RightForeground.SetActive(false);
+                LeftForeground.SetActive(true);
+                LeftTutorialTipText.text = "Your classes now belong to families that can provide them special abilities. You'll see which family it belongs to in the “Special Ability” section. Families are becoming more and more specific to maintain the concept of polymorphism. The most accomplished (the youngest) will provide the character with a boost to the corresponding attribute. Special Abilities cannot be modified or removed, and are only defined when a new character is created.\n\n\n\nClick on the [Enter] key to continue.";
+                check++;
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) && check == 4)
+            {
+                LeftForeground.SetActive(false);
+                MainForeground.SetActive(true);
+                MainTutorialTipText.text = "To move the yellow cubes, you'll need to create a character specialized in grabbing objects. Given that “Grabbing” is a “Manual” method, we'll focus on Fiona, which is a manual character.\n\nCreate a child for Fiona, NON ABSTRACT in order to play with, specializing in the “Grabbing” family and adding it the “Grabbing” method. Thanks to this class/character, you'll be able to move any cube in the game.\n\n\n\nClick on the [Enter] key to close.";
+                check++;
+            }
+            else if(Input.GetKeyDown(KeyCode.Return) && check == 5)
+            {
+                TutorialTip.SetActive(false);
+                MainForeground.SetActive(false);
+                SwapSceenToGameplay.SetActive(true);
+                CharacterCreationPlus.SetActive(true);
+                CharacterCreationPlus.GetComponent<Button>().onClick.AddListener(() => hasClicked());
+                check++;
+            }
+            else if(clikedForCreation && check == 6)
+            {
+                GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/CharacterType/Button").GetComponent<Toggle>().interactable = false;
+                check++;
+            }
+        }
     }
     private IEnumerator Wait(float duration)
     {
@@ -237,5 +295,9 @@ public class TutorialManager : MonoBehaviour
     public void Swapp()
     {
         hasSwapped = true;
+    }
+    public void hasClicked()
+    {
+        clikedForCreation = true;
     }
 }

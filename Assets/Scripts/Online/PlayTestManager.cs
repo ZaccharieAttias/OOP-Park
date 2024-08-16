@@ -52,7 +52,8 @@ public class PlayTestManager : MonoBehaviour
 
         foreach (var character in CharactersData.CharactersManager.CharactersCollection)
             character.IsOriginal = true;
-        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.First());
+            
+        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.Where(x => !x.IsAbstract).First());
         GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
 
         RestrictionManager.Instance.OnlineBuild = false;

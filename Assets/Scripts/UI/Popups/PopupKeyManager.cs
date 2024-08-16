@@ -17,6 +17,7 @@ public class PopupKeyManager : MonoBehaviour
 
     [Header("Buttons")]
     public GameObject ButtonPrefab;
+    private bool canActivate;
 
 
     public void Start()
@@ -27,7 +28,13 @@ public class PopupKeyManager : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G)) ToggleActivation();
+        canActivate = true;
+        if (GameObject.Find("Scripts/PlayTestManager") != null)
+        {
+            if (!GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay)
+                canActivate = false;
+        }
+        if (Input.GetKeyDown(KeyCode.G) && canActivate) ToggleActivation();
     }
     public void InitializeScripts()
     {

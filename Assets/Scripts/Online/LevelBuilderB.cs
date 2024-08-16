@@ -249,7 +249,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_groundMap[x, y, z] != null)
         {
-            CommandPopup.Show("Wall can not be placed on a ground", 2);
+            CommandPopup.Show("Wall can not be placed on a ground", 2, "Online");
             return;
         }
 
@@ -280,7 +280,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_groundMap[x, y, z] == null || _groundMap[x, y + 1, z] != null)
         {
-            CommandPopup.Show("Covers can be placed over the ground only.", 2);
+            CommandPopup.Show("Covers can be placed over the ground only.", 2, "Online");
             return;
         }
 
@@ -310,7 +310,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 2 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            CommandPopup.Show("Props can be placed on the ground only.", 2);
+            CommandPopup.Show("Props can be placed on the ground only.", 2, "Online");
             return;
         }
 
@@ -341,7 +341,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            CommandPopup.Show("Checkpoints can be placed on the ground only.", 2);
+            CommandPopup.Show("Checkpoints can be placed on the ground only.", 2, "Online");
             return;
         }
 
@@ -378,7 +378,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            CommandPopup.Show("Trophy can be placed on the ground only.", 2);
+            CommandPopup.Show("Trophy can be placed on the ground only.", 2, "Online");
             return;
         }
 
@@ -409,7 +409,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y - 1, z] == null))
         {
-            CommandPopup.Show("Spike can be placed on the ground only.", 2);
+            CommandPopup.Show("Spike can be placed on the ground only.", 2, "Online");
             return;
         }
 
@@ -438,7 +438,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _groundMap[x, y + 1, z] == null))
         {
-            CommandPopup.Show("Reverse Spike can be placed under the ground only.", 2);
+            CommandPopup.Show("Reverse Spike can be placed under the ground only.", 2, "Online");
             return;
         }
 
@@ -468,7 +468,7 @@ public class LevelBuilderB : MonoBehaviour
         //ne peut pas etre placé sur le sol ou sur un mur
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
         {
-            CommandPopup.Show("Brick can not be placed on the ground or on a wall.", 2);
+            CommandPopup.Show("Brick can not be placed on the ground or on a wall.", 2, "Online");
             return;
         }
 
@@ -487,8 +487,8 @@ public class LevelBuilderB : MonoBehaviour
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = false;
         block.GameObject.tag = "Brick";
         block.GameObject.AddComponent<Animator>();
-        string name = _index == 5 ? "Animations/BreakingBricks/Red/RedBrick" : "Animations/BreakingBricks/Grey/GreyBrick";
-        block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load(name) as RuntimeAnimatorController;
+        if (_index == 5) block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/BreakingBricks/Red/RedBrick") as RuntimeAnimatorController;
+        else block.GameObject.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animations/BreakingBricks/Grey/GreyBrick") as RuntimeAnimatorController;
         block.GameObject.AddComponent<BreakingBrick>();
 
         _gameplayMap[x, y, z] = block;
@@ -548,7 +548,7 @@ public class LevelBuilderB : MonoBehaviour
 
         if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
         {
-            CommandPopup.Show("Players can not be placed on the ground or on a wall.", 2);
+            CommandPopup.Show("Players can not be placed on the ground or on a wall.", 2, "Online");
             return;
         }
 
@@ -761,7 +761,7 @@ public class LevelBuilderB : MonoBehaviour
         JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
         JsonUtilityManager.SetPath(path);
         JsonUtilityManager.Load();
-        CharacterEditor.LoadFromJson();
+        //CharacterEditor.LoadFromJson();
         SetUI();
     }
     private void BuildLevel(string json)

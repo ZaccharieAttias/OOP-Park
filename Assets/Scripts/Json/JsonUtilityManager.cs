@@ -15,11 +15,6 @@ public class JsonUtilityManager : MonoBehaviour
 
         InitializeData();
     }
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S)) Save();
-        // if (Input.GetKeyDown(KeyCode.L)) Load();
-    }
     public void InitializeData()
     {
         AttributesData.Initialize(FolderPath);
@@ -40,7 +35,7 @@ public class JsonUtilityManager : MonoBehaviour
     public void Load()
     {
         LoadData();
-        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.First());
+        CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.Where(x => !x.IsAbstract).First());
         GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
     }
     public void SetPath(string path)

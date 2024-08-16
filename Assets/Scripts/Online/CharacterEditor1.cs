@@ -39,7 +39,6 @@ public class CharacterEditor1 : MonoBehaviour
         {
             Character = GameObject.Find("Player").GetComponent<CharacterBase>();
         }
-        AssetStoreLink = "http://u3d.as/QCQ";
     }
     public void LoadFromJson()
     {

@@ -8,18 +8,22 @@ public class Popup : MonoBehaviour
     public Text Message;
     public TutorialManager TutorialManager;
 
-    public void Show(string message, int duration)
+    public void Show(string message, int duration, string level)
     {
         CanvasGroup.alpha = 1;
         Message.text = message;
-        if (TutorialManager) StartCoroutine(HideTuto(duration));
+        if (TutorialManager) 
+        {
+            if (level == "C0L1") StartCoroutine(HideTuto(duration));
+            else StartCoroutine(Hide(duration));
+        }
         else StartCoroutine(Hide(duration));
     }
 
     private IEnumerator HideTuto(int duration)
     {
         yield return new WaitForSeconds(duration);
-        // attendre que hasMoved et hasJumped soit vrai
+
         yield return new WaitUntil(() => TutorialManager.hasMoved && TutorialManager.hasJumped);
         
         while (CanvasGroup.alpha > 0)
