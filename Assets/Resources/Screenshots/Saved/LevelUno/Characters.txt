@@ -1,0 +1,311 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Liam",
+    "Description": "I'm Liam",
+    "Attributes": [
+      {
+        "Owner": "Liam",
+        "Name": "gravity",
+        "Value": 4.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Liam",
+        "Name": "grabbing",
+        "Value": 50.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Liam",
+        "Name": "inverseGravity",
+        "Value": -40.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Liam",
+        "Name": "wallJump",
+        "Value": 3.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Liam",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Liam",
+          "Name": "gravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": null,
+    "Childrens": [
+      "Emily",
+      "Chloe",
+      "Grace"
+    ]
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Emily",
+    "Description": "I'm Emily",
+    "Attributes": [
+      {
+        "Owner": "Emily",
+        "Name": "grabbing",
+        "Value": 20.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Emily",
+        "Name": "wallJump",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Emily",
+        "Name": "fireballShoot",
+        "Value": 0.25,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Emily",
+        "Name": "Grabbing",
+        "Attribute": {
+          "Owner": "Emily",
+          "Name": "grabbing",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Emily",
+        "Name": "FireballShoot",
+        "Attribute": {
+          "Owner": "Emily",
+          "Name": "fireballShoot",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Liam",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Chloe",
+    "Description": "I'm Chloe",
+    "Attributes": [
+      {
+        "Owner": "Chloe",
+        "Name": "multipleJumps",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Chloe",
+        "Name": "MultipleJumps",
+        "Attribute": {
+          "Owner": "Chloe",
+          "Name": "multipleJumps",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Liam",
+    "Childrens": [
+      "Oliver",
+      "Henry"
+    ]
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Grace",
+    "Description": "I'm Grace",
+    "Attributes": [
+      {
+        "Owner": "Grace",
+        "Name": "inverseGravity",
+        "Value": -40.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Grace",
+        "Name": "wallJump",
+        "Value": 2.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Grace",
+        "Name": "WallJump",
+        "Attribute": {
+          "Owner": "Grace",
+          "Name": "wallJump",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Liam",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Oliver",
+    "Description": "I'm Oliver",
+    "Attributes": [
+      {
+        "Owner": "Oliver",
+        "Name": "speed",
+        "Value": 2.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Oliver",
+        "Name": "gravity",
+        "Value": -5.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Oliver",
+        "Name": "Speed",
+        "Attribute": {
+          "Owner": "Oliver",
+          "Name": "speed",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Oliver",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Oliver",
+          "Name": "gravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Chloe",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Henry",
+    "Description": "I'm Henry",
+    "Attributes": [
+      {
+        "Owner": "Henry",
+        "Name": "wallJump",
+        "Value": 5.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 2
+      }
+    ],
+    "Methods": [],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Chloe",
+    "Childrens": []
+  }
+]
