@@ -28,7 +28,8 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject Player;
     public Vector3 StartPosition;
-    public GameObject CheckPoint;
+    public GameObject CheckPoint1;
+    public GameObject CheckPoint2;
     public GameObject Wall;
     public GameObject Brick;
 
@@ -47,6 +48,7 @@ public class TutorialManager : MonoBehaviour
     public int nbrOfChracaterSelected = 0;
     public string Previouscharacter;
     public bool clikedForCreation = false;
+    public bool isOk = false;
 
     public AiModelData AiModelData;
 
@@ -84,7 +86,7 @@ public class TutorialManager : MonoBehaviour
                 if (Player.transform.position.y > StartPosition.y && !hasJumped)
                     hasJumped = true;
             }
-            else if (Vector3.Distance(Player.transform.position, CheckPoint.transform.position) < 3 && !hasSeenCheckpoint && check == 1)
+            else if (Vector3.Distance(Player.transform.position, CheckPoint1.transform.position) < 3 && !hasSeenCheckpoint && check == 1)
             {
                 hasSeenCheckpoint = true;
                 CommandPopup.Show("The flags are checkpoints.\nThey will turn red once they have been touch.", 4, "C0L1");
@@ -180,12 +182,13 @@ public class TutorialManager : MonoBehaviour
                 LeftForeground.SetActive(false);
                 TutorialTip.SetActive(false);
                 check++;
+                SwapSceenToGameplay.SetActive(false);
             }
             else if (Previouscharacter != CharactersData.CharactersManager.CurrentCharacter.Name && check == 5)
             {
                 Previouscharacter = CharactersData.CharactersManager.CurrentCharacter.Name;
                 nbrOfChracaterSelected++;
-                if (nbrOfChracaterSelected >= 5)
+                if (nbrOfChracaterSelected >= 4)
                 {
                     TutorialTip.SetActive(true);
                     RightForeground.SetActive(true);
@@ -199,6 +202,7 @@ public class TutorialManager : MonoBehaviour
             {
                 TutorialTip.SetActive(false);
                 RightForeground.SetActive(false);
+                CommandPopup.Show("Create to Emily a child and set him the WallJump method.", 20, "C0L2");
                 check++;
             }
             else if (CharactersData.CharactersManager.CharactersCollection.Count == 5 && check == 7)
@@ -211,11 +215,22 @@ public class TutorialManager : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.Return) && check == 8)
             {
+                CommandPopup.CanvasGroup.alpha = 0;
                 TutorialTip.SetActive(false);
                 LeftForeground.SetActive(false);
                 check++;
             }
-            else if (Vector3.Distance(Player.transform.position, CheckPoint.transform.position) < 3 && !hasSeenCheckpoint && check == 9)
+            else if (CharactersData.CharactersManager.CurrentCharacter.Methods.Find(x => x.Name == "WallJump") != null && check == 9 && !isOk)
+            {
+                SwapSceenToGameplay.SetActive(true);
+                isOk = true;
+            }
+            else if (CharactersData.CharactersManager.CurrentCharacter.Methods.Find(x => x.Name == "WallJump") == null && check == 9)
+            {
+                SwapSceenToGameplay.SetActive(false);
+                isOk = false;
+            }
+            else if (Vector3.Distance(Player.transform.position, CheckPoint1.transform.position) < 2 && !hasSeenCheckpoint && check == 9 && isOk)
             {
                 hasSeenCheckpoint = true;
                 TutorialTip.SetActive(true);
@@ -229,6 +244,11 @@ public class TutorialManager : MonoBehaviour
                 MainForeground.SetActive(false);
                 check++;
             }
+            else if (check == 11)
+            {
+                CommandPopup.Show("Create a child for Jack and set him the FirebalShoot attribute and method and proceed an upcasting for inverse the gravity.", 20, "C0L2");
+                check++;
+            }
         }
         else
         {
@@ -236,6 +256,8 @@ public class TutorialManager : MonoBehaviour
             {
                 TutorialTip.SetActive(false);
                 MainForeground.SetActive(false);
+                RestrictionManager.Instance.AllowEncapsulation = false;
+                RestrictionManager.Instance.AllowOverride = false;
                 CommandPopup.Show("Cube objects can be carried and moved using a certain method. They don't all have the same weight! The yellow ones are EXTREMELY heavy.", 3, "C0L3");
                 check++;
             }
@@ -245,6 +267,7 @@ public class TutorialManager : MonoBehaviour
                 SwapSceenToGameplay.SetActive(false);
                 CharacterCreationPlus.SetActive(false);
                 check++;
+                hasSwapped = false;
             }
             else if (Previouscharacter != CharactersData.CharactersManager.CurrentCharacter.Name && check == 2)
             {
@@ -263,12 +286,15 @@ public class TutorialManager : MonoBehaviour
                 RightForeground.SetActive(false);
                 LeftForeground.SetActive(true);
                 LeftTutorialTipText.text = "Your classes now belong to families that can provide them special abilities. You'll see which family it belongs to in the “Special Ability” section. Families are becoming more and more specific to maintain the concept of polymorphism. The most accomplished (the youngest) will provide the character with a boost to the corresponding attribute. Special Abilities cannot be modified or removed, and are only defined when a new character is created.\n\n\n\nClick on the [Enter] key to continue.";
+                Plus.SetActive(true);
                 check++;
             }
             else if (Input.GetKeyDown(KeyCode.Return) && check == 4)
             {
                 LeftForeground.SetActive(false);
                 MainForeground.SetActive(true);
+                Plus.SetActive(false);
+                Plus = GameObject.Find("Canvas/Popups/Tutorial/Background/Foreground2/Buttons/Description");
                 MainTutorialTipText.text = "To move the yellow cubes, you'll need to create a character specialized in grabbing objects. Given that “Grabbing” is a “Manual” method, we'll focus on Fiona, which is a manual character.\n\nCreate a child for Fiona, NON ABSTRACT in order to play with, specializing in the “Grabbing” family and adding it the “Grabbing” method. Thanks to this class/character, you'll be able to move any cube in the game.\n\n\n\nClick on the [Enter] key to close.";
                 check++;
             }
@@ -276,7 +302,6 @@ public class TutorialManager : MonoBehaviour
             {
                 TutorialTip.SetActive(false);
                 MainForeground.SetActive(false);
-                SwapSceenToGameplay.SetActive(true);
                 CharacterCreationPlus.SetActive(true);
                 CharacterCreationPlus.GetComponent<Button>().onClick.AddListener(() => hasClicked());
                 check++;
@@ -284,6 +309,99 @@ public class TutorialManager : MonoBehaviour
             else if(clikedForCreation && check == 6)
             {
                 GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/CharacterType/Button").GetComponent<Toggle>().interactable = false;
+                check++;
+            }
+            // verifier si le joueur a bien rajouter la methode grabbing
+            else if (CharactersData.CharactersManager.CurrentCharacter.Methods.Find(x => x.Name == "Grabbing") != null && check == 7 && !isOk)
+            {
+                SwapSceenToGameplay.SetActive(true);
+                isOk = true;
+            }
+            else if (CharactersData.CharactersManager.CurrentCharacter.Methods.Find(x => x.Name == "Grabbing") == null && check == 7)
+            {
+                SwapSceenToGameplay.SetActive(false);
+                isOk = false;
+            }
+            else if (hasSwapped && check == 7 && isOk)
+            {
+                CommandPopup.Show("Press 'E' next to a cube to grab it.", 2, "C0L3");
+                check++;
+                hasSwapped = false;
+                isOk = false;
+            }
+            else if (Vector3.Distance(Player.transform.position, CheckPoint1.transform.position) < 1 && !hasSeenCheckpoint && check == 8)
+            {
+                hasSwapped = false;
+                hasSeenCheckpoint = true;
+                CommandPopup.Show("Well done!!\n\nNow we will help you to reach the top by using Encaspulation.\nSwap to the Character Center.", 50, "C0L3");
+                CharacterCreationPlus.SetActive(false);
+                check++;
+            }
+            else if (hasSwapped &&check == 9)
+            {
+                CommandPopup.CanvasGroup.alpha = 0;
+                RestrictionManager.Instance.AllowEncapsulation = true;
+                hasSeenCheckpoint = false;
+                SwapSceenToGameplay.SetActive(false);
+                TutorialTip.SetActive(true);
+                LeftForeground.SetActive(true);
+                LeftTutorialTipText.text = "Encapsulation allows you to decide whether each character attribute has access to a setter and a getter irrespective of its access modifier. If an attribute includes a setter, its value can be modified. If it has a getter method, its value can be accessed by descended classes, allowing controlled visibility and modification of class properties. This ensures that attributes are accessed and manipulated in a controlled manner.\n\nAs you may have noticed, next to Description there is a new button “A”, for All. By clicking on it, you'll find a list of all Get and Set methods attached to the attributes of your selected class.\n\n\n\nClick on the [Enter] key to continue.";
+                check++;
+                Plus.SetActive(true);
+                hasSwapped = false;
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) && check ==10)
+            {
+                LeftTutorialTipText.text = "By right-clicking on an attribute or method, the description section will be updated to display a description of it.\n\nFor an attribute, two buttons will be added: “G” for Get and “S” for Set. Selecting one will create a Get or Set method for the attribute.\n\n\n To continue in the level, you'll need to access a higher platform. To do this, we'll use George's MultipleJumps capability. Select George, and as you will see he already has a Get and Set method for the multipleJump attribute.\n\n\n\nClick on the [Enter] key to close.";
+                check++;
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) && check ==11)
+            {
+                Plus.SetActive(false);
+                LeftForeground.SetActive(false);
+                TutorialTip.SetActive(false);
+                CommandPopup.Show("Select George.", 20, "C0L3");
+                check++;
+            }
+            else if (CharactersData.CharactersManager.CurrentCharacter.Name == "George" && check == 12 && !isOk)
+            {
+                SwapSceenToGameplay.SetActive(true);
+                isOk = true;
+            }
+            else if (CharactersData.CharactersManager.CurrentCharacter.Name != "George" && check == 12)
+            {
+                SwapSceenToGameplay.SetActive(false);
+                isOk = false;
+            }
+            else if (hasSwapped && check == 12 && isOk)
+            {
+                CommandPopup.CanvasGroup.alpha = 0;
+                TutorialTip.SetActive(true);
+                MainForeground.SetActive(true);
+                MainTutorialTipText.text = "Now we'll explain how utilize your Set and Get.\nTo proceed, press [G] on your keyboard, this will open a contextual menu in which you can manage your attributes.\nHere you can select the attribute you wish to work with. All attributes with Setters will be displayed in this list\n\nIn OOP Park, in order to modify a value, you need to have access to it via its Getter.\nIn the Getters section of the menu, you'll be able to choose a value for your attribute from among the existing values of that attribute, both yours and your ancestors', accessible via Getters.\nAnd in the lower part of the menu, if your attribute has a Set method, you'll be able to modify the value of your attribute as you wish.\n\nTip: To continue in the level, you'll need to change via a get or set method tha value of multupleJumps.\n\n\n\nClick on the [Enter] key to close.";
+                check++;
+                isOk = false;
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) && check == 13)
+            {
+                MainForeground.SetActive(false);
+                TutorialTip.SetActive(false);
+                check++;
+            }
+            else if (Vector3.Distance(Player.transform.position, CheckPoint2.transform.position) < 1 && !hasSeenCheckpoint && check == 14)
+            {
+                hasSeenCheckpoint = true;
+                MainForeground.SetActive(true);
+                TutorialTip.SetActive(true);
+                MainTutorialTipText.text = "Congratulations! You've reached the second checkpoint.\n\nNow we'll explain how to use the Override method.\nTo proceed, press [G] on your keyboard, this will open a contextual menu in which you can override your currently played class by changing his appearance.\nYou'll be able to choose and call non-private methods from ancestor classes through overriding.\nFor greater interactivity, you must modify your appearance to meet certain conditions. These are available by touching the object ? in the level.\n\n\n\nClick on the [Enter] key to close.";
+                check++;
+                RestrictionManager.Instance.AllowEncapsulation = false;
+                RestrictionManager.Instance.AllowOverride = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) && check == 15)
+            {
+                TutorialTip.SetActive(false);
+                MainForeground.SetActive(false);
                 check++;
             }
         }
