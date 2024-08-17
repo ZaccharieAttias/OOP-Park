@@ -49,9 +49,9 @@ public class AbstractClassCheck : MonoBehaviour
     public void InitializeUIElements()
     {
         Popup = GameObject.Find("Canvas/Popups/Abstract");
-        MessagePopup = Popup.transform.Find("Message").gameObject;
+        MessagePopup = Popup.transform.Find("Background").gameObject;
         CharactersContentPanel = GameObject.Find("Canvas/Menus/CharacterCenter/Characters/Tree/Buttons/Background/ScrollView/ViewPort/All").transform;
-        ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Message/ScrollView/ViewPort/Content");
+        ErrorContentPanel = GameObject.Find("Canvas/Popups/Abstract/Background/Foreground/Message/ScrollView/ViewPort/Content");
     }
     public void InitializeButtons()
     {
@@ -282,7 +282,7 @@ public class AbstractClassCheck : MonoBehaviour
                     errorWords.RemoveAt(0);
                     errorObject.transform.Find("Error/Description").GetComponent<TMP_Text>().text = string.Join(" ", errorWords);
 
-                    errorObject.GetComponent<Image>().color = errorWords[^1] == "missing." ? Color.red : Color.yellow;
+                    errorObject.GetComponent<Image>().color = errorWords[^1] == "missing." ? Color.red : Color.blue;
                 }
             }
 
