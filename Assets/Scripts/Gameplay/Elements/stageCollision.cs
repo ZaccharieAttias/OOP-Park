@@ -5,7 +5,7 @@ public class StageCollision : MonoBehaviour
 {
     [Header("Scripts")]
     public CharacterChallengeManager CharacterChallengeManager;
-
+    public int Challenge;
 
     public void Start()
     {
@@ -32,6 +32,9 @@ public class StageCollision : MonoBehaviour
                 break;
             case "Stage2":
                 CharacterChallengeManager.SetChallenge2();
+                break;
+            default:
+                CharacterChallengeManager.SetChallenge(Challenge);
                 break;
         }
     }

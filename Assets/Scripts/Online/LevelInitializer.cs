@@ -57,6 +57,8 @@ public class LevelInitializer : MonoBehaviour
     public string SpecialAbilitiesPath;
     public JsonUtilityManager JsonUtilityManager;
     public bool start = true;
+    public int challenge = 1;
+    public GameObject MissionPrefab;
     public void Start()
     {
         _groundMap = new TileMap(1, 1, 4);
@@ -268,6 +270,7 @@ public class LevelInitializer : MonoBehaviour
                                 case 13: CreateGrabbableObject(x, y, z, 99); break;
                                 case 14: CreateGrabbableObject(x, y, z, 199); break;
                                 case 15: CreateGrabbableObject(x, y, z, 499); break;
+                                case 16: CreateChallengeForOverriding(x, y, z); break;
                             }
                         }
                     }
@@ -615,6 +618,48 @@ public class LevelInitializer : MonoBehaviour
 
         _gameplayMap[x, y, z] = block;
     }
+        public void CreateChallengeForOverriding(int x, int y, int z)
+    {
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
+
+        //ne peut pas etre placé sur le sol ou sur un mur
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
+        {
+            Debug.LogWarning("Brick can not be placed on the ground or on a wall.");
+            return;
+        }
+
+        _gameplayMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.AddComponent<StageCollision>().Challenge = challenge;
+
+        GameObject wall = new GameObject("WallChallenge" + challenge);
+        wall.transform.SetParent(Parent.Find("Gameplay").transform);
+        wall.transform.localPosition = new Vector3(_positionMin.X + x + 3, _positionMin.Y + y);
+        wall.transform.localScale = new Vector3(1f, 150f, 1);
+        wall.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        wall.GetComponent<BoxCollider2D>().size = new Vector2(1, 150);
+        wall.AddComponent<SpriteRenderer>().color = new Color(0.466f, 0.149f, 0.235f, 1f);
+        wall.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Grid/Square");
+
+        GameObject Mission = Instantiate(MissionPrefab, new Vector3(0,0,0), Quaternion.identity);
+        Mission.name = "Mission" + challenge;
+        Mission.transform.SetParent(GameObject.Find("Canvas/Popups").transform);
+        Mission.transform.localPosition = new Vector3(0, 0, 0);
+        challenge++;
+
+        _gameplayMap[x, y, z] = block;
+    }
     private void SetGround(int x, int y, int z)
     {
         if (x < 0 || x >= _groundMap.Width || y < 0 || y >= _groundMap.Height) return;
@@ -715,8 +760,7 @@ public class LevelInitializer : MonoBehaviour
         {
             Checkpoint.GetComponent<Checkpoint>().gameController = Player.GetComponent<GameController>();
         }
-        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
-        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().GameController = Player.GetComponent<GameController>();
     }
     public string GetLevelName()
     {

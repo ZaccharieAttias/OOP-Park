@@ -1,4 +1,5 @@
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
+using Assets.HeroEditor.Common.Scripts.EditorScripts;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -59,6 +60,7 @@ public class CharacterAppearanceManager : MonoBehaviour
         Character = GameObject.Find("Player").GetComponent<Character>();
         playerTransform = GameObject.Find("Player").transform;
         oldPosition = playerTransform.position;
+        GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor>().OnSelectTab(false);
     }
     public void InitializeOverride()
     {
@@ -103,6 +105,12 @@ public class CharacterAppearanceManager : MonoBehaviour
 
         Cameras[0].SetActive(false);
         Cameras[1].SetActive(true);
+        //set all children of grid to inactive
+        foreach (Transform child in GameObject.Find("Grid").transform)
+            child.gameObject.SetActive(false);
+        GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(false);
+        GameObject.Find("Player").GetComponent<Movement>().enabled = false;
+        GameObject.Find("Player").GetComponent<GameController>().enabled = false;
     }
     public void SwitchToMainCamera()
     {
@@ -110,6 +118,11 @@ public class CharacterAppearanceManager : MonoBehaviour
         playerTransform.position = oldPosition;
 
         Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        foreach (Transform child in GameObject.Find("Grid").transform)
+            child.gameObject.SetActive(true);
+        GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").SetActive(true);
+        GameObject.Find("Player").GetComponent<Movement>().enabled = true;
+        GameObject.Find("Player").GetComponent<GameController>().enabled = true;
         Cameras[0].SetActive(true);
         Cameras[1].SetActive(false);
     }

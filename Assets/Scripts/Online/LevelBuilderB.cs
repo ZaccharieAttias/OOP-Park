@@ -44,6 +44,8 @@ public class LevelBuilderB : MonoBehaviour
     public PlayTestManager playTestManager;
     public Popup CommandPopup;
     public bool start = true;
+    public int challenge = 1;
+    public GameObject MissionPrefab;
 
 
     public void Start()
@@ -182,7 +184,7 @@ public class LevelBuilderB : MonoBehaviour
                     case 13: CreateGrabbableObject(p.X, p.Y, _layer, 99); break;
                     case 14: CreateGrabbableObject(p.X, p.Y, _layer, 199); break;
                     case 15: CreateGrabbableObject(p.X, p.Y, _layer, 499); break;
-
+                    case 16: CreateChallengeForOverriding(p.X, p.Y, _layer); break;
                 }
                 break;
         }
@@ -545,6 +547,48 @@ public class LevelBuilderB : MonoBehaviour
 
         _gameplayMap[x, y, z] = block;
     }
+    public void CreateChallengeForOverriding(int x, int y, int z)
+    {
+        if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
+
+        //ne peut pas etre placé sur le sol ou sur un mur
+        if (_index != -1 && _type == 4 && (_groundMap[x, y, z] != null || _wallMap[x, y, z] != null))
+        {
+            CommandPopup.Show("Brick can not be placed on the ground or on a wall.", 2, "Online");
+            return;
+        }
+
+        _gameplayMap.Destroy(x, y, z);
+
+        if (_index == -1) return;
+
+        var block = new Block(SpriteCollection.GamePlaySprite[_index].name);
+        block.Transform.SetParent(Parent.Find("Gameplay").transform);
+        block.Transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
+        block.Transform.localScale = Vector3.one;
+        block.SpriteRenderer.sprite = SpriteCollection.GamePlaySprite[_index];
+        block.SpriteRenderer.sortingOrder = 100 * z + 30;
+        block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+        block.GameObject.AddComponent<StageCollision>().Challenge = challenge;
+
+        GameObject wall = new GameObject("WallChallenge" + challenge);
+        wall.transform.SetParent(Parent.Find("Gameplay").transform);
+        wall.transform.localPosition = new Vector3(_positionMin.X + x + 3, _positionMin.Y + y);
+        wall.transform.localScale = new Vector3(1f, 150f, 1);
+        wall.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
+        wall.GetComponent<BoxCollider2D>().size = new Vector2(1, 150);
+        wall.AddComponent<SpriteRenderer>().color = new Color(0.466f, 0.149f, 0.235f, 1f);
+        wall.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Grid/Square");
+
+        GameObject Mission = Instantiate(MissionPrefab, new Vector3(0,0,0), Quaternion.identity);
+        Mission.name = "Mission" + challenge;
+        Mission.transform.SetParent(GameObject.Find("Canvas/Popups").transform);
+        Mission.transform.localPosition = new Vector3(0, 0, 0);
+        challenge++;
+
+        _gameplayMap[x, y, z] = block;
+    }
     public void CreatePlayer(int x, int y, int z)
     {
         if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
@@ -613,6 +657,7 @@ public class LevelBuilderB : MonoBehaviour
         playTestManager.y_start_pos = Player.transform.position.y;
 
         GameObject.Find("Main Camera").GetComponent<CameraFollow>().StartPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, -10);
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().GameController = Player.GetComponent<GameController>();
     }
     private void SetGround(int x, int y, int z)
     {
@@ -889,7 +934,8 @@ public class LevelBuilderB : MonoBehaviour
                                 CreateGrabbableObject(x, y, z, 199);
                             else if (_index == 15)
                                 CreateGrabbableObject(x, y, z, 499);
-
+                            else if (_index == 16)
+                                CreateChallengeForOverriding(x, y, z);
                         }
                     }
                 }
