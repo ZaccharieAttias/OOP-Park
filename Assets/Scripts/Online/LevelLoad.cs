@@ -1,8 +1,11 @@
 using System.IO;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LevelLoad : MonoBehaviour
 {
@@ -46,7 +49,9 @@ public class LevelLoad : MonoBehaviour
     {
         Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", fileName), true);
         File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", fileName + ".meta"));
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
         Destroy(displayItem);
     }
     public void ToggleOff()

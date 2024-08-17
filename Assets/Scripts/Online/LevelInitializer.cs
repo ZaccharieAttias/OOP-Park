@@ -6,10 +6,13 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LevelInitializer : MonoBehaviour
 {
@@ -103,7 +106,9 @@ public class LevelInitializer : MonoBehaviour
 
         LevelDownload.DownloadLevelTreeData(LevelName);
 
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
         yield return new WaitForSeconds(2f);
         BuildLevel(filePath);
         SetLayers(Terrain.Find("Ground"), "Ground");
@@ -176,7 +181,7 @@ public class LevelInitializer : MonoBehaviour
         _propsMap = new TileMap(width, height, depth);
         _wallMap = new TileMap(width, height, depth);
         _gameplayMap = new TileMap(width, height, depth);
-        _positionMin = new Position(66f -width / 2, -height / 2);
+        _positionMin = new Position(66f - width / 2, -height / 2);
 
         var index = _index;
 
@@ -517,7 +522,7 @@ public class LevelInitializer : MonoBehaviour
         block.GameObject.AddComponent<EdgeCollider2D>();
         block.GameObject.GetComponent<EdgeCollider2D>().offset = new Vector2(0, 0.5f);
         block.GameObject.GetComponent<EdgeCollider2D>().isTrigger = true;
-        block.GameObject.GetComponent<EdgeCollider2D>().points = new Vector2[] {new Vector2(0.436338425f, 0.5048233f), new Vector2(0.4363384f, -0.06517267f), new Vector2(0.406106949f, -0.126236439f), new Vector2(0.368604422f, -0.06568074f), new Vector2(0.188889742f, 0.0613064766f), new Vector2(0.12655139f, -0.122369051f), new Vector2(-0.00450277328f, -0.250551224f), new Vector2(-0.161319971f, -0.126229048f), new Vector2(-0.246645927f, -0.1931541f), new Vector2(-0.373010635f, -0.132702589f), new Vector2(-0.435099125f, -0.06654525f), new Vector2(-0.438595772f, 0.506190062f), new Vector2(0.4385958f, 0.5061901f)};
+        block.GameObject.GetComponent<EdgeCollider2D>().points = new Vector2[] { new Vector2(0.436338425f, 0.5048233f), new Vector2(0.4363384f, -0.06517267f), new Vector2(0.406106949f, -0.126236439f), new Vector2(0.368604422f, -0.06568074f), new Vector2(0.188889742f, 0.0613064766f), new Vector2(0.12655139f, -0.122369051f), new Vector2(-0.00450277328f, -0.250551224f), new Vector2(-0.161319971f, -0.126229048f), new Vector2(-0.246645927f, -0.1931541f), new Vector2(-0.373010635f, -0.132702589f), new Vector2(-0.435099125f, -0.06654525f), new Vector2(-0.438595772f, 0.506190062f), new Vector2(0.4385958f, 0.5061901f) };
         block.GameObject.tag = "Obstacle";
 
         _gameplayMap[x, y, z] = block;

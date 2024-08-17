@@ -1,7 +1,10 @@
 using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class PlayTestManager : MonoBehaviour
 {
@@ -52,7 +55,7 @@ public class PlayTestManager : MonoBehaviour
 
         foreach (var character in CharactersData.CharactersManager.CharactersCollection)
             character.IsOriginal = true;
-            
+
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.Where(x => !x.IsAbstract).First());
         GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
 
@@ -97,7 +100,10 @@ public class PlayTestManager : MonoBehaviour
 
         foreach (string file in Directory.GetFiles(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp"))
             File.Delete(file);
+
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
 
         GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
         GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>().ApplyPowerup(CharactersData.CharactersManager.CurrentCharacter);

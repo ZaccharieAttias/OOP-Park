@@ -5,9 +5,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LevelUpload : MonoBehaviour
 {
@@ -130,7 +133,9 @@ public class LevelUpload : MonoBehaviour
             }
         });
 
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
         string[] files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName));
         foreach (string file in files)
         {
@@ -139,7 +144,9 @@ public class LevelUpload : MonoBehaviour
                 File.Delete(file);
             }
         }
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
     }
     public void UploadLevelTreeData(int levelID)
     {
@@ -153,7 +160,9 @@ public class LevelUpload : MonoBehaviour
 
         AddingFilesToAsset(levelID, files, 0, textFileType);
 
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
         string[] filess = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName));
         foreach (string file in filess)
         {
@@ -162,7 +171,9 @@ public class LevelUpload : MonoBehaviour
                 File.Delete(file);
             }
         }
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
     }
     public void OpenUploadLevelUI()
     {
@@ -283,7 +294,7 @@ public class LevelUpload : MonoBehaviour
                 AddingFilesToAsset(levelID, files, i, filePurpose);
                 // si cetait le dernier fichier LevelUploadUi.SetActive(false);
                 if (i >= files.Length)
-                {   
+                {
                     LevelUploadUi.SetActive(false);
                     LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>().interactable = true;
                     LevelUploadUi.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>().interactable = true;

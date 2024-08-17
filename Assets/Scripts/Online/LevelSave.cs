@@ -2,8 +2,11 @@ using Assets.PixelFantasy.PixelTileEngine.Scripts;
 using Newtonsoft.Json;
 using System.IO;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LevelSave : MonoBehaviour
 {
@@ -55,7 +58,7 @@ public class LevelSave : MonoBehaviour
 
         // Save Level Data (character center)
         SaveLevelTreeData();
-        
+
         LevelSaveUi.SetActive(false);
     }
     public void SaveLevelData()
@@ -63,14 +66,18 @@ public class LevelSave : MonoBehaviour
         string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + "_Data.json";
         SaveLevel(textFilePath);
 
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
     }
     public void SaveLevelTreeData()
     {
         string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName;
         SaveCharacter(textFilePath);
 
+#if UNITY_EDITOR
         AssetDatabase.Refresh();
+#endif
     }
     public void SaveLevel(string path)
     {
