@@ -20016,9 +20016,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.46666667, g: 0.14901961, b: 0.23529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -21939,6 +21939,7 @@ MonoBehaviour:
   CharacterAppearanceManager: {fileID: 0}
   CharacterEditor1: {fileID: 0}
   AiModelData: {fileID: 0}
+  GameController: {fileID: 0}
   Mission1Popup: {fileID: 0}
   Mission2Popup: {fileID: 0}
   Walls: []
@@ -37587,7 +37588,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.7, y: 0.7}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -37637,7 +37638,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 183996836, guid: 93ce79f4af29cbf42ababd8682a4185b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -39678,7 +39679,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &861974859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49189,11 +49190,11 @@ PrefabInstance:
     - target: {fileID: 6892170699329562528, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: jumpSound
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 99d45e69d43a88c4a83f93a1f79669ae, type: 3}
     - target: {fileID: 6892170699329562528, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: fireballSound
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 20116b8760a4077469ee4a0d882d92d1, type: 3}
     - target: {fileID: 6892170699329562528, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: GroundCheckBox
       value: 
@@ -49205,11 +49206,11 @@ PrefabInstance:
     - target: {fileID: 8897005514050785497, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: deathSound
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: bc8a4bda3bdf15b499817f1fe0e58ec9, type: 3}
     - target: {fileID: 8897005514050785497, guid: cb9012fce43318348986c4bfe5c029ab, type: 3}
       propertyPath: victorySound
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 1dafdcfc8d2889b4a8d996fa8d4005a7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -76190,7 +76191,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.7, y: 0.7}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -76240,7 +76241,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 183996836, guid: 93ce79f4af29cbf42ababd8682a4185b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85249,9 +85250,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.46666667, g: 0.14901961, b: 0.23529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

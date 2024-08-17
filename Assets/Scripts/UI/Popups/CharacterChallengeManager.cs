@@ -15,19 +15,29 @@ public class CharacterChallengeManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject Mission1Popup;
     public GameObject Mission2Popup;
+    public List<GameObject> MissionPopup;
     public List<GameObject> Walls;
 
     [Header("Challenge Attributes")]
     public int Challenge;
-
+    public Dictionary<int, List<string>> ChallengeAppearancesConditions;
 
     public void Start()
     {
         InitializeScripts();
-        InitializeUIElements();
-        InitializeUniqueListeners();
-        InitializeSelfProperties();
-        UpdateWallsBasedOnAppearance();
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+        {
+            InitializeUIElements();
+            InitializeUniqueListeners();
+            InitializeSelfProperties();
+            UpdateWallsBasedOnAppearance();
+        }
+        else
+        {
+            InitializeUniqueListeners();
+            InitializeSelfProperties();
+            ChallengeAppearancesConditions = new Dictionary<int, List<string>>();
+        }
 
     }
     public void InitializeScripts()
@@ -39,7 +49,8 @@ public class CharacterChallengeManager : MonoBehaviour
 
         CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
         AiModelData = GameObject.Find("Scripts/AiModelData").GetComponent<AiModelData>();
-        GameController = GameObject.Find("Player").GetComponent<GameController>();
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+            GameController = GameObject.Find("Player").GetComponent<GameController>();
     }
     public void InitializeUIElements()
     {
@@ -51,6 +62,12 @@ public class CharacterChallengeManager : MonoBehaviour
             GameObject.Find("Grid/Challenges/Wall1"),
             GameObject.Find("Grid/Challenges/Wall2"),
         };
+    }
+    public void InitializeUIOnlineElements(int index, List<string> appearancesCondition)
+    {
+        ChallengeAppearancesConditions.Add(index, appearancesCondition);
+        MissionPopup.Add(GameObject.Find("Canvas/Popups/Mission" + index));
+        Walls.Add(GameObject.Find("Grid/LevelBuilder/Gameplay/WallChallenge" + index));
     }
     public void InitializeUniqueListeners()
     {
@@ -70,18 +87,27 @@ public class CharacterChallengeManager : MonoBehaviour
 
     public void ConfirmFactory()
     {
-        UpdateWallsBasedOnAppearance();
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+            UpdateWallsBasedOnAppearance();
+        else
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
         AiModelData.AppearanceLevelTries++;
     }
     public void CancelFactory()
     {
         CharacterEditor1.LoadFromJson();
-        UpdateWallsBasedOnAppearance();
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+            UpdateWallsBasedOnAppearance();
+        else
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
     }
     public void ResetFactory()
     {
         CharacterEditor1.LoadFromJson();
-        UpdateWallsBasedOnAppearance();
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+            UpdateWallsBasedOnAppearance();
+        else
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
     }
 
     public void UpdateWallsBasedOnAppearance()
@@ -109,12 +135,31 @@ public class CharacterChallengeManager : MonoBehaviour
     {
         Mission2Popup.SetActive(true);
     }
+    public void SetChallenge(int Challenge)
+    {
+        MissionPopup[Challenge - 1].SetActive(true);
+    }
 
     public void BackStage()
     {
         GameController.returnLastPosition();
 
         CharacterEditor1.LoadFromJson();
-        UpdateWallsBasedOnAppearance();
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+            UpdateWallsBasedOnAppearance();
+        else
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
+
+    }
+    public void UpdateWallsBasedOnAppearance(int index, List<string> appearancesCondition)
+    {
+        string json = CharacterAppearanceManager.Character.ToJson();
+
+        // if all conditions are met, set wall to inactive
+        if (ChallengeAppearancesConditions[index].All(appearance => json.Contains(appearance)))
+        {
+            Walls[index-1].SetActive(false);
+            Challenge++;
+        }
     }
 }
