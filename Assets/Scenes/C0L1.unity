@@ -21891,7 +21891,8 @@ MonoBehaviour:
   LeftTutorialTipText: {fileID: 865462765}
   Player: {fileID: 4802379}
   StartPosition: {x: 0, y: 0, z: 0}
-  CheckPoint: {fileID: 598962027}
+  CheckPoint1: {fileID: 598962027}
+  CheckPoint2: {fileID: 0}
   Wall: {fileID: 0}
   Brick: {fileID: 1096794974}
   SwapSceenToCenter: {fileID: 522006881}
@@ -21905,6 +21906,8 @@ MonoBehaviour:
   hasSwapped: 0
   nbrOfChracaterSelected: 0
   Previouscharacter: 
+  clikedForCreation: 0
+  isOk: 0
   AiModelData: {fileID: 0}
 --- !u!1 &419432687
 GameObject:
