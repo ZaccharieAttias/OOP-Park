@@ -62,6 +62,8 @@ public class CharacterAppearanceManager : MonoBehaviour
     }
     public void InitializeOverride()
     {
+        if (GameObject.Find("Player") == null) return;
+        if (CharactersData.CharactersManager.CharactersCollection.Count == 0) return;
         if (RestrictionManager.Instance.AllowOverride)
         {
             var rootCharacter = CharactersData.CharactersManager.CharactersCollection.First();

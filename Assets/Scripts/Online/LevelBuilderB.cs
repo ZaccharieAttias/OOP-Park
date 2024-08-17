@@ -1,5 +1,6 @@
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using Assets.PixelFantasy.PixelTileEngine.Scripts;
+using Assets.HeroEditor.Common.Scripts.EditorScripts;
 using HeroEditor.Common;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ public class LevelBuilderB : MonoBehaviour
     private Transform Terrain;
     private Transform Walls;
     private CharacterEditor1 CharacterEditor;
+    private CharacterEditor Charactereditor;
     public GameObject PlayerPrefab;
     public GameObject Player;
     public SwapScreen swapScreen;
@@ -56,6 +58,7 @@ public class LevelBuilderB : MonoBehaviour
         Terrain = Parent.Find("Terrain");
         Walls = Parent.Find("Walls");
         CharacterEditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
+        Charactereditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor>();
         swapScreen = GameObject.Find("Scripts/CharacterEditor").GetComponent<SwapScreen>();
 
         MinimumObjectsCreated.Add("Player", false);
@@ -563,9 +566,13 @@ public class LevelBuilderB : MonoBehaviour
             Player.transform.localPosition = new Vector3(_positionMin.X + x, _positionMin.Y + y);
 
             CharacterEditor.Character = Player.GetComponent<CharacterBase>();
+            Charactereditor.Character = Player.GetComponent<CharacterBase>();
+            GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeCharacterComponents();
+            GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeOverride();
+
             CharacterEditor.LoadFromJson(CharacterName);
-            GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
-            GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
+            // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
+            // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
             MinimumObjectsCreated["Player"] = true;
         }
         else
@@ -908,9 +915,12 @@ public class LevelBuilderB : MonoBehaviour
         Player.transform.localPosition = new Vector3(x_position, y_position);
 
         CharacterEditor.Character = Player.GetComponent<CharacterBase>();
+        Charactereditor.Character = Player.GetComponent<CharacterBase>();
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeCharacterComponents();
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeOverride();
 
-        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
-        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
+        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
+        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
         MinimumObjectsCreated["Player"] = true;
 
         SetPlayer();

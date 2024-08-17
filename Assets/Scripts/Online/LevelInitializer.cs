@@ -1,5 +1,6 @@
 using Assets.HeroEditor.Common.Scripts.CharacterScripts;
 using Assets.PixelFantasy.PixelTileEngine.Scripts;
+using Assets.HeroEditor.Common.Scripts.EditorScripts;
 using HeroEditor.Common;
 using Newtonsoft.Json;
 using System.Collections;
@@ -35,6 +36,7 @@ public class LevelInitializer : MonoBehaviour
     private Transform Walls;
     public GameObject PlayerPrefab;
     private CharacterEditor1 CharacterEditor1;
+    private CharacterEditor Charactereditor;
     private GameObject MainCamera;
     private float x_position;
     private float y_position;
@@ -67,6 +69,7 @@ public class LevelInitializer : MonoBehaviour
         Terrain = Parent.Find("Terrain");
         Walls = Parent.Find("Walls");
         CharacterEditor1 = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>();
+        Charactereditor = GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor>();
         MainCamera = GameObject.Find("Main Camera");
         LevelDownload = GameObject.Find("LevelManager").GetComponent<LevelDownload>();
         if (GameObject.Find("LevelManager").GetComponent<LevelLoad>() != null)
@@ -119,7 +122,8 @@ public class LevelInitializer : MonoBehaviour
             character.IsOriginal = true;
         JsonUtilityManager.Save();
         CharacterEditor1.LoadFromJson();
-
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeCharacterComponents();
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeOverride();
         var chapterInfo = new ChapterInfo()
         {
             ChapterNumber = 0,
@@ -700,6 +704,7 @@ public class LevelInitializer : MonoBehaviour
         GameObject Player = Instantiate(PlayerPrefab, new Vector3(x_position, y_position, 0), Quaternion.identity);
         Player.name = "Player";
         CharacterEditor1.Character = Player.GetComponent<CharacterBase>();
+        Charactereditor.Character = Player.GetComponent<CharacterBase>();
         Player.SetActive(true);
         MainCamera.GetComponent<CameraFollow>().Player = Player;
         MainCamera.GetComponent<CameraFollow>().StartPosition = new Vector3(x_position, y_position, -10);
@@ -710,8 +715,8 @@ public class LevelInitializer : MonoBehaviour
         {
             Checkpoint.GetComponent<Checkpoint>().gameController = Player.GetComponent<GameController>();
         }
-        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
-        GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
+        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
+        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
     }
     public string GetLevelName()
     {
