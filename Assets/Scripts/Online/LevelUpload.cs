@@ -123,12 +123,14 @@ public class LevelUpload : MonoBehaviour
                     }
                     else
                     {
+                        ErrorText.GetComponent<TMP_Text>().text = "Level Creation Failed";
                         Debug.Log("Level Data Upload Failed");
                     }
                 });
             }
             else
             {
+                ErrorText.GetComponent<TMP_Text>().text = "Level Creation Failed";
                 Debug.Log("Screenshot Upload Failed");
             }
         });
@@ -314,8 +316,7 @@ public class LevelUpload : MonoBehaviour
             {
                 i++;
                 AddingFilesToAsset(levelID, files, i, filePurpose);
-                // si cetait le dernier fichier LevelUploadUi.SetActive(false);
-                if (i >= files.Length)
+                if (i == files.Length)
                 {
                     LevelUploadUi.SetActive(false);
                     LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>().interactable = true;
@@ -324,6 +325,7 @@ public class LevelUpload : MonoBehaviour
             }
             else
             {
+                ErrorText.GetComponent<TMP_Text>().text = "Level Creation Failed";
                 Debug.Log("Level Data Upload Failed");
             }
         });

@@ -126,7 +126,6 @@ public class CharacterChallengeManager : MonoBehaviour
             .FirstOrDefault(item => item.Contains(appearanceType))?
             .Split(':')[1] ?? "";
     }
-
     public void SetChallenge1()
     {
         Mission1Popup.SetActive(true);
@@ -139,7 +138,6 @@ public class CharacterChallengeManager : MonoBehaviour
     {
         MissionPopup.FirstOrDefault(item => item.name == "Mission" + Challenge)?.SetActive(true);
     }
-
     public void BackStage()
     {
         GameController.returnLastPosition();
@@ -155,10 +153,22 @@ public class CharacterChallengeManager : MonoBehaviour
     {
         string json = CharacterAppearanceManager.Character.ToJson();
 
-        // if all conditions are met, set wall to inactive
-        if (ChallengeAppearancesConditions[index].All(appearance => json.Contains(appearance)))
+        // Check if all conditions are met
+        bool allConditionsMet = true;
+        foreach (string appearance in appearancesCondition)
         {
-            Walls[index-1].SetActive(false);
+            Debug.Log(GetAppearanceValue(json, appearance).Length);
+            if (!json.Contains(appearance) || GetAppearanceValue(json, appearance) == null)
+            {
+                allConditionsMet = false;
+                break;
+            }
+        }
+
+        // If all conditions are met, set wall to inactive
+        if (allConditionsMet)
+        {
+            Walls[index - 1].SetActive(false);
             Challenge++;
         }
     }
