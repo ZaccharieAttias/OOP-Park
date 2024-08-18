@@ -77,7 +77,7 @@ public class LevelUpload : MonoBehaviour
             else
             {
                 Debug.Log("Level Creation Failed");
-                LevelUploadUi.SetActive(false);
+                ErrorText.GetComponent<TMP_Text>().text = "Level Creation Failed";
                 return;
             }
         }, filters: new Dictionary<string, string>() { { "Context", "TileMap" } }, context_id: TileMapContextID);
@@ -92,7 +92,7 @@ public class LevelUpload : MonoBehaviour
             else
             {
                 Debug.Log("Character Center Creation Failed");
-                LevelUploadUi.SetActive(false);
+                ErrorText.GetComponent<TMP_Text>().text = "Level Creation Failed";
                 return;
             }
         }, filters: new Dictionary<string, string>() { { "Context", "CharacterTree" } }, context_id: CharacterTreeContextID);
@@ -269,7 +269,7 @@ public class LevelUpload : MonoBehaviour
         {
             int index = int.Parse(mission.name.Substring(7));
             List<string> appearancesCondition = new List<string>();
-            List<string> appearancesText = new List<string>();  
+            List<string> appearancesText = new List<string>();
             appearancesCondition = GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().ChallengeAppearancesConditions[index];
             string texts = mission.transform.Find("Background/Foreground/Mssion/InputField").GetComponent<TMP_InputField>().text;
             appearancesText.Add(texts);
@@ -341,6 +341,7 @@ public class LevelUpload : MonoBehaviour
             {
                 if (response.assets[i].name == LevelNameInputField.text)
                 {
+                    ErrorText.GetComponent<TMP_Text>().text = "A level with this name already exists. Please modify it.";
                     ErrorText.SetActive(true);
                     UploadButton.interactable = true;
                     CloseButton.interactable = true;

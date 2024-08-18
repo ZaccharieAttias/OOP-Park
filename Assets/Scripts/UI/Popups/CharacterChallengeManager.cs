@@ -162,6 +162,10 @@ public class CharacterChallengeManager : MonoBehaviour
             Challenge++;
         }
     }
+    public void ResetWalls()
+    {
+        Walls.ForEach(wall => wall.SetActive(true));
+    }
     public void DestroyWallAndMission(int index)
     {
         Destroy(Walls[index]);

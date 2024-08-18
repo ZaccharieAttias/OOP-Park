@@ -45,18 +45,18 @@ public class CharacterAppearanceManager : MonoBehaviour
     }
     public void InitializeButtons()
     {
-        ConfirmButton = Popup.transform.Find("Character/Buttons/Confirm").GetComponent<Button>();
+        ConfirmButton = Popup.transform.Find("Background/Character/Buttons/Confirm").GetComponent<Button>();
         ConfirmButton.onClick.AddListener(ToggleOff);
 
-        CancelButton = Popup.transform.Find("Character/Buttons/Cancel").GetComponent<Button>();
+        CancelButton = Popup.transform.Find("Background/Character/Buttons/Cancel").GetComponent<Button>();
         CancelButton.onClick.AddListener(ToggleOff);
 
-        ResetButton = Popup.transform.Find("Character/Buttons/Reset").GetComponent<Button>();
+        ResetButton = Popup.transform.Find("Background/Character/Buttons/Reset").GetComponent<Button>();
     }
     public void InitializeCharacterComponents()
     {
         if (GameObject.Find("Player") == null) return;
-        
+
         Character = GameObject.Find("Player").GetComponent<Character>();
         playerTransform = GameObject.Find("Player").transform;
         oldPosition = playerTransform.position;

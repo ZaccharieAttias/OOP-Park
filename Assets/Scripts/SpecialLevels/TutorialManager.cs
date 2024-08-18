@@ -298,7 +298,7 @@ public class TutorialManager : MonoBehaviour
                 MainTutorialTipText.text = "To move the yellow cubes, you'll need to create a character specialized in grabbing objects. Given that “Grabbing” is a “Manual” method, we'll focus on Fiona, which is a manual character.\n\nCreate a child for Fiona, NON ABSTRACT in order to play with, specializing in the “Grabbing” family and adding it the “Grabbing” method. Thanks to this class/character, you'll be able to move any cube in the game.\n\n\n\nClick on the [Enter] key to close.";
                 check++;
             }
-            else if(Input.GetKeyDown(KeyCode.Return) && check == 5)
+            else if (Input.GetKeyDown(KeyCode.Return) && check == 5)
             {
                 TutorialTip.SetActive(false);
                 MainForeground.SetActive(false);
@@ -306,7 +306,7 @@ public class TutorialManager : MonoBehaviour
                 CharacterCreationPlus.GetComponent<Button>().onClick.AddListener(() => hasClicked());
                 check++;
             }
-            else if(clikedForCreation && check == 6)
+            else if (clikedForCreation && check == 6)
             {
                 GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/CharacterType/Button").GetComponent<Toggle>().interactable = false;
                 check++;
@@ -337,7 +337,7 @@ public class TutorialManager : MonoBehaviour
                 CharacterCreationPlus.SetActive(false);
                 check++;
             }
-            else if (hasSwapped &&check == 9)
+            else if (hasSwapped && check == 9)
             {
                 CommandPopup.CanvasGroup.alpha = 0;
                 RestrictionManager.Instance.AllowEncapsulation = true;
@@ -350,12 +350,12 @@ public class TutorialManager : MonoBehaviour
                 Plus.SetActive(true);
                 hasSwapped = false;
             }
-            else if (Input.GetKeyDown(KeyCode.Return) && check ==10)
+            else if (Input.GetKeyDown(KeyCode.Return) && check == 10)
             {
                 LeftTutorialTipText.text = "By right-clicking on an attribute or method, the description section will be updated to display a description of it.\n\nFor an attribute, two buttons will be added: “G” for Get and “S” for Set. Selecting one will create a Get or Set method for the attribute.\n\n\n To continue in the level, you'll need to access a higher platform. To do this, we'll use George's MultipleJumps capability. Select George, and as you will see he already has a Get and Set method for the multipleJump attribute.\n\n\n\nClick on the [Enter] key to close.";
                 check++;
             }
-            else if (Input.GetKeyDown(KeyCode.Return) && check ==11)
+            else if (Input.GetKeyDown(KeyCode.Return) && check == 11)
             {
                 Plus.SetActive(false);
                 LeftForeground.SetActive(false);
@@ -388,7 +388,7 @@ public class TutorialManager : MonoBehaviour
                 TutorialTip.SetActive(false);
                 check++;
             }
-            else if (Vector3.Distance(Player.transform.position, CheckPoint2.transform.position) < 1 && !hasSeenCheckpoint && check == 14)
+            else if (Vector3.Distance(Player.transform.position, CheckPoint2.transform.position) < 1 && check == 14)
             {
                 hasSeenCheckpoint = true;
                 MainForeground.SetActive(true);

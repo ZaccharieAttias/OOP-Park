@@ -98,6 +98,7 @@ public class PlayTestManager : MonoBehaviour
         MainCamera.GetComponent<CameraFollow>().Player = null;
         MainCamera.GetComponent<CameraFollow>().ResetPosition();
 
+        GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().ResetWalls();
         foreach (string file in Directory.GetFiles(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp"))
             File.Delete(file);
 
