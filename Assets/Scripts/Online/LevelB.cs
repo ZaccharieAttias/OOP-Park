@@ -10,8 +10,10 @@ public class LevelB
     public int[,,] GameplayMap;
     public float characterX;
     public float characterY;
+    public Dictionary<int, List<string>> ChallengeAppearancesConditions;
+    public Dictionary<int, List<string>> ChallengeAppearancesTexts;
 
-    public LevelB(int width, int height, int depth, float characterX, float characterY)
+    public LevelB(int width, int height, int depth, float characterX, float characterY, Dictionary<int, List<string>> ChallengeAppearancesConditions, Dictionary<int, List<string>> ChallengeAppearancesTexts)
     {
         TileTable = new List<string>();
         GroundMap = new int[width, height, depth];
@@ -21,6 +23,8 @@ public class LevelB
         WallMap = new int[width, height, depth];
         this.characterX = characterX;
         this.characterY = characterY;
+        this.ChallengeAppearancesConditions = ChallengeAppearancesConditions;
+        this.ChallengeAppearancesTexts = ChallengeAppearancesTexts;
     }
 
     public int AddTexture(string textureName)

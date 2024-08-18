@@ -198,7 +198,9 @@ public class LevelUpload : MonoBehaviour
         var width = _groundMap.Width;
         var height = _groundMap.Height;
         var depth = _groundMap.Depth;
-        var level = new LevelB(width, height, depth, 0, 0);
+        Dictionary<int, List<string>> ChallengeAppearancesConditions = new Dictionary<int, List<string>>();
+        Dictionary<int, List<string>> ChallengeAppearancesTexts = new Dictionary<int, List<string>>();
+        var level = new LevelB(width, height, depth, 0, 0, ChallengeAppearancesConditions, ChallengeAppearancesTexts);
 
         for (var x = 0; x < width; x++)
         {
@@ -255,6 +257,26 @@ public class LevelUpload : MonoBehaviour
 
         level.characterX = playerTransform.localPosition.x;
         level.characterY = playerTransform.localPosition.y;
+
+        List<GameObject> missions = new List<GameObject>();
+        foreach (Transform child in GameObject.Find("Canvas/Popups").transform)
+        {
+            if (child.name.Contains("Mission"))
+                missions.Add(child.gameObject);
+        }
+
+        foreach (GameObject mission in missions)
+        {
+            int index = int.Parse(mission.name.Substring(7));
+            List<string> appearancesCondition = new List<string>();
+            List<string> appearancesText = new List<string>();  
+            appearancesCondition = GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().ChallengeAppearancesConditions[index];
+            string texts = mission.transform.Find("Background/Foreground/Mssion/InputField").GetComponent<TMP_InputField>().text;
+            appearancesText.Add(texts);
+            level.ChallengeAppearancesConditions.Add(index, appearancesCondition);
+            level.ChallengeAppearancesTexts.Add(index, appearancesText);
+        }
+
 
         var json = JsonConvert.SerializeObject(level);
         File.WriteAllText(path, json);

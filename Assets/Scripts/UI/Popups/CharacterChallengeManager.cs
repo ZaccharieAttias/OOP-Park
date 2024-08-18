@@ -137,7 +137,7 @@ public class CharacterChallengeManager : MonoBehaviour
     }
     public void SetChallenge(int Challenge)
     {
-        MissionPopup[Challenge - 1].SetActive(true);
+        MissionPopup.FirstOrDefault(item => item.name == "Mission" + Challenge)?.SetActive(true);
     }
 
     public void BackStage()
@@ -161,5 +161,13 @@ public class CharacterChallengeManager : MonoBehaviour
             Walls[index-1].SetActive(false);
             Challenge++;
         }
+    }
+    public void DestroyWallAndMission(int index)
+    {
+        Destroy(Walls[index]);
+        Destroy(MissionPopup[index]);
+        Walls.RemoveAt(index);
+        MissionPopup.RemoveAt(index);
+        ChallengeAppearancesConditions.Remove(index+1);
     }
 }

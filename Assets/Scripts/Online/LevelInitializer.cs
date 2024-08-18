@@ -10,6 +10,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -58,6 +59,7 @@ public class LevelInitializer : MonoBehaviour
     public JsonUtilityManager JsonUtilityManager;
     public bool start = true;
     public int challenge = 1;
+    public GameObject Mission1Prefab;
     public GameObject MissionPrefab;
     public void Start()
     {
@@ -115,6 +117,7 @@ public class LevelInitializer : MonoBehaviour
         AssetDatabase.Refresh();
 #endif
         yield return new WaitForSeconds(2f);
+        Mission1Prefab = MissionPrefab;
         BuildLevel(filePath);
         SetLayers(Terrain.Find("Ground"), "Ground");
         SetPlayers();
@@ -181,6 +184,10 @@ public class LevelInitializer : MonoBehaviour
         var depth = level.GroundMap.GetLength(2);
         x_position = level.characterX;
         y_position = level.characterY;
+        Dictionary<int, List<string>> ChallengeAppearancesConditions = new Dictionary<int, List<string>>();
+        Dictionary<int, List<string>> ChallengeAppearancesTexts = new Dictionary<int, List<string>>();
+        ChallengeAppearancesConditions = level.ChallengeAppearancesConditions;
+        ChallengeAppearancesTexts = level.ChallengeAppearancesTexts;
 
         _groundMap = new TileMap(width, height, depth);
         _coverMap = new TileMap(width, height, depth);
@@ -276,6 +283,25 @@ public class LevelInitializer : MonoBehaviour
                     }
                 }
             }
+        }
+        //set all the challenges 
+        List<GameObject> missions = new List<GameObject>();
+        foreach (Transform child in GameObject.Find("Canvas/Popups").transform)
+        {
+            if (child.name.Contains("Mission"))
+                missions.Add(child.gameObject);
+        }
+        for (int i = 0; i < missions.Count; i++)
+        {
+            GameObject mission = missions[i];
+            int indexxx = int.Parse(mission.name.Substring(7));
+            List<string> appearancesCondition = new List<string>();
+            List<string> appearancesText = new List<string>();
+            appearancesCondition = ChallengeAppearancesConditions[indexxx];
+            appearancesText = ChallengeAppearancesTexts[indexxx];
+            TMP_Text txt = mission.transform.Find("Background/Foreground/Mssion/Mission").GetComponent<TMP_Text>();
+            txt.text = level.ChallengeAppearancesTexts[indexxx][0];
+            GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().InitializeUIOnlineElements(indexxx, appearancesCondition);
         }
         _index = index;
     }
@@ -652,7 +678,7 @@ public class LevelInitializer : MonoBehaviour
         wall.AddComponent<SpriteRenderer>().color = new Color(0.466f, 0.149f, 0.235f, 1f);
         wall.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Grid/Square");
 
-        GameObject Mission = Instantiate(MissionPrefab, new Vector3(0,0,0), Quaternion.identity);
+        GameObject Mission = Instantiate(Mission1Prefab, new Vector3(0,0,0), Quaternion.identity);
         Mission.name = "Mission" + challenge;
         Mission.transform.SetParent(GameObject.Find("Canvas/Popups").transform);
         Mission.transform.localPosition = new Vector3(0, 0, 0);

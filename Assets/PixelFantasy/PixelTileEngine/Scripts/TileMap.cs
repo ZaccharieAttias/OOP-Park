@@ -65,5 +65,9 @@ namespace Assets.PixelFantasy.PixelTileEngine.Scripts
 
             return map;
         }
+    public Block GetBlock(int x, int y, int z)
+    {
+        return _map[x, y, z];
+    }
     }
 }
