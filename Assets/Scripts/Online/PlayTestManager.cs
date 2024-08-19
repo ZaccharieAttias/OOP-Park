@@ -112,10 +112,8 @@ public class PlayTestManager : MonoBehaviour
         foreach (Transform child in PopUp.transform)
             child.gameObject.SetActive(false);
 
-        //trouvez ts les objets qui ont le tag "Brick" et activez les
         foreach (GameObject brick in bricks)
             brick.GetComponent<BreakingBrick>().Activate();
-
     }
 
     public void SetOnlickButton()

@@ -9,6 +9,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using UnityEngine.SceneManagement;
+using System.Collections;
+
+
 
 
 public class LevelBuilderB : MonoBehaviour
@@ -46,7 +51,7 @@ public class LevelBuilderB : MonoBehaviour
     public PlayTestManager playTestManager;
     public Popup CommandPopup;
     public bool start = true;
-    public int challenge = 1;
+    public int missionNumber = 1;
     public GameObject Mission1Prefab;
     public GameObject MissionPrefab;
 
@@ -172,8 +177,8 @@ public class LevelBuilderB : MonoBehaviour
                         if (_gameplayMap[p.X, p.Y, _layer] != null && _gameplayMap[p.X, p.Y, _layer].SpriteRenderer.sprite.name == "Challenge")
                         {
                             Destroy(GameObject.Find("WallChallenge" + _gameplayMap.GetBlock(p.X, p.Y, _layer).GameObject.GetComponent<StageCollision>().Challenge));
-                            GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().DestroyWallAndMission(_gameplayMap.GetBlock(p.X, p.Y, _layer).GameObject.GetComponent<StageCollision>().Challenge-1);
-                            challenge--;
+                            GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().DestroyWallAndMission(_gameplayMap.GetBlock(p.X, p.Y, _layer).GameObject.GetComponent<StageCollision>().Challenge);
+                            StartCoroutine(Wait(0.2f));
                         }
                         _gameplayMap.Destroy(p.X, p.Y, _layer);
                         break;
@@ -198,6 +203,10 @@ public class LevelBuilderB : MonoBehaviour
                 break;
         }
     }
+IEnumerator Wait(float seconds)
+{
+    yield return new WaitForSeconds(seconds);
+}
     public void SwitchLayer(int layer)
     {
         _layer = layer;
@@ -579,9 +588,9 @@ public class LevelBuilderB : MonoBehaviour
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-        block.GameObject.AddComponent<StageCollision>().Challenge = challenge;
+        block.GameObject.AddComponent<StageCollision>().Challenge = missionNumber;
 
-        GameObject wall = new GameObject("WallChallenge" + challenge);
+        GameObject wall = new GameObject("WallChallenge" + missionNumber);
         wall.transform.SetParent(Parent.Find("Gameplay").transform);
         wall.transform.localPosition = new Vector3(_positionMin.X + x + 3, _positionMin.Y + y);
         wall.transform.localScale = new Vector3(1f, 150f, 1);
@@ -591,10 +600,10 @@ public class LevelBuilderB : MonoBehaviour
         wall.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Grid/Square");
 
         GameObject Mission = Instantiate(Mission1Prefab, new Vector3(0,0,0), Quaternion.identity);
-        Mission.name = "Mission" + challenge;
+        Mission.name = "Mission" + missionNumber;
         Mission.transform.SetParent(GameObject.Find("Canvas/Popups").transform);
         Mission.transform.localPosition = new Vector3(0, 0, 0);
-        challenge++;
+        missionNumber++;
         _gameplayMap[x, y, z] = block;
     }
     public void CreatePlayer(int x, int y, int z)

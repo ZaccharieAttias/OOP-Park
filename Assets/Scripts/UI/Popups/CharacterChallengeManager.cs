@@ -20,6 +20,7 @@ public class CharacterChallengeManager : MonoBehaviour
 
     [Header("Challenge Attributes")]
     public int Challenge;
+    public List<int> ChallengeNumberList;
     public Dictionary<int, List<string>> ChallengeAppearancesConditions;
 
     public void Start()
@@ -65,6 +66,7 @@ public class CharacterChallengeManager : MonoBehaviour
     }
     public void InitializeUIOnlineElements(int index, List<string> appearancesCondition)
     {
+        ChallengeNumberList.Add(index);
         ChallengeAppearancesConditions.Add(index, appearancesCondition);
         MissionPopup.Add(GameObject.Find("Canvas/Popups/Mission" + index));
         Walls.Add(GameObject.Find("Grid/LevelBuilder/Gameplay/WallChallenge" + index));
@@ -90,7 +92,7 @@ public class CharacterChallengeManager : MonoBehaviour
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
             UpdateWallsBasedOnAppearance();
         else
-            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
         AiModelData.AppearanceLevelTries++;
     }
     public void CancelFactory()
@@ -99,7 +101,7 @@ public class CharacterChallengeManager : MonoBehaviour
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
             UpdateWallsBasedOnAppearance();
         else
-            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
     }
     public void ResetFactory()
     {
@@ -107,7 +109,7 @@ public class CharacterChallengeManager : MonoBehaviour
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
             UpdateWallsBasedOnAppearance();
         else
-            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
     }
 
     public void UpdateWallsBasedOnAppearance()
@@ -134,9 +136,10 @@ public class CharacterChallengeManager : MonoBehaviour
     {
         Mission2Popup.SetActive(true);
     }
-    public void SetChallenge(int Challenge)
+    public void SetChallenge(int challenge)
     {
-        MissionPopup.FirstOrDefault(item => item.name == "Mission" + Challenge)?.SetActive(true);
+        MissionPopup.FirstOrDefault(item => item.name == "Mission" + challenge)?.SetActive(true);
+        Challenge = challenge;
     }
     public void BackStage()
     {
@@ -146,7 +149,7 @@ public class CharacterChallengeManager : MonoBehaviour
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
             UpdateWallsBasedOnAppearance();
         else
-            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions[Challenge]);
+            UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
 
     }
     public void UpdateWallsBasedOnAppearance(int index, List<string> appearancesCondition)
@@ -168,20 +171,24 @@ public class CharacterChallengeManager : MonoBehaviour
         // If all conditions are met, set wall to inactive
         if (allConditionsMet)
         {
-            Walls[index - 1].SetActive(false);
-            Challenge++;
+            Walls.FirstOrDefault(item => item.name == "WallChallenge" + index)?.SetActive(false);
         }
     }
     public void ResetWalls()
     {
         Walls.ForEach(wall => wall.SetActive(true));
+
     }
-    public void DestroyWallAndMission(int index)
+    public void DestroyWallAndMission(int missionnumber)
     {
-        Destroy(Walls[index]);
-        Destroy(MissionPopup[index]);
-        Walls.RemoveAt(index);
-        MissionPopup.RemoveAt(index);
-        ChallengeAppearancesConditions.Remove(index+1);
+        GameObject wall = GameObject.Find("Grid/LevelBuilder/Gameplay/WallChallenge" + missionnumber);
+        GameObject mission = GameObject.Find("Canvas/Popups/Mission" + missionnumber);
+        MissionPopup.Remove(mission);
+        Walls.Remove(wall);
+        Destroy(mission);
+        Destroy(wall);
+
+        ChallengeAppearancesConditions.Remove(missionnumber);
+        ChallengeNumberList.Remove(missionnumber);
     }
 }
