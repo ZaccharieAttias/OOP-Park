@@ -11,6 +11,7 @@ public class ChapterLoaderManager : MonoBehaviour
 
     [Header("Chapter Information")]
     public int ChapterIndex;
+    public bool IsChapter;
 
 
     public void Start()
@@ -31,7 +32,8 @@ public class ChapterLoaderManager : MonoBehaviour
         var chapterInfos = gameplayInfo[0].ChapterInfos;
         var levelsInfo = ChapterIndex == -1 ? chapterInfos.Select(ci => ci.LevelsInfo[0]).ToList() : chapterInfos[ChapterIndex].LevelsInfo;
 
-        UpdateLevelButtons(levelsInfo);
+        if (IsChapter) UpdateChapterButtons(chapterInfos);
+        else UpdateLevelButtons(levelsInfo);
     }
     public void UpdateLevelButtons(List<LevelInfo> levelsInfo)
     {
@@ -41,6 +43,17 @@ public class ChapterLoaderManager : MonoBehaviour
             LevelButtons[i].interactable = levelStatus != -1;
 
             if (levelStatus == 1) LevelButtons[i].GetComponent<Image>().color = Color.green;
+        }
+    }
+
+    public void UpdateChapterButtons(List<ChapterInfo> chapterInfo)
+    {
+        for (int i = 0; i < LevelButtons.Count; i++)
+        {
+            var lastLevelStatus = chapterInfo[i].LevelsInfo.Last().Status;
+            LevelButtons[i].interactable = chapterInfo[i].LevelsInfo.First().Status >= 0;
+
+            if (lastLevelStatus == 1) LevelButtons[i].GetComponent<Image>().color = Color.green;
         }
     }
 }
