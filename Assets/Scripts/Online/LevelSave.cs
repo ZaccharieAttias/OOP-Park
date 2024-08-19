@@ -156,16 +156,22 @@ public class LevelSave : MonoBehaviour
                 missions.Add(child.gameObject);
         }
 
+        int i = 1;
         foreach (GameObject mission in missions)
         {
             int index = int.Parse(mission.name.Substring(7));
             List<string> appearancesCondition = new List<string>();
             List<string> appearancesText = new List<string>();  
             appearancesCondition = GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().ChallengeAppearancesConditions[index];
-            string texts = mission.transform.Find("Background/Foreground/Mssion/InputField").GetComponent<TMP_InputField>().text;
+            string texts = "";
+            if (mission.transform.Find("Background/Foreground/Mssion/InputField") != null)
+                texts = mission.transform.Find("Background/Foreground/Mssion/InputField").GetComponent<TMP_InputField>().text;
+            else
+                texts =  mission.transform.Find("Background/Foreground/Mssion/Mission").GetComponent<TMP_Text>().text;
             appearancesText.Add(texts);
-            level.ChallengeAppearancesConditions.Add(index, appearancesCondition);
-            level.ChallengeAppearancesTexts.Add(index, appearancesText);
+            level.ChallengeAppearancesConditions.Add(i, appearancesCondition);
+            level.ChallengeAppearancesTexts.Add(i, appearancesText);
+            i++;
         }
 
         var json = JsonConvert.SerializeObject(level);

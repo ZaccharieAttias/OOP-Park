@@ -58,7 +58,7 @@ public class LevelInitializer : MonoBehaviour
     public string SpecialAbilitiesPath;
     public JsonUtilityManager JsonUtilityManager;
     public bool start = true;
-    public int challenge = 1;
+    public int missionNumber = 1;
     public GameObject Mission1Prefab;
     public GameObject MissionPrefab;
     public void Start()
@@ -644,7 +644,7 @@ public class LevelInitializer : MonoBehaviour
 
         _gameplayMap[x, y, z] = block;
     }
-        public void CreateChallengeForOverriding(int x, int y, int z)
+    public void CreateChallengeForOverriding(int x, int y, int z)
     {
         if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
@@ -667,9 +667,9 @@ public class LevelInitializer : MonoBehaviour
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
         block.GameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-        block.GameObject.AddComponent<StageCollision>().Challenge = challenge;
+        block.GameObject.AddComponent<StageCollision>().Challenge = missionNumber;
 
-        GameObject wall = new GameObject("WallChallenge" + challenge);
+        GameObject wall = new GameObject("WallChallenge" + missionNumber);
         wall.transform.SetParent(Parent.Find("Gameplay").transform);
         wall.transform.localPosition = new Vector3(_positionMin.X + x + 3, _positionMin.Y + y);
         wall.transform.localScale = new Vector3(1f, 150f, 1);
@@ -679,10 +679,10 @@ public class LevelInitializer : MonoBehaviour
         wall.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Grid/Square");
 
         GameObject Mission = Instantiate(Mission1Prefab, new Vector3(0,0,0), Quaternion.identity);
-        Mission.name = "Mission" + challenge;
+        Mission.name = "Mission" + missionNumber;
         Mission.transform.SetParent(GameObject.Find("Canvas/Popups").transform);
         Mission.transform.localPosition = new Vector3(0, 0, 0);
-        challenge++;
+        missionNumber++;
 
         _gameplayMap[x, y, z] = block;
     }
