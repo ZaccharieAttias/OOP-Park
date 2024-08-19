@@ -11,11 +11,13 @@ public class SetMission : MonoBehaviour
     public CharacterChallengeManager CharacterChallengeManager;
     public List <string> appearancesCondition;
     public int missionNumber;
+    public Button confirmButton;
     public void Start()
     {
         gridTransform = gameObject.transform.Find("Background/Foreground/GridObject");
         ChallengeQuete = gameObject.transform.Find("Background/Foreground/Mssion/InputField").GetComponent<TMP_InputField>();
         CharacterChallengeManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>();
+        confirmButton = gameObject.transform.Find("Background/Foreground/ConfirmMission").GetComponent<Button>();
         missionNumber = int.Parse(gameObject.name.Substring(7));
     }
     public void SetChallengeAppearancesConditions()
@@ -35,5 +37,22 @@ public class SetMission : MonoBehaviour
         {
             item.GetComponent<Toggle>().isOn = false;
         }
+    }
+    public void AllowToConfirm()
+    {
+        bool allow = false;
+        if (ChallengeQuete.text != "")
+        {
+            foreach (Transform item in gridTransform)
+            {
+                if (item.GetComponent<Toggle>().isOn)
+                {
+                    allow = true;
+                    confirmButton.interactable = true;
+                    return;
+                }
+            }
+        }
+        confirmButton.interactable = false;
     }
 }
