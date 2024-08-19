@@ -54,7 +54,7 @@ public class ProgressionManager : MonoBehaviour
                 totalScore += level.Score;
             }
 
-            int progressPercentage = completedLevels / chapterInfo.LevelsInfo.Count * 100;
+            int progressPercentage = completedLevels * 100 / chapterInfo.LevelsInfo.Count;
             int averageScore = totalScore / chapterInfo.LevelsInfo.Count;
 
             progressionInformation.transform.Find("ProgressionPercentage").GetComponent<TextMeshProUGUI>().text = $"{progressPercentage}%";

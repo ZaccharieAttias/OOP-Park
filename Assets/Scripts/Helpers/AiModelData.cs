@@ -92,7 +92,7 @@ public class AiModelData : MonoBehaviour
         TimeTook = (int)Time.timeSinceLevelLoad;
 
         int timeVariable = TimeTook / 90;
-        int deathsVariable = DeathsCount > 2 ? DeathsCount - 2 : 0;
+        int deathsVariable = DeathsCount > 5 ? DeathsCount - 5 : 0;
         int abstractLevelTriesVariable = AbstractLevelTries > 5 ? AbstractLevelTries - 5 : 0;
         int appearanceLevelTriesVariable = AppearanceLevelTries > 5 ? AppearanceLevelTries - 5 : 0;
         int quizLevelTriesVariable = QuizLevelTries > 5 ? QuizLevelTries - 5 : 0;
