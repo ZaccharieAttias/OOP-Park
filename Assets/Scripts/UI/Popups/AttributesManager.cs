@@ -64,12 +64,6 @@ public class AttributesManager : MonoBehaviour
 
         Image image = attributeGameObject.GetComponent<Image>();
         image.color = hasAttribute ? Color.green : Color.white;
-
-        bool isAttributeAllowed = !IsAttributeExist(currentCharacter.Parent, attributeGameObject.name) || (RestrictionManager.Instance.AllowEncapsulation && IsAttributeGetterExist(currentCharacter, attributeGameObject.name));
-        bool isOkay = isAttributeAllowed || currentCharacter.IsOriginal || RestrictionManager.Instance.OnlineBuild;
-        attributeGameObject.GetComponent<Button>().interactable = isOkay;
-
-        if (!isOkay) image.color = Color.yellow;
     }
 
     public void MarkAttribute(GameObject attributeGameObject, Attribute attribute)
@@ -160,7 +154,7 @@ public class AttributesManager : MonoBehaviour
         LoadPopup();
         Popup.SetActive(true);
 
-        if (RestrictionManager.Instance.AllowSingleInheritance) InheritanceButton.SetActive(false);
+        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild) InheritanceButton.SetActive(false);
     }
     public void ToggleOff()
     {
@@ -169,6 +163,6 @@ public class AttributesManager : MonoBehaviour
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
 
-        if (RestrictionManager.Instance.AllowSingleInheritance) InheritanceButton.SetActive(true);
+        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild) InheritanceButton.SetActive(true);
     }
 }

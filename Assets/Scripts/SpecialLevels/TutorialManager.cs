@@ -192,7 +192,7 @@ public class TutorialManager : MonoBehaviour
                 {
                     TutorialTip.SetActive(true);
                     RightForeground.SetActive(true);
-                    RightTutorialTipText.text = "After inspecting the classes, you should have noticed that two classes share the wallJump attribute, but not the method for performing the wallJump.\n\nIts time to extend your tree by creating a new class/character.\n\nThe button dedicated to this action has just been added to the menu (highlighted in red).\nBy clicking on it, you'll be able to select the parent of your new class/character by selecting it directly in the tree, and then confirm the creation.\n\n\n\nClick on the [Enter] key to close.";
+                    RightTutorialTipText.text = "After inspecting the classes, you should have noticed that two classes share the wallJump attribute, with differents values, but not the method for performing the wallJump.\n\nIts time to extend your tree by creating a new class/character.\n\nThe button dedicated to this action has just been added to the menu (highlighted in red).\nBy clicking on it, you'll be able to select the parent of your new class/character by selecting it directly in the tree, and then confirm the creation.\n\n\n\nClick on the [Enter] key to close.";
                     CharacterCreationPlus.SetActive(true);
                     Plus.SetActive(true);
                     check++;
@@ -202,7 +202,7 @@ public class TutorialManager : MonoBehaviour
             {
                 TutorialTip.SetActive(false);
                 RightForeground.SetActive(false);
-                CommandPopup.Show("Create to Emily a child and set him the WallJump method.", 20, "C0L2");
+                CommandPopup.Show("Create to Emily a child.", 20, "C0L2");
                 check++;
             }
             else if (CharactersData.CharactersManager.CharactersCollection.Count == 5 && check == 7)
@@ -210,7 +210,7 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(Wait(2f));
                 TutorialTip.SetActive(true);
                 LeftForeground.SetActive(true);
-                LeftTutorialTipText.text = "You have just created a new class/character.\n\nNow it's up to you to add attributes and methods to your class, modify their accessibility by selecting them, play with your new character.\n\nIf you make a mistake, you can always delete your class. Take into consideration that the allocation of attributes and methods is restricted according to what already exists in your class's parents.\nMoreover, attribute values are not necessarily the same for all classes.\n\nFind the right class and climb that wall to the first Checkpoint!\n\n\n\nClick on the [Enter] key to close.";
+                LeftTutorialTipText.text = "You have just created a new class/character.\n\nNow it's up to you to add attributes and methods to your class, modify their accessibility by selecting them, play with your new character.\n\nIf you make a mistake, you can always delete your class. Take into consideration that the allocation of methods is restricted in your new class: you can ONLY SELECT TWO methods, from your methods available, to PLAY with.\nMoreover, attribute values are not necessarily the same for all classes.\n\nFind the right class, the right value and climb that wall to the first Checkpoint!\n\n\n\nClick on the [Enter] key to close.";
                 check++;
             }
             else if (Input.GetKeyDown(KeyCode.Return) && check == 8)
@@ -218,10 +218,12 @@ public class TutorialManager : MonoBehaviour
                 CommandPopup.CanvasGroup.alpha = 0;
                 TutorialTip.SetActive(false);
                 LeftForeground.SetActive(false);
+                CommandPopup.Show("Add to your new character the method WallJump: it will use the closest value of wallJump (From Emily).", 20, "C0L2");
                 check++;
             }
             else if (CharactersData.CharactersManager.CurrentCharacter.Methods.Find(x => x.Name == "WallJump") != null && check == 9 && !isOk)
             {
+                CommandPopup.CanvasGroup.alpha = 0;
                 SwapSceenToGameplay.SetActive(true);
                 isOk = true;
             }

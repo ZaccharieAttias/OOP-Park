@@ -172,7 +172,7 @@ public class MethodsManager : MonoBehaviour
         LoadPopup();
         Popup.SetActive(true);
 
-        if (RestrictionManager.Instance.AllowSingleInheritance) InheritanceButton.SetActive(false);
+        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild) InheritanceButton.SetActive(false);
     }
     public void ToggleOff()
     {
@@ -181,6 +181,6 @@ public class MethodsManager : MonoBehaviour
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
         Popup.SetActive(false);
 
-        if (RestrictionManager.Instance.AllowSingleInheritance) InheritanceButton.SetActive(true);
+        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild) InheritanceButton.SetActive(true);
     }
 }

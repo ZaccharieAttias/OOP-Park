@@ -657,9 +657,15 @@ IEnumerator Wait(float seconds)
     {
         GameObject Player = GameObject.Find("Player");
         Player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        Player.GetComponent<Movement>().enabled = false;
-        Player.GetComponent<GameController>().enabled = false;
-        Player.GetComponent<GrabObject>().enabled = false;
+        StartCoroutine(DisablePlayerComponents());
+
+        IEnumerator DisablePlayerComponents()
+        {
+            yield return new WaitForEndOfFrame();
+            Player.GetComponent<Movement>().enabled = false;
+            Player.GetComponent<GameController>().enabled = false;
+            Player.GetComponent<GrabObject>().enabled = false;
+        }
 
         GameObject[] Checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
         playTestManager = GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>();
@@ -1018,15 +1024,12 @@ IEnumerator Wait(float seconds)
 
         SetPlayer();
 
-        if (RestrictionManager.Instance.AllowSingleInheritance)
-        {
-            GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().AddButton.gameObject.SetActive(true);
-        }
+        GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().AddButton.gameObject.SetActive(true);
         check = 1;
         swapScreen.firstTime = false;
 
         swapScreen.SwapButtonToCharacterCenter.onClick.RemoveAllListeners();
-        if (RestrictionManager.Instance.AllowSingleInheritance)
+        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild)
             swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
         swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Menus").GetComponent<GameplayManager>().ToggleOff());
 

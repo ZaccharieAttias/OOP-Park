@@ -49,10 +49,7 @@ public class SwapScreen : MonoBehaviour
             firstTime = false;
             SwapButtonToCharacterCenter.onClick.RemoveAllListeners();
 
-            if (RestrictionManager.Instance.AllowSingleInheritance)
-            {
-                SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
-            }
+            SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
 
             SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Menus").GetComponent<GameplayManager>().ToggleOff());
             GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().SetUI();

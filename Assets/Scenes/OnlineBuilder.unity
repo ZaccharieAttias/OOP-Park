@@ -19140,7 +19140,7 @@ MonoBehaviour:
   playTestManager: {fileID: 0}
   CommandPopup: {fileID: 0}
   start: 1
-  challenge: 1
+  missionNumber: 1
   Mission1Prefab: {fileID: 2945592328647658314, guid: fabb833091427ab44bd878e108a7568b, type: 3}
   MissionPrefab: {fileID: 8261040132517403076, guid: 6593db8ecac075e4d89e74ce55d8da20, type: 3}
 --- !u!1 &682824503
@@ -35789,9 +35789,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllowSingleInheritance: 1
-  AllowSpecialAbility: 1
-  AllowAccessModifier: 1
-  AllowOverride: 1
+  AllowSpecialAbility: 0
+  AllowAccessModifier: 0
+  AllowOverride: 0
   AllowUpcasting: 0
   AllowAbstractClass: 0
   AllowEncapsulation: 0
@@ -56580,6 +56580,7 @@ MonoBehaviour:
   MissionPopup: []
   Walls: []
   Challenge: 0
+  ChallengeNumberList: 
 --- !u!1 &2009611770
 GameObject:
   m_ObjectHideFlags: 0
