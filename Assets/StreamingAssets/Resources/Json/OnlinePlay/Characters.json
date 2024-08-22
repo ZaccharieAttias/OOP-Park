@@ -1,0 +1,93 @@
+[
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Character 2",
+    "Description": "This is Character 2.",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": null,
+    "Childrens": [
+      "Character 7",
+      "Character 8"
+    ]
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 7",
+    "Description": "I'm Character 7",
+    "Attributes": [],
+    "Methods": [],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Character 2",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": false,
+    "IsAbstract": false,
+    "Name": "Character 8",
+    "Description": "I'm Character 8",
+    "Attributes": [
+      {
+        "Owner": "Character 8",
+        "Name": "gravity",
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 8",
+        "Name": "fireballShoot",
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Character 8",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Character 8",
+          "Name": "gravity",
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
+      },
+      {
+        "Owner": "Character 8",
+        "Name": "FireballShoot",
+        "Attribute": {
+          "Owner": "Character 8",
+          "Name": "fireballShoot",
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Character 2",
+    "Childrens": []
+  }
+]

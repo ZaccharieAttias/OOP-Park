@@ -1,0 +1,107 @@
+[
+  {
+    "Owner": null,
+    "Name": "Speed",
+    "Description": "Granting the character the ability to move faster by 2 units and react faster\nThe method is manually activated by the keys [A] and [D]",
+    "Attribute": {
+      "Owner": null,
+      "Name": "speed",
+      "Description": "Enables the character to move faster by 2 units, granting the ability to react faster",
+      "Value": 2.0,
+      "AccessModifier": 0,
+      "Getter": false,
+      "Setter": false
+    },
+    "AccessModifier": 0
+  },
+  {
+    "Owner": null,
+    "Name": "Gravity",
+    "Description": "Granting the character the ability to jump higher by 4 units and reach higher places\nThe method is manually activated by the key [W]",
+    "Attribute": {
+      "Owner": null,
+      "Name": "gravity",
+      "Description": "Enables the character to increase the gravity by 4 units, granting the ability to reach higher places",
+      "Value": 4.0,
+      "AccessModifier": 1,
+      "Getter": false,
+      "Setter": false
+    },
+    "AccessModifier": 1
+  },
+  {
+    "Owner": null,
+    "Name": "MultipleJumps",
+    "Description": "Granting the character the ability to jump 1 more times before landing and reach further places\nThe method is manually activated by the key [W]",
+    "Attribute": {
+      "Owner": null,
+      "Name": "multipleJumps",
+      "Description": "Enables the character to jump 1 more times before landing, granting the ability to reach further places",
+      "Value": 1.0,
+      "AccessModifier": 2,
+      "Getter": false,
+      "Setter": false
+    },
+    "AccessModifier": 2
+  },
+  {
+    "Owner": null,
+    "Name": "FireballShoot",
+    "Description": "Granting the character the ability to shoot fireballs at rate of 0.25s and destory special obstacles\nThe method is manually activated by the key [Q]",
+    "Attribute": {
+      "Owner": null,
+      "Name": "fireballShoot",
+      "Description": "Enables the character to shoot fireballs at rate of 0.25s, granting the ability to destory special obstacles",
+      "Value": 0.25,
+      "AccessModifier": 0,
+      "Getter": false,
+      "Setter": false
+    },
+    "AccessModifier": 0
+  },
+  {
+    "Owner": null,
+    "Name": "InverseGravity",
+    "Description": "Granting the character the ability to inverse the gravity by -40 units and turn the game upside down\nThe method is automatically activated",
+    "Attribute": {
+      "Owner": null,
+      "Name": "inverseGravity",
+      "Description": "Enables the character to inverse the gravity by -40 units, granting the ability turn the game upside down",
+      "Value": -40.0,
+      "AccessModifier": 1,
+      "Getter": false,
+      "Setter": false
+    },
+    "AccessModifier": 1
+  },
+  {
+    "Owner": null,
+    "Name": "WallJump",
+    "Description": "Granting the character the ability to jump 1 time from special walls\nThe method is manually activated by the key [W], [A], [D]",
+    "Attribute": {
+      "Owner": null,
+      "Name": "wallJump",
+      "Description": "Enables the character to jump 1 time from special walls, granting the ability to parkour",
+      "Value": 1.0,
+      "AccessModifier": 2,
+      "Getter": false,
+      "Setter": false
+    },
+    "AccessModifier": 2
+  },
+  {
+    "Owner": null,
+    "Name": "Grabbing",
+    "Description": "Granting the character the ability to grab objects that weight max of 20 units and move them\nThe method is manually activated by the key [E]",
+    "Attribute": {
+      "Owner": null,
+      "Name": "grabbing",
+      "Description": "Enables the character to grab objects that weight max of 20 units, granting the ability to move objects",
+      "Value": 20.0,
+      "AccessModifier": 0,
+      "Getter": false,
+      "Setter": false
+    },
+    "AccessModifier": 0
+  }
+]

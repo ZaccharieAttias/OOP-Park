@@ -1,0 +1,150 @@
+{
+  "General": [
+    {
+      "Name": "General",
+      "Description": "Defining an common interface for the special abilities",
+      "Value": 0.0,
+      "Type": 0
+    },
+    {
+      "Name": "Automatic",
+      "Description": "Defining the automatic interface, which their special abilities will be automatically activated",
+      "Value": 0.0,
+      "Type": 1
+    },
+    {
+      "Name": "Manual",
+      "Description": "Defining the manual interface, which their special abilities will be manually activated",
+      "Value": 0.0,
+      "Type": 2
+    }
+  ],
+  "Automatic": [
+    {
+      "Name": "Automatic",
+      "Description": "Defining the automatic interface, which their special abilities will be automatically activated",
+      "Value": 0.0,
+      "Type": 1
+    },
+    {
+      "Name": "Jump",
+      "Description": "Defining the jump interface",
+      "Value": 0.0,
+      "Type": 3
+    },
+    {
+      "Name": "Gravity",
+      "Description": "Enhances the Gravity method by reducing further the gravity force of 3 units",
+      "Value": 3.0,
+      "Type": 4
+    },
+    {
+      "Name": "Speed",
+      "Description": "Enhances the Speed method by increasing the speed force by 2 units",
+      "Value": 2.0,
+      "Type": 5
+    }
+  ],
+  "Manual": [
+    {
+      "Name": "Manual",
+      "Description": "Defining the manual interface, which their special abilities will be manually activated",
+      "Value": 0.0,
+      "Type": 2
+    },
+    {
+      "Name": "Fireball Shoot",
+      "Description": "Enhances the FireballShoot method by reducing the fireball rate of fire by 0.25 units",
+      "Value": 0.25,
+      "Type": 6
+    },
+    {
+      "Name": "Grabbing",
+      "Description": "Enhances the Grabbing method by increasing the grabbing force by 10000 weight units",
+      "Value": 10000.0,
+      "Type": 10
+    }
+  ],
+  "Jump": [
+    {
+      "Name": "Jump",
+      "Description": "Defining the jump interface",
+      "Value": 0.0,
+      "Type": 3
+    },
+    {
+      "Name": "Multiple Jumps",
+      "Description": "Enhances the MultipleJumps method by increasing the number of jumps by 1",
+      "Value": 1.0,
+      "Type": 7
+    },
+    {
+      "Name": "Wall Jump",
+      "Description": "Enhances the WallJump method by increasing the wall jump amount",
+      "Value": 1.0,
+      "Type": 9
+    }
+  ],
+  "Gravity": [
+    {
+      "Name": "Gravity",
+      "Description": "Enhances the Gravity method by reducing further the gravity force of 3 units",
+      "Value": 3.0,
+      "Type": 4
+    },
+    {
+      "Name": "Inverse Gravity",
+      "Description": "Enhances the InverseGravity method by reducing the gravity force by 40 units",
+      "Value": -40.0,
+      "Type": 8
+    }
+  ],
+  "Speed": [
+    {
+      "Name": "Speed",
+      "Description": "Enhances the Speed method by increasing the speed force by 2 units",
+      "Value": 2.0,
+      "Type": 5
+    }
+  ],
+  "FireballShoot": [
+    {
+      "Name": "Fireball Shoot",
+      "Description": "Enhances the FireballShoot method by reducing the fireball rate of fire by 0.25 units",
+      "Value": 0.25,
+      "Type": 6
+    }
+  ],
+  "MultipleJumps": [
+    {
+      "Name": "Multiple Jumps",
+      "Description": "Enhances the MultipleJumps method by increasing the number of jumps by 1",
+      "Value": 1.0,
+      "Type": 7
+    }
+  ],
+  "InverseGravity": [
+    {
+      "Name": "Inverse Gravity",
+      "Description": "Enhances the InverseGravity method by reducing the gravity force by 40 units",
+      "Value": -40.0,
+      "Type": 8
+    }
+  ],
+  "WallJump": [
+    {
+      "Name": "Wall Jump",
+      "Description": "Enhances the WallJump method by increasing the wall jump amount",
+      "Value": 1.0,
+      "Type": 9
+    }
+  ],
+  "Grabbing": [
+    {
+      "Name": "Grabbing",
+      "Description": "Enhances the Grabbing method by increasing the grabbing force by 10000 weight units",
+      "Value": 10000.0,
+      "Type": 10
+    }
+  ]
+}
