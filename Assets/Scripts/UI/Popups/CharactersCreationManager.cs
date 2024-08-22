@@ -69,7 +69,7 @@ public class CharactersCreationManager : MonoBehaviour
     {
         CharacterToggleType = Popup.transform.Find("Buttons/CharacterType/Button").GetComponent<Toggle>();
 
-        if (RestrictionManager.Instance.AllowSingleInheritance)
+        if (RestrictionManager.Instance.AllowSingleInheritance|| RestrictionManager.Instance.OnlineBuild)
         {
             Button popupToggleOn = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
             popupToggleOn.onClick.AddListener(ToggleOn);
@@ -220,6 +220,8 @@ public class CharactersCreationManager : MonoBehaviour
             yield return new WaitUntil(() => !SpecialAbilitiesData.SpecialAbilityManager.Popup.activeSelf);
 
             AddButton.gameObject.SetActive(true);
+            if (RestrictionManager.Instance.OnlineBuild)
+                ToggleOn();
         }
 
         var builtCharacter = BuildCharacter();

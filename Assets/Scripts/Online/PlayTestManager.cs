@@ -26,7 +26,6 @@ public class PlayTestManager : MonoBehaviour
     {
         if (Player == null)
         {
-            Debug.LogError("Player is not set");
             return;
         }
         IsTestGameplay = true;
@@ -50,7 +49,7 @@ public class PlayTestManager : MonoBehaviour
             grabObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
         PreviousPath = JsonUtilityManager.FolderPath;
-        JsonUtilityManager.SetPath(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp");
+        JsonUtilityManager.SetPath(Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Temp");
         JsonUtilityManager.Save();
 
         foreach (var character in CharactersData.CharactersManager.CharactersCollection)
@@ -76,7 +75,7 @@ public class PlayTestManager : MonoBehaviour
         PopUp.GetComponent<CharacterSelectionManager>().MenuInitialization();
         PopUp.GetComponent<SpecialAbilityManager>().SpecialAbilityGameObjects.Clear();
 
-        JsonUtilityManager.SetPath(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp");
+        JsonUtilityManager.SetPath(Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Temp");
         JsonUtilityManager.Load();
         JsonUtilityManager.SetPath(PreviousPath);
 
@@ -99,7 +98,7 @@ public class PlayTestManager : MonoBehaviour
         MainCamera.GetComponent<CameraFollow>().ResetPosition();
 
         GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().ResetWalls();
-        foreach (string file in Directory.GetFiles(Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Temp"))
+        foreach (string file in Directory.GetFiles(Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Temp"))
             File.Delete(file);
 
 #if UNITY_EDITOR

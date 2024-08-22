@@ -19,14 +19,14 @@ public class LevelLoad : MonoBehaviour
     public void Start()
     {
         LevelDataEntryContent = GameObject.Find("Canvas/Menus/Gameplay/SavedScreen/Background/Foreground/ScrollView/Viewport/Content").transform;
-        path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved");
+        path = Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved");
     }
     public void LoadLevelsData()
     {
         foreach (Transform child in LevelDataEntryContent)
             Destroy(child.gameObject);
 
-        string[] files = Directory.GetFiles(path);
+        string[] files = Directory.GetDirectories(path);
         for (int i = 0; i < files.Length; i++)
         {
             string fileName = Path.GetFileNameWithoutExtension(files[i]);
@@ -47,10 +47,12 @@ public class LevelLoad : MonoBehaviour
     }
     public void DeleteLevel(GameObject displayItem, string fileName)
     {
-        Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", fileName), true);
-        File.Delete(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", fileName + ".meta"));
+        Directory.Delete(Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved", fileName), true);
+        File.Delete(Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved", fileName + ".meta"));
 #if UNITY_EDITOR
         AssetDatabase.Refresh();
+#else 
+        Debug.Log("Refresh the project to see the changes");
 #endif
         Destroy(displayItem);
     }

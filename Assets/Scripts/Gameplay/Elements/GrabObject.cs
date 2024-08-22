@@ -89,7 +89,7 @@ public class GrabObject : MonoBehaviour
 
         if (Powerup.PreviousUpcastMethod?.CharacterMethod.Name == "Grabbing")
         {
-            Powerup.PreviousUpcastMethod.UpcastingTrackerManager.UpdateUpcastingMethod(PowerupTimer);
+            Powerup.PreviousUpcastMethod.TypeCastingTrackerManager.UpdateTypeCastingMethod(PowerupTimer);
         }
     }
 

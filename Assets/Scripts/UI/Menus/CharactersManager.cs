@@ -159,6 +159,7 @@ public class CharactersManager : MonoBehaviour
     }
     public void DisplayAttributes()
     {
+        if (RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.OnlineBuild) return;
         foreach (Attribute attribute in CurrentCharacter.Attributes)
         {
             GameObject attributeGameObject = Instantiate(DefaultButton, AttributesContentPanel);

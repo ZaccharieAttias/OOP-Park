@@ -49,7 +49,7 @@ public class CharacterSelectionManager : MonoBehaviour
     }
     public void MenuInitialization()
     {
-        foreach (string file in Directory.GetFiles(Application.dataPath + "/Resources/Sprites/Characters"))
+        foreach (string file in Directory.GetFiles(Application.dataPath + "/StreamingAssets" + "/Resources/Sprites/Characters"))
         {
             if (file.EndsWith(".png"))
             {
@@ -159,10 +159,14 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         SelectionMenu.SetActive(false);
         charactersCreationManager.AddButton.gameObject.SetActive(true);
+        if (!RestrictionManager.Instance.AllowSpecialAbility)
+            charactersCreationManager.ToggleOn();
         if (!RootCreated)
         {
             if (!CharactersData.CharactersManager.CurrentCharacter.IsAbstract)
                 GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>().interactable = true;
+            if(RestrictionManager.Instance.AllowSpecialAbility)
+                charactersCreationManager.ToggleOn();
         }
         RootCreated = true;
     }

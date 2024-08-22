@@ -43,7 +43,7 @@ public class AiModelData : MonoBehaviour
     }
     public void InitializeFilePath()
     {
-        var folderPath = Path.Combine(Application.dataPath, "Resources/Json");
+        var folderPath = Path.Combine(Application.dataPath, "StreamingAssets", "Resources/Json");
         FilePath = Path.Combine(folderPath, "AiModelData.json");
     }
     

@@ -32,7 +32,7 @@ public class LootLockerManager : MonoBehaviour
     }
     public void UploadPlayerData()
     {
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Json", "AiModelData.json");
+        string path = Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Json", "AiModelData.json");
         LootLockerSDKManager.UploadPlayerFile(path, "save_game", response =>
         {
             if (response.success)

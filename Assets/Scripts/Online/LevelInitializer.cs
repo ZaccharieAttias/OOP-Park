@@ -97,7 +97,7 @@ public class LevelInitializer : MonoBehaviour
         GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Draw(new Vector2(-65, -25));
         GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Draw(new Vector2(196, -25));
         start = false;
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
+        string path = Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved", LevelName);
         GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().Load(path, LevelName);
     }
     private IEnumerator DownloadTextFile(string url)
@@ -105,10 +105,10 @@ public class LevelInitializer : MonoBehaviour
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Download", LevelName);
+        string path = Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Download", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
-        string filePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Download/" + LevelName + "/Level_" + LevelName + "_Data.json";
+        string filePath = Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Download/" + LevelName + "/Level_" + LevelName + "_Data.json";
         File.WriteAllText(filePath, www.downloadHandler.text);
 
         LevelDownload.DownloadLevelTreeData(LevelName);
@@ -787,6 +787,7 @@ public class LevelInitializer : MonoBehaviour
             Checkpoint.GetComponent<Checkpoint>().gameController = Player.GetComponent<GameController>();
         }
         GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().GameController = Player.GetComponent<GameController>();
+        GameObject.Find("Canvas/Popups").GetComponent<UpcastingManager>().Character = Player.GetComponent<CharacterBase>();
     }
     public string GetLevelName()
     {

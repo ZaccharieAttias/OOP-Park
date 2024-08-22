@@ -40,7 +40,7 @@ public class LevelSave : MonoBehaviour
         _propsMap = LevelBuilder.GetPropsMap();
         _wallMap = LevelBuilder.GetWallMap();
         _gameplayMap = LevelBuilder.GetGameplayMap();
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
+        string path = Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
         else
@@ -65,7 +65,7 @@ public class LevelSave : MonoBehaviour
     }
     public void SaveLevelData()
     {
-        string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + "_Data.json";
+        string textFilePath = Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + "_Data.json";
         SaveLevel(textFilePath);
 
 #if UNITY_EDITOR
@@ -74,7 +74,7 @@ public class LevelSave : MonoBehaviour
     }
     public void SaveLevelTreeData()
     {
-        string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName;
+        string textFilePath = Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Saved/" + LevelName;
         SaveCharacter(textFilePath);
 
 #if UNITY_EDITOR

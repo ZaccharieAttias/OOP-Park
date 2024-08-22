@@ -10,7 +10,7 @@ public static class GameplayData
 
     public static void Initialize()
     {
-        var folderPath = Path.Combine(Application.dataPath, "Resources/Json");
+        var folderPath = Path.Combine(Application.dataPath, "StreamingAssets", "Resources/Json");
         FilePath = Path.Combine(folderPath, "Gameplay.json");
     }
 
@@ -24,7 +24,7 @@ public static class GameplayData
     }
     public static List<GameplayInfo> LoadForMenu()
     {
-        return Deserialize(File.ReadAllText(Path.Combine(Application.dataPath, "Resources/Json", "Gameplay.json")));
+        return Deserialize(File.ReadAllText(Path.Combine(Application.dataPath, "StreamingAssets", "Resources/Json", "Gameplay.json")));
     }
     public static string Serialize(List<GameplayInfo> gameplayInfos)
     {

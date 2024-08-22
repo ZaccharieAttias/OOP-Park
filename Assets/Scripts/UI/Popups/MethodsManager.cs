@@ -82,8 +82,9 @@ public class MethodsManager : MonoBehaviour
     {
         int methodCount = currentCharacter.Methods.Count;
         bool hasRequiredAttribute = HasRequiredAttribute(currentCharacter, methodName, RestrictionManager.Instance.AllowAccessModifier);
+        bool hasRequiredMethod = HasRequiredMethod(currentCharacter, methodName, RestrictionManager.Instance.AllowAccessModifier);
 
-        return hasRequiredAttribute && (methodExists || methodCount < MethodLimit || RestrictionManager.Instance.OnlineBuild || currentCharacter.IsOriginal);
+        return (hasRequiredMethod || hasRequiredAttribute) && (methodExists || methodCount < MethodLimit || RestrictionManager.Instance.OnlineBuild || currentCharacter.IsOriginal);
     }
     public void MarkMethod(GameObject methodGameObject, Method method)
     {
@@ -99,8 +100,17 @@ public class MethodsManager : MonoBehaviour
     public void AddMethodToCharacter(CharacterB currentCharacter, Method method)
     {
         var requiredAttribute = FindDependentAttribute(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifier);
-        var newMethod = new Method(method, currentCharacter.Name, requiredAttribute);
-        currentCharacter.Methods.Add(newMethod);
+        if (requiredAttribute != null) 
+        {
+            var newMethod = new Method(method, currentCharacter.Name, requiredAttribute);
+            currentCharacter.Methods.Add(newMethod);
+        }
+        else
+        {
+            var requieredMethod = FindDependentMethod(currentCharacter, method.Name, RestrictionManager.Instance.AllowAccessModifier);
+            currentCharacter.Methods.Add(requieredMethod);
+        }
+       
     }
     public void RemoveMethodFromCharacter(CharacterB currentCharacter, Method currentMethod)
     {
@@ -123,6 +133,17 @@ public class MethodsManager : MonoBehaviour
 
         return hasRequiredAttribute;
     }
+    public bool HasRequiredMethod(CharacterB character, string methodName, bool allowAccessModifier)
+    {
+        var isCurrentCharacter = CharactersData.CharactersManager.CurrentCharacter == character;
+        var hasRequiredMethod = character.Methods.Any(method =>
+            method.Name == methodName &&
+            (isCurrentCharacter || !allowAccessModifier || method.AccessModifier != AccessModifier.Private));
+
+        if (!hasRequiredMethod && character.Parent != null) hasRequiredMethod = HasRequiredMethod(character.Parent, methodName, allowAccessModifier);
+
+        return hasRequiredMethod;
+    }
     public Attribute FindDependentAttribute(CharacterB character, string methodName, bool allowAccessModifier)
     {
         var isCurrentCharacter = CharactersData.CharactersManager.CurrentCharacter == character;
@@ -133,6 +154,17 @@ public class MethodsManager : MonoBehaviour
         if (currentAttribute == null && character.Parent != null) currentAttribute = FindDependentAttribute(character.Parent, methodName, allowAccessModifier);
 
         return currentAttribute;
+    }
+    public Method FindDependentMethod(CharacterB character, string methodName, bool allowAccessModifier)
+    {
+        var isCurrentCharacter = CharactersData.CharactersManager.CurrentCharacter == character;
+        var currentMethod = character.Methods.FirstOrDefault(method =>
+            method.Name == methodName &&
+            (isCurrentCharacter || !allowAccessModifier || method.AccessModifier != AccessModifier.Private));
+
+        if (currentMethod == null && character.Parent != null) currentMethod = FindDependentMethod(character.Parent, methodName, allowAccessModifier);
+
+        return currentMethod;
     }
     public void CancelMethodReferences(CharacterB character, Method method)
     {
@@ -164,7 +196,6 @@ public class MethodsManager : MonoBehaviour
 
         MethodGameObjects.Add(methodGameObject);
     }
-
     public void ToggleOn()
     {
         SceneManagement.ScenePause("MethodsManager");

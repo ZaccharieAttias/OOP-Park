@@ -9,6 +9,7 @@ public class PopupKeyManager : MonoBehaviour
     [Header("Scripts")]
     public CharacterAppearanceManager CharacterAppearanceManager;
     public EncapsulationManager EncapsulationManager;
+    public TypeCastingManager TypeCastingManager;
     public UpcastingManager UpcastingManager;
 
     [Header("UI Elements")]
@@ -40,6 +41,7 @@ public class PopupKeyManager : MonoBehaviour
     {
         CharacterAppearanceManager = GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>();
         EncapsulationManager = GameObject.Find("Canvas/Popups").GetComponent<EncapsulationManager>();
+        TypeCastingManager = GameObject.Find("Canvas/Popups").GetComponent<TypeCastingManager>();
         UpcastingManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastingManager>();
     }
     public void InitializeUIElements()
@@ -61,6 +63,11 @@ public class PopupKeyManager : MonoBehaviour
         if (restrictionManager.AllowUpcasting && UpcastingManager.Checker())
         {
             CreateButton("Upcasting", () => UpcastingManager.ToggleActivation());
+        }
+
+        if (TypeCastingManager.Checker())
+        {
+            CreateButton("TypeCasting", () => TypeCastingManager.ToggleActivation());
         }
 
         if (restrictionManager.AllowEncapsulation && EncapsulationManager.Checker())
@@ -92,41 +99,10 @@ public class PopupKeyManager : MonoBehaviour
         buttonComponent.onClick.AddListener(onClickAction);
         buttonComponent.onClick.AddListener(ToggleActivation);
     }
-    public bool ShouldTogglePopup()
-    {
-        var restrictionManager = RestrictionManager.Instance;
-        return (restrictionManager.AllowUpcasting && UpcastingManager.Checker()) || (restrictionManager.AllowEncapsulation && EncapsulationManager.Checker()) || restrictionManager.AllowOverride;
-    }
-    public bool HandleSpecialCases()
-    {
-        var restrictionManager = RestrictionManager.Instance;
-
-        if (restrictionManager.AllowUpcasting && UpcastingManager.Checker() && !restrictionManager.AllowEncapsulation && !restrictionManager.AllowOverride)
-        {
-            UpcastingManager.ToggleActivation();
-            return true;
-        }
-
-        if (!restrictionManager.AllowUpcasting && restrictionManager.AllowEncapsulation && EncapsulationManager.Checker() && !restrictionManager.AllowOverride)
-        {
-            EncapsulationManager.ToggleActivation();
-            return true;
-        }
-
-        if (!restrictionManager.AllowUpcasting && !restrictionManager.AllowEncapsulation && restrictionManager.AllowOverride)
-        {
-            CharacterAppearanceManager.ToggleActivation();
-            return true;
-        }
-
-        return false;
-    }
-
     public void ToggleOn()
     {
         if (!GameObject.Find("Canvas/Menus/Gameplay").activeSelf) return;
-        if (!ShouldTogglePopup()) return;
-        if (HandleSpecialCases()) return;
+        if (!TypeCastingManager.Checker() && !UpcastingManager.Checker() && !EncapsulationManager.Checker()) return;
 
         SceneManagement.ScenePause("KeyMenu");
 

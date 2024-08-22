@@ -69,7 +69,7 @@ public class AbstractClassCheck : MonoBehaviour
 
         Stage = 0;
         MaxStage = 3;
-        FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        FolderPath = Path.Combine(Application.dataPath, "StreamingAssets", "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     public void SetStage()

@@ -50,13 +50,15 @@ public class PauseManager : MonoBehaviour
     public void RestartScene()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-        SceneManagement.SceneResume("PauseManager");
+        SceneManagement.ActivePopups.Clear();
+        Time.timeScale = 1f;
         TransitionManager.EnableEndingSceneTransition(currentSceneName);
     }
     public void ExitScene()
     {
         string sceneName = SceneManager.GetActiveScene().name;
-        SceneManagement.SceneResume("PauseManager");
+        SceneManagement.ActivePopups.Clear();
+        Time.timeScale = 1f;
 
         string nextScene = sceneName switch
         {

@@ -203,7 +203,7 @@ public class LevelBuilderB : MonoBehaviour
                 break;
         }
     }
-IEnumerator Wait(float seconds)
+    IEnumerator Wait(float seconds)
 {
     yield return new WaitForSeconds(seconds);
 }
@@ -575,6 +575,11 @@ IEnumerator Wait(float seconds)
             CommandPopup.Show("Brick can not be placed on the ground or on a wall.", 2, "Online");
             return;
         }
+        if (!RestrictionManager.Instance.AllowUpcasting || !RestrictionManager.Instance.AllowOverride)
+        {
+            CommandPopup.Show("You can not place a challenge because of the topics chosen.\nThe challenges are available only with the 'Upcasting' and 'Override' topics.", 3, "Online");
+            return;
+        }
 
         _gameplayMap.Destroy(x, y, z);
 
@@ -681,6 +686,7 @@ IEnumerator Wait(float seconds)
 
         GameObject.Find("Main Camera").GetComponent<CameraFollow>().StartPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, -10);
         GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().GameController = Player.GetComponent<GameController>();
+        GameObject.Find("Canvas/Popups").GetComponent<UpcastingManager>().Character = Player.GetComponent<CharacterBase>();
     }
     private void SetGround(int x, int y, int z)
     {

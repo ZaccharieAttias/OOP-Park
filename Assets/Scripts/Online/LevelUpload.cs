@@ -50,7 +50,7 @@ public class LevelUpload : MonoBehaviour
     public void CreateLevel()
     {
         LevelName = LevelNameInputField.text;
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName);
+        string path = Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved", LevelName);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
         else
@@ -88,6 +88,7 @@ public class LevelUpload : MonoBehaviour
             if (response.success)
             {
                 UploadLevelTreeData((int)response.asset_candidate.id);
+                GameObject.Find("Canvas/Menus/Gameplay").SetActive(false);
             }
             else
             {
@@ -99,14 +100,14 @@ public class LevelUpload : MonoBehaviour
     }
     public void UploadLevelData(int levelID)
     {
-        string screenshotFilePath = "Assets/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + ".png";
+        string screenshotFilePath = Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + ".png";
         LootLocker.LootLockerEnums.FilePurpose screenshotFileType = LootLocker.LootLockerEnums.FilePurpose.primary_thumbnail;
 
         LootLockerSDKManager.AddingFilesToAssetCandidates(levelID, screenshotFilePath, "Level_" + LevelName + ".png", screenshotFileType, (screenshotResponse) =>
         {
             if (screenshotResponse.success)
             {
-                string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + "_Data.json";
+                string textFilePath = Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Saved/" + LevelName + "/Level_" + LevelName + "_Data.json";
                 SaveLevel(textFilePath);
 
                 //coverting json file to txt file
@@ -138,7 +139,7 @@ public class LevelUpload : MonoBehaviour
 #if UNITY_EDITOR
         AssetDatabase.Refresh();
 #endif
-        string[] files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName));
+        string[] files = Directory.GetFiles(Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved", LevelName));
         foreach (string file in files)
         {
             if (file.Contains(".txt"))
@@ -152,20 +153,18 @@ public class LevelUpload : MonoBehaviour
     }
     public void UploadLevelTreeData(int levelID)
     {
-        string textFilePath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName;
+        string textFilePath = Path.Combine(Application.dataPath, "StreamingAssets", "Resources", "Screenshots", "Saved", LevelName);
         SaveCharacter(textFilePath);
 
-        // string json;
         LootLocker.LootLockerEnums.FilePurpose textFileType = LootLocker.LootLockerEnums.FilePurpose.file;
 
         string[] files = Directory.GetFiles(textFilePath);
-
         AddingFilesToAsset(levelID, files, 0, textFileType);
 
 #if UNITY_EDITOR
         AssetDatabase.Refresh();
 #endif
-        string[] filess = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Resources", "Screenshots", "Saved", LevelName));
+        string[] filess = Directory.GetFiles(textFilePath);
         foreach (string file in filess)
         {
             if (file.Contains(".txt"))
@@ -190,7 +189,7 @@ public class LevelUpload : MonoBehaviour
     public void TakeScreenshot()
     {
         GameObject.Find("Canvas/Menus/Gameplay").SetActive(false);
-        string filepath = Directory.GetCurrentDirectory() + "/Assets/Resources/Screenshots/Saved/" + LevelName + "/";
+        string filepath = Application.dataPath + "/StreamingAssets" + "/Resources/Screenshots/Saved/" + LevelName + "/";
         ScreenCapture.CaptureScreenshot(Path.Combine(filepath, "Level_" + LevelName + ".png"));
     }
     public void SaveLevel(string path)
@@ -301,8 +300,10 @@ public class LevelUpload : MonoBehaviour
             LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) => { });
             return true;
         }
-        while (!files[i].Contains(".json") || files[i].Contains("_Data") || files[i].Contains(".meta"))
+        while (true)
         {
+            if (i<files.Length && files[i].EndsWith("json") && !files[i].EndsWith("Data.json"))
+                break;
             i++;
             if (i >= files.Length)
             {
@@ -310,7 +311,6 @@ public class LevelUpload : MonoBehaviour
                 return true;
             }
         }
-
 
         string json;
         json = File.ReadAllText(files[i]);

@@ -11,7 +11,7 @@ public class JsonUtilityManager : MonoBehaviour
 
     public void Start()
     {
-        FolderPath = Path.Combine(Application.dataPath, "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        FolderPath = Path.Combine(Application.dataPath, "StreamingAssets", "Resources/Json", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
         InitializeData();
     }
