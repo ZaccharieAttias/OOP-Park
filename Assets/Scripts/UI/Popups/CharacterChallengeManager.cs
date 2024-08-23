@@ -26,7 +26,7 @@ public class CharacterChallengeManager : MonoBehaviour
     public void Start()
     {
         InitializeScripts();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
         {
             InitializeUIElements();
             InitializeUniqueListeners();
@@ -89,7 +89,7 @@ public class CharacterChallengeManager : MonoBehaviour
 
     public void ConfirmFactory()
     {
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
             UpdateWallsBasedOnAppearance();
         else
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
@@ -98,7 +98,7 @@ public class CharacterChallengeManager : MonoBehaviour
     public void CancelFactory()
     {
         CharacterEditor1.LoadFromJson();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
             UpdateWallsBasedOnAppearance();
         else
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
@@ -106,7 +106,7 @@ public class CharacterChallengeManager : MonoBehaviour
     public void ResetFactory()
     {
         CharacterEditor1.LoadFromJson();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
             UpdateWallsBasedOnAppearance();
         else
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
@@ -143,10 +143,11 @@ public class CharacterChallengeManager : MonoBehaviour
     }
     public void BackStage()
     {
+        if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowOverride) return;
         GameController.returnLastPosition();
 
         CharacterEditor1.LoadFromJson();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
             UpdateWallsBasedOnAppearance();
         else
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);

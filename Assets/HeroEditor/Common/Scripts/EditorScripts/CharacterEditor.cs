@@ -427,6 +427,15 @@ namespace Assets.HeroEditor.Common.Scripts.EditorScripts
             SetPaintButton(tab.name, equipped);
 
             if (ImportButton) ImportButton.interactable = ImportParts.Contains(tab.name);
+            //set interractable all GameObject that doesn't have a group in their toggle component
+            Transform ItemsGroup = GameObject.Find("Canvas/Popups/CharacterAppearance/Background/Editor/Inventory/ScrollRect/Viewport/Grid").transform;
+            foreach (var item in ItemsGroup.GetComponentsInChildren<Toggle>())
+            {
+                if (item.group == null)
+                {
+                    item.gameObject.SetActive(false);
+                }
+            }
         }
 
         private ItemParams CreateFakeItemParams(Item item, ItemSprite itemSprite, string replaceable = null, string replacement = null)

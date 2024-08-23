@@ -575,7 +575,7 @@ public class LevelBuilderB : MonoBehaviour
             CommandPopup.Show("Brick can not be placed on the ground or on a wall.", 2, "Online");
             return;
         }
-        if (!RestrictionManager.Instance.AllowUpcasting || !RestrictionManager.Instance.AllowOverride)
+        if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowOverride)
         {
             CommandPopup.Show("You can not place a challenge because of the topics chosen.\nThe challenges are available only with the 'Upcasting' and 'Override' topics.", 3, "Online");
             return;

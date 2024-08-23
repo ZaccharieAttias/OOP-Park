@@ -52,6 +52,7 @@ public class UpcastingManager : MonoBehaviour
         Buttons[0].onClick.AddListener(() => UpdateCharacter(1));
         Buttons[1].onClick.AddListener(() => UpdateCharacter(-1));
         Buttons[2].onClick.AddListener(ApplyUpcasting);
+        Buttons[2].onClick.AddListener(() => GetComponent<CharacterChallengeManager>().ConfirmFactory());
     }
     public void InitializeUpcastingData()
     {

@@ -14,6 +14,7 @@ public class RestrictionMenu : MonoBehaviour
     public bool AllowUpcasting;
     public bool AllowAbstractClass;
     public bool AllowEncapsulation;
+    public bool AllowTypeCasting;
     public List<Button> RestrictionButtons = new List<Button>();
     public Button ConfirmButton;
     public Button SkipButton;
@@ -80,6 +81,9 @@ public class RestrictionMenu : MonoBehaviour
                 break;
             case 6:
                 AllowEncapsulation = !AllowEncapsulation;
+                break;
+            case 7:
+                AllowTypeCasting = !AllowTypeCasting;
                 break;
         }
     }

@@ -65,7 +65,7 @@ public class PopupKeyManager : MonoBehaviour
             CreateButton("Upcasting", () => UpcastingManager.ToggleActivation());
         }
 
-        if (TypeCastingManager.Checker())
+        if (restrictionManager.AllowTypeCasting && TypeCastingManager.Checker())
         {
             CreateButton("TypeCasting", () => TypeCastingManager.ToggleActivation());
         }
@@ -102,7 +102,7 @@ public class PopupKeyManager : MonoBehaviour
     public void ToggleOn()
     {
         if (!GameObject.Find("Canvas/Menus/Gameplay").activeSelf) return;
-        if (!TypeCastingManager.Checker() && !UpcastingManager.Checker() && !EncapsulationManager.Checker()) return;
+        if (!TypeCastingManager.Checker() && !UpcastingManager.Checker() && !EncapsulationManager.Checker() && !RestrictionManager.Instance.AllowOverride) return;
 
         SceneManagement.ScenePause("KeyMenu");
 

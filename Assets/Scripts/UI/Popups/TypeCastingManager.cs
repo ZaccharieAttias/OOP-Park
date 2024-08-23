@@ -164,6 +164,7 @@ public class TypeCastingManager : MonoBehaviour
 
     public bool Checker()
     {
+        if (!RestrictionManager.Instance.AllowTypeCasting) return false;
         if (!GameObject.Find("Player")) return false;
         if (CharactersData.CharactersManager.CurrentCharacter is null) return false;
 

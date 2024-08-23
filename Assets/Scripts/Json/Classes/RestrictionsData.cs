@@ -26,6 +26,7 @@ public static class RestrictionsData
                 AllowUpcasting = RestrictionManager.Instance.AllowUpcasting,
                 AllowAbstractClass = RestrictionManager.Instance.AllowAbstractClass,
                 AllowEncapsulation = RestrictionManager.Instance.AllowEncapsulation,
+                AllowTypeCasting = RestrictionManager.Instance.AllowTypeCasting,
                 OnlineGame = RestrictionManager.Instance.OnlineGame,
                 OnlineBuild = RestrictionManager.Instance.OnlineBuild
             }
@@ -54,6 +55,7 @@ public static class RestrictionsData
         RestrictionManager.Instance.AllowUpcasting = restrictions[0].AllowUpcasting;
         RestrictionManager.Instance.AllowAbstractClass = restrictions[0].AllowAbstractClass;
         RestrictionManager.Instance.AllowEncapsulation = restrictions[0].AllowEncapsulation;
+        RestrictionManager.Instance.AllowTypeCasting = restrictions[0].AllowTypeCasting;
 
         if (FilePath.Contains("Saved") || FilePath.Contains("Temp"))
         {
@@ -76,6 +78,7 @@ public static class RestrictionsData
         RestrictionManager.Instance.AllowUpcasting = restrictions[0].AllowUpcasting;
         RestrictionManager.Instance.AllowAbstractClass = restrictions[0].AllowAbstractClass;
         RestrictionManager.Instance.AllowEncapsulation = restrictions[0].AllowEncapsulation;
+        RestrictionManager.Instance.AllowTypeCasting = restrictions[0].AllowTypeCasting;
         RestrictionManager.Instance.OnlineGame = restrictions[0].OnlineGame;
         RestrictionManager.Instance.OnlineBuild = restrictions[0].OnlineBuild;
     }
@@ -103,6 +106,7 @@ public class RestrictionData
     public bool AllowUpcasting;
     public bool AllowAbstractClass;
     public bool AllowEncapsulation;
+    public bool AllowTypeCasting;
     public bool OnlineGame;
     public bool OnlineBuild;
 }

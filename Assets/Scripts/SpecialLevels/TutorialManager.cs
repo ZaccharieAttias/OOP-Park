@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -38,6 +39,10 @@ public class TutorialManager : MonoBehaviour
     public GameObject SwapSceenToGameplay;
     public GameObject CharacterCreationPlus;
     public GameObject Plus;
+    public GameObject Mission;
+    public GameObject MissionWall;
+    public GameObject MissionPrefab;
+    public GameObject TreeContent;
 
 
     public int check = 0;
@@ -154,6 +159,8 @@ public class TutorialManager : MonoBehaviour
 
                 CommandPopup.Show("What you see in gray are walls.\nThey can be climbed using a certain method.", 6, "C0L2");
                 check++;
+                RestrictionManager.Instance.AllowUpcasting = false;
+                CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection[0]);
             }
             else if (hasSwapped && check == 1)
             {
@@ -237,7 +244,36 @@ public class TutorialManager : MonoBehaviour
                 hasSeenCheckpoint = true;
                 TutorialTip.SetActive(true);
                 MainForeground.SetActive(true);
-                MainTutorialTipText.text = "Congratulations! You've reached the first checkpoint.\n\nNow we'll explain how upcasting works.\nTo proceed an upcast, press [G] on your keyboard, this will open a contextual menu in which you can upcast your currently played class.\nYou'll be able to choose and call non-private methods from ancestor classes through upcasting.\nFor greater interactivity, you'll also be able to choose the time or number of times the method will be used.\n\nTip: To complete the level, you'll need to inverse the gravity and break walls with fireballs.\n\n\n\nClick on the [Enter] key to close.";
+                MainTutorialTipText.text = "Congratulations! You've reached the first checkpoint.\n\nNow we'll explain how upcasting works.\nTo proceed an upcast, press [G] on your keyboard, this will open a contextual menu in which you can upcast your currently played class as one of it ancestors.\nWhen you upcast, your character will be treated as if it belongs to one of its parent classes. This means that while your character will keep its unique abilities forces, it will only have access to the methods defined by the selected ancestor class.\n\nChoose wisely and experiment with how the inherited abilities affect your gameplay!\nFor greater interactivity, you will need to take the correct appearance to remove the wall that blocking the access.\n\nTip: To complete the level, you'll need to select a correct child and upcast to it parent.\n\n\n\nClick on the [Enter] key to close.";
+                
+                
+                RestrictionManager.Instance.AllowUpcasting = true;
+                Mission.SetActive(true);
+                MissionWall.SetActive(true);
+                GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().Walls.Add(MissionWall);
+                Mission.AddComponent<StageCollision>().Challenge = 1;
+                GameObject MissionPop = GameObject.Find("Canvas/Popups/Mission1");
+                TMP_Text txt = MissionPop.transform.Find("Background/Foreground/Mssion/Mission").GetComponent<TMP_Text>();
+                txt.text = "For this masked ball, you'll need an exemplary hairstyle in addition to your magnificent cape.";
+                List<string> appearancesCondition = new List<string>();
+                appearancesCondition.Add("Mask");
+                appearancesCondition.Add("Cape");
+                appearancesCondition.Add("Hair");
+                GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().InitializeUIOnlineElements(1, appearancesCondition);
+                
+                
+                
+                foreach (Transform child in TreeContent.transform)
+                    Destroy(child.gameObject);
+
+                string previouspath = CharactersData.FilePath;
+                CharactersData.FilePath = Path.Combine(Application.dataPath, "StreamingAssets", "Resources/Json", "C0L2Second", "Characters.json");
+                CharactersData.Load();
+                CharactersGameObjectData.Load();
+                CharactersData.FilePath = previouspath;
+                GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
+                GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>().ApplyPowerup(CharactersData.CharactersManager.CurrentCharacter);
+                
                 check++;
             }
             else if (Input.GetKeyDown(KeyCode.Return) && check == 10)
@@ -248,7 +284,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (check == 11)
             {
-                CommandPopup.Show("Create a child for Jack and set him the FirebalShoot attribute and method and proceed an upcasting for inverse the gravity.", 20, "C0L2");
+                CommandPopup.Show("Select a child and Upcast in order to access to the trophy.", 20, "C0L2");
                 check++;
             }
         }
@@ -313,7 +349,6 @@ public class TutorialManager : MonoBehaviour
                 GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/CharacterType/Button").GetComponent<Toggle>().interactable = false;
                 check++;
             }
-            // verifier si le joueur a bien rajouter la methode grabbing
             else if (CharactersData.CharactersManager.CurrentCharacter.Methods.Find(x => x.Name == "Grabbing") != null && check == 7 && !isOk)
             {
                 SwapSceenToGameplay.SetActive(true);
