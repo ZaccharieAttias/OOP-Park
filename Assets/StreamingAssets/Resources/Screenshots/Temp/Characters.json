@@ -2,31 +2,31 @@
   {
     "IsOriginal": true,
     "IsAbstract": false,
-    "Name": "Ava",
-    "Description": "I'm Ava",
+    "Name": "Alaric",
+    "Description": "I'm Alaric",
     "Attributes": [
       {
-        "Owner": "Ava",
-        "Name": "gravity",
-        "Value": 4.0,
+        "Owner": "Alaric",
+        "Name": "speed",
+        "Value": 2.0,
         "Getter": false,
         "Setter": false,
-        "AccessModifier": 1
+        "AccessModifier": 0
       }
     ],
     "Methods": [
       {
-        "Owner": "Ava",
-        "Name": "Gravity",
+        "Owner": "Alaric",
+        "Name": "Speed",
         "Attribute": {
-          "Owner": "Ava",
-          "Name": "gravity",
+          "Owner": "Alaric",
+          "Name": "speed",
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
-          "AccessModifier": 1
+          "AccessModifier": 0
         },
-        "AccessModifier": 1
+        "AccessModifier": 0
       }
     ],
     "SpecialAbility": null,
@@ -37,37 +37,37 @@
     },
     "Parent": null,
     "Childrens": [
-      "Alex"
+      "Benjamin"
     ]
   },
   {
     "IsOriginal": false,
     "IsAbstract": false,
-    "Name": "Alex",
-    "Description": "I'm Alex",
+    "Name": "Benjamin",
+    "Description": "I'm Benjamin",
     "Attributes": [
       {
-        "Owner": "Alex",
-        "Name": "gravity",
-        "Value": 4.0,
+        "Owner": "Benjamin",
+        "Name": "inverseGravity",
+        "Value": -40.0,
         "Getter": false,
         "Setter": false,
-        "AccessModifier": 1
+        "AccessModifier": 0
       }
     ],
     "Methods": [
       {
-        "Owner": "Alex",
-        "Name": "Gravity",
+        "Owner": "Benjamin",
+        "Name": "InverseGravity",
         "Attribute": {
-          "Owner": "Alex",
-          "Name": "gravity",
+          "Owner": "Benjamin",
+          "Name": "inverseGravity",
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
-          "AccessModifier": 1
+          "AccessModifier": 0
         },
-        "AccessModifier": 1
+        "AccessModifier": 0
       }
     ],
     "SpecialAbility": null,
@@ -76,48 +76,7 @@
       "Name": null,
       "Amount": 0.0
     },
-    "Parent": "Ava",
-    "Childrens": [
-      "Daniel"
-    ]
-  },
-  {
-    "IsOriginal": false,
-    "IsAbstract": false,
-    "Name": "Daniel",
-    "Description": "I'm Daniel",
-    "Attributes": [
-      {
-        "Owner": "Daniel",
-        "Name": "gravity",
-        "Value": 4.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 1
-      }
-    ],
-    "Methods": [
-      {
-        "Owner": "Daniel",
-        "Name": "Gravity",
-        "Attribute": {
-          "Owner": "Daniel",
-          "Name": "gravity",
-          "Value": 0.0,
-          "Getter": false,
-          "Setter": false,
-          "AccessModifier": 1
-        },
-        "AccessModifier": 1
-      }
-    ],
-    "SpecialAbility": null,
-    "UpcastMethod": {
-      "Owner": null,
-      "Name": null,
-      "Amount": 0.0
-    },
-    "Parent": "Alex",
+    "Parent": "Alaric",
     "Childrens": []
   }
 ]

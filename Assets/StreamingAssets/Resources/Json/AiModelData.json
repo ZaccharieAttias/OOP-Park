@@ -1,10 +1,101 @@
 {
-  "LevelName": "Test",
-  "Score": 100,
+  "LevelName": "C0L2",
+  "Score": 95,
   "DeathsCount": 0,
-  "TimeTook": 8,
+  "TimeTook": 98,
   "AbstractLevelTries": 0,
-  "AppearanceLevelTries": 0,
+  "AppearanceLevelTries": 1,
   "QuizLevelTries": 0,
-  "CharactersOrder": []
+  "CharactersOrder": [
+    {
+      "IsOriginal": false,
+      "IsAbstract": false,
+      "Name": "Noah",
+      "Description": "I'm Noah",
+      "Attributes": [],
+      "Methods": [
+        {
+          "Owner": "Noah",
+          "Name": "WallJump",
+          "Attribute": {
+            "Owner": "Emily",
+            "Name": "wallJump",
+            "Value": 0.0,
+            "Getter": false,
+            "Setter": false,
+            "AccessModifier": 0
+          },
+          "AccessModifier": 2
+        }
+      ],
+      "SpecialAbility": null,
+      "UpcastMethod": {
+        "Owner": null,
+        "Name": null,
+        "Amount": 0.0
+      },
+      "Parent": "Emily",
+      "Childrens": []
+    },
+    {
+      "IsOriginal": false,
+      "IsAbstract": false,
+      "Name": "Thorne",
+      "Description": "I'm Thorne",
+      "Attributes": [
+        {
+          "Owner": "Thorne",
+          "Name": "inverseGravity",
+          "Value": -50.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        {
+          "Owner": "Thorne",
+          "Name": "fireballShoot",
+          "Value": 20.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        }
+      ],
+      "Methods": [
+        {
+          "Owner": "Thorne",
+          "Name": "FireballShoot",
+          "Attribute": {
+            "Owner": "Thorne",
+            "Name": "fireballShoot",
+            "Value": 0.0,
+            "Getter": false,
+            "Setter": false,
+            "AccessModifier": 2
+          },
+          "AccessModifier": 0
+        },
+        {
+          "Owner": "Thorne",
+          "Name": "InverseGravity",
+          "Attribute": {
+            "Owner": "Thorne",
+            "Name": "inverseGravity",
+            "Value": 0.0,
+            "Getter": false,
+            "Setter": false,
+            "AccessModifier": 2
+          },
+          "AccessModifier": 0
+        }
+      ],
+      "SpecialAbility": null,
+      "UpcastMethod": {
+        "Owner": null,
+        "Name": null,
+        "Amount": 0.0
+      },
+      "Parent": "Solene",
+      "Childrens": []
+    }
+  ]
 }
