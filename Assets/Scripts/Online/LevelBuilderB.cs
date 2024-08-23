@@ -599,8 +599,8 @@ public class LevelBuilderB : MonoBehaviour
         wall.transform.SetParent(Parent.Find("Gameplay").transform);
         wall.transform.localPosition = new Vector3(_positionMin.X + x + 3, _positionMin.Y + y);
         wall.transform.localScale = new Vector3(1f, 150f, 1);
-        wall.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.5f);
-        wall.GetComponent<BoxCollider2D>().size = new Vector2(1, 150);
+        wall.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0f);
+        wall.GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
         wall.AddComponent<SpriteRenderer>().color = new Color(0.466f, 0.149f, 0.235f, 1f);
         wall.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Grid/Square");
 
@@ -834,6 +834,9 @@ public class LevelBuilderB : MonoBehaviour
         GameObject temp = Mission1Prefab;
         Mission1Prefab = MissionPrefab;
         MissionPrefab = temp;
+        JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
+        JsonUtilityManager.SetPath(path);
+        JsonUtilityManager.Load();
         BuildLevel(path + "/Level_" + LevelName + "_Data.json");
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._groundMap = _groundMap;
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._coverMap = _coverMap;
@@ -842,12 +845,11 @@ public class LevelBuilderB : MonoBehaviour
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._gameplayMap = _gameplayMap;
         SetLayers(Terrain.Find("Ground"), "Ground");
         SetUpPlayer();
-        JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
-        JsonUtilityManager.SetPath(path);
-        JsonUtilityManager.Load();
-        //CharacterEditor.LoadFromJson();
+        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild)
+            swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
+        if(RestrictionManager.Instance.AllowOverride || RestrictionManager.Instance.AllowUpcasting)
+            GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>().onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().BackStage());
         SetUI();
-        //reset the prefab as original
         temp = Mission1Prefab;
         Mission1Prefab = MissionPrefab;
         MissionPrefab = temp;
@@ -1018,7 +1020,6 @@ public class LevelBuilderB : MonoBehaviour
         Player.name = "Player";
         Player.transform.localScale = Vector3.one;
         Player.transform.localPosition = new Vector3(x_position, y_position);
-
         CharacterEditor.Character = Player.GetComponent<CharacterBase>();
         Charactereditor.Character = Player.GetComponent<CharacterBase>();
         GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeCharacterComponents();
@@ -1029,16 +1030,14 @@ public class LevelBuilderB : MonoBehaviour
         MinimumObjectsCreated["Player"] = true;
 
         SetPlayer();
+        CharacterEditor.LoadFromJson();
 
         GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().AddButton.gameObject.SetActive(true);
         check = 1;
         swapScreen.firstTime = false;
 
         swapScreen.SwapButtonToCharacterCenter.onClick.RemoveAllListeners();
-        if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild)
-            swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
         swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Menus").GetComponent<GameplayManager>().ToggleOff());
-
         GameObject.Find("Main Camera").GetComponent<CameraFollow>().StartPosition = new Vector3(x_position, y_position, -10);
         GameObject.Find("Main Camera").GetComponent<CameraFollow>().ResetPosition();
     }
