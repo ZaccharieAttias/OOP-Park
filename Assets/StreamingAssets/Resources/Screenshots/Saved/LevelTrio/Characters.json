@@ -7,8 +7,8 @@
     "Attributes": [
       {
         "Owner": "Jacob",
-        "Name": "fireballShoot",
-        "Value": 0.25,
+        "Name": "wallJump",
+        "Value": 15.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 2
@@ -16,23 +16,7 @@
       {
         "Owner": "Jacob",
         "Name": "grabbing",
-        "Value": 200.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 0
-      },
-      {
-        "Owner": "Jacob",
-        "Name": "inverseGravity",
-        "Value": -30.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 2
-      },
-      {
-        "Owner": "Jacob",
-        "Name": "wallJump",
-        "Value": 1.0,
+        "Value": 30.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 2
@@ -41,29 +25,29 @@
     "Methods": [
       {
         "Owner": "Jacob",
-        "Name": "FireballShoot",
+        "Name": "Grabbing",
         "Attribute": {
           "Owner": "Jacob",
-          "Name": "fireballShoot",
+          "Name": "grabbing",
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
           "AccessModifier": 2
         },
-        "AccessModifier": 0
+        "AccessModifier": 2
       },
       {
         "Owner": "Jacob",
-        "Name": "InverseGravity",
+        "Name": "WallJump",
         "Attribute": {
           "Owner": "Jacob",
-          "Name": "inverseGravity",
+          "Name": "wallJump",
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
           "AccessModifier": 2
         },
-        "AccessModifier": 1
+        "AccessModifier": 2
       }
     ],
     "SpecialAbility": null,
@@ -75,7 +59,6 @@
     "Parent": null,
     "Childrens": [
       "Benjamin",
-      "Daniel",
       "Madison"
     ]
   },
@@ -87,42 +70,55 @@
     "Attributes": [
       {
         "Owner": "Benjamin",
-        "Name": "speed",
-        "Value": 4.0,
+        "Name": "grabbing",
+        "Value": 75.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 0
       },
       {
         "Owner": "Benjamin",
-        "Name": "gravity",
-        "Value": -11.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 1
-      },
-      {
-        "Owner": "Benjamin",
-        "Name": "grabbing",
-        "Value": 200.0,
+        "Name": "wallJump",
+        "Value": 3.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 2
+      },
+      {
+        "Owner": "Benjamin",
+        "Name": "gravity",
+        "Value": 6.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
       }
     ],
     "Methods": [
       {
         "Owner": "Benjamin",
-        "Name": "Speed",
+        "Name": "Grabbing",
         "Attribute": {
           "Owner": "Benjamin",
-          "Name": "speed",
+          "Name": "grabbing",
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
           "AccessModifier": 0
         },
         "AccessModifier": 0
+      },
+      {
+        "Owner": "Benjamin",
+        "Name": "WallJump",
+        "Attribute": {
+          "Owner": "Benjamin",
+          "Name": "wallJump",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
       },
       {
         "Owner": "Benjamin",
@@ -135,20 +131,7 @@
           "Setter": false,
           "AccessModifier": 1
         },
-        "AccessModifier": 2
-      },
-      {
-        "Owner": "Benjamin",
-        "Name": "Grabbing",
-        "Attribute": {
-          "Owner": "Benjamin",
-          "Name": "grabbing",
-          "Value": 0.0,
-          "Getter": false,
-          "Setter": false,
-          "AccessModifier": 2
-        },
-        "AccessModifier": 2
+        "AccessModifier": 1
       }
     ],
     "SpecialAbility": null,
@@ -172,14 +155,43 @@
     "Attributes": [
       {
         "Owner": "Micheline",
+        "Name": "grabbing",
+        "Value": 100.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Micheline",
         "Name": "wallJump",
-        "Value": 14.0,
+        "Value": 0.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 2
+      },
+      {
+        "Owner": "Micheline",
+        "Name": "gravity",
+        "Value": 20.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
       }
     ],
     "Methods": [
+      {
+        "Owner": "Micheline",
+        "Name": "Grabbing",
+        "Attribute": {
+          "Owner": "Micheline",
+          "Name": "grabbing",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
       {
         "Owner": "Micheline",
         "Name": "WallJump",
@@ -191,7 +203,20 @@
           "Setter": false,
           "AccessModifier": 2
         },
-        "AccessModifier": 0
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "Micheline",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Micheline",
+          "Name": "gravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
       }
     ],
     "SpecialAbility": null,
@@ -211,14 +236,56 @@
     "Attributes": [
       {
         "Owner": "Fiona",
-        "Name": "gravity",
+        "Name": "grabbing",
+        "Value": 200.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Fiona",
+        "Name": "wallJump",
         "Value": 4.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 2
+      },
+      {
+        "Owner": "Fiona",
+        "Name": "gravity",
+        "Value": 15.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
       }
     ],
     "Methods": [
+      {
+        "Owner": "Fiona",
+        "Name": "Grabbing",
+        "Attribute": {
+          "Owner": "Fiona",
+          "Name": "grabbing",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "Fiona",
+        "Name": "WallJump",
+        "Attribute": {
+          "Owner": "Fiona",
+          "Name": "wallJump",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 2
+        },
+        "AccessModifier": 2
+      },
       {
         "Owner": "Fiona",
         "Name": "Gravity",
@@ -228,9 +295,9 @@
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
-          "AccessModifier": 2
+          "AccessModifier": 1
         },
-        "AccessModifier": 0
+        "AccessModifier": 1
       }
     ],
     "SpecialAbility": null,
@@ -250,26 +317,68 @@
     "Attributes": [
       {
         "Owner": "William",
-        "Name": "multipleJumps",
-        "Value": 3.0,
+        "Name": "wallJump",
+        "Value": 2.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 2
+      },
+      {
+        "Owner": "William",
+        "Name": "grabbing",
+        "Value": 175.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "William",
+        "Name": "gravity",
+        "Value": 1.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
       }
     ],
     "Methods": [
       {
         "Owner": "William",
-        "Name": "MultipleJumps",
+        "Name": "Grabbing",
         "Attribute": {
           "Owner": "William",
-          "Name": "multipleJumps",
+          "Name": "grabbing",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 0
+        },
+        "AccessModifier": 0
+      },
+      {
+        "Owner": "William",
+        "Name": "WallJump",
+        "Attribute": {
+          "Owner": "William",
+          "Name": "wallJump",
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
           "AccessModifier": 2
         },
-        "AccessModifier": 0
+        "AccessModifier": 2
+      },
+      {
+        "Owner": "William",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "William",
+          "Name": "gravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
       }
     ],
     "SpecialAbility": null,
@@ -284,37 +393,21 @@
   {
     "IsOriginal": false,
     "IsAbstract": false,
-    "Name": "Daniel",
-    "Description": "I'm Daniel",
+    "Name": "Madison",
+    "Description": "I'm Madison",
     "Attributes": [
       {
-        "Owner": "Daniel",
+        "Owner": "Madison",
         "Name": "grabbing",
-        "Value": 50.0,
+        "Value": 200.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 0
       },
       {
-        "Owner": "Daniel",
-        "Name": "inverseGravity",
-        "Value": -40.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 2
-      },
-      {
-        "Owner": "Daniel",
-        "Name": "speed",
-        "Value": 2.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 2
-      },
-      {
-        "Owner": "Daniel",
-        "Name": "multipleJumps",
-        "Value": 1.0,
+        "Owner": "Madison",
+        "Name": "wallJump",
+        "Value": 8.0,
         "Getter": false,
         "Setter": false,
         "AccessModifier": 2
@@ -322,60 +415,18 @@
     ],
     "Methods": [
       {
-        "Owner": "Daniel",
+        "Owner": "Madison",
         "Name": "Grabbing",
         "Attribute": {
-          "Owner": "Daniel",
+          "Owner": "Madison",
           "Name": "grabbing",
           "Value": 0.0,
           "Getter": false,
           "Setter": false,
           "AccessModifier": 0
         },
-        "AccessModifier": 2
-      }
-    ],
-    "SpecialAbility": null,
-    "UpcastMethod": {
-      "Owner": null,
-      "Name": null,
-      "Amount": 0.0
-    },
-    "Parent": "Jacob",
-    "Childrens": []
-  },
-  {
-    "IsOriginal": false,
-    "IsAbstract": false,
-    "Name": "Madison",
-    "Description": "I'm Madison",
-    "Attributes": [
-      {
-        "Owner": "Madison",
-        "Name": "gravity",
-        "Value": 4.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 2
+        "AccessModifier": 0
       },
-      {
-        "Owner": "Madison",
-        "Name": "wallJump",
-        "Value": 2.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 2
-      },
-      {
-        "Owner": "Madison",
-        "Name": "fireballShoot",
-        "Value": 0.25,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 2
-      }
-    ],
-    "Methods": [
       {
         "Owner": "Madison",
         "Name": "WallJump",
