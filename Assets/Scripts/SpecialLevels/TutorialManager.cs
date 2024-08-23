@@ -273,6 +273,7 @@ public class TutorialManager : MonoBehaviour
                 CharactersData.FilePath = previouspath;
                 GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
                 GameObject.Find("Scripts/PowerUp").GetComponent<Powerup>().ApplyPowerup(CharactersData.CharactersManager.CurrentCharacter);
+                GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().InitializeUniqueListeners();
                 
                 check++;
             }

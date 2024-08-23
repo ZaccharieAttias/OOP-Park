@@ -50,8 +50,10 @@ public class SwapScreen : MonoBehaviour
             SwapButtonToCharacterCenter.onClick.RemoveAllListeners();
 
             SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
-
             SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Menus").GetComponent<GameplayManager>().ToggleOff());
+            if(RestrictionManager.Instance.AllowOverride || RestrictionManager.Instance.AllowUpcasting)
+                GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>().onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().BackStage());
+                
             GameObject.Find("Grid/LevelBuilder").GetComponent<LevelBuilderB>().SetUI();
         }
     }

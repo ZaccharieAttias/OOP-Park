@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Newtonsoft.Json;
 
 public class CharacterChallengeManager : MonoBehaviour
 {
@@ -26,12 +26,26 @@ public class CharacterChallengeManager : MonoBehaviour
     public void Start()
     {
         InitializeScripts();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C1L3")
         {
             InitializeUIElements();
             InitializeUniqueListeners();
             InitializeSelfProperties();
             UpdateWallsBasedOnAppearance();
+        }
+        else if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "C1L3")
+        {
+            InitializeUniqueListeners();
+            InitializeSelfProperties();
+            ChallengeAppearancesConditions = new Dictionary<int, List<string>>();
+            InitializeUIOnlineElements(1, new List<string> { "FullHair", "WeaponType", "Cape" });
+            InitializeUIOnlineElements(2, new List<string> { "WeaponType", "Mask", "Hair"});
+            InitializeUIOnlineElements(3, new List<string> { "FullHair", "WeaponType", "Cape" });
+            Walls.Clear();
+            Walls.Add(GameObject.Find("Grid/Gameplay/WallChallenge" + 1));
+            Walls.Add(GameObject.Find("Grid/Gameplay/WallChallenge" + 2));
+            Walls.Add(GameObject.Find("Grid/Gameplay/WallChallenge" + 3));
+            Debug.Log("ChallengeAppearancesConditions");
         }
         else
         {
@@ -81,6 +95,8 @@ public class CharacterChallengeManager : MonoBehaviour
             .ToList();
 
         CharacterGameObjects.ForEach(item => item.GetComponent<Button>().onClick.AddListener(() => BackStage()));
+        if (RestrictionManager.Instance.AllowUpcasting || RestrictionManager.Instance.AllowOverride)
+            GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>().onClick.AddListener(() => BackStage());
     }
     public void InitializeSelfProperties()
     {
@@ -89,26 +105,26 @@ public class CharacterChallengeManager : MonoBehaviour
 
     public void ConfirmFactory()
     {
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C1L3")
             UpdateWallsBasedOnAppearance();
-        else
+        else if (ChallengeAppearancesConditions.Count > 0)
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
         AiModelData.AppearanceLevelTries++;
     }
     public void CancelFactory()
     {
         CharacterEditor1.LoadFromJson();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C1L3")
             UpdateWallsBasedOnAppearance();
-        else
+        else if (ChallengeAppearancesConditions.Count > 0)
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
     }
     public void ResetFactory()
     {
         CharacterEditor1.LoadFromJson();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C1L3")
             UpdateWallsBasedOnAppearance();
-        else
+        else if (ChallengeAppearancesConditions.Count > 0)
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
     }
 
@@ -123,10 +139,45 @@ public class CharacterChallengeManager : MonoBehaviour
         Walls[1].SetActive(beardValue.Length < 3);
     }
     public string GetAppearanceValue(string json, string appearanceType)
-    {
-        return json.Split(',')
-            .FirstOrDefault(item => item.Contains(appearanceType))?
-            .Split(':')[1] ?? "";
+    {   
+        json =json.Trim ('{','}');
+        Dictionary<string, string> dictionary = new Dictionary<string, string>();
+
+        string[] pairs = json.Split(',');
+        foreach (string pair in pairs)
+        {
+            string[] keyValue = pair.Split(new[] {':'}, 2);
+            string key = keyValue[0].Trim('"');
+            string value = keyValue[1].Trim('"');
+            dictionary.Add(key, value);
+        }
+        if (appearanceType == "MeleePaired" || appearanceType == "Melee1H" || appearanceType == "Melee2H" || appearanceType == "Bow")
+            return dictionary["WeaponType"] == appearanceType ? appearanceType : "";
+        else if (appearanceType == "Armor" || appearanceType == "Vest" || appearanceType == "Gloves" || appearanceType == "Belt" || appearanceType == "Boots" || appearanceType == "Pauldrons")
+        {
+            if (appearanceType == "Armor")
+                return dictionary["Armor[0]"] != "" ? appearanceType : "";
+            else if (appearanceType == "Vest")
+                return dictionary["Armor[25]"] != "" ? appearanceType : "";
+            else if (appearanceType == "Gloves")
+                return dictionary["Armor[4]"] != "" ? appearanceType : "";
+            else if (appearanceType == "Belt")
+                return dictionary["Armor[20]"] != "" ? appearanceType : "";
+            else if (appearanceType == "Boots")
+                return dictionary["Armor[18]"] != "" ? appearanceType : "";
+            else if (appearanceType == "Pauldrons")
+                return dictionary["Armor[1]"] != "" ? appearanceType : "";
+        }
+        else if(!dictionary.ContainsKey(appearanceType))
+        {
+            foreach (var key in dictionary.Keys)
+            {
+                if (key.Contains(appearanceType))
+                    return dictionary[key];
+            }
+            return "";
+        }
+        return dictionary[appearanceType];
     }
     public void SetChallenge1()
     {
@@ -143,14 +194,39 @@ public class CharacterChallengeManager : MonoBehaviour
     }
     public void BackStage()
     {
-        if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowOverride) return;
-        GameController.returnLastPosition();
+        if ((!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowOverride) || (RestrictionManager.Instance.OnlineBuild && GameObject.Find("Scripts/PlayTestManager") != null && !GameObject.Find("Scripts/PlayTestManager").GetComponent<PlayTestManager>().IsTestGameplay)) return;
+        if (ChallengeAppearancesConditions == null) return;
+        if (RestrictionManager.Instance.AllowUpcasting)
+        {
+            UpcastingManager upcastingManager = GameObject.Find("Canvas/Popups").GetComponent<UpcastingManager>();
+            if (upcastingManager.IsUpcasting)
+            {
+                //giving the player the option to upcast and the removed methods
+                foreach (var method in upcastingManager.noneSharedMethods)
+                {
+                    CharactersData.CharactersManager.CurrentCharacter.Methods.Add(method);
+                    CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CurrentCharacter);
+                }
+                upcastingManager.IsUpcasting = false;
+                CharacterEditor1.LoadFromJson();
+                if (ChallengeAppearancesConditions.Count > 0)
+                {
+                    UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
+                    GameController.returnLastPosition();
+                }
+            }
+            CharacterEditor1.LoadFromJson();
+            if (!RestrictionManager.Instance.AllowOverride || !upcastingManager.IsUpcasting) return;
+        }
 
         CharacterEditor1.LoadFromJson();
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2")
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C0L2" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "C1L3")
             UpdateWallsBasedOnAppearance();
-        else
+        else if (ChallengeAppearancesConditions.Count > 0)
+        {   
             UpdateWallsBasedOnAppearance(Challenge, ChallengeAppearancesConditions.FirstOrDefault(item => item.Key == Challenge).Value);
+            GameController.returnLastPosition();
+        }
 
     }
     public void UpdateWallsBasedOnAppearance(int index, List<string> appearancesCondition)
@@ -161,8 +237,9 @@ public class CharacterChallengeManager : MonoBehaviour
         bool allConditionsMet = true;
         foreach (string appearance in appearancesCondition)
         {
-            Debug.Log(GetAppearanceValue(json, appearance).Length);
-            if (!json.Contains(appearance) || GetAppearanceValue(json, appearance) == null)
+            //affichage de la valeur de l'apparence
+
+            if (GetAppearanceValue(json, appearance) == "" || GetAppearanceValue(json, appearance) == "False" || GetAppearanceValue(json, appearance) == "0")
             {
                 allConditionsMet = false;
                 break;
@@ -173,6 +250,10 @@ public class CharacterChallengeManager : MonoBehaviour
         if (allConditionsMet)
         {
             Walls.FirstOrDefault(item => item.name == "WallChallenge" + index)?.SetActive(false);
+        }
+        else
+        {
+            Walls.FirstOrDefault(item => item.name == "WallChallenge" + index)?.SetActive(true);
         }
     }
     public void ResetWalls()

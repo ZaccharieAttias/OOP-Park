@@ -25,7 +25,8 @@ public class UpcastingManager : MonoBehaviour
     public List<CharacterB> UpcastableData;
     public int Index;
     public CharacterBase Character;
-
+    public bool IsUpcasting;
+    public List<Method> noneSharedMethods = new List<Method>();
 
     public void Start()
     {
@@ -62,6 +63,7 @@ public class UpcastingManager : MonoBehaviour
         {
             Character = GameObject.Find("Player").GetComponent<CharacterBase>();
         }
+        IsUpcasting = false;
     }
     public void InitializeEventListeners()
     {
@@ -89,7 +91,22 @@ public class UpcastingManager : MonoBehaviour
         string path = Path.Combine(Application.dataPath, "StreamingAssets", "Resources/CharactersData", "All", $"{ReferenceCharacter}.json");
         var json = File.ReadAllText(path);
         Character.FromJson(json);
+        IsUpcasting = true;
 
+        //Save all the none shared methods
+        noneSharedMethods = new List<Method>();
+        foreach (var method in CharactersData.CharactersManager.CurrentCharacter.Methods)
+        {
+            if (!CharactersData.CharactersManager.CharactersCollection[Index].Methods.Any(x => x.Name == method.Name))
+            {
+                noneSharedMethods.Add(method);
+            }
+        }
+        // Remove all the none shared methods
+        foreach (var method in noneSharedMethods)
+        {
+            CharactersData.CharactersManager.CurrentCharacter.Methods.Remove(method);
+        }
         ToggleOff();
     }
     public void ClearContentPanel()

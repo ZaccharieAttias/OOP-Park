@@ -53,6 +53,6 @@ public class SetMission : MonoBehaviour
                 }
             }
         }
-        confirmButton.interactable = false;
+        confirmButton.interactable = allow;
     }
 }
