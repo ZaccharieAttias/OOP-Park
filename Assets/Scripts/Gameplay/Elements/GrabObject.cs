@@ -58,10 +58,17 @@ public class GrabObject : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(RaycastPoint.position, transform.right, RaycastDistance);
         Debug.DrawRay(RaycastPoint.position, transform.right * RaycastDistance, Color.red);
 
+        //ligne du bas
         RaycastHit2D grabpointHitLeft = Physics2D.Raycast(GrabPoint.position, -transform.right, 0.6f);
         RaycastHit2D grabpointHitRight = Physics2D.Raycast(GrabPoint.position, transform.right, 0.6f);
         Debug.DrawRay(GrabPoint.position, -transform.right * RaycastDistance, Color.green);
         Debug.DrawRay(GrabPoint.position, transform.right * RaycastDistance, Color.green);
+
+        //ligne du haut
+        RaycastHit2D grabpointHitLeftTop = Physics2D.Raycast(GrabPoint.position + new Vector3(0, 1f, 0), -transform.right, 0.6f);
+        RaycastHit2D grabpointHitRightTop = Physics2D.Raycast(GrabPoint.position + new Vector3(0, 1f, 0), transform.right, 0.6f);
+        Debug.DrawRay(GrabPoint.position + new Vector3(0, 1f, 0), -transform.right * RaycastDistance, Color.green);
+        Debug.DrawRay(GrabPoint.position + new Vector3(0, 1f, 0), transform.right * RaycastDistance, Color.green);
 
         if (hit.collider != null && IsValidGrab(hit))
         {
@@ -70,7 +77,7 @@ public class GrabObject : MonoBehaviour
                 Grabbing(hit);
             }
         }
-        else if (IsHolding && grabpointHitLeft.collider == null && grabpointHitRight.collider == null && Input.GetKeyDown(KeyCode.E))
+        else if (IsHolding && grabpointHitLeft.collider == null && grabpointHitRight.collider == null && grabpointHitLeftTop.collider == null && grabpointHitRightTop.collider == null && Input.GetKeyDown(KeyCode.E))
         {
             Drop();
         }
