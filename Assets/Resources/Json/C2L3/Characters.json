@@ -4,31 +4,8 @@
     "IsAbstract": false,
     "Name": "Abigail",
     "Description": "I'm Abigail",
-    "Attributes": [
-      {
-        "Owner": "Abigail",
-        "Name": "gravity",
-        "Value": 4.0,
-        "Getter": false,
-        "Setter": false,
-        "AccessModifier": 1
-      }
-    ],
-    "Methods": [
-      {
-        "Owner": "Abigail",
-        "Name": "Gravity",
-        "Attribute": {
-          "Owner": "Abigail",
-          "Name": "gravity",
-          "Value": 0.0,
-          "Getter": false,
-          "Setter": false,
-          "AccessModifier": 1
-        },
-        "AccessModifier": 1
-      }
-    ],
+    "Attributes": [],
+    "Methods": [],
     "SpecialAbility": null,
     "UpcastMethod": {
       "Owner": null,
@@ -37,11 +14,12 @@
     },
     "Parent": null,
     "Childrens": [
-      "Ava"
+      "Ava",
+      "Isabella"
     ]
   },
   {
-    "IsOriginal": false,
+    "IsOriginal": true,
     "IsAbstract": false,
     "Name": "Ava",
     "Description": "I'm Ava",
@@ -68,6 +46,45 @@
           "AccessModifier": 0
         },
         "AccessModifier": 0
+      }
+    ],
+    "SpecialAbility": null,
+    "UpcastMethod": {
+      "Owner": null,
+      "Name": null,
+      "Amount": 0.0
+    },
+    "Parent": "Abigail",
+    "Childrens": []
+  },
+  {
+    "IsOriginal": true,
+    "IsAbstract": false,
+    "Name": "Isabella",
+    "Description": "I'm Isabella",
+    "Attributes": [
+      {
+        "Owner": "Isabella",
+        "Name": "gravity",
+        "Value": 4.0,
+        "Getter": false,
+        "Setter": false,
+        "AccessModifier": 1
+      }
+    ],
+    "Methods": [
+      {
+        "Owner": "Isabella",
+        "Name": "Gravity",
+        "Attribute": {
+          "Owner": "Isabella",
+          "Name": "gravity",
+          "Value": 0.0,
+          "Getter": false,
+          "Setter": false,
+          "AccessModifier": 1
+        },
+        "AccessModifier": 1
       }
     ],
     "SpecialAbility": null,
