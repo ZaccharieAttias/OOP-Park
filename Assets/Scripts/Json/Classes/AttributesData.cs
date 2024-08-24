@@ -44,6 +44,7 @@ public static class AttributesData
         List<AttributeData> attributesData = new();
         foreach (Attribute attribute in character.Attributes)
         {
+            if (attribute.Name == "appearance") continue;
             AttributeData attributeData = new()
             {
                 Owner = attribute.Owner,

@@ -42,6 +42,7 @@ public static class MethodsData
         List<MethodData> methodsData = new();
         foreach (Method method in character.Methods)
         {
+            if (method.Name == "Appearance") continue;
             MethodData methodData = new()
             {
                 Owner = method.Owner,
