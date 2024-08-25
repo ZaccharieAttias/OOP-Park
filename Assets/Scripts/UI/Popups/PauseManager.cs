@@ -63,7 +63,7 @@ public class PauseManager : MonoBehaviour
         string nextScene = sceneName switch
         {
             _ when sceneName.Contains("C0") => "ChapterTutorial",
-            _ when sceneName.Contains("C1") => "ChapterIneritance",
+            _ when sceneName.Contains("C1") => "ChapterInheritance",
             _ when sceneName.Contains("C2") => "ChapterPolymorphism",
             _ => "Playground"
         };

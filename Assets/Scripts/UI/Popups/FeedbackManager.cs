@@ -90,7 +90,11 @@ public class FeedbackManager : MonoBehaviour
 
         string nextSceneName;
         if (levelNumber + 1 <= chapterInfos[chapterNumber].LevelsInfo.Count) nextSceneName = $"C{chapterNumber}L{levelNumber + 1}";
-        else if (chapterNumber + 1 < chapterInfos.Count) nextSceneName = $"C{chapterNumber + 1}L1";
+        else if (chapterNumber + 1 < chapterInfos.Count) 
+        {
+            if (chapterNumber + 1 == 1) nextSceneName = "ChapterInheritance";
+            else nextSceneName = "ChapterPolymorphism";
+        }
         else nextSceneName ="Playground";
 
         TransitionManager.EnableEndingSceneTransition(nextSceneName);
