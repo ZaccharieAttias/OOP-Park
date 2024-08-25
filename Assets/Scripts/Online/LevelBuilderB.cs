@@ -176,7 +176,6 @@ public class LevelBuilderB : MonoBehaviour
                         if (_gameplayMap[p.X, p.Y, _layer] != null && _gameplayMap[p.X, p.Y, _layer].SpriteRenderer.sprite.name == "End") MinimumObjectsCreated["Finish"] = false;
                         if (_gameplayMap[p.X, p.Y, _layer] != null && _gameplayMap[p.X, p.Y, _layer].SpriteRenderer.sprite.name == "Challenge")
                         {
-                            Destroy(GameObject.Find("WallChallenge" + _gameplayMap.GetBlock(p.X, p.Y, _layer).GameObject.GetComponent<StageCollision>().Challenge));
                             GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().DestroyWallAndMission(_gameplayMap.GetBlock(p.X, p.Y, _layer).GameObject.GetComponent<StageCollision>().Challenge);
                             StartCoroutine(Wait(0.2f));
                         }
@@ -198,7 +197,7 @@ public class LevelBuilderB : MonoBehaviour
                     case 13: CreateGrabbableObject(p.X, p.Y, _layer, 99); break;
                     case 14: CreateGrabbableObject(p.X, p.Y, _layer, 199); break;
                     case 15: CreateGrabbableObject(p.X, p.Y, _layer, 499); break;
-                    case 16: CreateChallengeForOverriding(p.X, p.Y, _layer); break;
+                    case 16: CreateChallengeForOverriding(p.X, p.Y, _layer, false); break;
                 }
                 break;
         }
@@ -565,7 +564,7 @@ public class LevelBuilderB : MonoBehaviour
 
         _gameplayMap[x, y, z] = block;
     }
-    public void CreateChallengeForOverriding(int x, int y, int z)
+    public void CreateChallengeForOverriding(int x, int y, int z, bool fromLoad)
     {
         if (x < 0 || x >= _gameplayMap.Width || y < 0 || y >= _gameplayMap.Height) return;
 
@@ -575,7 +574,7 @@ public class LevelBuilderB : MonoBehaviour
             CommandPopup.Show("Brick can not be placed on the ground or on a wall.", 2, "Online");
             return;
         }
-        if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowOverride)
+        if (!RestrictionManager.Instance.AllowUpcasting && !RestrictionManager.Instance.AllowOverride && !fromLoad)
         {
             CommandPopup.Show("You can not place a challenge because of the topics chosen.\nThe challenges are available only with the 'Upcasting' and 'Override' topics.", 3, "Online");
             return;
@@ -834,9 +833,6 @@ public class LevelBuilderB : MonoBehaviour
         GameObject temp = Mission1Prefab;
         Mission1Prefab = MissionPrefab;
         MissionPrefab = temp;
-        JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
-        JsonUtilityManager.SetPath(path);
-        JsonUtilityManager.Load();
         BuildLevel(path + "/Level_" + LevelName + "_Data.json");
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._groundMap = _groundMap;
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._coverMap = _coverMap;
@@ -845,6 +841,10 @@ public class LevelBuilderB : MonoBehaviour
         GameObject.Find("LevelManager").GetComponent<LevelUpload>()._gameplayMap = _gameplayMap;
         SetLayers(Terrain.Find("Ground"), "Ground");
         SetUpPlayer();
+        JsonUtilityManager JsonUtilityManager = GameObject.Find("GameInitializer").GetComponent<JsonUtilityManager>();
+        JsonUtilityManager.SetPath(path);
+        JsonUtilityManager.Load();
+        CharacterEditor.LoadFromJson();
         if (RestrictionManager.Instance.AllowSingleInheritance || RestrictionManager.Instance.OnlineBuild)
             swapScreen.SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
         if(RestrictionManager.Instance.AllowOverride || RestrictionManager.Instance.AllowUpcasting)
@@ -977,7 +977,7 @@ public class LevelBuilderB : MonoBehaviour
                             else if (_index == 15)
                                 CreateGrabbableObject(x, y, z, 499);
                             else if (_index == 16)
-                                CreateChallengeForOverriding(x, y, z);
+                                CreateChallengeForOverriding(x, y, z, true);
                         }
                     }
                 }
@@ -1025,12 +1025,10 @@ public class LevelBuilderB : MonoBehaviour
         GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeCharacterComponents();
         GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeOverride();
 
-        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().playerTransform = Player.transform;
-        // GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().Character = Player.GetComponent<Character>();
         MinimumObjectsCreated["Player"] = true;
 
         SetPlayer();
-        CharacterEditor.LoadFromJson();
+        // CharacterEditor.LoadFromJson();
 
         GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().AddButton.gameObject.SetActive(true);
         check = 1;

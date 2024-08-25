@@ -20,7 +20,7 @@ public class SceneMenusManagement : MonoBehaviour
     public void C0L2() { SceneManager.LoadScene("C0L2"); }
     public void C0L3() { SceneManager.LoadScene("C0L3"); }
 
-    public void Chapter1() { SceneManager.LoadScene("ChapterIneritance"); }
+    public void Chapter1() { SceneManager.LoadScene("ChapterInheritance"); }
     public void C1L1() { SceneManager.LoadScene("C1L1"); }
     public void C1L2() { SceneManager.LoadScene("C1L2"); }
     public void C1L3() { SceneManager.LoadScene("C1L3"); }

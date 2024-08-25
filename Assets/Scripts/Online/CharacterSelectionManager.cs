@@ -139,6 +139,7 @@ public class CharacterSelectionManager : MonoBehaviour
 
         Button button = newPlayerButton.GetComponent<Button>();
         button.onClick.AddListener(() => CharactersManager.DisplayCharacter(characterNode));
+        button.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().BackStage());
 
         Image image = newPlayerButton.GetComponent<Image>();
         image.sprite = Resources.Load<Sprite>("Sprites/Characters/" + characterNode.Name);

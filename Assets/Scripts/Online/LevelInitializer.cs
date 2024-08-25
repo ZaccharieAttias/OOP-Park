@@ -633,7 +633,7 @@ public class LevelInitializer : MonoBehaviour
         block.SpriteRenderer.sortingOrder = 100 * z + 30;
         block.GameObject.AddComponent<BoxCollider2D>().offset = new Vector3(0, 0.4825f);
         block.GameObject.GetComponent<BoxCollider2D>().size = new Vector2(0.85f, 0.85f);
-        block.GameObject.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        block.GameObject.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         block.GameObject.GetComponent<Rigidbody2D>().mass = mass;
         block.GameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         block.GameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;

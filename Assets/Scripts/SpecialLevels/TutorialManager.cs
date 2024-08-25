@@ -426,20 +426,20 @@ public class TutorialManager : MonoBehaviour
                 TutorialTip.SetActive(false);
                 check++;
             }
-            else if (Vector3.Distance(Player.transform.position, CheckPoint2.transform.position) < 1 && check == 14)
+            else if (Vector3.Distance(Player.transform.position, CheckPoint2.transform.position) < 2 && check == 14)
             {
                 hasSeenCheckpoint = true;
                 MainForeground.SetActive(true);
                 TutorialTip.SetActive(true);
                 MainTutorialTipText.text = "Congratulations! You've reached the second checkpoint.\n\nNow we'll explain how to use the Override method.\nTo proceed, press [G] on your keyboard, this will open a contextual menu in which you can override your currently played class by changing his appearance.\nYou'll be able to choose and call non-private methods from ancestor classes through overriding.\nFor greater interactivity, you must modify your appearance to meet certain conditions. These are available by touching the object ? in the level.\n\n\n\nClick on the [Enter] key to close.";
-                check++;
                 RestrictionManager.Instance.AllowEncapsulation = false;
-                RestrictionManager.Instance.AllowOverride = true;
+                check++;
             }
             else if (Input.GetKeyDown(KeyCode.Return) && check == 15)
             {
                 TutorialTip.SetActive(false);
                 MainForeground.SetActive(false);
+                RestrictionManager.Instance.AllowOverride = true;
                 check++;
             }
         }

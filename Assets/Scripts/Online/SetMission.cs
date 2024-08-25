@@ -30,7 +30,6 @@ public class SetMission : MonoBehaviour
         CharacterChallengeManager.InitializeUIOnlineElements(missionNumber, appearancesCondition);
         ResetToggles();
     }
-    //reset all toggles
     public void ResetToggles()
     {
         foreach (Transform item in gridTransform)

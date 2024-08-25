@@ -49,7 +49,8 @@ public class CharacterChallengeManager : MonoBehaviour
         }
         else
         {
-            InitializeUniqueListeners();
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlineBuilder" && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "OnlinePlayground")
+                InitializeUniqueListeners();
             InitializeSelfProperties();
             ChallengeAppearancesConditions = new Dictionary<int, List<string>>();
         }
@@ -237,8 +238,6 @@ public class CharacterChallengeManager : MonoBehaviour
         bool allConditionsMet = true;
         foreach (string appearance in appearancesCondition)
         {
-            //affichage de la valeur de l'apparence
-
             if (GetAppearanceValue(json, appearance) == "" || GetAppearanceValue(json, appearance) == "False" || GetAppearanceValue(json, appearance) == "0")
             {
                 allConditionsMet = false;
@@ -267,10 +266,9 @@ public class CharacterChallengeManager : MonoBehaviour
         GameObject mission = GameObject.Find("Canvas/Popups/Mission" + missionnumber);
         MissionPopup.Remove(mission);
         Walls.Remove(wall);
-        Destroy(mission);
-        Destroy(wall);
-
         ChallengeAppearancesConditions.Remove(missionnumber);
         ChallengeNumberList.Remove(missionnumber);
+        Destroy(mission);
+        Destroy(wall);
     }
 }

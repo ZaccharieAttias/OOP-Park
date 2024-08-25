@@ -274,6 +274,8 @@ public class CharactersCreationManager : MonoBehaviour
 
         var button = characterGameObject.GetComponent<Button>();
         button.onClick.AddListener(() => CharactersData.CharactersManager.DisplayCharacter(character));
+        if (RestrictionManager.Instance.OnlineBuild || RestrictionManager.Instance.OnlineGame)
+            button.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().BackStage());
     }
     public void RootCreation()
     {
