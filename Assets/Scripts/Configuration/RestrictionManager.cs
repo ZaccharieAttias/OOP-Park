@@ -32,8 +32,8 @@ public class RestrictionManager : MonoBehaviour
             AllowAbstractClass = RestrictionMenu.Instance.AllowAbstractClass;
             AllowEncapsulation = RestrictionMenu.Instance.AllowEncapsulation;
             AllowTypeCasting = RestrictionMenu.Instance.AllowTypeCasting;
-            OnlineGame = true;
-            OnlineBuild = false;
+            OnlineGame = false;
+            OnlineBuild = true;
             RestrictionMenu.Instance.Destroy();
         }
         ApplyRestrictions();
