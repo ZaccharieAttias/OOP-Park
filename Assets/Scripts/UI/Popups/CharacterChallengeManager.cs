@@ -264,8 +264,8 @@ public class CharacterChallengeManager : MonoBehaviour
     {
         GameObject wall = GameObject.Find("Grid/LevelBuilder/Gameplay/WallChallenge" + missionnumber);
         GameObject mission = GameObject.Find("Canvas/Popups/Mission" + missionnumber);
-        MissionPopup.Remove(mission);
         Walls.Remove(wall);
+        MissionPopup.Remove(mission);
         ChallengeAppearancesConditions.Remove(missionnumber);
         ChallengeNumberList.Remove(missionnumber);
         Destroy(mission);
