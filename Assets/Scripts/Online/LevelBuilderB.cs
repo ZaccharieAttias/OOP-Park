@@ -177,6 +177,13 @@ public class LevelBuilderB : MonoBehaviour
                         if (_gameplayMap[p.X, p.Y, _layer] != null && _gameplayMap[p.X, p.Y, _layer].SpriteRenderer.sprite.name == "Challenge")
                         {
                             GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().DestroyWallAndMission(_gameplayMap.GetBlock(p.X, p.Y, _layer).GameObject.GetComponent<StageCollision>().Challenge);
+                            int firstChallenge = 1;
+                            //GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().MissionPopup[0].name[7] - '0';
+                            if (GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().MissionPopup.Count > 0)
+                            {
+                                firstChallenge = GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().MissionPopup[0].name[7] - '0';
+                            }
+                            GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().Challenge = firstChallenge;
                             StartCoroutine(Wait(0.2f));
                         }
                         _gameplayMap.Destroy(p.X, p.Y, _layer);
