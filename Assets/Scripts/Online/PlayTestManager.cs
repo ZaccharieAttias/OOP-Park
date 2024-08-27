@@ -58,6 +58,8 @@ public class PlayTestManager : MonoBehaviour
         RestrictionManager.Instance.OnlineBuild = false;
         CharactersData.CharactersManager.DisplayCharacter(CharactersData.CharactersManager.CharactersCollection.Where(x => !x.IsAbstract).First());
         GameObject.Find("Scripts/CharacterEditor").GetComponent<CharacterEditor1>().LoadFromJson();
+        if (!RestrictionManager.Instance.AllowSingleInheritance)
+            GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/Add").SetActive(false);
 
         bricks = GameObject.FindGameObjectsWithTag("Brick");
     }
@@ -112,6 +114,8 @@ public class PlayTestManager : MonoBehaviour
 
         foreach (GameObject brick in bricks)
             brick.GetComponent<BreakingBrick>().Activate();
+
+        GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/Add").SetActive(true);
     }
 
     public void SetOnlickButton()
