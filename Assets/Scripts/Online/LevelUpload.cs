@@ -298,6 +298,9 @@ public class LevelUpload : MonoBehaviour
         if (i >= files.Length)
         {
             LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) => { });
+            LevelUploadUi.SetActive(false);
+            LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>().interactable = true;
+            LevelUploadUi.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>().interactable = true;
             return true;
         }
         while (true)
@@ -308,6 +311,9 @@ public class LevelUpload : MonoBehaviour
             if (i >= files.Length)
             {
                 LootLockerSDKManager.UpdatingAnAssetCandidate(levelID, true, (updatedResponse) => { });
+                LevelUploadUi.SetActive(false);
+                LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>().interactable = true;
+                LevelUploadUi.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>().interactable = true;
                 return true;
             }
         }
@@ -322,12 +328,12 @@ public class LevelUpload : MonoBehaviour
             {
                 i++;
                 AddingFilesToAsset(levelID, files, i, filePurpose);
-                if (i == files.Length)
-                {
-                    LevelUploadUi.SetActive(false);
-                    LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>().interactable = true;
-                    LevelUploadUi.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>().interactable = true;
-                }
+                // if (i == files.Length)
+                // {
+                    // LevelUploadUi.SetActive(false);
+                    // LevelUploadUi.transform.Find("Background/Foreground/Buttons/Button").GetComponent<Button>().interactable = true;
+                    // LevelUploadUi.transform.Find("Background/Foreground/Buttons/Close").GetComponent<Button>().interactable = true;
+                // }
             }
             else
             {
