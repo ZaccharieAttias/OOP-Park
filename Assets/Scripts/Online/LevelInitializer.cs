@@ -129,6 +129,21 @@ public class LevelInitializer : MonoBehaviour
         CharacterEditor1.LoadFromJson();
         GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeCharacterComponents();
         GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeOverride();
+        if (RestrictionManager.Instance.AllowSingleInheritance)
+        {
+            GameObject.Find("Scripts/CharacterEditor").GetComponent<SwapScreen>().SwapButtonToCharacterCenter.onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn());
+            GameObject.Find("Canvas/Popups/CharacterCreation/Buttons/Add").SetActive(true);
+            
+            Button popupToggleOn = GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>();
+            popupToggleOn.onClick.AddListener(GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOn);
+
+            Button popupToggleOff = GameObject.Find("Canvas/Menus/CharacterCenter/SwapScreen").GetComponent<Button>();
+            popupToggleOff.onClick.AddListener(GameObject.Find("Canvas/Popups").GetComponent<CharactersCreationManager>().ToggleOff);
+        
+            GameObject.Find("Canvas/Popups").GetComponent<CharacterAppearanceManager>().InitializeOverride();
+        }
+        if(RestrictionManager.Instance.AllowOverride || RestrictionManager.Instance.AllowUpcasting)
+            GameObject.Find("Canvas/Menus/Gameplay/SwapScreen").GetComponent<Button>().onClick.AddListener(() => GameObject.Find("Canvas/Popups").GetComponent<CharacterChallengeManager>().BackStage());
         var chapterInfo = new ChapterInfo()
         {
             ChapterNumber = 0,
