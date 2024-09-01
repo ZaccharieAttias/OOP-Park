@@ -50,16 +50,19 @@ public class ProgressionManager : MonoBehaviour
 
             foreach (var level in chapterInfo.LevelsInfo)
             {
-                if (level.Status == 1) completedLevels++;
-                totalScore += level.Score;
+                if (level.Status == 1)
+                {
+                    totalScore += level.Score;
+                    completedLevels++;
+                }
+
+                int progressPercentage = completedLevels == 0 ? 0 : completedLevels * 100 / chapterInfo.LevelsInfo.Count;
+                int averageScore = totalScore == 0 ? 0 : totalScore / completedLevels;
+
+                progressionInformation.transform.Find("ProgressionPercentage").GetComponent<TextMeshProUGUI>().text = $"{progressPercentage}%";
+                progressionInformation.transform.Find("AverageScore").GetComponent<TextMeshProUGUI>().text = $"{averageScore}";
+                progressionInformation.transform.Find("Description").GetComponent<TextMeshProUGUI>().text = DescriptionSentence(progressPercentage);
             }
-
-            int progressPercentage = completedLevels * 100 / chapterInfo.LevelsInfo.Count;
-            int averageScore = totalScore / chapterInfo.LevelsInfo.Count;
-
-            progressionInformation.transform.Find("ProgressionPercentage").GetComponent<TextMeshProUGUI>().text = $"{progressPercentage}%";
-            progressionInformation.transform.Find("AverageScore").GetComponent<TextMeshProUGUI>().text = $"{averageScore}";
-            progressionInformation.transform.Find("Description").GetComponent<TextMeshProUGUI>().text = DescriptionSentence(progressPercentage);
         }
     }
     public void LoadOnlinePopup()
